@@ -1,0 +1,24 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "Personal Blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tnorlund/Blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tnorlund/Blog/issues"
+  },
+  "homepage": "https://github.com/tnorlund/Blog#readme",
+  "dependencies": {
+    "gatsby": "^2.24.53",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
