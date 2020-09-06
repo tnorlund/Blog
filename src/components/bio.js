@@ -35,6 +35,13 @@ const Bio = () => {
         }
       }
     }
+    resume: file(absolutePath: { regex: "/Logos_Resume.png/" }) {
+      childImageSharp {
+        fixed(width: 50, height: 50) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
     site {
       siteMetadata {
         author {
@@ -83,7 +90,7 @@ const Bio = () => {
         <p
           style={{marginBottom:10}}
         >
-          Written by <strong>{author.name}</strong>. I'm currently looking for a job, if you can help, please look at my <a href={``}>resume</a> and let me know how we can help each other.
+          Written by <strong>{author.name}</strong>.
         </p>
       </div>
     <div>
@@ -120,6 +127,21 @@ const Bio = () => {
       <a href={`https://github.com/${social.github}`}>
         <Image
         fixed={data.github.childImageSharp.fixed}
+        alt={author.name}
+        style={{
+          marginRight: rhythm(1 / 2),
+          marginBottom: 0,
+          minWidth: 50,
+          borderRadius: `100%`,
+        }}
+        imgStyle={{
+          borderRadius: `50%`,
+        }}
+        />
+      </a>
+      <a href={`https://tylernorlundsblog.s3-us-west-2.amazonaws.com/Tyler+Norlund+-+Resume.pdf`}>
+        <Image
+        fixed={data.resume.childImageSharp.fixed}
         alt={author.name}
         style={{
           marginRight: rhythm(1 / 2),

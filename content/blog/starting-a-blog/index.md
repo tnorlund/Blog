@@ -1,0 +1,15 @@
+---
+title: Starting a Blog
+date: "2020-09-05T18:29:03"
+description: "Why I decided to start a blog."
+---
+
+All the successful people I follow share a lot of content. [Garry Vaynerchuk](https://twitter.com/garyvee?s=21), [Joe Rogan](https://twitter.com/joerogan?s=21), and [Elon Musk](https://twitter.com/elonmusk?s=21) all have presence online. I know that I can develop a successful brand to influence the world by creating content.
+
+This blog will help me:
+- develop confidence in what I have to say
+- help me with my writing skills
+- gain insight in what others are interested in
+- grow an identifiable brand
+
+Moving forward, I will share what I find interesting and what I want others to know about me.
