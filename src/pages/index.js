@@ -6,7 +6,14 @@ import { ProjectList } from 'views/ProjectList'
 import { PostList } from 'views/PostList'
 import Img from 'gatsby-image'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
-import { Icons } from './styles'
+import { LinkedinSquare, Twitter } from 'styled-icons/boxicons-logos'
+import { Github } from 'styled-icons/simple-icons'
+
+const Icons = {
+  LinkedinSquare,
+  Twitter,
+  Github
+}
 
 const SocialsDiv = styled.div`
   display: flex;

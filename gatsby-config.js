@@ -60,20 +60,11 @@ const plugins = [
   {
     resolve: `gatsby-source-filesystem`,
     options: {
-      path: `${__dirname}/content/blog`,
-      name: `blog`
-    },
-  },
-  {
-    resolve: `gatsby-source-filesystem`,
-    options: {
-      path: `${__dirname}/content/assets`,
-      name: `assets`
+      path: `${__dirname}/content`,
     },
   },
   `gatsby-transformer-sharp`,
   `gatsby-plugin-sharp`,
-  `gatsby-plugin-feed`,
   {
     resolve: `gatsby-plugin-manifest`,
     options: {
@@ -87,12 +78,6 @@ const plugins = [
     },
   },
   {
-    resolve: `gatsby-source-filesystem`,
-    options: {
-      path: `content/`
-    }
-  },
-  {
     resolve: 'gatsby-plugin-react-svg',
     options: {
       rule: {
@@ -100,28 +85,7 @@ const plugins = [
       }
     }
   },
-  
-  {
-    resolve: `gatsby-plugin-typography`,
-    options: {
-      pathToConfigModule: `src/utils/typography`,
-    },
-  },
   `gatsby-plugin-styled-components`,
-  {
-    resolve: `gatsby-transformer-remark`,
-    options: {
-      plugins: [
-        {
-          resolve: `gatsby-remark-katex`,
-          options: {
-            // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
-            strict: `ignore`
-          }
-        }
-      ],
-    },
-  },
   `gatsby-plugin-offline`,
   `gatsby-plugin-lodash`,
   `gatsby-plugin-react-helmet`,
