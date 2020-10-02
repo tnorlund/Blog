@@ -43,7 +43,7 @@ const ProjectDiv = styled.div`
   vertical-align: middle;
 `
 
-export function ProjectList() {
+export default function ProjectList() {
   const { allMdx } = useStaticQuery(graphql`
   {
     allMdx( 

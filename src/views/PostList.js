@@ -2,7 +2,7 @@ import React from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
 import { PostDiv, PostTitle, PostDate, Description } from './styles'
 
-export function PostList() {
+export default function PostList() {
   const { allMdx } = useStaticQuery(graphql`
   {
     allMdx(
