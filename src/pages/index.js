@@ -1,72 +1,89 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
+import styled from 'styled-components'
+import { PageBody } from 'components/styles'
+import { ProjectList } from 'views/ProjectList'
+import { PostList } from 'views/PostList'
+import Img from 'gatsby-image'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { Icons } from './styles'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+const SocialsDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 1.666rem;
+`
 
-
-const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata.title
-  const posts = data.allMarkdownRemark.edges
-  console.log("siteTitle", siteTitle)
-  console.log("data", data)
+function Social({metadata}) {
+  const social = [
+    {title: 'twitter', icon: 'Twitter', url:'https://twitter.com/' + metadata.siteMetadata.social.twitter},
+    {title: 'linkedin', icon: 'LinkedinSquare', url:'https://www.linkedin.com/in/' + metadata.siteMetadata.social.linkedin},
+    {title: 'github', icon: 'Github', url:'https://github.com/' + metadata.siteMetadata.social.github},
+  ]
+  const socials = social.map(({ url, title, icon }) => {
+    const Icon = Icons[icon]
+    return(
+      <div>
+        <a key={title} href={url} aria-label={title}>
+          <Icon size="75px" />
+        </a>
+      </div>
+    )
+  })
   return (
-    <Layout location={location} title={siteTitle}>
-      <SEO title="All posts" />
-      <Bio />
-      {posts.map(({ node }) => {
-        const title = node.frontmatter.title || node.fields.slug
-        return (
-          <article key={node.fields.slug}>
-            <header>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: `none`, textDecoration: `none` }} to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter.date}</small>
-            </header>
-            <section>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: node.frontmatter.description || node.excerpt,
-                }}
-              />
-            </section>
-          </article>
-        )
-      })}
-    </Layout>
+    <SocialsDiv>{socials}</SocialsDiv>
   )
 }
 
-export default BlogIndex
+const Landing = ({ data }) => {
+  const { landing, picture, metadata } = data
+  return (
+    <>
+      <PageBody>
+        <Img 
+          fixed={picture.img.fixed}
+          css="border-radius: 50%; justify-self: center; margin-bottom: 1.666rem; background:var(--color-b);"
+        />
+        <Social metadata={metadata} />
+        <MDXRenderer>{landing.body}</MDXRenderer>
+        <h1>Projects</h1>
+        <ProjectList />
+        <h1>Blog</h1>
+        <PostList />
+      </PageBody>
+    </>
+  )
+}
 
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
+export default Landing
+
+// Here, the landing page and its assets are queried. The landing page also 
+// shows the 5 most recent blog posts.
+export const query = graphql`
+  {
+    landing: mdx( fileAbsolutePath: {regex: "/landing/"} ) {  
+      frontmatter {
         title
+        slug
+      }
+      body
+      id
+    }
+    picture: file( name: {eq: "Portrait"} ) {
+      img: childImageSharp {
+        fixed(width: 300) {
+          ...GatsbyImageSharpFixed_withWebp
+        }
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
-      edges {
-        node {
-          excerpt
-          fields {
-            slug
-          }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            description
-          }
+    metadata: site {
+      siteMetadata {
+        social {
+          github
+          linkedin
+          twitter
         }
       }
     }

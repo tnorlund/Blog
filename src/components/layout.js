@@ -7,10 +7,11 @@ const Layout = ({ location, title, children }) => {
   const rootPath = `${__PATH_PREFIX__}/`
   let header
 
-  console.log("rootPath", rootPath)
-  console.log("location.pathname", location.pathname)
+  // console.log("rootPath", rootPath)
+  // console.log("location", location)
+  // console.log("title", title)
 
-  console.log("title", title)
+  // console.log("title", title)
   if (location.pathname === rootPath) {
     header = (
       <h1
@@ -64,11 +65,6 @@ const Layout = ({ location, title, children }) => {
     >
       <header>{header}</header>
       <main>{children}</main>
-      <footer>
-        © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
-      </footer>
     </div>
   )
 }

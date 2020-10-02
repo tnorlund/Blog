@@ -1,85 +1,25 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
-import { useStaticQuery, graphql } from "gatsby"
+import favicon from '../../content/favicon.svg'
 
-const SEO = ({ description, lang, meta, title }) => {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            social {
-              twitter
-            }
-          }
-        }
-      }
-    `
+const SEO = ({ site, uri = ``, data, children }) => {
+  const title = site.title;
+  // uri.length > 1 ? `${startCase(uri)} | ${site.title}` : site.title
+  const pageUrl = site.url + uri
+  const desc = data?.page?.excerpt || site.description
+  return(
+    <Helmet title={title}>
+      <meta property="og:type" content="website" />
+      <html lang="en" />
+      <meta property="og:title" content={title} />
+      <meta property="og:url" content={pageUrl} />
+      <meta property="og:description" content={desc} />
+      <meta name="description" content={desc} />
+      <link rel="canonical" href={pageUrl} />
+      <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />
+      {children}
+    </Helmet>
   )
-
-  const metaDescription = description || site.siteMetadata.description
-
-  console.log(site.siteMetadata.title)
-
-  return (
-    <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-      title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
-      meta={[
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata.social.twitter,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
-  )
-}
-
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
-}
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
 }
 
 export default SEO

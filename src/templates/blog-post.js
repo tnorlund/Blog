@@ -1,100 +1,81 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
+import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
+import { PageBody } from 'components/styles'
+import PrevNext from 'components/PrevNext'
+import BackButton from 'components/BackButton'
+import styled from 'styled-components'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm, scale } from "../utils/typography"
+const PostDate = styled.h4`
+// margin-bottom: 25px;
+`
 
-const BlogPostTemplate = ({ data, pageContext, location }) => {
-  const post = data.markdownRemark
-  const siteTitle = data.site.siteMetadata.title
-  const { previous, next } = pageContext
+const PostTitle = styled.h1`
+/* padding-top: 4px; */
+margin-bottom: 3px;
+border-bottom: 4px solid var(--color-b);
+`
+
+const BlogPostTemplate = ({ data }) => {
+  const { post, next, prev } = data;
+  const title = post.frontmatter.title;
+  const date = post.frontmatter.date;
+  const body = post.body;
+  const slug = post.frontmatter.slug;
+  const text = RegExp(/\/blog/).test(slug) ? "Blog" : /\/projects\/([0-9a-z-]+)/.exec(slug)[1].toUpperCase();
+  const backSlug = RegExp(/\/blog/).test(slug) ? "/blog" : 
+    /(\/projects\/[0-9a-z-]+)/.exec(slug)[0];
 
   return (
-    <Layout location={location} title={siteTitle}>
-      <SEO
-        title={post.frontmatter.title}
-        description={post.frontmatter.description || post.excerpt}
+    <>
+    <PageBody>
+      <PostTitle>{title}</PostTitle>
+      <PostDate>{date}</PostDate>
+      <Mdx>{body}</Mdx>
+      <PrevNext 
+        prev={prev?.frontmatter} next={next?.frontmatter} label="Post"
       />
-      <article>
-        <header>
-          <h1
-            style={{
-              marginTop: rhythm(1),
-              marginBottom: 0,
-            }}
-          >
-            {post.frontmatter.title}
-          </h1>
-          <p
-            style={{
-              ...scale(-1 / 5),
-              display: `block`,
-              marginBottom: rhythm(1),
-            }}
-          >
-            {post.frontmatter.date}
-          </p>
-        </header>
-        <section dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr
-          style={{
-            marginBottom: rhythm(1),
-          }}
-        />
-        <footer>
-          <Bio />
-        </footer>
-      </article>
-
-      <nav>
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
-        >
-          <li>
-            {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
-              </Link>
-            )}
-          </li>
-          <li>
-            {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
-              </Link>
-            )}
-          </li>
-        </ul>
-      </nav>
-    </Layout>
+      <BackButton slug={backSlug} text={text} />
+    </PageBody>
+    </>
   )
 }
 
 export default BlogPostTemplate
 
+// Query the page, previous page, and next page based on the slug given.
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+  query BlogPostBySlug(
+    $slug: String!, $prevSlug: String!, $nextSlug: String!
+  ) {
+    post: mdx( frontmatter: { slug: {eq: $slug} } ) {
       id
-      excerpt(pruneLength: 160)
-      html
+      body
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
         description
+        slug
+      }
+    }
+    next: mdx( frontmatter: { slug: {eq: $nextSlug} } ) {
+      id
+      body
+      frontmatter {
+        title
+        date(formatString: "MMMM DD, YYYY")
+        description
+        slug
+      }
+    }
+    prev: mdx( frontmatter: { slug: {eq: $prevSlug} } ) {
+      id
+      body
+      frontmatter {
+        title
+        date(formatString: "MMMM DD, YYYY")
+        description
+        slug
       }
     }
   }

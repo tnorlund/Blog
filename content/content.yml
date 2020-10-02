@@ -1,0 +1,79 @@
+copyright: Tyler Norlund
+
+poweredBy: 
+  - url: https://gatsbyjs.org
+    title: Gatsby
+    logo: Gatsby
+  - url: https://github.com/tnorlund/Blog
+    title: Github
+    logo: Github
+  - url: https://aws.amazon.com/amplify/
+    title: Amplify
+    logo: LogoAmplify
+
+positions:
+  - title: Oculus Test Technician
+    company: Oculus - Q Analysts
+    start: 2019-03-11T00:00:00
+    end: 2020-09-25T00:00:00
+    location: Menlo Park, CA
+    duties:
+      - Analyzed IMU data using robotics and spatial tracking
+      - Developed massive point clouds with LIDAR, stereo cameras, and motion capture systems
+      - Leveraged GCP to analyze, organize, and store data for management
+      - Pipelined SLAM, fiducial alignment, and residual estimation in order to analyze 3D depth data
+  - title: Data Scientist Researcher
+    company: Charles Schwab
+    start: 2020-01-13T00:00:00
+    end: 2020-05-06T00:00:00
+    location: San Francisco, CA
+    duties:
+      - Lead a team to successfully combat money laundering
+      - Persuaded executives to make strategic customer-level decisions regarding fraud in banking
+      - Automated data extraction and labeling using NLP
+      - Visualized fraud detection techniques using Tableau and Python
+      - Engineered directed and undirected graphs for effective web scraping
+  - title: Performance Analyst Intern
+    company: NVIDIA
+    start: 2017-06-05T00:00:00
+    end: 2017-12-22T00:00:00
+    location: Santa Clara, CA
+    duties:
+      - Scripted data aggregation for performance testing
+      - Benchmarked many deep learning frameworks using different hardware combinations
+      - Developed networking techniques for massive server farms
+      - Organized MySQL databases using other’s roadmaps
+      - Explored techniques in obtaining data from screen recording and Optical Character Recognition
+  - title: iOS Development Intern
+    company: Final Draft Inc.
+    start: 2014-09-15T00:00:00
+    end: 2014-12-19T00:00:00
+    location: Calabasas, CA
+    duties:
+      - Integrated a deprecated testing suite using Xcode
+      - Used Ruby and Objective-C for Test Driven Development
+      - Organized a strategy for UI development
+      - Repaired broken UI using both Objective-C and Swift
+
+skills:
+  - Agile Development
+  - AWS
+  - Convolutional Networks
+  - Deep Learning
+  - Docker
+  - GCP
+  - Image Processing
+  - Kubernetes
+  - Network Management
+  - Objective-C
+  - OpenCVs
+  - Python
+  - R
+  - Robotics
+  - Ruby
+  - SCRUM
+  - Serverless Computing
+  - SQL
+  - Swift
+  - Tableau
+  - TensorFlow
