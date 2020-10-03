@@ -23,11 +23,7 @@ export function PageComponents({children, ...rest}) {
   const { site } = useStaticQuery(graphql`
     {
       site {
-        site: siteMetadata {
-          title
-          siteUrl
-          description
-        }
+        site: siteMetadata { title, siteUrl, description }
       }
     }
   `)

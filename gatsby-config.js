@@ -1,7 +1,6 @@
 const macros = require(`./src/utils/katex`)
 const sitemapOptions = require(`./src/utils/sitemap`)
 
-
 // require(`dotenv`).config()
 
 const gatsbyRemarkPlugins = [
