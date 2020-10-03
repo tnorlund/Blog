@@ -7,12 +7,13 @@ import BackButton from 'components/BackButton'
 import styled from 'styled-components'
 
 const PostDate = styled.h4`
-// margin-bottom: 25px;
+  margin-top: 0;
+/* // margin-bottom: 25px; */
 `
 
 const PostTitle = styled.h1`
 /* padding-top: 4px; */
-margin-bottom: 3px;
+margin-bottom: 0.1em;
 border-bottom: 4px solid var(--color-b);
 `
 
