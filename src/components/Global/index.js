@@ -10,7 +10,6 @@ import Seo from '../seo'
 import { DocsGrid } from '../styles'
 import { GlobalStyle } from './styles'
 
-
 const components = { DocsGrid }
 
 export const Providers = ({ children }) => (

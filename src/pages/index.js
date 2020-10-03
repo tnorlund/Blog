@@ -2,8 +2,8 @@ import React from "react"
 import { graphql } from "gatsby"
 import styled from 'styled-components'
 import { PageBody } from 'components/styles'
-import { ProjectList } from 'views/ProjectList'
-import { PostList } from 'views/PostList'
+import ProjectList from 'views/ProjectList'
+import PostList from 'views/PostList'
 import Img from 'gatsby-image'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { LinkedinSquare, Twitter } from 'styled-icons/boxicons-logos'

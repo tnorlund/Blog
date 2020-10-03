@@ -1,11 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-console.log("Inside useEventListener")
 export function useEventListener(eventNames, handler, element) {
-  console.log("UseEventListener")
-  console.log("eventNames", eventNames)
-  console.log("handler", handler)
-  console.log("element", element)
   // First, create a reference that stores the handler.
   const savedHandler = useRef()
   if(!Array.isArray(eventNames)) eventNames = [eventNames]
@@ -17,10 +12,7 @@ export function useEventListener(eventNames, handler, element) {
   useEffect(() => (savedHandler.current = handler), [handler])
 
   useEffect(() => {
-    if (element === undefined) {
-      console.log("Returning")
-      return
-    }
+    if (element === undefined) { return }
 
     // When the element does not support an event listener, return.
     if (!element.addEventListener) return

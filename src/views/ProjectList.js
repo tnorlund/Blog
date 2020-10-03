@@ -8,9 +8,9 @@ const IconDiv = styled.div`
   margin-right: 10px;
 `
 const TitleDiv = styled.div`
-display: flex;
-align-items: center;
-flex-grow: 1;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
 `
 const Icon = styled.img`
   margin: 0px;
@@ -19,7 +19,7 @@ const Icon = styled.img`
     brightness(99%) contrast(96%);
 `
 const Title = styled.h1`
-margin-bottom: 0;
+  margin: 0;
 `
 
 const ProjectDiv = styled.div`

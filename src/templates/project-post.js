@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import { PageBody } from 'components/styles'
 import styled from 'styled-components'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
-import { ProjectPostList } from 'views/ProjectPostList'
+import ProjectPostList from 'views/ProjectPostList'
 import BackButton from 'components/BackButton'
 
 
@@ -24,6 +24,7 @@ const ProjectPostTemplate = ({ data }) => {
   const body = project.body;
   const iconURL = project.frontmatter.icon.publicURL
   const projectPosts = posts.edges
+  console.log("projectPosts", projectPosts)
   return (
     <PageBody>
       <PostTitle>{title}</PostTitle>
@@ -38,7 +39,7 @@ const ProjectPostTemplate = ({ data }) => {
 export default ProjectPostTemplate
 
 // Query the page, previous page, and next page based on the slug given.
-export const pageQuery = graphql`
+export const query = graphql`
   query ProjectPostBySlug(
     $slug: String!, $regex: String!
   ) {

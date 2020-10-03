@@ -1,7 +1,7 @@
 import React from "react"
 import styled from 'styled-components'
 import { PageBody } from 'components/styles'
-import { ProjectList } from 'views/ProjectList'
+import ProjectList from 'views/ProjectList'
 
 const MainTitle = styled.h1`
   border-bottom: 4px solid var(--color-b);

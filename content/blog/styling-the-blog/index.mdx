@@ -12,7 +12,12 @@ Previously, this blog was pretty boring. It definitely needed some sprucing up.
 
 So I decided to add [styled componenets](https://styled-components.com) and react hooks. These together, add color and shape most of the website.
 
-The first thing I needed for this site was dark mode. As a programmer, *EVERYTHING* is darkmode. I developed a darkmode API React API.
+The first thing I needed for this site was dark mode. As a programmer, *EVERYTHING* is darkmode. With the help of [Janosh Riebesell](https://github.com/janosh/blog), I started implementing some different styling techniques.
+
+This React hook relies on
+- `localStorage` to save user preference
+- a custom event bus for multiple call sites to `useDarkMode`
+- CSS properties for each color theme
 
 <BorderBox><DarkToggle /></BorderBox>
 

@@ -27,7 +27,6 @@ const BlogPostTemplate = ({ data }) => {
     /(\/projects\/[0-9a-z-]+)/.exec(slug)[0];
 
   return (
-    <>
     <PageBody>
       <PostTitle>{title}</PostTitle>
       <PostDate>{date}</PostDate>
@@ -37,14 +36,13 @@ const BlogPostTemplate = ({ data }) => {
       />
       <BackButton slug={backSlug} text={text} />
     </PageBody>
-    </>
   )
 }
 
 export default BlogPostTemplate
 
 // Query the page, previous page, and next page based on the slug given.
-export const pageQuery = graphql`
+export const query = graphql`
   query BlogPostBySlug(
     $slug: String!, $prevSlug: String!, $nextSlug: String!
   ) {

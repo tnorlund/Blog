@@ -4,27 +4,22 @@ date: "2020-09-15T11:25:19"
 slug: /projects/slam/choosing-hardware
 description: "What hardware was chosen, and why I chose to use it."
 ---
-import RPi from './ChoosingHardware_RPi.png';
-import Sesnors from './ChoosingHardware_Sensors.png';
-import POE from './ChoosingHardware_Explanation.png';
-import Fans from './ChoosingHardware_Fans.png';
-import Test from './raspicam_cv_image.png';
 
 So this project really started when I saw the Raspberry Pi 4. With additional RAM, this Pi can do more than any of the previous ones. So why not use a couple to establish real-world geometry?
 
 So I bought 2 RPi's, a few image [sensors](https://www.raspberrypi.org/products/camera-module-v2/), and some [IMU sensors](https://learn.adafruit.com/mpu6050-6-dof-accelerometer-and-gyro). From here, I knew that I needed to network the RPi's together.
 
-<img src={RPi} alt="RPi" />
+![RPi](./ChoosingHardware_RPi.svg)
 
-<img src={Sesnors} alt="Sesnors" />
+![Sensors](./ChoosingHardware_Sensors.svg)
 
 I decided that POE would be the best way to approach not only networking the RPi's together, but POE would supply power too. This TP-Link [switch](https://www.tp-link.com/us/business-networking/unmanaged-switch/tl-sg1005p/) and a POE [hat](https://www.amazon.com/dp/B07XB5PR9J/ref=cm_sw_em_r_mt_dp_5fKDFb03TQA74). Now, the computers are networked together at gigabit speed.
 
-<img src={POE} alt="POE" />
+![Explanation](./ChoosingHardware_Explanation.svg)
 
 This hat produces a lot of heat. In order to reduce the thermal constraint, 30mm fans were chosen to blow onto the hottest components on the POE hat. The ones I found on [Amazon](https://www.amazon.com/dp/B076H3TKBP/ref=cm_sw_em_r_mt_dp_znRDFb81TWP1T) came in a pack of two.
 
-<img src={Fans} alt="Fans" />
+![Fans](./ChoosingHardware_Fans.svg)
 
 After getting all the hardware, I connected all the components together, and took a test picture.
-<img src={Test} alt="Test" />
+![Test](./raspicam_cv_image.png)

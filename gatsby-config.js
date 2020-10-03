@@ -53,14 +53,16 @@ const plugins = [
     resolve: `gatsby-plugin-mdx`,
     options: {
       gatsbyRemarkPlugins,
-      plugins: [`gatsby-remark-images`, `gatsby-remark-autolink-headers`],
+      plugins: [
+        `gatsby-remark-images`, 
+        `gatsby-remark-autolink-headers`],
       extensions: [`.mdx`, `.md`],
     },
   }, 
   {
     resolve: `gatsby-source-filesystem`,
     options: {
-      path: `${__dirname}/content`,
+      path: `content/`,
     },
   },
   `gatsby-transformer-sharp`,

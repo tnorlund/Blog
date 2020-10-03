@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const PageBody = styled.main`
   position: relative;
-  // position: absolute;
   margin: calc(3em + 3vh) 0;
   display: grid;
   grid-gap: 0 4vw;
@@ -30,5 +29,4 @@ export const PageBody = styled.main`
     display: block;
     margin: auto;
   }
-  // height: 100%;
 `

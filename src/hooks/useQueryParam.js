@@ -15,7 +15,6 @@ const handleParam = (key, value, options) => {
     target = target.replace(/\/?\?$/, ``) // remove empty search string
 
     window.history[historyMethod + `State`]({ path: value }, ``, target)
-
     return value
   }
 }

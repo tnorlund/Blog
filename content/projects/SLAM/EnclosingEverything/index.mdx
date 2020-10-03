@@ -5,35 +5,28 @@ slug: /projects/slam/enclosing-everything
 description: "Deciding how to fit everything together into something I can cary."
 ---
 
-import Step1 from './EnclosingEverything_Step1.png';
-import Step2 from './EnclosingEverything_Step2.png';
-import Step3 from './EnclosingEverything_Step3.png';
-import Step4 from './EnclosingEverything_Step4.png';
-import Wiring from './EnclosingEverything_Wiring.png';
-import Finished from './EnclosingEverything_Finished.jpeg';
-
 With all of the hardware decided, I needed to assemble something to hold all of the different componenets. The cheapest and easiest way to assemble all of the components into a single package would be to "sandwich" the components using sheets of acrylic. With this in mind, I hopped on Illustrator to start designing.
 
 So I started with a couple of the Raspberry Pi's and POE hats next to one another. This will give the positions for the cameras and IMU's.
 
-<img src={Step1} alt="Step1" />
+![Step1](./EnclosingEverything_Step1.svg)
 
 These componenets would need holes to mount to the acrylic sheet. I then developed an acrylic sheet with holes for the componenets, handles and a passthrough for the ethernet.
 
-<img src={Step2} alt="Step2" />
+![Step2](./EnclosingEverything_Step2.svg)
 
 I then needed to do the same thing to hold the cameras and cooling fans. I matched the previous holes for support.
 
-<img src={Step3} alt="Step3" />
+![Step3](./EnclosingEverything_Step3.svg)
 
 I decided to add some I/O to this project: LEDs and push buttons. The Raspberry Pi has great GPIO (general-purpose input/output) pins that allow for many different configurations. I ended up using the pins 7, 11, and 13. The following schematic describes the wiring required.
 
-<img src={Wiring} alt="Wiring" />
+![Wiring](./EnclosingEverything_Wiring.svg)
 
 The only components left to mount are the network switch, the push buttons, and the LEDs. The back-facing acrylic sheet is designed to hold these and add support to the handles.
 
-<img src={Step4} alt="Step4" />
+![Step4](./EnclosingEverything_Step4.svg)
 
 With all of these designed, I printed each layer and glued them to acrylic sheets. Using the dremel tool and a little help from my dad, I cut the holes and handles. The sheets were then assembled together using 2.5mm stand-offs.
 
-<img src={Finished} alt="Finished" />
+![Finished](./EnclosingEverything_Finished.jpeg)

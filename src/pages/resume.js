@@ -9,41 +9,43 @@ const MainTitle = styled.h1`
 
 const JobDiv = styled.div`
   border-bottom: 2px solid var(--color-b);
-  margin-bottom: 25px;
+  margin-bottom: 0.2em;
 `
 const JobTitle = styled.h2`
-margin-bottom: 3px;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
 `
 
 const JobLocation = styled.h3`
-font-weight: normal;
-margin-bottom: 5px;
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 0.3em;
 `
 
 const JobDate = styled.h4`
-margin-bottom: 0;
+  margin: 0;
 `
 const SkillDiv = styled.div`
-border: solid 2px var(--color-b);
-border-radius: 5px;
-padding-right: 5px;
-padding-left: 5px;
-font-weight: bold;
-margin: 10px;
+  border: solid 2px var(--color-b);
+  border-radius: 0.3em;
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  font-weight: bold;
+  margin: 0.6em;
 `
 
 const SkillsDiv = styled.div`
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 `
 
 const Description = styled.text`
-  margin-bottom:25px;
+  margin-bottom: 0.3em;
 `
 
-function Duties({duties}) {
+function Duties( { duties } ) {
   const dutiesList = duties.map((duty) =>
     <li>{duty}</li>
   );
@@ -52,7 +54,7 @@ function Duties({duties}) {
   )
 }
 
-function Skills({skills}) {
+function Skills( { skills } ) {
   const skillList = skills.map((skill) =>
     <SkillDiv>{skill}</SkillDiv>
   );
