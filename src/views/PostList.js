@@ -3,7 +3,7 @@ import { Link, graphql, useStaticQuery } from "gatsby"
 import { PostDiv, PostTitle, PostDate, Description } from './styles'
 
 export default function PostList() {
-  const { allMdx } = useStaticQuery(graphql`
+  const { allMdx } = useStaticQuery( graphql`
   {
     allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
@@ -25,19 +25,19 @@ export default function PostList() {
         }
       }
     }
-  }`)
+  }` )
   const { posts } = allMdx
-// <Link to={slugPrefix + prev.slug} rel="prev" css="margin-right: 1em;">
   return(
     <>
-    {posts.map(({ frontmatter: { title, slug, date, description } }, index) => (
-      <PostDiv>
-        <PostTitle><Link to={slug} rel={title}>{title}</Link></PostTitle>
-        <PostDate>{date}</PostDate>
-        <Description>{description}</Description>
-      
-      </PostDiv>
-    ))}
+      {posts.map( ( { frontmatter: { title, slug, date, description } } ) => (
+        <PostDiv key={title}>
+          <PostTitle>
+            <Link to={slug} rel={title}>{title}</Link>
+          </PostTitle>
+          <PostDate>{date}</PostDate>
+          <Description>{description}</Description>
+        </PostDiv>
+      ) ) }
     </>
   )
 }

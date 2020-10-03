@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 
-export const useSize = (ref, quantity) => {
-  const [size, setSize] = useState(0)
+export const useSize = ( ref, quantity ) => {
+  const [size, setSize] = useState( 0 )
   // useState for performance, prevents ResizeObserver from being invoked on
   // every re-render
   const [observer] = useState(
-    new ResizeObserver(([entry]) => setSize(entry.contentRect[quantity]))
+    new ResizeObserver( ( [entry] ) => setSize( entry.contentRect[quantity] ) )
   )
-  useEffect(() => {
-    if (ref.current) observer.observe(ref.current)
+  useEffect( () => {
+    if ( ref.current ) observer.observe( ref.current )
     return () => observer.disconnect()
-  }, [observer, ref])
+  }, [observer, ref] )
   return size
 }

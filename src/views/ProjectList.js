@@ -43,7 +43,7 @@ const ProjectDiv = styled.div`
 `
 
 export default function ProjectList() {
-  const { allMdx } = useStaticQuery(graphql`
+  const { allMdx } = useStaticQuery( graphql`
   {
     allMdx( 
       filter: { frontmatter: { slug: { regex: "^/projects/[a-z]+$/" } } }
@@ -53,27 +53,27 @@ export default function ProjectList() {
         frontmatter { slug, title, icon, { publicURL } }
       }
     }
-  }`)
+  }` ) 
   const { projects } = allMdx
 
-return(
-<>
-{projects.map(
-  ( { frontmatter: { title, slug, icon } }, index ) => (
-    <ProjectDiv>
-      <Link to={slug}>
-      <IconDiv>
-        <Icon 
-          src={icon.publicURL} 
-          alt={title}
-        />
-      </IconDiv>
-        <TitleDiv>
-          <Title>{title}</Title>
-        </TitleDiv>
-      </Link>
-    </ProjectDiv>
-  ) ) }
-</>
-)
+  return (
+    <>
+      {projects.map(
+        ( { frontmatter: { title, slug, icon } } ) => (
+          <ProjectDiv key={title}>
+            <Link to={slug}>
+              <IconDiv>
+                <Icon 
+                  src={icon.publicURL} 
+                  alt={title}
+                />
+              </IconDiv>
+              <TitleDiv>
+                <Title>{title}</Title>
+              </TitleDiv>
+            </Link>
+          </ProjectDiv>
+        ) ) }
+    </>
+  )
 }

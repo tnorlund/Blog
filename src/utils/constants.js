@@ -95,12 +95,16 @@ export const MODE_COLORS = {
     dark: brown.darkest,
   },
   filter: {
-    light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg) brightness(103%) contrast(116%)`,
-    dark: `invert(64%) sepia(10%) saturate(1467%) hue-rotate(352deg) brightness(94%) contrast(92%)`,
+    light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
+      + ` brightness(103%) contrast(116%)`,
+    dark: `invert(64%) sepia(10%) saturate(1467%) hue-rotate(352deg)`
+      + ` brightness(94%) contrast(92%)`,
   },
   textfilter: {
-    light: `invert(0%) sepia(42%) saturate(839%) hue-rotate(2deg) brightness(89%) contrast(98%)`,
-    dark: `invert(100%) sepia(3%) saturate(800%) hue-rotate(207deg) brightness(118%) contrast(80%)`,
+    light: `invert(0%) sepia(42%) saturate(839%) hue-rotate(2deg)`
+      + ` brightness(89%) contrast(98%)`,
+    dark: `invert(100%) sepia(3%) saturate(800%) hue-rotate(207deg)`
+      + ` brightness(118%) contrast(80%)`,
   },
 }
 

@@ -23,36 +23,53 @@ const SocialsDiv = styled.div`
   margin-bottom: 1.666rem;
 `
 
-function Social({metadata}) {
+const ProfilePic = styled( Img )`
+  border-radius: 50%;
+  justify-self: center;
+  margin-bottom: 1.666rem;
+  background:var(--color-b);
+`
+
+function Social( { metadata } ) {
   const social = [
-    {title: 'twitter', icon: 'Twitter', url:'https://twitter.com/' + metadata.siteMetadata.social.twitter},
-    {title: 'linkedin', icon: 'LinkedinSquare', url:'https://www.linkedin.com/in/' + metadata.siteMetadata.social.linkedin},
-    {title: 'github', icon: 'Github', url:'https://github.com/' + metadata.siteMetadata.social.github},
+    {
+      title: `twitter`,
+      icon: `Twitter`,
+      url:`https://twitter.com/` + metadata.siteMetadata.social.twitter
+    },
+    {
+      title: `linkedin`,
+      icon: `LinkedinSquare`,
+      url:`https://www.linkedin.com/in/`
+        + metadata.siteMetadata.social.linkedin
+    },
+    {
+      title: `github`,
+      icon: `Github`,
+      url:`https://github.com/` + metadata.siteMetadata.social.github
+    },
   ]
-  const socials = social.map(({ url, title, icon }) => {
+  const socials = social.map( ( { url, title, icon } ) => {
     const Icon = Icons[icon]
     return(
-      <div>
-        <a key={title} href={url} aria-label={title}>
+      <div key={title}>
+        <a href={url} aria-label={title}>
           <Icon size="75px" />
         </a>
       </div>
     )
-  })
+  } )
   return (
     <SocialsDiv>{socials}</SocialsDiv>
   )
 }
 
-const Landing = ({ data }) => {
+const Landing = ( { data } ) => {
   const { landing, picture, metadata } = data
   return (
     <>
       <PageBody>
-        <Img 
-          fixed={picture.img.fixed}
-          css="border-radius: 50%; justify-self: center; margin-bottom: 1.666rem; background:var(--color-b);"
-        />
+        <ProfilePic fixed={picture.img.fixed} />
         <Social metadata={metadata} />
         <MDXRenderer>{landing.body}</MDXRenderer>
         <h1>Projects</h1>
@@ -66,7 +83,7 @@ const Landing = ({ data }) => {
 
 export default Landing
 
-// Here, the landing page and its assets are queried. The landing page also 
+// Here, the landing page and its assets are queried. The landing page also
 // shows the 5 most recent blog posts.
 export const query = graphql`
   {

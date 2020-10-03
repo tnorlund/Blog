@@ -1,7 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
 
-console.log("Inside syntaxHighlight")
-
 const langTagColor = [
   { lang: `javascript`, tag: `js`, color: `#f7df1e` },
   { lang: `js`, tag: `js`, color: `#f7df1e` },
@@ -27,7 +25,7 @@ const langTagColor = [
 ]
 
 const languageTags = langTagColor.map(
-  ({ lang, tag, color }) =>
+  ( { lang, tag, color } ) =>
     `pre.grvsc-container[data-language="${lang}"]::before {
       content: '${tag}';
       background: ${color};
@@ -35,7 +33,7 @@ const languageTags = langTagColor.map(
 )
 
 export default createGlobalStyle`
-  ${languageTags.join(`\n`)}
+  ${languageTags.join( `\n` )}
 
   pre.grvsc-container {
     position: relative;
@@ -72,9 +70,12 @@ export default createGlobalStyle`
 
   /* highlighted lines */
   :root {
-    --grvsc-line-highlighted-background-color: rgba(255, 255, 255, 0.2); /* default unchanged */
-    --grvsc-line-highlighted-border-color: var(--color-blue-lighter); /* default: rgba(255, 255, 255, 0.5) */
-    --grvsc-line-highlighted-border-width: 0.3em; /* default: 2px */
+    /* default unchanged */
+    --grvsc-line-highlighted-background-color: rgba(255, 255, 255, 0.2); 
+    /* default: rgba(255, 255, 255, 0.5) */
+    --grvsc-line-highlighted-border-color: var(--color-blue-lighter); 
+    /* default: 2px */
+    --grvsc-line-highlighted-border-width: 0.3em; 
   }
 
   /* inline code */

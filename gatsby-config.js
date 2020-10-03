@@ -1,5 +1,5 @@
-const macros = require(`./src/utils/katex`)
-const sitemapOptions = require(`./src/utils/sitemap`)
+const macros = require( `./src/utils/katex` )
+const sitemapOptions = require( `./src/utils/sitemap` )
 
 // require(`dotenv`).config()
 
@@ -13,8 +13,8 @@ const gatsbyRemarkPlugins = [
   `gatsby-remark-autolink-headers`,
   {
     resolve: `gatsby-remark-vscode`,
-    options: { 
-      extensions: [`mdx`, `vscode-styled-components`] 
+    options: {
+      extensions: [`mdx`, `vscode-styled-components`]
     },
   },
   {
@@ -55,11 +55,11 @@ const plugins = [
     options: {
       gatsbyRemarkPlugins,
       plugins: [
-        `gatsby-remark-images`, 
+        `gatsby-remark-images`,
         `gatsby-remark-autolink-headers`],
       extensions: [`.mdx`, `.md`],
     },
-  }, 
+  },
   {
     resolve: `gatsby-source-filesystem`,
     options: {
@@ -85,7 +85,7 @@ const plugins = [
     },
   },
   {
-    resolve: 'gatsby-plugin-react-svg',
+    resolve: `gatsby-plugin-react-svg`,
     options: {
       rule: {
         include: `/svg/`
@@ -97,6 +97,6 @@ const plugins = [
   `gatsby-plugin-lodash`,
   `gatsby-plugin-react-helmet`,
   `gatsby-transformer-yaml`
-];
+]
 
 module.exports = { siteMetadata, plugins }

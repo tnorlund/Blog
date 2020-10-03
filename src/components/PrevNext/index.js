@@ -1,9 +1,9 @@
 import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
-import {PreviousNext} from './styles'
+import { PreviousNext } from './styles'
 
-const PrevNext = ({ prev, next, label, slugPrefix = `` }) => (
+const PrevNext = ( { prev, next, label, slugPrefix = `` } ) => (
   <PreviousNext>
     {prev && (
       <Link to={slugPrefix + prev.slug} rel="prev" css="margin-right: 1em;">

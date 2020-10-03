@@ -3,7 +3,7 @@ import DarkToggle from '../DarkToggle'
 import Nav from '../Nav'
 import { HeaderDiv, Logo } from './styles'
 
-export default function Header({ site }) {
+export default function Header( { site } ) {
   return (
     <HeaderDiv>
       <Logo to="/" title={site.title} rel="home">

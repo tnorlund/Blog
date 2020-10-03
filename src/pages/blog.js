@@ -12,11 +12,11 @@ const Description = styled.text`
 `
 
 export default function Projects() {
-  return(
+  return (
     <PageBody>
       <MainTitle>Posts</MainTitle>
       <Description>
-        These are blog posts that I'd like to share.
+        These are blog posts that I&apos;d like to share.
       </Description>
       <PostList />
     </PageBody>

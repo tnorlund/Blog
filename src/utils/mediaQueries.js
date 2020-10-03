@@ -11,13 +11,15 @@ export const screens = {
   desktop: 100,
 }
 
-export const mediaQueries = Object.entries(screens).reduce((acc, [key, val]) => {
-  const Key = key[0].toUpperCase() + key.substr(1)
-  // css query
-  acc[`min` + Key] = `@media ` + min(val)
-  acc[`max` + Key] = `@media ` + max(val)
-  // js query (see window.matchMedia)
-  acc[`min` + Key + `Js`] = min(val)
-  acc[`max` + Key + `Js`] = max(val)
-  return acc
-}, {})
+export const mediaQueries = Object.entries( screens ).reduce(
+  ( acc, [key, val] ) => {
+    const Key = key[0].toUpperCase() + key.substr( 1 )
+    // css query
+    acc[`min` + Key] = `@media ` + min( val )
+    acc[`max` + Key] = `@media ` + max( val )
+    // js query (see window.matchMedia)
+    acc[`min` + Key + `Js`] = min( val )
+    acc[`max` + Key + `Js`] = max( val )
+    return acc
+  }, {}
+)

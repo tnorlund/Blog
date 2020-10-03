@@ -23,7 +23,7 @@ export const NavDiv = styled.nav`
     background: rgba(0, 0, 0, 0.75);
     overscroll-behavior: none;
     z-index: 3;
-    transform: translate(${props => (props.open ? `99%` : `0`)});
+    transform: translate(${props => ( props.open ? `99%` : `0` )});
     grid-auto-rows: max-content;
     width: 70vw;
     max-width: 12em;
@@ -40,10 +40,10 @@ export const NavDiv = styled.nav`
   }
 `
 
-export const NavToggle = styled(Cross).attrs(props => ({
+export const NavToggle = styled( Cross ).attrs( props => ( {
   as: props.opener && ThMenu,
   size: props.opener ? `1.2em` : `1.6em`,
-}))`
+} ) )`
   transition: 0.3s;
   cursor: pointer;
   :hover {
@@ -59,10 +59,10 @@ export const NavToggle = styled(Cross).attrs(props => ({
   }
 `
 
-export const NavLink = styled(Link).attrs({
+export const NavLink = styled( Link ).attrs( {
   activeClassName: `active`,
   partiallyActive: true,
-})`
+} )`
   white-space: nowrap;
   color: inherit;
   transition: 0.3s;

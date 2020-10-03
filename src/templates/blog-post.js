@@ -8,31 +8,30 @@ import styled from 'styled-components'
 
 const PostDate = styled.h4`
   margin-top: 0;
-/* // margin-bottom: 25px; */
 `
 
 const PostTitle = styled.h1`
-/* padding-top: 4px; */
-margin-bottom: 0.1em;
-border-bottom: 4px solid var(--color-b);
+  margin-bottom: 0.1em;
+  border-bottom: 4px solid var(--color-b);
 `
 
-const BlogPostTemplate = ({ data }) => {
-  const { post, next, prev } = data;
-  const title = post.frontmatter.title;
-  const date = post.frontmatter.date;
-  const body = post.body;
-  const slug = post.frontmatter.slug;
-  const text = RegExp(/\/blog/).test(slug) ? "Blog" : /\/projects\/([0-9a-z-]+)/.exec(slug)[1].toUpperCase();
-  const backSlug = RegExp(/\/blog/).test(slug) ? "/blog" : 
-    /(\/projects\/[0-9a-z-]+)/.exec(slug)[0];
+const BlogPostTemplate = ( { data } ) => {
+  const { post, next, prev } = data
+  const title = post.frontmatter.title
+  const date = post.frontmatter.date
+  const body = post.body
+  const slug = post.frontmatter.slug
+  const text = RegExp( /\/blog/ ).test( slug ) ? `Blog` :
+    /\/projects\/([0-9a-z-]+)/.exec( slug )[1].toUpperCase()
+  const backSlug = RegExp( /\/blog/ ).test( slug ) ? `/blog` :
+    /(\/projects\/[0-9a-z-]+)/.exec( slug )[0]
 
   return (
     <PageBody>
       <PostTitle>{title}</PostTitle>
       <PostDate>{date}</PostDate>
       <Mdx>{body}</Mdx>
-      <PrevNext 
+      <PrevNext
         prev={prev?.frontmatter} next={next?.frontmatter} label="Post"
       />
       <BackButton slug={backSlug} text={text} />

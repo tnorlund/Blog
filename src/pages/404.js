@@ -1,11 +1,11 @@
 import React from "react"
 import { PageBody } from 'components/styles'
 
- const NotFoundPage = () => (
+const NotFoundPage = () => (
   <PageBody>
     <h1>Not Found</h1>
-    <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
+    <p>You just hit a route that doesn&apos;t exist... the sadness.</p>
   </PageBody>
 )
 
-export default NotFoundPage;
+export default NotFoundPage

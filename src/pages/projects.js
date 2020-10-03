@@ -12,12 +12,12 @@ const Description = styled.div`
 `
 
 export default function Projects() {
-  return(
+  return (
     <PageBody>
       <MainTitle>Projects</MainTitle>
       <Description>
-        In my free time, I like to work on things that help me develop skills 
-        and learn. Here are a few projects I've done with my free time.
+        In my free time, I like to work on things that help me develop skills
+        and learn. Here are a few projects I&apos;ve done with my free time.
       </Description>
       <ProjectList />
     </PageBody>

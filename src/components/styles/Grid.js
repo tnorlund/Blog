@@ -10,11 +10,11 @@ export const Grid = styled.div`
   text-align: ${props => props.align};
   max-width: ${props => props.children.length === 1 && props.maxWidth};
   grid-auto-rows: ${props => props.height};
-  /* box-shadow: none; */
-  /* margin:0; */
 `
 
-export const DocsGrid = styled(Grid).attrs({ minWidth: `8em`, align: `center` })`
+export const DocsGrid = styled( Grid ).attrs(
+  { minWidth: `8em`, align: `center` }
+)`
   p > a > span {
     border: 1px solid var(--color-shadow);
     margin: 0;

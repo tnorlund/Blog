@@ -1,9 +1,12 @@
 import styled from 'styled-components'
-import { ArrowDownCircle as Down, ArrowUpCircle as Up } from 'styled-icons/feather'
+import {
+  ArrowDownCircle as Down,
+  ArrowUpCircle as Up
+} from 'styled-icons/feather'
 
-export const Arrow = styled(Down).attrs(props => ({
+export const Arrow = styled( Down ).attrs( props => ( {
   as: props.direction === `up` && Up,
-}))`
+} ) )`
   background: var(--color-green-light);
   color: white;
   border-radius: 50%;
@@ -11,8 +14,8 @@ export const Arrow = styled(Down).attrs(props => ({
   position: absolute;
   bottom: 1em;
   right: calc(50vw - ${props => props.size} / 2);
-  opacity: ${props => (props.show ? 1 : 0)};
-  visibility: ${props => (props.show ? `visible` : `hidden`)};
+  opacity: ${props => ( props.show ? 1 : 0 )};
+  visibility: ${props => ( props.show ? `visible` : `hidden` )};
   width: ${props => props.size};
   height: ${props => props.size};
   :hover {

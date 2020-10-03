@@ -34,8 +34,8 @@ const macros = {
   '\\cbrkt': `\\mathopen{}\\left\\{#1\\right\\}\\mathclose{}`,
 }
 
-for (let index = `A`.charCodeAt(); index <= `Z`.charCodeAt(); index++) {
-  const letter = String.fromCharCode(index)
+for ( let index = `A`.charCodeAt(); index <= `Z`.charCodeAt(); index++ ) {
+  const letter = String.fromCharCode( index )
   // Caligraphic letters
   macros[`\\${letter}cal`] = `\\mathcal{${letter}}`
   // Blackboard bold letters

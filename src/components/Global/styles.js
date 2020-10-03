@@ -4,7 +4,9 @@ import { mediaQueries, screens } from 'utils/mediaQueries'
 import { typography } from 'utils/constants'
 
 const { phone, desktop } = screens
-const { fonts, minFontSize, maxFontSize, minLineHeight, maxLineHeight } = typography
+const {
+  fonts, minFontSize, maxFontSize, minLineHeight, maxLineHeight
+} = typography
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -13,11 +15,16 @@ export const GlobalStyle = createGlobalStyle`
     font-family: ${fonts};
     font-size: ${minFontSize}em;
     line-height: ${minLineHeight}em;
-    /* Fix very large font size in code blocks in iOS Safari (https://stackoverflow.com/a/3428477). */
+    /* Fix very large font size in code blocks in iOS Safari 
+       (https://stackoverflow.com/a/3428477). */
     -webkit-text-size-adjust: 100%;
     ${mediaQueries.minPhone} {
-      font-size: calc(${minFontSize}em + (${maxFontSize} - ${minFontSize}) * ((100vw - ${phone}em) / (${desktop} - ${phone})));
-      line-height: calc(${minLineHeight}em + (${maxLineHeight} - ${minLineHeight}) * ((100vw - ${phone}em) / (${desktop} - ${phone})));
+      font-size: calc(${minFontSize}em
+      + (${maxFontSize} - ${minFontSize})
+      * ((100vw - ${phone}em) / (${desktop} - ${phone})));
+      line-height: calc(${minLineHeight}em
+      + (${maxLineHeight} - ${minLineHeight})
+      * ((100vw - ${phone}em) / (${desktop} - ${phone})));
     }
     ${mediaQueries.minDesktop} {
       font-size: ${maxFontSize}em;

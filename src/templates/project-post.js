@@ -18,20 +18,19 @@ const Icon = styled.img`
   height: 150px;
 `
 
-const ProjectPostTemplate = ({ data }) => {
-  const {project, posts} = data;
-  const title = project.frontmatter.title;
-  const body = project.body;
+const ProjectPostTemplate = ( { data } ) => {
+  const { project, posts } = data
+  const title = project.frontmatter.title
+  const body = project.body
   const iconURL = project.frontmatter.icon.publicURL
   const projectPosts = posts.edges
-  console.log("projectPosts", projectPosts)
   return (
     <PageBody>
       <PostTitle>{title}</PostTitle>
       <Icon src={iconURL} alt={title} />
       <Mdx>{body}</Mdx>
       <ProjectPostList data={projectPosts}/>
-      <BackButton slug={"/projects"} text={"Projects"} />
+      <BackButton slug={`/projects`} text={`Projects`} />
     </PageBody>
   )
 }

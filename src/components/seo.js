@@ -2,8 +2,8 @@ import React from "react"
 import { Helmet } from "react-helmet"
 import favicon from '../../content/favicon.svg'
 
-const SEO = ({ site, uri = ``, data, children }) => {
-  const title = site.title;
+const SEO = ( { site, uri = ``, data, children } ) => {
+  const title = site.title
   // uri.length > 1 ? `${startCase(uri)} | ${site.title}` : site.title
   const pageUrl = site.url + uri
   const desc = data?.page?.excerpt || site.description
