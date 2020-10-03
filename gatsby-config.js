@@ -1,4 +1,6 @@
 const macros = require(`./src/utils/katex`)
+const sitemapOptions = require(`./src/utils/sitemap`)
+
 
 // require(`dotenv`).config()
 
@@ -67,6 +69,10 @@ const plugins = [
   },
   `gatsby-transformer-sharp`,
   `gatsby-plugin-sharp`,
+  {
+    resolve: `gatsby-plugin-sitemap`,
+    options: sitemapOptions,
+  },
   {
     resolve: `gatsby-plugin-manifest`,
     options: {
