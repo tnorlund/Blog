@@ -44,7 +44,7 @@ export const useStorage = (storage, key, initialValue, options = {}) => {
     // takes the current value.
     if (newValue instanceof Function) newValue = newValue(value)
 
-    const event = new CustomEvent(`storage${key}Change`, {
+    const event = new CustomEvent(`storage:${key}Change`, {
       detail: newValue,
     })
     document.dispatchEvent(event)
