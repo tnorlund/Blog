@@ -43,6 +43,9 @@ export const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
     line-height: initial;
   }
+  p {
+    margin: 0.5em;
+  }
   /* Prevent wide equations from breaking layout. */
   .katex-display {
     overflow-x: scroll;
@@ -52,8 +55,8 @@ export const GlobalStyle = createGlobalStyle`
     border-left: 0.25em solid var(--color-link);
     background: var(--color-accentBackground);
     padding: 0.1em 0.3em 0.1em 1em;
-    margin: 0;
-    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
     summary {
       font-weight: bold;
     }

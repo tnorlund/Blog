@@ -13,6 +13,9 @@ export const PageBody = styled.main`
   }
   /* Center image captions. */
   .gatsby-resp-image-wrapper + em,
+  .gatsby-resp-image-wrapper{
+    margin-top: 1em;
+  }
   img + em,
   .js-plotly-plot + p > em,
   div.table + p > em {

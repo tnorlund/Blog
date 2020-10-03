@@ -42,8 +42,6 @@ export default createGlobalStyle`
     background: #050431;
     border-radius: 0.5em;
     line-height: 1.5em;
-    /* padding-top: 0.2em; */
-    top: 0.9em;
   }
 
   pre.grvsc-container[data-language]::before {
