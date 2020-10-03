@@ -2,7 +2,6 @@ import React from "react"
 import { graphql, useStaticQuery, Link } from "gatsby"
 import styled from 'styled-components'
 
-
 const IconDiv = styled.div`
   width: 100px;
   margin-right: 10px;
