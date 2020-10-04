@@ -51,7 +51,10 @@ export const query = graphql`
         icon { publicURL }
       }
     }
-    posts: allMdx( filter: { frontmatter: { slug: { regex: $regex } } } ) {
+    posts: allMdx( 
+      filter: { frontmatter: { slug: { regex: $regex } } } 
+      sort: { fields: [frontmatter___date], order: DESC }
+    ) {
       edges {
         node {
           frontmatter {

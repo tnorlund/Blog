@@ -73,7 +73,6 @@ export default function Resume() {
           company
           start(formatString: "MMM YYYY")
           end(formatString: "MMM YYYY")
-          location
           duties
         }
         skills
@@ -110,11 +109,11 @@ export default function Resume() {
         computer vision and/or data science.
         </Description>
         {positions.map(
-          ( { title, company, start, end, location, duties } ) => (
+          ( { title, company, start, end, duties } ) => (
             <>
               <JobDiv>
                 <JobTitle>{title}</JobTitle>
-                <JobLocation>{company} {location}</JobLocation>
+                <JobLocation>{company}</JobLocation>
                 <JobDate>{start} - {end}</JobDate>
               </JobDiv>
               <Duties duties={duties} />
