@@ -48,7 +48,7 @@ export const MODE_COLORS = {
   },
   background: {
     light: `white`,
-    dark: blue.darker,
+    dark: gray.darker,
   },
   shadow: {
     light: gray.lighter,

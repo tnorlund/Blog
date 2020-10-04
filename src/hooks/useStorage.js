@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 
 export const useStorage = ( storage, key, initialValue, options = {} ) => {
-  // The storage here can be:
-  // - Local
-  // - Session
   const { deleteKeyIfValueIs = null } = options
 
   // The useState function handles the creation of the state.

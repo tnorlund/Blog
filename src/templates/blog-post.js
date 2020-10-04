@@ -15,6 +15,7 @@ const PostDate = styled.hgroup`
 const PostTitle = styled.hgroup`
   font-size: 2em;
   font-weight: bold;
+  padding-bottom: 0.3em;
   margin-bottom: 0.1em;
   border-bottom: 4px solid var(--color-b);
 `

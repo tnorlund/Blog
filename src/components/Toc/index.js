@@ -51,7 +51,7 @@ export default function Toc(
     // content increases offsets as user scrolls down.
     const offsets = nodes.map( el => accumulateOffsetTop( el ) )
     const activeIndex = offsets.findIndex(
-      offset => offset > window.scrollY + 125
+      offset => offset > window.scrollY + 120
     )
     setActive( activeIndex === -1 ? titles.length - 1 : activeIndex - 1 )
   }, throttleTime )
