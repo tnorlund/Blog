@@ -4,16 +4,17 @@ import styled from 'styled-components'
 
 const IconDiv = styled.div`
   width: 100px;
-  margin-right: 10px;
+  margin-right: 0.2em;
 `
 const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
+  margin-right: 0.1em;
 `
 const Icon = styled.img`
   margin: 0px;
-  height: 100px;
+  /* height: 100px; */
   filter: invert(84%) sepia(26%) saturate(295%) hue-rotate(157deg) 
     brightness(99%) contrast(96%);
 `
@@ -53,7 +54,7 @@ export default function ProjectList() {
         frontmatter { slug, title, icon, { publicURL } }
       }
     }
-  }` ) 
+  }` )
   const { projects } = allMdx
 
   return (
@@ -63,8 +64,8 @@ export default function ProjectList() {
           <ProjectDiv key={title}>
             <Link to={slug}>
               <IconDiv>
-                <Icon 
-                  src={icon.publicURL} 
+                <Icon
+                  src={icon.publicURL}
                   alt={title}
                 />
               </IconDiv>

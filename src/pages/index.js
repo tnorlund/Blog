@@ -87,29 +87,14 @@ export default Landing
 // shows the 5 most recent blog posts.
 export const query = graphql`
   {
-    landing: mdx( fileAbsolutePath: {regex: "/landing/"} ) {  
-      frontmatter {
-        title
-        slug
-      }
-      body
-      id
+    landing: mdx( frontmatter: { slug: {eq: "/"} } ) {
+      frontmatter { title, slug }, body, id
     }
     picture: file( name: {eq: "Portrait"} ) {
       img: childImageSharp {
-        fixed(width: 300) {
-          ...GatsbyImageSharpFixed_withWebp
-        }
+        fixed(width: 300) { ...GatsbyImageSharpFixed_withWebp }
       }
     }
-    metadata: site {
-      siteMetadata {
-        social {
-          github
-          linkedin
-          twitter
-        }
-      }
-    }
+    metadata: site { siteMetadata { social { github, linkedin, twitter } } }
   }
 `

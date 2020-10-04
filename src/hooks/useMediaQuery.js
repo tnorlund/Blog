@@ -6,8 +6,7 @@ export const useMediaQuery = ( query, cb ) => {
 
   useEffect( () => {
     const qry = window.matchMedia( query )
-    setMatches( query.matches )
-
+    setMatches( qry.matches )
     const handleMatch = q => {
       setMatches( q.matches )
       if ( cb instanceof Function ) cb( q.matches )

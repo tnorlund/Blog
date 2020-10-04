@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export function useEventListener( eventNames, handler, element ) {
+export function useEventListener( eventNames, handler, element = globalThis ) {
   // First, create a reference that stores the handler.
   const savedHandler = useRef()
   if( !Array.isArray( eventNames ) ) eventNames = [eventNames]

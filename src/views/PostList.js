@@ -7,13 +7,7 @@ export default function PostList() {
   {
     allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: {
-        frontmatter: { 
-          slug: {
-            regex: "^/blog/[0-9a-z-]+$/"
-          } 
-        }
-      }
+      filter: { frontmatter: { slug: { regex: "^/blog/[0-9a-z-]+$/" } } }
     ) {
       posts: nodes {
         id

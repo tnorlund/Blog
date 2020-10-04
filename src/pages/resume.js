@@ -1,6 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import styled from 'styled-components'
+import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 
 const MainTitle = styled.h1`
@@ -83,36 +84,37 @@ export default function Resume() {
   return (
     <>
       <PageBody>
+        <Toc />
         <MainTitle>Education</MainTitle>
         <Description>
-        I did both my undergraduate and graduate school with University of 
+        I did both my undergraduate and graduate school with University of
         the Pacific. This school was great, and I had the opportunity to
         learn a lot and develop life-long relationships. Pacific offered
-        me the opportunity to work while going to school for college 
+        me the opportunity to work while going to school for college
         credit. I leveraged this in order to maximize my work experience.
         </Description>
         <JobDiv>
           <JobTitle>Data Science</JobTitle>
-          <JobLocation>Master's Degree</JobLocation>
+          <JobLocation>Master&apos;s Degree</JobLocation>
           <JobDate>Aug 2018 - May 2020</JobDate>
         </JobDiv>
         <JobDiv>
           <JobTitle>Computer Engineering</JobTitle>
-          <JobLocation>Bachelor's Degree</JobLocation>
+          <JobLocation>Bachelor&apos;s Degree</JobLocation>
           <JobDate>Aug 2013 - May 2018</JobDate>
         </JobDiv>
-        <MainTitle>What I've Done</MainTitle>
+        <MainTitle>What I&apos;ve Done</MainTitle>
         <Description>
-        I've been working with both hardware and software at a few companies. 
-        I'm currently trying to find a position related to computer vision 
-        and/or data science.
+        I&apos;ve been working with both hardware and software at a few
+        companies. I&apos;m currently trying to find a position related to
+        computer vision and/or data science.
         </Description>
         {positions.map(
-          ( { title, company, start, end, location, duties }, index ) => (
+          ( { title, company, start, end, location, duties } ) => (
             <>
               <JobDiv>
                 <JobTitle>{title}</JobTitle>
-                <JobLocation>{location}</JobLocation>
+                <JobLocation>{company} {location}</JobLocation>
                 <JobDate>{start} - {end}</JobDate>
               </JobDiv>
               <Duties duties={duties} />
@@ -120,8 +122,8 @@ export default function Resume() {
           ) )}
         <MainTitle>My Skills</MainTitle>
         <Description>
-        Through school or work, I've always tried to learn as many skills as
-        possible. Here are the skills I've picked up thus far.
+        Through school or work, I&apos;ve always tried to learn as many skills
+        as possible. Here are the skills I&apos;ve picked up thus far.
         </Description>
         <Skills skills={skills} />
       </PageBody>

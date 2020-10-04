@@ -6,8 +6,6 @@ import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 import ProjectPostList from 'views/ProjectPostList'
 import BackButton from 'components/BackButton'
 
-
-
 const PostTitle = styled.h1`
   margin-bottom: 3px;
   border-bottom: 4px solid var(--color-b);
