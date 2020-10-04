@@ -16,7 +16,7 @@ const PostTitle = styled.hgroup`
   font-size: 2em;
   font-weight: bold;
   padding-bottom: 0.3em;
-  margin-bottom: 0.1em;
+  margin-bottom: 0.3em;
   border-bottom: 4px solid var(--color-b);
 `
 
@@ -54,7 +54,7 @@ export const query = graphql`
       body
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "MMMM D, YYYY")
         description
         slug
         showToc
