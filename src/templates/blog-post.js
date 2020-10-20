@@ -24,8 +24,14 @@ const BlogPostTemplate = ( { data } ) => {
   const { post, next, prev } = data
   const { title, date, slug, showToc } = post.frontmatter
   const body = post.body
-  const text = RegExp( /\/blog/ ).test( slug ) ? `Blog` :
-    /\/projects\/([0-9a-z-]+)/.exec( slug )[1].toUpperCase()
+  let text = RegExp( /\/blog/ ).test( slug ) ? `Blog` :
+    /\/projects\/([0-9a-z-]+)/.exec( slug )[1]
+  if ( text != `Blog` ) {
+    if ( text == `vhs` || text == `slam` ) { text = text.toUpperCase() }
+    else { text = text.charAt( 0 ).toUpperCase() + text.slice( 1 ) }
+  } else {
+    text = text.toUpperCase()
+  }
   const backSlug = RegExp( /\/blog/ ).test( slug ) ? `/blog` :
     /(\/projects\/[0-9a-z-]+)/.exec( slug )[0]
   return (
