@@ -1,5 +1,6 @@
 import React from 'react'
 import DarkToggle from '../DarkToggle'
+import User from '../User'
 import Nav from '../Nav'
 import { HeaderDiv, Logo } from './styles'
 
@@ -10,6 +11,7 @@ export default function Header( { site } ) {
         tnor
       </Logo>
       <Nav />
+      <User />
       <DarkToggle />
     </HeaderDiv>
   )

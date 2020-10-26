@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql } from "gatsby"
-import { PageBody } from 'components/styles'
+import { PageBody, Icon } from 'components/styles'
 import styled from 'styled-components'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 import ProjectPostList from 'views/ProjectPostList'
@@ -9,11 +9,6 @@ import BackButton from 'components/BackButton'
 const PostTitle = styled.h1`
   margin-bottom: 3px;
   border-bottom: 4px solid var(--color-b);
-`
-
-const Icon = styled.img`
-  filter: var(--color-textfilter);
-  height: 150px;
 `
 
 const ProjectPostTemplate = ( { data } ) => {
@@ -25,7 +20,7 @@ const ProjectPostTemplate = ( { data } ) => {
   return (
     <PageBody>
       <PostTitle>{title}</PostTitle>
-      <Icon src={iconURL} alt={title} />
+      <Icon src={iconURL} alt={title} height={`150px`} />
       <Mdx>{body}</Mdx>
       <ProjectPostList data={projectPosts}/>
       <BackButton slug={`/projects`} text={`Projects`} />

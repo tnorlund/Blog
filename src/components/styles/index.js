@@ -3,6 +3,7 @@ import { css } from 'styled-components'
 export * from './PageBody'
 export * from './BorderBox'
 export * from './Grid'
+export * from './Icon'
 
 export const fadeInOnHoverParent = parent => css`
   opacity: 0;

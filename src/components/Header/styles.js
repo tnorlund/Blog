@@ -14,11 +14,11 @@ export const HeaderDiv = styled.header`
   padding: 1em;
   color: white;
   font-size: 1.2em;
-  grid-template-areas: 'nav title darkmode';
+  grid-template-areas: 'nav title user darkmode';
   grid-template-columns: auto 1fr auto;
   border-bottom: 1px solid var(--color-a);
   ${mediaQueries.minTablet} {
-    grid-template-areas: 'title nav darkmode';
+    grid-template-areas: 'title nav user darkmode';
   }
 `
 
