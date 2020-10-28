@@ -1,5 +1,5 @@
 import { useEventListener } from 'hooks'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { controls, ModalBehind, ModalDiv } from './styles'
 
 const { Close, Next, Prev, FullscreenToggle } = controls
@@ -12,7 +12,7 @@ const handleArrowKeys = setModal => event => {
 
 export default function Modal( { open, setModal, children, ...rest } ) {
   const ref = useRef()
-  const { showArrows, className } = rest
+  const { className } = rest
   // const [fullscreen, setFullscreen] = useState( rest.fullScreenDefault )
   useEventListener( `keydown`, handleArrowKeys( setModal ) )
   useEffect( () => {

@@ -1,12 +1,14 @@
 import React from 'react'
-import { Box, Icon } from './styles'
+import { Box, Icon, Div } from './styles'
 
 export default function User( { setModal } ) {
   return (
-    <Box>
-      <Icon onClick={
-        () => setModal( true )
-      }/>
-    </Box>
+    // <Box>
+      <Div>
+        <Icon onClick={
+          () => setModal( true )
+        }/>
+      </Div>
+    // </Box>
   )
 }

@@ -35,7 +35,7 @@ export const ModalDiv = styled.div`
   background: var(--color-background);
   height: max-content;
   max-height: 80vh;
-  width: 40vw;
+  width: 80vw;
   position: relative;
   overflow: scroll;
   border-radius: 0.5em;

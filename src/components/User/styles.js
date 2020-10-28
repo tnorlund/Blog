@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { User3 } from 'styled-icons/remix-fill'
 
@@ -10,10 +9,18 @@ export const Box = styled.div`
   }
 `
 
+// Needed as a selector in Notification below.
+export const Div = styled.div`
+  svg {
+    vertical-align: -0.1em;
+    height: 1em
+  }
+`
+
 export const Icon = styled( User3 ).attrs( props => ( {
   size: props.size || `1.6em`
 } ) )`
-  transform: scale(0.75);
+
 `
 
 // export const Icons = {

@@ -14,25 +14,31 @@ export const HeaderDiv = styled.header`
   padding: 1em;
   color: white;
   font-size: 1.2em;
-  grid-template-areas: 'nav title user darkmode';
+  grid-template-areas: 'nav title IconDiv';
   grid-template-columns: auto 1fr auto;
   border-bottom: 1px solid var(--color-a);
   ${mediaQueries.minTablet} {
-    grid-template-areas: 'title nav user darkmode';
+    grid-template-areas: 'title nav IconDiv';
   }
 `
 
-export const Logo = styled( Link )`
-  grid-area: title;
-  font-size: 2.4em;
-  transform: scale(1, 0.85);
-  color: inherit;
-  justify-self: center;
+export const IconDiv = styled.div`
+  display: grid;
+  grid-template-areas: 'nav title';
+  grid-gap: 1em;
+  width: 4em;
 `
-
 export const UserTitle = styled.hgroup`
   font-size: 2em;
   font-weight: bold;
   padding-bottom: 0.3em;
   margin: 0.3em;
+`
+
+export const Logo = styled( Link )`
+  grid-area: title;
+  font-size: 2.4em;
+  /* transform: scale(1, 0.75); */
+  color: inherit;
+  justify-self: center;
 `
