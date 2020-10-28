@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const handleParam = ( key, value, options ) => {
-  if ( location !== undefined ) {
+  if ( typeof window !== `undefined` ) {
     // historyMethod: push or replace
     // (https://developer.mozilla.org/docs/Web/API/History)
     console.log(options)
@@ -30,11 +30,8 @@ const handleParam = ( key, value, options ) => {
 }
 
 export const useQueryParam = ( key, value, options ) => {
-  console.log( `first` )
   const [param, setParam] = useState( handleParam( key, value, options ) )
-  console.log( `second` )
   const setter = ( newValue, override ) =>
     setParam( handleParam( key, newValue, { ...options, ...override } ) )
-  console.log( `third` )
   return [param, setter]
 }
