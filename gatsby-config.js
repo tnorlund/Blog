@@ -54,20 +54,48 @@ const plugins = [
     resolve: `gatsby-plugin-mdx`,
     options: {
       gatsbyRemarkPlugins,
-      plugins: [
-        `gatsby-remark-images`,
-        `gatsby-remark-autolink-headers`],
+      plugins: [`gatsby-remark-images`, `gatsby-remark-autolink-headers`],
       extensions: [`.mdx`, `.md`],
     },
   },
   {
+    resolve: `gatsby-transformer-sharp`,
+    options: {
+      // https://github.com/gatsbyjs/gatsby/issues/21776#issuecomment-604924320
+      checkSupportedExtensions: false,
+    },
+  },
+  `gatsby-plugin-sharp`,
+  `gatsby-transformer-yaml`,
+  {
     resolve: `gatsby-source-filesystem`,
     options: {
       path: `content/`,
+      // ignore: process.env.NODE_ENV === `production` && [`**/posts/drafts`],
     },
   },
-  `gatsby-transformer-sharp`,
-  `gatsby-plugin-sharp`,
+  `gatsby-transformer-yaml`,
+  `gatsby-plugin-catch-links`,
+  `gatsby-plugin-styled-components`,
+  // {
+  //   resolve: `gatsby-plugin-google-analytics`,
+  //   options: {
+  //     trackingId: process.env.GOOGLE_ANALYTICS_ID,
+  //   },
+  // },
+  // {
+  //   resolve: `gatsby-plugin-algolia`,
+  //   options: {
+  //     appId: process.env.GATSBY_ALGOLIA_APP_ID,
+  //     apiKey: process.env.ALGOLIA_ADMIN_KEY,
+  //     queries,
+  //     chunkSize: 10000, // default: 1000
+  //   },
+  // },
+  // {
+  //   resolve: `gatsby-plugin-feed`,
+  //   options: rssOptions,
+  // },
   {
     resolve: `gatsby-plugin-sitemap`,
     options: sitemapOptions,
@@ -84,19 +112,60 @@ const plugins = [
       icon: `content/favicon.svg`,
     },
   },
-  {
-    resolve: `gatsby-plugin-react-svg`,
-    options: {
-      rule: {
-        include: `/svg/`
-      }
-    }
-  },
-  `gatsby-plugin-styled-components`,
   `gatsby-plugin-offline`,
   `gatsby-plugin-lodash`,
   `gatsby-plugin-react-helmet`,
-  `gatsby-transformer-yaml`
+  // `gatsby-plugin-netlify-cache`,
 ]
+
+// const plugins = [
+//   {
+//     resolve: `gatsby-plugin-mdx`,
+//     options: {
+//       gatsbyRemarkPlugins,
+//       plugins: [
+//         `gatsby-remark-images`,
+//         `gatsby-remark-autolink-headers`],
+//       extensions: [`.mdx`, `.md`],
+//     },
+//   },
+//   {
+//     resolve: `gatsby-source-filesystem`,
+//     options: {
+//       path: `content/`,
+//     },
+//   },
+//   `gatsby-transformer-sharp`,
+//   `gatsby-plugin-sharp`,
+//   {
+//     resolve: `gatsby-plugin-sitemap`,
+//     options: sitemapOptions,
+//   },
+//   {
+//     resolve: `gatsby-plugin-manifest`,
+//     options: {
+//       name: `Tyler's Blog`,
+//       short_name: `TylersBlog`,
+//       start_url: `/`,
+//       background_color: `#ffffff`,
+//       theme_color: `#663399`,
+//       display: `standalone`,
+//       icon: `content/favicon.svg`,
+//     },
+//   },
+//   {
+//     resolve: `gatsby-plugin-react-svg`,
+//     options: {
+//       rule: {
+//         include: `/svg/`
+//       }
+//     }
+//   },
+//   `gatsby-plugin-styled-components`,
+//   `gatsby-plugin-offline`,
+//   `gatsby-plugin-lodash`,
+//   `gatsby-plugin-react-helmet`,
+//   `gatsby-transformer-yaml`
+// ]
 
 module.exports = { siteMetadata, plugins }

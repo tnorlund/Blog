@@ -13,8 +13,39 @@ I knew I needed to use an API in order to use comments on this site. I've previo
 
 After reading [Alex Debrie's](https://twitter.com/alexbdebrie?s=21) book on Dynamo DB, I knew the steps required to develop a structured Dynamo DB table. 
 
+# Creating the Database
+
+Debrie has an organized system for creating a Dynamo DB table.
+
+1. [Understand the application](#understanding-the-application)
+2. [Create an ERD](#erd)
+3. [Define the access patterns](#access-patterns)
+4. Design the primary keys and secondary indexes
+
+## Understanding the application
+
+This blog is accessed by people and the goal is to add comments for each post. Without getting "in the weeds" with the complexity of the problem, let's leave it at this.
+
+ Each post will need to request the different comments, and each user will need to have the opportunity to add a comment to each post. Each user should be able to request all of their comments and delete a specific one.
+
+## ERD
+
+The entity relationship diagram describes how the datas relate to one another. The one that I came up with is as follows. 
+
 <MdxIcon file={`ERD_Blog.svg`} />
 
+## Access Patterns 
 
-![Icon](./ERD_Blog.svg)
+The best way to go about the understanding the access patterns would be to list them out.
+
+- Create a user
+  - Each user has unique name
+- Each user can create, update, and delete their comment
+- View comments and their replies per post
+- View comments per user
+
+## Primary Key and Indexes
+
+This table will need a composite key in order to efficiently query the data. 
+
 

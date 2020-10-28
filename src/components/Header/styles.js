@@ -29,3 +29,10 @@ export const Logo = styled( Link )`
   color: inherit;
   justify-self: center;
 `
+
+export const UserTitle = styled.hgroup`
+  font-size: 2em;
+  font-weight: bold;
+  padding-bottom: 0.3em;
+  margin: 0.3em;
+`
