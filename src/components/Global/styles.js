@@ -47,6 +47,27 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
+  input {
+    font-family: ${fonts};
+    font-size: ${minFontSize}em;
+    ${mediaQueries.minPhone} {
+      font-size: calc(${minFontSize}em
+      + (${maxFontSize} - ${minFontSize})
+      * ((100vw - ${phone}em) / (${desktop} - ${phone})));
+      line-height: calc(${minLineHeight}em
+      + (${maxLineHeight} - ${minLineHeight})
+      * ((100vw - ${phone}em) / (${desktop} - ${phone})));
+    }
+    ${mediaQueries.minDesktop} {
+      font-size: ${maxFontSize}em;
+      line-height: ${maxLineHeight}em;
+    }
+    outline: none;
+    color: var(--color-text);
+    background: var(--color-background);
+    border: none;
+    /* border-bottom: 2em var(--color-b); */
+  }
   h1, h2, h3, h4, h5, h6 {
     line-height: initial;
   }

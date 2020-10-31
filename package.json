@@ -26,6 +26,8 @@
     "@mdx-js/mdx": "^1.6.18",
     "@mdx-js/react": "^1.6.18",
     "async": "^3.2.0",
+    "aws-amplify": "^3.3.5",
+    "aws-amplify-react": "^4.2.9",
     "gatsby": "^2.24.89",
     "gatsby-image": "^2.4.20",
     "gatsby-plugin-catch-links": "^2.3.15",

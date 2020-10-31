@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
 const handleParam = ( key, value, options ) => {
+  // Server-side rendering does not have a window object. Don't query on SSR.
   if ( typeof window !== `undefined` ) {
     // historyMethod: push or replace
     // (https://developer.mozilla.org/docs/Web/API/History)
-    console.log(options)
     const historyMethod = options === undefined ?
       `replace` : options.historyMethod
     const nullDeletes = options === undefined ?

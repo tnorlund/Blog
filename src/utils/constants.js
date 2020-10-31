@@ -35,11 +35,12 @@ export const COLORS = {
     lighter: `#B6E3F7`,
   },
   red: {
-    light: `#F58497`,
+    light: `#F46275`,
+    dark: `#B54857`,
   },
 }
 
-const { gray, brown, blue } = COLORS
+const { gray, brown, blue, red } = COLORS
 
 export const MODE_COLORS = {
   text: {
@@ -65,6 +66,10 @@ export const MODE_COLORS = {
   accentBackground: {
     light: `rgba(0, 0, 0, 0.05)`,
     dark: `rgba(0, 0, 0, 0.7)`,
+  },
+  red: {
+    light: red.light,
+    dark: red.dark,
   },
   gray: {
     light: gray.regular,
@@ -94,6 +99,7 @@ export const MODE_COLORS = {
     light: brown.darker,
     dark: brown.darkest,
   },
+
   filter: {
     light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
       + ` brightness(103%) contrast(116%)`,
