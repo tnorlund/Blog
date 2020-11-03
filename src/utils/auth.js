@@ -21,8 +21,9 @@ export const isLoggedIn = () => {
 
 export const getCurrentUser = () => isBrowser && getUser()
 
+//  REFACTOR
 export const logout = callback => {
   if ( !isBrowser ) return
   setUser( {} )
-  callback()
+  // callback()
 }

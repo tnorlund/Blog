@@ -43,6 +43,7 @@ const BlogPostTemplate = ( { data } ) => {
       <PrevNext
         prev={prev?.frontmatter} next={next?.frontmatter} label="Post"
       />
+      <PostDate>Comments</PostDate>
       <BackButton slug={backSlug} text={text} />
     </PageBody>
   )

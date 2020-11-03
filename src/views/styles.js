@@ -26,14 +26,11 @@ export const Description = styled.div`
 `
 
 export const TextInput = styled.input`
-  width: 90%;
+  width: 95%;
   margin: 0.5em;
 `
 
 export const TextDiv = styled.div`
-  /* width: 100%; */
-  border-bottom: 10px;
-  border-color: var(--color-b);
   padding-bottom: 0.5em;
   margin-left: 1em;
 `
@@ -52,6 +49,7 @@ export const ButtonDiv = styled.div`
 
 export const LinkDiv = styled.div`
   margin: 1em;
+  font-weight: bold;
   color: var(--color-lightLink);
 `
 
