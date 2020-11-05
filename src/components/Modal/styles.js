@@ -15,7 +15,7 @@ export const ModalBehind = styled.div`
   visibility: ${props => ( props.open ? `visible` : `hidden` )};
   opacity: ${props => ( props.open ? `1` : `0` )};
   transition: 0.5s;
-  z-index: 2;
+  z-index: 4;
 `
 
 const fullscreen = css`

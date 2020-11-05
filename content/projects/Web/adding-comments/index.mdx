@@ -9,7 +9,7 @@ showToc: true
 import MdxIcon from 'components/MdxIcon'
 
 
-I knew I needed to use an API in order to use comments on this site. I've previously used Amplify's API service where it creates a Dynamo DB table GraphQL endpoint, but I'd like to do it myself.  
+I knew I needed to use an API in order to use comments on this site. I've previously used Amplify's API service where it creates a Dynamo DB table and a GraphQL endpoint, but I'd like to do it myself.  
 
 After reading [Alex Debrie's](https://twitter.com/alexbdebrie?s=21) book on Dynamo DB, I knew the steps required to develop a structured Dynamo DB table. 
 
@@ -43,6 +43,7 @@ The best way to go about the understanding the access patterns would be to list 
 - Each user can create, update, and delete their comment
 - View comments and their replies per post
 - View comments per user
+- Get all users that follow a project
 
 ## Primary Key and Indexes
 
