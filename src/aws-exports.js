@@ -3,15 +3,25 @@
 
 const awsmobile = {
     "aws_project_region": "us-west-2",
-    "aws_appsync_graphqlEndpoint": "https://2abfxrb5ozh63crii2fqhsz4aa.appsync-api.us-west-2.amazonaws.com/graphql",
-    "aws_appsync_region": "us-west-2",
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-6vfemaclkja7jht3x5vih5fqdm",
-    "aws_cognito_identity_pool_id": "us-west-2:03021200-73d6-47f6-bb4c-9c309aeb63a1",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "blogAPI",
+            "endpoint": "https://40vw3y2u0b.execute-api.us-west-2.amazonaws.com/env",
+            "region": "us-west-2"
+        }
+    ],
+    "aws_cognito_identity_pool_id": "us-west-2:8b4b58d8-6f67-43fa-acf3-902014c432ef",
     "aws_cognito_region": "us-west-2",
-    "aws_user_pools_id": "us-west-2_wB6MJCBUK",
-    "aws_user_pools_web_client_id": "5lpjbhf0bphqj9pt7lqr31j8c0",
-    "oauth": {}
+    "aws_user_pools_id": "us-west-2_tQMBFYQ3z",
+    "aws_user_pools_web_client_id": "7ddjt2a68kntgkkgvvl3pm07e1",
+    "oauth": {},
+    "aws_dynamodb_all_tables_region": "us-west-2",
+    "aws_dynamodb_table_schemas": [
+        {
+            "tableName": "blogDB-env",
+            "region": "us-west-2"
+        }
+    ]
 };
 
 
