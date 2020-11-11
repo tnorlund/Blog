@@ -1,18 +1,54 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { graphql, useStaticQuery } from "gatsby"
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 import {
   UserTitle, TextInput, TextDiv, ButtonDiv, ErrorDiv, LinkDiv
 } from './styles'
-import { Auth, API } from 'aws-amplify'
+import Amplify, { Auth, API } from 'aws-amplify'
+import config from '../aws-exports'
+
 import { setUser, isLoggedIn, getCurrentUser, logout } from '../utils/auth'
 
+async function listUsers() {
+  let apiName = `AdminQueries`
+  let path = `/listGroupsForUser/`
+  let myInit = {
+    queryStringParameters: {
+      username: `tnorlund@icloud.com`
+    },
+    headers: {
+      // eslint-disable-next-line max-len
+      Authorization: `${( await Auth.currentSession() ).getAccessToken().getJwtToken()}`
+    }
+  }
+  return await API.get( apiName, path, myInit )
+}
+
 export default function Login( { setModal } ) {
+  useEffect( () => {
+    Amplify.configure( config )
+    // console.log( `listUsers`, listUsers() )
+    // API.get( `blogAPI`, `/blog/`, {} )
+    //   .then( blogResponse => console.log( `get response`, { blogResponse } ) )
+    //   .catch( error => console.log( `get error`, { error } ) )
+    API.post( `blogAPI`, `/blog/`, {} )
+      .then( blogResponse => console.log( `post Blog`, { blogResponse } ) )
+      .catch( error => console.log( `post error`, { error } ) )
+
+    // API.get( `AdminQueries`, `/listUsers/`, {
+    //   headers: {
+    //     Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+    //   }
+    // } )
+    //   .then( blogResponse => console.log( `get response`, { blogResponse } ) )
+    //   .catch( error => console.log( `get error`, { error } ) )
+  } )
   const [loginState, setLoginState] = useState(
     { name: ``, email:``, passworda:``, passwordb:``, code:``, error:``,
       type:`login` }
   )
   const user = getCurrentUser()
+  console.log(`user`, user)
   const body = useStaticQuery(
     graphql`query { mdx(
       fileAbsolutePath: { regex: "/tos/index.md/" }
@@ -55,14 +91,18 @@ export default function Login( { setModal } ) {
     if ( passworda != passwordb ) { setLoginState(
       { ...loginState, error: `Passwords must match` }
     ) }
-    else if ( passworda.length < 6 ) { setLoginState(
+    else if ( passworda.length < 9 ) { setLoginState(
       { ...loginState,
-        error: `Password must be greater than 5 characters.` } ) }
+        error: `Password must be greater than 8 characters.` } ) }
     else {
       Auth.signUp(
-        { username: email, password: passworda,
+        { // email: email, 
+          username: email, password: passworda,
           attributes:
-          { 'custom:TOS': `0`, email: email, name: name } }
+          {
+            // 'custom:TermsOfService': `0`,
+            email:email, name: name }
+        }
       )
         .then( ( result ) => {
           console.log(`result`, result)
@@ -75,7 +115,10 @@ export default function Login( { setModal } ) {
           }
         } )
         .catch(
-          error => setLoginState( { ...loginState, error: error.message } )
+          error => {
+            console.log({error})
+            setLoginState( { ...loginState, error: error.message } )
+          }
         )
     }
   }
@@ -112,9 +155,12 @@ export default function Login( { setModal } ) {
   }
   // A function for signing out
   const signOut = async() => {
-    API.get( `blogAPI`, `/blog` )
-      .then( blogResponse => console.log( { blogResponse } ) )
-      .catch( error => console.log( { error } ) )
+    // API.post( `blogAPI`, `/`, { body: { PK: "#BLOG", SK: "#BLOG", Type: "blog", NumberUsers: 2, NumberPosts: 2} } )
+    //   .then( blogResponse => console.log( { blogResponse } ) )
+    //   .catch( error => console.log( { error } ) )
+    // API.get( `blogAPI`, `/blog/`, {} )
+    //   .then( blogResponse => console.log( { blogResponse } ) )
+    //   .catch( error => console.log( `error`, { error } ) )
     Auth.signOut()
       .then( () => {
         logout()
@@ -124,11 +170,11 @@ export default function Login( { setModal } ) {
         setModal( false )
       } )
   }
-  // A function for setting the attribute for accepting the TOS
+  // A function for setting the attribute for accepting the TermsOfService
   const acceptTOS = async() => {
     Auth.updateUserAttributes(
-      Auth.user, { 'custom:TOS': `1` } )
-      .then( () =>  setModal( false ) )
+      Auth.user, { 'custom:TermsOfService': `1` } )
+      .then( () =>  window.location.reload() )
       .catch( error => console.log( { error } ) )
   }
   return (
@@ -278,14 +324,14 @@ export default function Login( { setModal } ) {
         </form>
       </>
       }
-      {( isLoggedIn() && user[`custom:TOS`] == `0` ) && <>
+      {( isLoggedIn() && user[`custom:TermsOfService`] == `0` ) && <>
         <UserTitle>Terms of Service</UserTitle>
         <div css={`margin: 1em;`}>
           <Mdx>{body.mdx.body}</Mdx>
         </div>
         <ButtonDiv onClick={() => acceptTOS()}>Accept</ButtonDiv>
       </>}
-      {isLoggedIn() && user[`custom:TOS`] == `1` && <>
+      {isLoggedIn() && <>
         <UserTitle>Profile</UserTitle>
         <div css={`margin: 1em;`}>
           <p>Name: {user.name}</p>

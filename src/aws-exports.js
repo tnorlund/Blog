@@ -5,15 +5,20 @@ const awsmobile = {
     "aws_project_region": "us-west-2",
     "aws_cloud_logic_custom": [
         {
+            "name": "AdminQueries",
+            "endpoint": "https://30ecekknob.execute-api.us-west-2.amazonaws.com/env",
+            "region": "us-west-2"
+        },
+        {
             "name": "blogAPI",
-            "endpoint": "https://40vw3y2u0b.execute-api.us-west-2.amazonaws.com/env",
+            "endpoint": "https://jmntqot457.execute-api.us-west-2.amazonaws.com/env",
             "region": "us-west-2"
         }
     ],
-    "aws_cognito_identity_pool_id": "us-west-2:8b4b58d8-6f67-43fa-acf3-902014c432ef",
+    "aws_cognito_identity_pool_id": "us-west-2:40405342-bab9-4f53-b88d-3fcac78f6093",
     "aws_cognito_region": "us-west-2",
-    "aws_user_pools_id": "us-west-2_tQMBFYQ3z",
-    "aws_user_pools_web_client_id": "7ddjt2a68kntgkkgvvl3pm07e1",
+    "aws_user_pools_id": "us-west-2_LSxeRvZrG",
+    "aws_user_pools_web_client_id": "6mi6gkmbp8n0e925ts9m57roma",
     "oauth": {},
     "aws_dynamodb_all_tables_region": "us-west-2",
     "aws_dynamodb_table_schemas": [

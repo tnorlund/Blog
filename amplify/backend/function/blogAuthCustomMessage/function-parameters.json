@@ -1,0 +1,32 @@
+{
+  "trigger": true,
+  "modules": [
+    "verification-link"
+  ],
+  "parentResource": "blogAuth",
+  "functionName": "blogAuthCustomMessage",
+  "resourceName": "blogAuthCustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": "[\n  {\n    \"key\": \"RESOURCENAME\",\n    \"value\": \"resourceName\"\n  }\n]",
+  "triggerDir": "/Users/tylernorlund/.nvm/versions/node/v14.10.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "roleName": "blogAuthCustomMessage",
+  "skipEdit": true,
+  "REDIRECTURL": "https://tylernorlund.com",
+  "EMAILSUBJECT": "Confirm Email",
+  "EMAILMESSAGE": "Please confirm your email",
+  "RESOURCENAME": "resourceName",
+  "enableCors": false,
+  "permissions": {
+    "storage": {
+      "blogDB": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "triggerEventPath": "CustomMessage.event.json"
+}

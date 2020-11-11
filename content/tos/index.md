@@ -1,3 +1,6 @@
+---
+version: 2020-11-10 17:54:59
+---
 Please read these terms of service ("terms", "terms of service") carefully before using tylernorlund.com website (the "service") operated by Tyler Norlund ("us", 'we", "our").
 
 # Conditions of Use

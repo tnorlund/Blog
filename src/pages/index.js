@@ -9,8 +9,16 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { LinkedinSquare, Twitter } from 'styled-icons/boxicons-logos'
 import { Github } from 'styled-icons/simple-icons'
 import Amplify from 'aws-amplify'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
 import config from '../aws-exports'
+
+
 Amplify.configure( config )
+// API.configure( config )
+// Auth.configure( config )
+Amplify.register( Auth )
+Amplify.register( API )
 
 const Icons = {
   LinkedinSquare,

@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "blogAuthCustomMessage:verification-link.handler (nodejs10.x)",
+      "invokeTarget": {
+        "target": "code",
+        "projectRoot": "amplify/backend/function/blogAuthCustomMessage/src",
+        "lambdaHandler": "verification-link.handler"
+      },
+      "lambda": {
+        "runtime": "nodejs10.x",
+        "payload": {},
+        "environmentVariables": {}
+      }
+    }
+  ]
+}

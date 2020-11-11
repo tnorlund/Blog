@@ -1,0 +1,30 @@
+{
+  "env": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-blog-env-114924-authRole",
+      "UnauthRoleArn": "arn:aws:iam::681647709217:role/amplify-blog-env-114924-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::681647709217:role/amplify-blog-env-114924-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-blog-env-114924-deployment",
+      "UnauthRoleName": "amplify-blog-env-114924-unauthRole",
+      "StackName": "amplify-blog-env-114924",
+      "StackId": "arn:aws:cloudformation:us-west-2:681647709217:stack/amplify-blog-env-114924/534bb140-0672-11eb-936d-0a60d9dbf1f3",
+      "AmplifyAppId": "d2ulywoa4jm6hq"
+    },
+    "categories": {
+      "function": {
+        "blogAuthCustomMessage": {
+          "REDIRECTURL": "https://tylernorlund.com",
+          "EMAILSUBJECT": "Confirm Email",
+          "EMAILMESSAGE": "Please confirm your email"
+        },
+        "blogAuthPostConfirmation": {
+          "GROUP": "Users"
+        }
+      },
+      "auth": {
+        "blogAuth": {}
+      }
+    }
+  }
+}

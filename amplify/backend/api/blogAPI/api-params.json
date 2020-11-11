@@ -1,0 +1,83 @@
+{
+    "paths": [
+        {
+            "name": "/",
+            "lambdaFunction": "blogAPILambda",
+            "privacy": {
+                "protected": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ],
+                "unauth": [
+                    "/GET"
+                ],
+                "userPoolGroups": {
+                    "Admin": [
+                        "/POST",
+                        "/GET",
+                        "/PUT",
+                        "/PATCH",
+                        "/DELETE"
+                    ],
+                    "Users": [
+                        "/POST",
+                        "/GET",
+                        "/PUT",
+                        "/PATCH",
+                        "/DELETE"
+                    ]
+                }
+            }
+        }
+    ],
+    "resourceName": "blogAPI",
+    "apiName": "blogAPI",
+    "authResourceName": "blogAuth",
+    "functionArns": [
+        {
+            "lambdaFunction": "blogAPILambda"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 1,
+        "authRoleName": "amplify-blog-env-114924-authRole",
+        "unAuthRoleName": "amplify-blog-env-114924-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "blogAPILambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "blogAuth",
+            "attributes": [
+                "UserPoolId"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "userPoolGroups",
+            "attributes": [
+                "AdminGroupRole"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "userPoolGroups",
+            "attributes": [
+                "UsersGroupRole"
+            ]
+        }
+    ],
+    "uuid": "c3f4cf65"
+}
