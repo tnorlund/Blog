@@ -25,15 +25,22 @@ async function listUsers() {
 }
 
 export default function Login( { setModal } ) {
+  // The login form uses multiple inputs. These inputs are stored in this state.
+  const [loginState, setLoginState] = useState(
+    { name: ``, email:``, passworda:``, passwordb:``, code:``, error:``,
+      type:`login` }
+  )
+  // This view requests data from the api
+  const [isLoading, setLoading] = useState( true )
   useEffect( () => {
     Amplify.configure( config )
-    // console.log( `listUsers`, listUsers() )
+    console.log( `listUsers`, listUsers() )
     // API.get( `blogAPI`, `/blog/`, {} )
     //   .then( blogResponse => console.log( `get response`, { blogResponse } ) )
     //   .catch( error => console.log( `get error`, { error } ) )
-    API.post( `blogAPI`, `/blog/`, {} )
-      .then( blogResponse => console.log( `post Blog`, { blogResponse } ) )
-      .catch( error => console.log( `post error`, { error } ) )
+    // API.post( `blogAPI`, `/blog/`, {} )
+    //   .then( blogResponse => console.log( `post Blog`, { blogResponse } ) )
+    //   .catch( error => console.log( `post error`, { error } ) )
 
     // API.get( `AdminQueries`, `/listUsers/`, {
     //   headers: {
@@ -42,11 +49,9 @@ export default function Login( { setModal } ) {
     // } )
     //   .then( blogResponse => console.log( `get response`, { blogResponse } ) )
     //   .catch( error => console.log( `get error`, { error } ) )
+    console.log( `user`, user )
   } )
-  const [loginState, setLoginState] = useState(
-    { name: ``, email:``, passworda:``, passwordb:``, code:``, error:``,
-      type:`login` }
-  )
+  
   const user = getCurrentUser()
   console.log(`user`, user)
   const body = useStaticQuery(
@@ -177,19 +182,70 @@ export default function Login( { setModal } ) {
       .then( () =>  window.location.reload() )
       .catch( error => console.log( { error } ) )
   }
-  return (
-    <>
-      {!isLoggedIn() && loginState.type==`login` && <>
-        <UserTitle>Log In</UserTitle>
-        <form>
+  if ( isLoading ) {
+    return (
+      <>
+        loading
+      </>
+    ) }
+  else {
+    return (
+      <>
+        {!isLoggedIn() && loginState.type==`login` && <>
+          <UserTitle>Log In</UserTitle>
+          <form>
+            <TextDiv>
+              <TextInput
+                placeholder='email'
+                name='email'
+                value={loginState.email}
+                onChange={( event ) => {
+                  setLoginState(
+                    { ...loginState, email: event.target.value, error: `` } )
+                }}/>
+            </TextDiv>
+            <TextDiv>
+              <TextInput
+                type='password'
+                placeholder='password'
+                name='password'
+                value={loginState.passworda}
+                onChange={( event ) => {
+                  setLoginState(
+                    { ...loginState, passworda: event.target.value, error:`` } )
+                }}/>
+            </TextDiv>
+            {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
+            <ButtonDiv onClick={() => login()}>Login</ButtonDiv>
+            <LinkDiv
+              onClick={() => setLoginState(
+                { ...loginState, type: `signup`, error:`` } ) }
+            >Don&apos;t have an account?</LinkDiv>
+            <LinkDiv
+              onClick={() => setLoginState(
+                { ...loginState, type: `forgot`, error:`` } ) }
+            >Forgot password?</LinkDiv>
+          </form>
+        </>
+        }
+        {!isLoggedIn() && loginState.type==`signup` && <>
+          <UserTitle>Sign Up</UserTitle>
+          <TextDiv>
+            <TextInput
+              placeholder='name'
+              name='name'
+              value={loginState.name}
+              onChange={( event ) => {
+                setLoginState( { ...loginState, name: event.target.value } )
+              }}/>
+          </TextDiv>
           <TextDiv>
             <TextInput
               placeholder='email'
               name='email'
               value={loginState.email}
               onChange={( event ) => {
-                setLoginState(
-                  { ...loginState, email: event.target.value, error: `` } )
+                setLoginState( { ...loginState, email: event.target.value } )
               }}/>
           </TextDiv>
           <TextDiv>
@@ -199,110 +255,7 @@ export default function Login( { setModal } ) {
               name='password'
               value={loginState.passworda}
               onChange={( event ) => {
-                setLoginState(
-                  { ...loginState, passworda: event.target.value, error:`` } )
-              }}/>
-          </TextDiv>
-          {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
-          <ButtonDiv onClick={() => login()}>Login</ButtonDiv>
-          <LinkDiv
-            onClick={() => setLoginState(
-              { ...loginState, type: `signup`, error:`` } ) }
-          >Don&apos;t have an account?</LinkDiv>
-          <LinkDiv
-            onClick={() => setLoginState(
-              { ...loginState, type: `forgot`, error:`` } ) }
-          >Forgot password?</LinkDiv>
-        </form>
-      </>
-      }
-      {!isLoggedIn() && loginState.type==`signup` && <>
-        <UserTitle>Sign Up</UserTitle>
-        <TextDiv>
-          <TextInput
-            placeholder='name'
-            name='name'
-            value={loginState.name}
-            onChange={( event ) => {
-              setLoginState( { ...loginState, name: event.target.value } )
-            }}/>
-        </TextDiv>
-        <TextDiv>
-          <TextInput
-            placeholder='email'
-            name='email'
-            value={loginState.email}
-            onChange={( event ) => {
-              setLoginState( { ...loginState, email: event.target.value } )
-            }}/>
-        </TextDiv>
-        <TextDiv>
-          <TextInput
-            type='password'
-            placeholder='password'
-            name='password'
-            value={loginState.passworda}
-            onChange={( event ) => {
-              setLoginState( { ...loginState, passworda: event.target.value } )
-            }}/>
-        </TextDiv>
-        <TextDiv>
-          <TextInput
-            type='password'
-            placeholder='password'
-            name='password'
-            value={loginState.passwordb}
-            onChange={( event ) => {
-              setLoginState( { ...loginState, passwordb: event.target.value } )
-            }}/>
-        </TextDiv>
-        {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
-        <ButtonDiv onClick={() => signUp()}>Sign Up</ButtonDiv>
-        <LinkDiv
-          onClick={() => setLoginState(
-            { ...loginState, type: `login`, error:`` } ) }
-        >Already have an account?</LinkDiv>
-      </>}
-      {loginState.type==`confirm` && <> <UserTitle>Confirmation</UserTitle>
-        <div css={`margin: 1em;`}>
-          You must confirm your email before signing in.
-        </div>
-        {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
-        <LinkDiv onClick={() => resend() }>Didn&apos;t get an email?</LinkDiv>
-      </>}
-      {!isLoggedIn() && loginState.type==`forgot` && <>
-        <UserTitle>Password Reset</UserTitle>
-        <form>
-          <TextDiv>
-            <TextInput
-              placeholder='email'
-              name='email'
-              value={loginState.email}
-              onChange={( event ) => {
-                setLoginState(
-                  { ...loginState, email: event.target.value, error: `` } )
-              }}/>
-          </TextDiv>
-          {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
-          <ButtonDiv onClick={() => forgot()}>Submit</ButtonDiv>
-          <LinkDiv
-            onClick={() => setLoginState(
-              { ...loginState, type: `signup`, error:`` } ) }
-          >Don&apos;t have an account?</LinkDiv>
-        </form>
-      </>
-      }
-      {!isLoggedIn() && loginState.type==`passwordConfirm` && <>
-        <UserTitle>Password Reset</UserTitle>
-        <form>
-          <TextDiv>
-            <TextInput
-              placeholder='code'
-              name='code'
-              value={loginState.code}
-              onChange={( event ) => {
-                setLoginState(
-                  { ...loginState, code: event.target.value, error: `` } )
+                setLoginState( { ...loginState, passworda: event.target.value } )
               }}/>
           </TextDiv>
           <TextDiv>
@@ -310,35 +263,94 @@ export default function Login( { setModal } ) {
               type='password'
               placeholder='password'
               name='password'
-              value={loginState.password}
+              value={loginState.passwordb}
               onChange={( event ) => {
-                setLoginState( { ...loginState, password: event.target.value } )
+                setLoginState( { ...loginState, passwordb: event.target.value } )
               }}/>
           </TextDiv>
           {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
-          <ButtonDiv onClick={() => confirmPassword()}>Submit</ButtonDiv>
+          <ButtonDiv onClick={() => signUp()}>Sign Up</ButtonDiv>
           <LinkDiv
             onClick={() => setLoginState(
-              { ...loginState, type: `signup`, error:`` } ) }
-          >Don&apos;t have an account?</LinkDiv>
-        </form>
+              { ...loginState, type: `login`, error:`` } ) }
+          >Already have an account?</LinkDiv>
+        </>}
+        {loginState.type==`confirm` && <> <UserTitle>Confirmation</UserTitle>
+          <div css={`margin: 1em;`}>
+            You must confirm your email before signing in.
+          </div>
+          {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
+          <LinkDiv onClick={() => resend() }>Didn&apos;t get an email?</LinkDiv>
+        </>}
+        {!isLoggedIn() && loginState.type==`forgot` && <>
+          <UserTitle>Password Reset</UserTitle>
+          <form>
+            <TextDiv>
+              <TextInput
+                placeholder='email'
+                name='email'
+                value={loginState.email}
+                onChange={( event ) => {
+                  setLoginState(
+                    { ...loginState, email: event.target.value, error: `` } )
+                }}/>
+            </TextDiv>
+            {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
+            <ButtonDiv onClick={() => forgot()}>Submit</ButtonDiv>
+            <LinkDiv
+              onClick={() => setLoginState(
+                { ...loginState, type: `signup`, error:`` } ) }
+            >Don&apos;t have an account?</LinkDiv>
+          </form>
+        </>
+        }
+        {!isLoggedIn() && loginState.type==`passwordConfirm` && <>
+          <UserTitle>Password Reset</UserTitle>
+          <form>
+            <TextDiv>
+              <TextInput
+                placeholder='code'
+                name='code'
+                value={loginState.code}
+                onChange={( event ) => {
+                  setLoginState(
+                    { ...loginState, code: event.target.value, error: `` } )
+                }}/>
+            </TextDiv>
+            <TextDiv>
+              <TextInput
+                type='password'
+                placeholder='password'
+                name='password'
+                value={loginState.password}
+                onChange={( event ) => {
+                  setLoginState( { ...loginState, password: event.target.value } )
+                }}/>
+            </TextDiv>
+            {loginState.error && <ErrorDiv>{loginState.error}</ErrorDiv>}
+            <ButtonDiv onClick={() => confirmPassword()}>Submit</ButtonDiv>
+            <LinkDiv
+              onClick={() => setLoginState(
+                { ...loginState, type: `signup`, error:`` } ) }
+            >Don&apos;t have an account?</LinkDiv>
+          </form>
+        </>
+        }
+        {( isLoggedIn() && user[`custom:TermsOfService`] == `0` ) && <>
+          <UserTitle>Terms of Service</UserTitle>
+          <div css={`margin: 1em;`}>
+            <Mdx>{body.mdx.body}</Mdx>
+          </div>
+          <ButtonDiv onClick={() => acceptTOS()}>Accept</ButtonDiv>
+        </>}
+        {isLoggedIn() && <>
+          <UserTitle>Profile</UserTitle>
+          <div css={`margin: 1em;`}>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+          </div>
+          <ButtonDiv onClick={() => signOut()}>Sign Out</ButtonDiv>
+        </>}
       </>
-      }
-      {( isLoggedIn() && user[`custom:TermsOfService`] == `0` ) && <>
-        <UserTitle>Terms of Service</UserTitle>
-        <div css={`margin: 1em;`}>
-          <Mdx>{body.mdx.body}</Mdx>
-        </div>
-        <ButtonDiv onClick={() => acceptTOS()}>Accept</ButtonDiv>
-      </>}
-      {isLoggedIn() && <>
-        <UserTitle>Profile</UserTitle>
-        <div css={`margin: 1em;`}>
-          <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p>
-        </div>
-        <ButtonDiv onClick={() => signOut()}>Sign Out</ButtonDiv>
-      </>}
-    </>
-  )
+    ) }
 }
