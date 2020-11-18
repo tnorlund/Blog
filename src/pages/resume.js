@@ -76,7 +76,6 @@ export default function Resume() {
     }
   ` )
   const { positions, skills } = contentYaml
-  console.log( { positions } )
   return(
     <PageBody>
       <Toc />

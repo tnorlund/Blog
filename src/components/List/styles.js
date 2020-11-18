@@ -43,9 +43,9 @@ export const ProjectDiv = styled.div`
     filter: var(--color-filter);
     /* background: red */
   }
-  &:hover ${Title} {
+  /* &:hover ${Title} {
     color: var(--color-a);
-  }
+  } */
   flex-wrap: nowrap;
   margin-bottom: 25px;
   vertical-align: middle;
@@ -63,3 +63,6 @@ export const DescriptionDiv = styled.div`
   }
 `
 
+export {
+
+}
