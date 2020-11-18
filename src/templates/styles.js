@@ -13,7 +13,7 @@ export const Date = styled.hgroup`
   font-weight: bold;
 `
 
-export const Description = styled.text`
+export const Description = styled.div`
   margin-bottom:1em;
 `
 

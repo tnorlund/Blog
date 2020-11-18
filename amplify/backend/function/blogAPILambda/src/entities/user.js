@@ -1,7 +1,7 @@
 class User {
   /**
    * A user object.
-   * @param {Map} details The details of the user.
+   * @param {Object} details The details of the user.
    */
   constructor(
     { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0` }
@@ -12,23 +12,30 @@ class User {
     if ( !email )
       throw Error( `Must give the user's email` )
     this.email = email
-    this.userNumber = userNumber
+    this.userNumber = parseInt( userNumber )
     this.dateJoined = dateJoined
     this.numberTOS = parseInt( numberTOS )
   }
 
   /**
-   * @returns {Map} The primary key and sort key.
+   * @returns {Object}
+   */
+  pk() {
+    return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
+  }
+
+  /**
+   * @returns {Object} The primary key and sort key.
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000`+this.userNumber ).slice( -6 ) }` },
+      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
       'SK': { 'S': `#USER` }
     }
   }
 
   /**
-   * @returns {Map} The DynamoDB syntax of a User.
+   * @returns {Object} The DynamoDB syntax of a User.
    */
   toItem() {
     return {
@@ -44,14 +51,15 @@ class User {
 
 /**
  * Turns the user from a DynamoDB item into the class.
- * @param {Map} item The item returned from DynamoDB
+ * @param {Object} item The item returned from DynamoDB
  */
 const userFromItem = ( item ) => {
   return new User( {
-    name: item.Name,
-    email: item.Email,
-    dateJoined: item.DateJoined,
-    numberTOS: item.NumberTOS
+    name: item.Name.S,
+    email: item.Email.S,
+    userNumber: item.PK.S.split( `#` )[1],
+    dateJoined: item.DateJoined.S,
+    numberTOS: item.NumberTOS.N
   } )
 }
 

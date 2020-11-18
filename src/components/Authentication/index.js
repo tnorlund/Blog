@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { graphql, useStaticQuery } from 'gatsby'
 import { useEventListener } from 'hooks'
 import { Close, ModalBehind, ModalDiv } from './styles'
-import amplify, { Auth, API } from 'aws-amplify'
-import ReactLoading from "react-loading"
+import Amplify, { Auth, API } from 'aws-amplify'
+import ReactLoading from 'react-loading'
+import credentials from '../../aws-exports'
 
 import Login from './login'
 import Profile from './profile'
@@ -10,13 +12,77 @@ import SignUp from './signup'
 import Check from './check'
 import Forgot from './forgot'
 import ForgotSubmit from './forgotSubmit'
-
+import TermsOfService from './tos'
 
 /**
  * Gets the current Cognito User Session if the user is logged in.
  */
 async function getCurrentSession() {
   return await Auth.currentSession()
+}
+
+/**
+ * Gets the useful user data from the current Cognito user session.
+ * @param {Object} CognitoUserSession The current cognito user session.
+ */
+const parseUser = ( CognitoUserSession ) => {
+  const { name, email, ...restOfUser } = CognitoUserSession.idToken.payload
+  return {
+    name: name, email: email, userNumber: restOfUser[ `custom:UserNumber` ]
+  }
+}
+
+/**
+ * Requests the user using the API.
+ * @param {Object} requestedUser The parsed user data.
+ */
+const userFromDB = async( requestedUser ) => {
+  Amplify.configure( credentials )
+  try {
+    const { user, error } = await API.get(
+      `blogAPI`,
+      `/user-details?name=${
+        requestedUser.name.replace(` `, `\ `)
+      }&email=${
+        requestedUser.email
+      }&number=${
+        requestedUser.userNumber
+      }`
+    )
+    if ( error ) return { error: error }
+    else return { user: user }
+  } catch( error ) { return { error: error } }
+}
+
+/**
+ * Handles the state of the modal view.
+ * @param {String} tosVersion The current version of the Terms of Service.
+ *
+ * This function handles the state of the modal view by requesting the user
+ * details from the DB and determining whether the user needs to accept a Terms
+ * of Service agreement.
+ */
+const handleState = async ( tosVersion ) => {
+  let requestedUser, tos
+  const session = await getCurrentSession()
+  const parsedUser = parseUser( session )
+  const { user, error } = await userFromDB( parsedUser )
+  console.log(`user`, user)
+  // When an error occurs, default to the login state.
+  if ( error )  return { error: error, state: `login` }
+  // Iterate over the different elements returned in order to parse them.
+  user.map( element => {
+    if ( element.name && element.email )
+      requestedUser = element
+  } )
+  // When no user details are returned from the DB, set the state to login.
+  if ( !requestedUser ) return { state: `login` }
+  // When the user has not agreed to any Terms of Service, set the state to
+  // Terms of Service.
+  if ( requestedUser.numberTOS == 0 ) 
+    return { user: requestedUser, state: `tos` }
+  // Otherwise, the user will be shown their profile.
+  else return { user: requestedUser, state: `profile` }
 }
 
 export default function Authentication( { open, setModal } ) {
@@ -32,6 +98,14 @@ export default function Authentication( { open, setModal } ) {
   useEventListener( `keydown`, ( event ) => {
     if( event?.key === `Escape` ) setModal()
   } )
+  // Get the version of the current TOS
+  const tosVersion = new Date(
+    useStaticQuery( graphql`
+      { mdx(
+        fileAbsolutePath: { regex: "/tos/" }
+      ) { frontmatter { version } } }
+    ` ).mdx.frontmatter.version
+  )
   // Before the modal view is rendered, set the styles of the document.
   useEffect( () => {
     if ( open ) document.body.style.overflowY = `hidden`
@@ -40,16 +114,13 @@ export default function Authentication( { open, setModal } ) {
       // ref.current.style.width = `100px`
       // ref.current.style.height = `100px`
     }
-
-    getCurrentSession()
-      .then( result => {
-        setUser( result )
-        setAuthState( `profile` )
+    handleState( tosVersion ).then( 
+      ( { user, requestedUser, error, state } ) => {
+        console.log( `requestedUser`, requestedUser )
+        setUser( user )
+        setAuthState( state )
       } )
-      .catch( error => {
-        console.log(`error`, error)
-        if ( error == `No current user` ) setAuthState( `login` )
-      } )
+    // Set the state of the modal view to not be loading.
     setLoading( false )
   }, [ open ] )
 
@@ -99,6 +170,10 @@ export default function Authentication( { open, setModal } ) {
             {
               authState == `forgotSubmit` &&
               <ForgotSubmit setAuthState={setAuthState} />
+            }
+            {
+              authState == `tos` &&
+              <TermsOfService user={user} setModal={setModal} />
             }
           </ModalDiv>
         }

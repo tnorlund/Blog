@@ -21,7 +21,7 @@ class Blog {
     }
   }
   /**
-   * @returns {Map} The DynamoDB syntax of a blog
+   * @returns {Map} The DynamoDB syntax of a blog.
    */
   toItem() {
     return {

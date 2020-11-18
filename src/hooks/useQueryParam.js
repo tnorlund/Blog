@@ -17,10 +17,6 @@ const handleParam = ( key, value, options ) => {
 
     let target = window.location.pathname + `?` + params.toString()
     target = target.replace( /\/?\?$/, `` ) // remove empty search string
-    console.log(options)
-    console.log({historyMethod})
-    console.log({window})
-    console.log({target})
     // window.history.path = value
     // window.history.path
     // [historyMethod + `State`]( { path: value }, ``, target )

@@ -20,8 +20,10 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider(
 )
 let bodyParser = require( `body-parser` )
 let express = require( `express` )
-const { getBlog, resetBlog, addUserToBlog } = require( `./data` )
-const { User } = require( `./entities` )
+const { 
+  addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog
+} = require( `./data` )
+const { User, TOS } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
 const ADMINGROUP = `Admin`
 
@@ -132,6 +134,74 @@ app.post( `/blog`, async ( request, response ) => {
 } )
 
 /**
+ * Gets a specific user.
+ */
+app.get( `/user`, async ( request, response ) => {
+  // Should use path parameters now
+  // const params = request.apiGateway.event.queryStringParameters
+  const params = request.query
+  if ( !params.name )
+    response.json( {
+      statusCode: 400, error: `Must give name in parameters`
+    } )
+  else if ( !params.email )
+    response.json( {
+      statusCode: 400, error: `Must give email in parameters`
+    } )
+  else if ( !params.number )
+    response.json( {
+      statusCode: 400, error: `Must give number in parameters`
+    } )
+  else {
+    const { name, email, number } = params
+    const requestedUser = new User( {
+      name: name, email: email, userNumber: number
+    } )
+    const { user, error } = await getUser( tableName, requestedUser )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else  {
+      if ( 
+        requestedUser.name != user.name ||
+        requestedUser.email != user.email ||
+        requestedUser.userNumber != user.userNumber
+      ) response.json( {
+        statusCode: 400, error: `Given credentials are not correct`
+      } )
+      else response.json( { statusCode: 200, user: user } )
+    }
+  }
+} )
+
+/**
+ * Get a specific user's details. 
+ */
+app.get( `/user-details`, async ( request, response ) => {
+  console.log(`querying user details`)
+  const params = request.query
+  if ( !params.name )
+    response.json( {
+      statusCode: 400, error: `Must give name in parameters`
+    } )
+  else if ( !params.email )
+    response.json( {
+      statusCode: 400, error: `Must give email in parameters`
+    } )
+  else if ( !params.number )
+    response.json( {
+      statusCode: 400, error: `Must give number in parameters`
+    } )
+  else {
+    const { name, email, number } = params
+    const requestedUser = new User( {
+      name: name, email: email, userNumber: number
+    } )
+    const { user, error } = await getUserDetails( tableName, requestedUser )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, user: user } )
+  }
+} )
+
+/**
  * Adds a user to the blog.
  */
 app.post( `/user`, async ( request, response ) => {
@@ -148,7 +218,42 @@ app.post( `/user`, async ( request, response ) => {
     const newUser = new User( { name: name, email: email } )
     const { user, error } = await addUserToBlog( tableName, newUser )
     if ( error ) response.json( { statusCode: 500, error: error } )
-    else response.json( { statusCode: 200, User: user } )
+    else response.json( { statusCode: 200, user: user } )
+  }
+} )
+
+/**
+ * Adds a terms of service to a user.
+ */
+app.post( `/tos`, async ( request, response ) => {
+  console.log(`posting TOS`)
+  const params = request.body
+  if ( !params.name )
+    response.json( {
+      statusCode: 400, error: `Must give name in body`
+    } )
+  else if ( !params.email )
+    response.json( {
+      statusCode: 400, error: `Must give email in body`
+    } )
+  else if ( !params.number )
+    response.json( {
+      statusCode: 400, error: `Must give number in body`
+    } )
+  else if ( !params.version )
+    response.json( {
+      statusCode: 400, error: `Must give version in body`
+    } )
+  else {
+    const { name, email, number, version } = params
+    const requestedUser = new User( {
+      name: name, email: email, userNumber: number
+    } )
+    const { tos, error} = await addTOSToUser(
+      tableName, requestedUser, version
+    )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, tos: tos } )
   }
 } )
 
@@ -157,107 +262,107 @@ app.post( `/user`, async ( request, response ) => {
  * HTTP Get method for list objects *
  ********************************/
 
-app.get( path + hashKeyPath, function( req, res ) {
-  let condition = {}
-  condition[partitionKeyName] = {
-    ComparisonOperator: `EQ`
-  }
+// app.get( path + hashKeyPath, function( req, res ) {
+//   let condition = {}
+//   condition[partitionKeyName] = {
+//     ComparisonOperator: `EQ`
+//   }
 
-  if ( userIdPresent && req.apiGateway ) {
-    condition[partitionKeyName][`AttributeValueList`] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ]
-  } else {
-    try {
-      condition[partitionKeyName][`AttributeValueList`] = [ convertUrlType( req.params[partitionKeyName], partitionKeyType ) ]
-    } catch( err ) {
-      res.statusCode = 500
-      res.json( { error: `Wrong column type ` + err } )
-    }
-  }
+//   if ( userIdPresent && req.apiGateway ) {
+//     condition[partitionKeyName][`AttributeValueList`] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ]
+//   } else {
+//     try {
+//       condition[partitionKeyName][`AttributeValueList`] = [ convertUrlType( req.params[partitionKeyName], partitionKeyType ) ]
+//     } catch( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Wrong column type ` + err } )
+//     }
+//   }
 
-  let queryParams = {
-    TableName: tableName,
-    KeyConditions: condition
-  }
+//   let queryParams = {
+//     TableName: tableName,
+//     KeyConditions: condition
+//   }
 
-  dynamodb.query( queryParams, ( err, data ) => {
-    if ( err ) {
-      res.statusCode = 500
-      res.json( { error: `Could not load items: ` + err } )
-    } else {
-      res.json( data.Items )
-    }
-  } )
-} )
+//   dynamodb.query( queryParams, ( err, data ) => {
+//     if ( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Could not load items: ` + err } )
+//     } else {
+//       res.json( data.Items )
+//     }
+//   } )
+// } )
 
 /** ***************************************
  * HTTP Get method for get single object *
  *****************************************/
 
-app.get( path + `/object` + hashKeyPath + sortKeyPath, function( req, res ) {
-  let params = {}
-  if ( userIdPresent && req.apiGateway ) {
-    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName]
-    try {
-      params[partitionKeyName] = convertUrlType( req.params[partitionKeyName], partitionKeyType )
-    } catch( err ) {
-      res.statusCode = 500
-      res.json( { error: `Wrong column type ` + err } )
-    }
-  }
-  if ( hasSortKey ) {
-    try {
-      params[sortKeyName] = convertUrlType( req.params[sortKeyName], sortKeyType )
-    } catch( err ) {
-      res.statusCode = 500
-      res.json( { error: `Wrong column type ` + err } )
-    }
-  }
+// app.get( path + `/object` + hashKeyPath + sortKeyPath, function( req, res ) {
+//   let params = {}
+//   if ( userIdPresent && req.apiGateway ) {
+//     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
+//   } else {
+//     params[partitionKeyName] = req.params[partitionKeyName]
+//     try {
+//       params[partitionKeyName] = convertUrlType( req.params[partitionKeyName], partitionKeyType )
+//     } catch( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Wrong column type ` + err } )
+//     }
+//   }
+//   if ( hasSortKey ) {
+//     try {
+//       params[sortKeyName] = convertUrlType( req.params[sortKeyName], sortKeyType )
+//     } catch( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Wrong column type ` + err } )
+//     }
+//   }
 
-  let getItemParams = {
-    TableName: tableName,
-    Key: params
-  }
+//   let getItemParams = {
+//     TableName: tableName,
+//     Key: params
+//   }
 
-  dynamodb.get( getItemParams,( err, data ) => {
-    if( err ) {
-      res.statusCode = 500
-      res.json( { error: `Could not load items: ` + err.message } )
-    } else {
-      if ( data.Item ) {
-        res.json( data.Item )
-      } else {
-        res.json( data )
-      }
-    }
-  } )
-} )
+//   dynamodb.get( getItemParams,( err, data ) => {
+//     if( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Could not load items: ` + err.message } )
+//     } else {
+//       if ( data.Item ) {
+//         res.json( data.Item )
+//       } else {
+//         res.json( data )
+//       }
+//     }
+//   } )
+// } )
 
 
 /** **********************************
 * HTTP put method for insert object *
 *************************************/
 
-app.put( path, function( req, res ) {
+// app.put( path, function( req, res ) {
 
-  if ( userIdPresent ) {
-    req.body[`userId`] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
-  }
+//   if ( userIdPresent ) {
+//     req.body[`userId`] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
+//   }
 
-  let putItemParams = {
-    TableName: tableName,
-    Item: req.body
-  }
-  dynamodb.put( putItemParams, ( err, data ) => {
-    if( err ) {
-      res.statusCode = 500
-      res.json( { error: err, url: req.url, body: req.body } )
-    } else{
-      res.json( { success: `put call succeed!`, url: req.url, data: data } )
-    }
-  } )
-} )
+//   let putItemParams = {
+//     TableName: tableName,
+//     Item: req.body
+//   }
+//   dynamodb.put( putItemParams, ( err, data ) => {
+//     if( err ) {
+//       res.statusCode = 500
+//       res.json( { error: err, url: req.url, body: req.body } )
+//     } else{
+//       res.json( { success: `put call succeed!`, url: req.url, data: data } )
+//     }
+//   } )
+// } )
 
 /** **********************************
 * HTTP post method for insert object *
@@ -288,41 +393,41 @@ app.put( path, function( req, res ) {
 * HTTP remove method to delete object *
 ***************************************/
 
-app.delete( path + `/object` + hashKeyPath + sortKeyPath, function( req, res ) {
-  let params = {}
-  if ( userIdPresent && req.apiGateway ) {
-    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName]
-    try {
-      params[partitionKeyName] = convertUrlType( req.params[partitionKeyName], partitionKeyType )
-    } catch( err ) {
-      res.statusCode = 500
-      res.json( { error: `Wrong column type ` + err } )
-    }
-  }
-  if ( hasSortKey ) {
-    try {
-      params[sortKeyName] = convertUrlType( req.params[sortKeyName], sortKeyType )
-    } catch( err ) {
-      res.statusCode = 500
-      res.json( { error: `Wrong column type ` + err } )
-    }
-  }
+// app.delete( path + `/object` + hashKeyPath + sortKeyPath, function( req, res ) {
+//   let params = {}
+//   if ( userIdPresent && req.apiGateway ) {
+//     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH
+//   } else {
+//     params[partitionKeyName] = req.params[partitionKeyName]
+//     try {
+//       params[partitionKeyName] = convertUrlType( req.params[partitionKeyName], partitionKeyType )
+//     } catch( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Wrong column type ` + err } )
+//     }
+//   }
+//   if ( hasSortKey ) {
+//     try {
+//       params[sortKeyName] = convertUrlType( req.params[sortKeyName], sortKeyType )
+//     } catch( err ) {
+//       res.statusCode = 500
+//       res.json( { error: `Wrong column type ` + err } )
+//     }
+//   }
 
-  let removeItemParams = {
-    TableName: tableName,
-    Key: params
-  }
-  dynamodb.delete( removeItemParams, ( err, data )=> {
-    if( err ) {
-      res.statusCode = 500
-      res.json( { error: err, url: req.url } )
-    } else {
-      res.json( { url: req.url, data: data } )
-    }
-  } )
-} )
+//   let removeItemParams = {
+//     TableName: tableName,
+//     Key: params
+//   }
+//   dynamodb.delete( removeItemParams, ( err, data )=> {
+//     if( err ) {
+//       res.statusCode = 500
+//       res.json( { error: err, url: req.url } )
+//     } else {
+//       res.json( { url: req.url, data: data } )
+//     }
+//   } )
+// } )
 app.listen( 3000, function() {
   console.log( `App started` )
 } )

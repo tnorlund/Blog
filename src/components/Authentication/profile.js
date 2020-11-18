@@ -9,13 +9,16 @@ export default function Profile( { user, setModal } ) {
   // A function for signing out
   const signOut = async() => {
     Amplify.configure( credentials )
-    const response = await API.post(
-      `blogAPI`, `/user`,
-      { body: {
-        name: `Tyler Norlund`, email: `tnorlund@icloud.com`
-      } } )
+    await API.get( `blogAPI`, `/user?name=Tyler\ Norlund&email=tnorlund@icloud.com&number=14` )
+      .then( result => console.log( `result`, result ) )
+      .catch( error => console.log( `error`, error ) )
+    const response = await API.get( `blogAPI`, `/user-details?name=Tyler\ Norlund&email=tnorlund@icloud.com&number=14` )
       .catch( error => console.log( `Errored: `, error ) )
     console.log(`response`, response )
+
+
+
+
     // Auth.signOut()
     //   .then( () => setModal( false ) )
     //   .catch( error => {
@@ -23,8 +26,7 @@ export default function Profile( { user, setModal } ) {
     //     console.log( `errored signing out`, error )
     //   } )
   }
-  console.log(user)
-  const { name, email } = user.idToken.payload
+  const { name, email } = user
   return(
     <>
       <Title>Profile</Title>

@@ -19,16 +19,15 @@ export default function SignUp( { setAuthState } ) {
       if ( statusCode != 200 )
         setSignUpState( { ...signUpState, error: `Couldn't get Blog data` } )
       else {
+        // Cognito uses some custom attributes
         const attributes = {
           email: signUpState.email, name: signUpState.name,
           'custom:UserNumber': `${body.numberUsers + 1}`
         }
-        console.log( `attributes`, attributes )
         Auth.signUp( {
           username: signUpState.email, password: signUpState.password.a,
           attributes: attributes
         } ).then( result => {
-          console.log( `result`, result )
           if ( !result.userConfirmed ) setAuthState( `check` )
         } ).catch( error => {
           console.log( `error`, error )

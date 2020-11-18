@@ -21,37 +21,8 @@ exports.handler = ( event, context, callback ) => {
       tableName = tableName + `-` + process.env.ENV
 
     // Add this user to the DynamoDB.
-    const user = new User( { name: name, email: email } )
-    // async.asyncify( async () => {
-    //   const { response, error } = await addUserToBlog( tableName, user )
-    //   // eslint-disable-next-line no-console
-    //   if ( error ) console.log( `error`, error )
-    //   else console.log( `response`, response )
-    // } )
-
-    // async.auto( {
-    //   'addUser':  async.asyncify( async () => {
-    //     const { response, error } = await addUserToBlog( tableName, user )
-    //     // eslint-disable-next-line no-console
-    //     if ( error ) console.log( `error`, error )
-    //     else console.log( `response`, response )
-    //   } )
-    // },  ( error, response ) => {
-    //   if ( error ) {
-    //     // eslint-disable-next-line no-console
-    //     console.log( `Could not add ${user.name} to DynamoDB: ${error}` )
-    //   } else {
-    //     // eslint-disable-next-line no-console
-    //     console.log( `response: `, response )
-    //   }
-    // } )
-
-    // eslint-disable-next-line no-console
-    console.log( `Attempting to add user to DynamoDB` )
-    addUserToBlog( tableName, user )
-    // eslint-disable-next-line no-console
-    console.log( `added user to DynamoDB` )
-
+    const newUser = new User( { name: name, email: email } )
+    
     // Look through the different regions to see which region the event was
     // called from.
     const hyphenRegions = [
@@ -74,8 +45,19 @@ exports.handler = ( event, context, callback ) => {
     event.response.smsMessage = message
     event.response.emailSubject = process.env.EMAILSUBJECT
     event.response.emailMessage = message
+
+    addUserToBlog( tableName, newUser )
+      .then( ( { user, error } ) => {
+        if ( error ) console.log( `Couldn't add user`, error )
+        callback( null, event )
+      } )
+      .catch( error => {
+        console.log( `caught error`, error )
+        callback( null, event )
+    } )
+
     // Make the callback to complete the event.
-    callback( null, event )
+    // callback( null, event )
   } else {
     callback( null, event )
   }

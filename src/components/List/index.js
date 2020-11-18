@@ -6,7 +6,6 @@ import {
 } from './styles'
 
 export default function List( { type } ) {
-  console.log(type)
   const { blog, project } = useStaticQuery( graphql`
   {
     blog: allMdx(
