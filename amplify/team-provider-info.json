@@ -23,7 +23,8 @@
         }
       },
       "auth": {
-        "blogAuth": {}
+        "blogAuth": {},
+        "userPoolGroups": {}
       }
     }
   }

@@ -1,15 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useEventListener, useQueryParam } from 'hooks'
+import { useEventListener } from 'hooks'
 import { Close, ModalBehind, ModalDiv } from './styles'
-import Amplify, { Auth, API } from 'aws-amplify'
-import ReactLoading from "react-loading";
+import amplify, { Auth, API } from 'aws-amplify'
+import ReactLoading from "react-loading"
 
 import Login from './login'
 import Profile from './profile'
+import SignUp from './signup'
+import Check from './check'
+import Forgot from './forgot'
+import ForgotSubmit from './forgotSubmit'
 
+
+/**
+ * Gets the current Cognito User Session if the user is logged in.
+ */
 async function getCurrentSession() {
   return await Auth.currentSession()
 }
+
 export default function Authentication( { open, setModal } ) {
   // Use a state for whether the page is still loading data from the server.
   const [ loading, setLoading ] = useState( true )
@@ -24,29 +33,31 @@ export default function Authentication( { open, setModal } ) {
     if( event?.key === `Escape` ) setModal()
   } )
   // Before the modal view is rendered, set the styles of the document.
-  // useEffect( () => {
-  //   if ( open ) document.body.style.overflowY = `hidden`
-  //   if ( ref.current ) {
-  //     ref.current.style.zIndex = 3
-  //     // ref.current.style.width = `100px`
-  //     // ref.current.style.height = `100px`
-  //   }
+  useEffect( () => {
+    if ( open ) document.body.style.overflowY = `hidden`
+    if ( ref.current ) {
+      ref.current.style.zIndex = 3
+      // ref.current.style.width = `100px`
+      // ref.current.style.height = `100px`
+    }
 
-  //   getCurrentSession()
-  //     .then( result => {
-  //       setUser( result )
-  //       setAuthState( `profile` )
-  //     } )
-  //     .catch( error => {
-  //       if ( error == `No current user` ) setAuthState( `login` )
-  //     } )
-  //   // setLoading( false )
-  // }, [ open ] )
+    getCurrentSession()
+      .then( result => {
+        setUser( result )
+        setAuthState( `profile` )
+      } )
+      .catch( error => {
+        console.log(`error`, error)
+        if ( error == `No current user` ) setAuthState( `login` )
+      } )
+    setLoading( false )
+  }, [ open ] )
 
   if ( open )
     return (
       <ModalBehind open={open} onClick={ () => setModal( false ) }>
         {
+          // The modal view will either be authenticated or not.
           loading &&
           <ModalDiv
             onClick={ event => event.stopPropagation() }
@@ -65,8 +76,30 @@ export default function Authentication( { open, setModal } ) {
             { ...{ ref } }
           >
             <Close onClick={ () => setModal( false ) } />
-            {/* {authState == `login` && <Login/>}
-            {authState == `profile` && <Profile user={user}/>} */}
+            {
+              authState == `login` &&
+              <Login setAuthState={setAuthState} setModal={setModal}/>
+            }
+            {
+              authState == `profile` &&
+              <Profile user={user} setModal={setModal}/>
+            }
+            {
+              authState == `signup` &&
+              <SignUp setAuthState={setAuthState} />
+            }
+            {
+              authState == `check` &&
+              <Check/>
+            }
+            {
+              authState == `forgot` &&
+              <Forgot setAuthState={setAuthState} />
+            }
+            {
+              authState == `forgotSubmit` &&
+              <ForgotSubmit setAuthState={setAuthState} />
+            }
           </ModalDiv>
         }
       </ModalBehind>

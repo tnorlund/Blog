@@ -4,7 +4,7 @@ class User {
    * @param {Map} details The details of the user.
    */
   constructor(
-    { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS }
+    { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0` }
   ) {
     if ( !name )
       throw Error( `Must give the user's name` )

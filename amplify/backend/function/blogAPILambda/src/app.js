@@ -1,9 +1,13 @@
 /*
 Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
+Licensed under the Apache License, Version 2.0 (the "License"). You may not
+use this file except in compliance with the License. A copy of the License is
+located at
     http://aws.amazon.com/apache2.0/
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
+or in the "license" file accompanying this file. This file is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. See the License for the specific language governing permissions and
+limitations under the License.
 */
 
 
@@ -16,7 +20,8 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider(
 )
 let bodyParser = require( `body-parser` )
 let express = require( `express` )
-const { getBlog, resetBlog } = require( `./data` )
+const { getBlog, resetBlog, addUserToBlog } = require( `./data` )
+const { User } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
 const ADMINGROUP = `Admin`
 
@@ -80,7 +85,10 @@ app.use( awsServerlessExpressMiddleware.eventContext() )
 // Enable CORS for all methods
 app.use( function( req, res, next ) {
   res.header( `Access-Control-Allow-Origin`, `*` )
-  res.header( `Access-Control-Allow-Headers`, `Origin, X-Requested-With, Content-Type, Accept` )
+  res.header(
+    `Access-Control-Allow-Headers`,
+    `Origin, X-Requested-With, Content-Type, Accept`
+  )
   next()
 } )
 
@@ -121,6 +129,27 @@ app.post( `/blog`, async ( request, response ) => {
   } else response.json(
     { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
   )
+} )
+
+/**
+ * Adds a user to the blog.
+ */
+app.post( `/user`, async ( request, response ) => {
+  if ( !request.body.name )
+    response.json( {
+      statusCode: 400, error: `Must give name in body of request`
+    } )
+  else if ( !request.body.email )
+    response.json( {
+      statusCode: 400, error: `Must give email in body of request`
+    } )
+  else {
+    const { name, email } = request.body
+    const newUser = new User( { name: name, email: email } )
+    const { user, error } = await addUserToBlog( tableName, newUser )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, User: user } )
+  }
 } )
 
 

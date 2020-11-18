@@ -1,21 +1,30 @@
 import React from 'react'
-import { Title, TextDiv, TextInput, ButtonDiv, BodyDiv } from './styles'
-import { Auth } from 'aws-amplify'
+import { Title, ButtonDiv, BodyDiv } from './styles'
+import Amplify, { Auth, API } from 'aws-amplify'
+import credentials from '../../aws-exports'
 
-// A function for signing out
-const signOut = async() => {
-  Auth.signOut()
-    .then( () => {
-      window.location.reload()
-    } )
-}
 
-export default function Profile( user ) {
-  const { name, email } = user.user.idToken.payload
+
+export default function Profile( { user, setModal } ) {
   // A function for signing out
   const signOut = async() => {
-    Auth.signOut()
+    Amplify.configure( credentials )
+    const response = await API.post(
+      `blogAPI`, `/user`,
+      { body: {
+        name: `Tyler Norlund`, email: `tnorlund@icloud.com`
+      } } )
+      .catch( error => console.log( `Errored: `, error ) )
+    console.log(`response`, response )
+    // Auth.signOut()
+    //   .then( () => setModal( false ) )
+    //   .catch( error => {
+    //     // eslint-disable-next-line no-console
+    //     console.log( `errored signing out`, error )
+    //   } )
   }
+  console.log(user)
+  const { name, email } = user.idToken.payload
   return(
     <>
       <Title>Profile</Title>

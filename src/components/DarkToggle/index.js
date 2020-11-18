@@ -10,6 +10,7 @@ const modes = {
 }
 
 export default function DarkToggle( { size = `1em`, ...rest } ) {
+  console.log(`DarkToggle`)
   const [colorMode, setColorMode] = useDarkMode()
   if ( colorMode && ![`light`, `dark`, `osPref`].includes( colorMode ) )
     console.error( `Invalid color mode: ${colorMode}` )

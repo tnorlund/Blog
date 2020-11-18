@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Title, TextDiv, TextInput, ButtonDiv, Error } from './styles'
+import { Title, TextDiv, TextInput, ButtonDiv, Error, Link } from './styles'
 import { Auth } from 'aws-amplify'
-import { setUser } from '../../utils/auth'
 
-export default function Login() {
+export default function Login( { setAuthState, setModal } ) {
   // Sets the state for the login form.
   const [ loginState, setLoginState ] = useState( {
     email: ``, password: ``, error: ``
@@ -19,14 +18,9 @@ export default function Login() {
     // attributes.
     else {
       Auth.signIn( email, password )
-        .then( ( result ) => {
-          const userInfo = {
-            ...result.attributes, username: result.username
-          }
-          // Use the util to store the user credentials in the session
-          setUser( userInfo )
-          // Reload the page
-          window.location.reload()
+        .then( () => {
+          // Once the credentials have been set, remove the modal view.
+          setModal( false )
         } )
         .catch( error => {
           if ( error.code == `UserNotConfirmedException` ) setLoginState( {
@@ -59,6 +53,10 @@ export default function Login() {
         />
       </TextDiv>
       {loginState.error && <Error>{loginState.error}</Error>}
+      <Link onClick={() => setAuthState( `signup` )}
+      >Don&apos;t have an account?</Link>
+      <Link onClick={() => setAuthState( `forgot` )}
+      >Forgot Password?</Link>
       <ButtonDiv onClick={ () => login() }>Login</ButtonDiv>
     </>
   )

@@ -59,10 +59,8 @@ export const Title = styled.hgroup`
   margin: 0.5em;
 `
 export const BodyDiv = styled.div`
-  margin-left: 1em;
-  margin-right: 1em;
+  margin: 1em;
 `
-
 
 export const TextInput = styled.input`
   width: 95%;
@@ -85,6 +83,12 @@ export const ButtonDiv = styled.div`
   :hover {
     color: var(--color-a);
   }
+`
+
+export const Link = styled.div`
+  margin-left: 1em;
+  font-weight: bold;
+  color: var(--color-lightLink);
 `
 
 export const Error = styled.div`

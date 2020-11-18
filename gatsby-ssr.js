@@ -8,7 +8,6 @@ import {
 } from 'utils/constants'
 
 function setColorsByTheme() {
-  console.log("setColorsByTheme")
   // Don't use backticks around emojis. Breaks replacement in boundFn below.
   // eslint-disable-next-line quotes
   const [colors, colorModeKey, colorModeCssProp] = ['🌈', '🔑', '⚡️']

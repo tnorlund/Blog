@@ -9,27 +9,23 @@ const { Blog, blogFromItem } = require( `../entities` )
  */
 const addUserToBlog = async ( tableName, user ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
-
   const { blog, error } = await incrementNumberUsers( tableName )
   if ( error ) return { error: error }
-
-  // eslint-disable-next-line no-console
-  console.log( `addUserToBlog`, blog )
-
+  // Set the user's number to the new number of users in the blog.
   user.userNumber = blog.numberUsers
-  const response = await dynamoDB.putItem( {
-    TableName: tableName,
-    Item: user.toItem(),
-    ConditionExpression: `attribute_not_exists(PK)`
-  } ).promise()
-    .catch( error => {
-      let errorMessage = `Could not add user to blog`
-      if ( error.code === `ConditionalCheckFailedException` )
-        errorMessage = `${user.name} is already in DynamoDB`
-      return { 'error': errorMessage }
-    } )
-  // eslint-disable-next-line no-console
-  console.log( `response`, response )
+  try {
+    await dynamoDB.putItem( {
+      TableName: tableName,
+      Item: user.toItem(),
+      ConditionExpression: `attribute_not_exists(PK)`
+    } ).promise()
+    return { user: user }
+  } catch( error ) {
+    let errorMessage = `Could not add user to blog`
+    if ( error.code === `ConditionalCheckFailedException` )
+      errorMessage = `${user.name} is already in DynamoDB`
+    return { 'error': errorMessage }
+  }
 }
 
 /**
@@ -40,31 +36,25 @@ const incrementNumberUsers = async ( tableName ) => {
   if ( !tableName )
     throw new Error( `Must give the name of the DynamoDB table` )
   let blog = new Blog( {} )
-  // eslint-disable-next-line no-console
-  console.log( `new Blog`, blog )
-  // eslint-disable-next-line no-console
-  console.log( `blog key`, blog.key() )
-  const response = await dynamoDB.updateItem( {
-    TableName: tableName,
-    Key: blog.key(),
-    ConditionExpression: `attribute_exists(PK)`,
-    UpdateExpression: `SET #count = #count + :inc`,
-    ExpressionAttributeNames: {
-      '#count': `NumberUsers`
-    },
-    ExpressionAttributeValues: {
-      ':inc': { 'N': `1` }
-    },
-    ReturnValues: `ALL_NEW`
-  } ).promise()
-    .catch( error => {
-      let errorMessage = `Could not add user to blog`
-      if ( error.code === `ConditionalCheckFailedException` )
-        errorMessage = `Blog does not exist`
-      return { 'error': errorMessage }
-    } )
-  if ( !response.Attributes ) return { 'error': `Could not find blog` }
-  return { 'blog': blogFromItem( response.Attributes ) }
+  try {
+    const response = await dynamoDB.updateItem( {
+      TableName: tableName,
+      Key: blog.key(),
+      ConditionExpression: `attribute_exists(PK)`,
+      UpdateExpression: `SET #count = #count + :inc`,
+      ExpressionAttributeNames: { '#count': `NumberUsers` },
+      ExpressionAttributeValues: { ':inc': { 'N': `1` } },
+      ReturnValues: `ALL_NEW`
+    } ).promise()
+    if ( !response.Attributes ) return { 'error': `Could not find blog` }
+    return { 'blog': blogFromItem( response.Attributes ) }
+  } catch( error ) {
+    let errorMessage = `Could not add user to blog`
+    if ( error.code === `ConditionalCheckFailedException` )
+      errorMessage = `Blog does not exist`
+    return { 'error': errorMessage }
+  }
+  
 }
 
 module.exports = { addUserToBlog }

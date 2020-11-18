@@ -1,65 +1,54 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { PageBody, Icon } from 'components/styles'
-import styled from 'styled-components'
+import { PostDiv, PostTitle, PostDate, Description } from 'components/List/styles'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
-import ProjectPostList from 'views/ProjectPostList'
-import BackButton from 'components/BackButton'
+// import ProjectPostList from 'views/ProjectPostList'
+import { Date, Title } from './styles'
 
-const PostTitle = styled.h1`
-  margin-bottom: 3px;
-  border-bottom: 4px solid var(--color-b);
-`
 
-const ProjectPostTemplate = ( { data } ) => {
+export default function Project( { data } ) {
+  // Destructure the response from the original query.
   const { project, posts } = data
   const title = project.frontmatter.title
   const body = project.body
-  const iconURL = project.frontmatter.icon.publicURL
-  const projectPosts = posts.edges
-  return (
+  const icon = project.frontmatter.icon.publicURL
+  
+  console.log(posts)
+  return(
     <PageBody>
-      <PostTitle>{title}</PostTitle>
-      <Icon src={iconURL} alt={title} height={`150px`} />
+      <Title>{title}</Title>
+      <Icon src={icon} alt={title} height={`150px`} />
       <Mdx>{body}</Mdx>
-      <ProjectPostList data={projectPosts}/>
-      <BackButton slug={`/projects`} text={`Projects`} />
+      {posts.edges.map( 
+        ( { node: { frontmatter: { title, slug, description, date } } } ) =>
+        <PostDiv key={title}>
+          <PostTitle>
+            <Link to={slug} rel={title}>{title}</Link>
+          </PostTitle>
+          <PostDate>{date}</PostDate>
+          <Description>{description}</Description>
+        </PostDiv>
+      )}
     </PageBody>
   )
 }
 
-export default ProjectPostTemplate
 
 // Query the page, previous page, and next page based on the slug given.
 export const query = graphql`
-  query ProjectPostBySlug(
-    $slug: String!, $regex: String!
-  ) {
+  query ProjectPostBySlug( $slug: String!, $regex: String! ) {
     project: mdx( frontmatter: { slug: {eq: $slug} } ) {
-      id
-      body
+      id, body,
       frontmatter {
-        title
-        date(formatString: "MMMM DD, YYYY")
-        description
-        slug
-        icon { publicURL }
+        title, date(formatString: "MMMM DD, YYYY"), description, slug, icon { publicURL }
       }
     }
     posts: allMdx( 
       filter: { frontmatter: { slug: { regex: $regex } } } 
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
-      edges {
-        node {
-          frontmatter {
-            title
-            slug
-            date(formatString: "MMM DD, YYYY")
-            description
-          }
-        }
-      }
+      edges { node { frontmatter { title, slug, date(formatString: "MMM DD, YYYY"), description } } }
     }
   }
 `

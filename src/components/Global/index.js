@@ -1,8 +1,7 @@
+import React from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import Scroll from '../Scroll'
-
-import React from 'react'
 import SyntaxHighlight from 'utils/syntaxHighlight'
 import Header from '../Header'
 import Footer from '../Footer'

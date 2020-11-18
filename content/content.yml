@@ -4,9 +4,6 @@ poweredBy:
   - url: https://gatsbyjs.org
     title: Gatsby
     logo: Gatsby
-  - url: https://github.com/tnorlund/Blog
-    title: Github
-    logo: Github
   - url: https://aws.amazon.com/amplify/
     title: Amplify
     logo: LogoAmplify

@@ -1,5 +1,5 @@
-import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
+import { graphql, useStaticQuery } from 'gatsby'
 import { FooterDiv, PoweredBy, Icons } from './styles'
 
 export default function Footer() {

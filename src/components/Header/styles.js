@@ -1,6 +1,8 @@
 import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { mediaQueries } from 'utils/mediaQueries'
+import { User3 } from 'styled-icons/remix-fill'
+
 
 export const HeaderDiv = styled.header`
   background: var(--color-b);
@@ -28,6 +30,16 @@ export const IconDiv = styled.div`
   grid-gap: 1em;
   width: 4em;
 `
+
+// Needed as a selector in Notification below.
+export const Div = styled.div`
+  svg {
+    vertical-align: -0.1em;
+    height: 1em
+  }
+`
+
+
 export const UserTitle = styled.hgroup`
   font-size: 2em;
   font-weight: bold;
@@ -41,4 +53,10 @@ export const Logo = styled( Link )`
   /* transform: scale(1, 0.75); */
   color: inherit;
   justify-self: center;
+`
+
+export const Icon = styled( User3 ).attrs( props => ( {
+  size: props.size || `1.6em`
+} ) )`
+
 `

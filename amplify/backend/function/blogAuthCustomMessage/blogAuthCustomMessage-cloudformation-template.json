@@ -133,7 +133,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-blog-env-114924-deployment",
-          "S3Key": "amplify-builds/blogAuthCustomMessage-5737654c72502f5a516c-build.zip"
+          "S3Key": "amplify-builds/blogAuthCustomMessage-487a366c616e4e365067-build.zip"
         },
         "Layers": []
       }

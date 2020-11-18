@@ -9,22 +9,18 @@ const { Blog, blogFromItem } = require( `../entities` )
 const getBlog = async ( tableName ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
   const blog = new Blog( {} )
-  dynamoDB.getItem( {
-    TableName: tableName,
-    Key: blog.key()
-  } )
-    .promise()
-    .then( result => {
-      // eslint-disable-next-line no-console
-      console.log( `getBlog`, { result } )
-      if ( !result.Item ) return { error: `Blog does not exist` }
-      return { blog: blogFromItem( result.Item ) }
-    } )
-    .catch( error => {
-      // eslint-disable-next-line no-console
-      console.log( `Failed to get blog`, error )
-      return { error: `Could not retrieve blog` }
-    } )
+  try {
+    const result = await dynamoDB.getItem( {
+      TableName: tableName,
+      Key: blog.key()
+    } ).promise()
+    if ( !result.Item ) return { error: `Blog does not exist` }
+    return { blog: blogFromItem( result.Item ) }
+  } catch( error ) {
+    // eslint-disable-next-line no-console
+    console.log( `Failed to get blog`, error )
+    return { error: `Could not retrieve blog` }
+  }
 }
 
 module.exports = {

@@ -1,6 +1,5 @@
-const aws = require( `aws-sdk` )
-const { Blog, User } = require( `./entities` )
-const { createBlog, addUserToBlog, getBlog } = require( `./data` )
+const { User } = require( `./entities` )
+const { addUserToBlog } = require( `./data` )
 const async = require( `async` )
 
 exports.handler = ( event, context, callback ) => {
@@ -12,55 +11,71 @@ exports.handler = ( event, context, callback ) => {
     const { clientId } = event.callerContext
     const redirectUrl = `${process.env.REDIRECTURL}/?username=${userName}`
     const resourcePrefix = process.env.RESOURCENAME.split( `CustomMessage` )[0]
+
     // Get the user attributes
     const { name, email } = event.request.userAttributes
+
     // Set the table name
     let tableName = `blogDB`
-    if( process.env.ENV && process.env.ENV !== `NONE` ) {
+    if( process.env.ENV && process.env.ENV !== `NONE` )
       tableName = tableName + `-` + process.env.ENV
-    }
-    const blog = new Blog( {} )
-    // eslint-disable-next-line no-console
-    console.log( `verification-link`, blog )
+
     // Add this user to the DynamoDB.
     const user = new User( { name: name, email: email } )
-    // addUserToBlog( tableName, user )
-    // console.log(`completed addUserToBlog`)
+    // async.asyncify( async () => {
+    //   const { response, error } = await addUserToBlog( tableName, user )
+    //   // eslint-disable-next-line no-console
+    //   if ( error ) console.log( `error`, error )
+    //   else console.log( `response`, response )
+    // } )
 
+    // async.auto( {
+    //   'addUser':  async.asyncify( async () => {
+    //     const { response, error } = await addUserToBlog( tableName, user )
+    //     // eslint-disable-next-line no-console
+    //     if ( error ) console.log( `error`, error )
+    //     else console.log( `response`, response )
+    //   } )
+    // },  ( error, response ) => {
+    //   if ( error ) {
+    //     // eslint-disable-next-line no-console
+    //     console.log( `Could not add ${user.name} to DynamoDB: ${error}` )
+    //   } else {
+    //     // eslint-disable-next-line no-console
+    //     console.log( `response: `, response )
+    //   }
+    // } )
+
+    // eslint-disable-next-line no-console
+    console.log( `Attempting to add user to DynamoDB` )
+    addUserToBlog( tableName, user )
+    // eslint-disable-next-line no-console
+    console.log( `added user to DynamoDB` )
+
+    // Look through the different regions to see which region the event was
+    // called from.
     const hyphenRegions = [
-      `us-east-1`,
-      `us-west-1`,
-      `us-west-2`,
-      `ap-southeast-1`,
-      `ap-southeast-2`,
-      `ap-northeast-1`,
-      `eu-west-1`,
-      `sa-east-1`,
+      `us-east-1`, `us-west-1`, `us-west-2`,
+      `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`,
+      `eu-west-1`, `sa-east-1`,
     ]
+    const separator = hyphenRegions.includes( region ) ? `-` : `.`
 
-    const seperator = hyphenRegions.includes( region ) ? `-` : `.`
-
+    // Set the payload for the link to authenticate the user.
     const payload = Buffer.from(
-      JSON.stringify( {
-        userName,
-        redirectUrl,
-        region,
-        clientId,
-      } )
+      JSON.stringify( { userName, redirectUrl, region, clientId } )
     ).toString( `base64` )
+
+    // Set the response
     // eslint-disable-next-line max-len
-    const bucketUrl = `http://${resourcePrefix}verificationbucket-${process.env.ENV}.s3-website${seperator}${region}.amazonaws.com`
+    const bucketUrl = `http://${resourcePrefix}verificationbucket-${process.env.ENV}.s3-website${separator}${region}.amazonaws.com`
     const url = `${bucketUrl}/?data=${payload}&code=${codeParameter}`
     const message = `${process.env.EMAILMESSAGE}. \n ${url}`
     event.response.smsMessage = message
     event.response.emailSubject = process.env.EMAILSUBJECT
     event.response.emailMessage = message
-    // eslint-disable-next-line no-console
-    console.log( `event.response`, event.response )
-    async.auto( {
-      addUserToBlog: async.apply( addUserToBlog, tableName, user )
-    }, callback( null, event ) )
-    // callback( null, event )
+    // Make the callback to complete the event.
+    callback( null, event )
   } else {
     callback( null, event )
   }

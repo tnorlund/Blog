@@ -5,16 +5,8 @@
 module.exports = {
   output: `/sitemap.xml`,
   query: `{
-    site {
-      siteMetadata {
-        siteUrl
-      }
-    }
-    allSitePage {
-      nodes {
-        path
-      }
-    }
+    site { siteMetadata { siteUrl } },
+    allSitePage { nodes { path } }
   }`,
   resolveSiteUrl: ( { site } ) => site.siteMetadata.siteUrl,
   serialize: ( { site, allSitePage } ) =>

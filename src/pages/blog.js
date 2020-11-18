@@ -1,24 +1,16 @@
 import React from "react"
-import styled from 'styled-components'
+import List from 'components/List'
 import { PageBody } from 'components/styles'
-import PostList from 'views/PostList'
+import { Title, Description } from '../templates/styles'
 
-const MainTitle = styled.h1`
-  border-bottom: 4px solid var(--color-b);
-`
-
-const Description = styled.text`
-  margin-bottom:0.3em;
-`
-
-export default function Projects() {
-  return (
+export default function Blog() {
+  return(
     <PageBody>
-      <MainTitle>Posts</MainTitle>
+      <Title>Posts</Title>
       <Description>
         These are blog posts that I&apos;d like to share.
       </Description>
-      <PostList />
+      <List type={`blog`} />
     </PageBody>
   )
 }

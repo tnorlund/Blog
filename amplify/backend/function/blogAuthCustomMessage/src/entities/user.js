@@ -4,7 +4,7 @@ class User {
    * @param {Map} details The details of the user.
    */
   constructor(
-    { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS }
+    { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0` }
   ) {
     if ( !name )
       throw Error( `Must give the user's name` )
@@ -22,7 +22,7 @@ class User {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${this.email}` },
+      'PK': { 'S': `USER#${ ( `00000`+this.userNumber ).slice( -6 ) }` },
       'SK': { 'S': `#USER` }
     }
   }
@@ -37,7 +37,7 @@ class User {
       'Name': { 'S': this.name },
       'Email': { 'S': this.email },
       'DateJoined': { 'S': this.dateJoined.toISOString() },
-      'NumberTOS': { 'N': this.numberTOS }
+      'NumberTOS': { 'N': this.numberTOS.toString() }
     }
   }
 }

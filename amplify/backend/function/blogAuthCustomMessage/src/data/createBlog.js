@@ -8,20 +8,19 @@ const dynamoDB = new AWS.DynamoDB()
  * @returns {Map}              Whether the blog was added to the DB.
  */
 const createBlog = async ( tableName, blog ) => {
-  dynamoDB.putItem( {
-    TableName: tableName,
-    Item: blog.toItem(),
-    conditionExpression: `attribute_not_exists(PK)`
-  } )
-    .then( () => { return blog } )
-    .catch( error => {
-      let errorMessage = `Could not create Blog`
-      if ( error.code == `ConditionalCheckFailedException` )
-        errorMessage = `Blog already exists`
-      return {
-        error: errorMessage
-      }
-    } )
+  try {
+    await dynamoDB.putItem( {
+      TableName: tableName,
+      Item: blog.toItem(),
+      conditionExpression: `attribute_not_exists(PK)`
+    } ).promise()
+    return( { blog: blog } )
+  } catch(error) {
+    let errorMessage = `Could not create Blog`
+    if ( error.code == `ConditionalCheckFailedException` )
+      errorMessage = `Blog already exists`
+    return { error: errorMessage }
+  }
 }
 
 module.exports = {

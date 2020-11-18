@@ -1,13 +1,13 @@
 import React from 'react'
 import DarkToggle from '../DarkToggle'
-import User from '../User'
 import Nav from '../Nav'
-import Modal from '../Modal'
 import Authentication from '../Authentication'
-import Login from 'views/Login'
-import { HeaderDiv, Logo, UserTitle, IconDiv } from './styles'
+import { HeaderDiv, Logo, IconDiv, Div, Icon } from './styles'
 import { useQueryParam } from 'hooks'
+import Amplify from 'aws-amplify'
+import config from '../../aws-exports'
 
+Amplify.configure( config )
 
 
 export default function Header( { site } ) {
@@ -24,16 +24,17 @@ export default function Header( { site } ) {
           <Nav />
         </IconDiv>
         <IconDiv>
-          <User setModal={setModal} />
+          <Div>
+            <Icon onClick={
+              () => setModal( true )
+            }/>
+          </Div>
           <DarkToggle />
         </IconDiv>
       </HeaderDiv>
       <Authentication
         open={ modal } setModal={ setModal }
       />
-      {/* <Modal open={modal} setModal={setModal}>
-        <Login setModal={setModal}/>
-      </Modal> */}
     </>
   )
 }
