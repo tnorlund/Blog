@@ -1,4 +1,8 @@
 class TOS {
+  /**
+   * A Terms of Service object.
+   * @param {Object} details The details of the Terms of Service.
+   */
   constructor( { userNumber, tosNumber, version, dateAccepted = new Date() } ) {
     if ( !userNumber )
       throw Error( `Must give user's number` )
@@ -13,7 +17,7 @@ class TOS {
   }
 
   /**
-   * @returns {Object} The primary key and sort key.
+   * @returns {Object} The primary key.
    */
   key() {
     return {
@@ -23,7 +27,7 @@ class TOS {
   }
 
   /**
-   * @returns {Object} The DynamoDB syntax of a terms of service.
+   * @returns {Object} The DynamoDB syntax of a Terms of Service.
    */
   toItem() {
     return {
@@ -38,7 +42,8 @@ class TOS {
 
 /**
  * Turns the terms of service from a DynamoDB item into the class.
- * @param {Object} item The item returned from DynamoDB
+ * @param   {Object} item The item returned from DynamoDB
+ * @returns {Object}      The Terms of Service as a class.
  */
 const tosFromItem = ( item ) => {
   return new TOS( {

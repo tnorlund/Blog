@@ -3,29 +3,29 @@ class User {
    * A user object.
    * @param {Object} details The details of the user.
    */
-  constructor(
-    { name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0` }
-  ) {
-    if ( !name )
-      throw Error( `Must give the user's name` )
+  constructor( { 
+    name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0`,
+    numberFollows = `0` 
+  } ) {
+    if ( !name ) throw Error( `Must give the user's name` )
     this.name = name
-    if ( !email )
-      throw Error( `Must give the user's email` )
+    if ( !email ) throw Error( `Must give the user's email` )
     this.email = email
     this.userNumber = parseInt( userNumber )
     this.dateJoined = dateJoined
     this.numberTOS = parseInt( numberTOS )
+    this.numberFollows = parseInt( numberFollows )
   }
 
   /**
-   * @returns {Object}
+   * @returns {Object} The partition key.
    */
   pk() {
     return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
   }
 
   /**
-   * @returns {Object} The primary key and sort key.
+   * @returns {Object} The primary key.
    */
   key() {
     return {
@@ -44,14 +44,16 @@ class User {
       'Name': { 'S': this.name },
       'Email': { 'S': this.email },
       'DateJoined': { 'S': this.dateJoined.toISOString() },
-      'NumberTOS': { 'N': this.numberTOS.toString() }
+      'NumberTOS': { 'N': this.numberTOS.toString() },
+      'NumberFollows': { 'N': this.numberFollows.toString() }
     }
   }
 }
 
 /**
  * Turns the user from a DynamoDB item into the class.
- * @param {Object} item The item returned from DynamoDB
+ * @param   {Object} item The item returned from DynamoDB.
+ * @returns {Object}      The user as a class.
  */
 const userFromItem = ( item ) => {
   return new User( {

@@ -8,19 +8,29 @@ showToc: true
 
 import MdxIcon from 'components/MdxIcon'
 
+After playing around with the Amplify command-line interface, I felt like I had the chops to add some more interactivity to this website. After a good week of learning the Amplify and AWS SDK, I was able to assemble something that's:
+- scalable
+- fast
+- *relatively* cheap
 
-I knew I needed to use an API in order to use comments on this site. I've previously used Amplify's API service where it creates a Dynamo DB table and a GraphQL endpoint, but I'd like to do it myself.  
+Amplify combines [Cognito](https://aws.amazon.com/cognito/), [API Gateway](https://aws.amazon.com/api-gateway/), and [DynamoDB](https://aws.amazon.com/dynamodb/), which allows developers to quickly ship a product. This was a great way to jump headfirst into the AWS ecosystem.
 
-After reading [Alex Debrie's](https://twitter.com/alexbdebrie?s=21) book on Dynamo DB, I knew the steps required to develop a structured Dynamo DB table. 
+I've had experience using a few different relational databases, but DynamoDB is nothing close to what I've previously used. DynamoDB is a "key-value and document database that delivers single-digit millisecond performance at any scale." I decided to dive deeper into DynamoDB by picking up [Alex DeBrie's](https://twitter.com/alexbdebrie?s=21) book. After a lot of reading and testing, I was able to create a database that is easily accessible by the API created by Amplify.
+
+# Signing In
+
+Amplify uses Cognito for their authentication, so I ended up using Cognito. It gets expensive with a larger user-base, but we'll see where this goes.
+
+Cognito handles the authentication and segments users based on the roles given to them. By using Cognito User Groups, I'm able to assign specific people 'Admin' access to the API. This allows me to change the website by using an API that only I have permission to use.
 
 # Creating the Database
 
-Debrie has an organized system for creating a Dynamo DB table.
+Again, I've had no experience with DynamoDB. This book helped me tremendously, and after purchasing the book, you're invited to a group of other DynamoDB developers. DeBrie has an organized system for creating a Dynamo DB table.
 
 1. [Understand the application](#understanding-the-application)
 2. [Create an ERD](#erd)
 3. [Define the access patterns](#access-patterns)
-4. Design the primary keys and secondary indexes
+4. [Design the primary keys and secondary indexes](#primary-key-and-indexes)
 
 ## Understanding the application
 
@@ -32,21 +42,154 @@ This blog is accessed by people and the goal is to add comments for each post. W
 
 The entity relationship diagram describes how the datas relate to one another. The one that I came up with is as follows. 
 
-<MdxIcon filename={`ERD_Blog.svg`}/>
+<MdxIcon filename={`ERD.svg`}/>
 
 ## Access Patterns 
 
-The best way to go about the understanding the access patterns would be to list them out.
+The best way to go about the understanding the access patterns would be to list them by entity.
 
+**User**
 - Create a user
-  - Each user has unique name
-- Each user can create, update, and delete their comment
-- View comments and their replies per post
+- Accept a terms of service
+- Check to see if the latest terms of service has been accepted
 - View comments per user
+
+**Projects**
+- Subscribe to a project
 - Get all users that follow a project
+
+**Post**
+- Users can create, update, and delete their comment
+- View comments and their replies per post
+
+These alone don't mean much, but they help when deciding the primary keys and sort keys.
 
 ## Primary Key and Indexes
 
-This table will need a composite key in order to efficiently query the data. 
+DynamoDB uses a single table to organize all the data. This means that the relationships, sorting, and access patterns use a combination of the partition key, *PK*, and the sort key, *SK*, to create, read, update, and delete the date on the database. Both the *PK* and *SK* make the primary key are used to get a specific row from the DynamoDB table. 
 
+I found the best way to implement both the *PK* and *SK* was to create them while implementing the API's backend.
 
+### User
+
+The user needs to be accessible by a unique identifier. This unique identifier ended up being one more than the number of current users. In order to ensure that DynamoDB handles the sorting correctly, the numbers are zero-padded.
+
+|                  | PK                 | SK                             |
+|------------------|--------------------|--------------------------------|
+| User             | USER#[User Number] | #USER                          |
+| Terms Of Service | USER#[User Number] | #TOS#[Terms Of Service Number] |
+
+The backend code is simplified by storing the entities in the `entities` folder and the data accesses patterns in the `data` folder. Here's an example of the user entity.
+
+```js:title=entities/user.js
+class User {
+  constructor( { 
+    name, email, userNumber = `0`, 
+    dateJoined = new Date(), numberTOS = `0` 
+  } ) {
+    if ( !name )
+      throw Error( `Must give the user's name` )
+    this.name = name
+    if ( !email )
+      throw Error( `Must give the user's email` )
+    this.email = email
+    this.userNumber = parseInt( userNumber )
+    this.dateJoined = dateJoined
+    this.numberTOS = parseInt( numberTOS )
+    this.numberFollows = parseInt( numberFollows )
+  }
+
+  pk() {
+    return { 'S': `USER#${
+      ( `00000` + this.userNumber ).slice( -6 )
+    }` }
+  }
+
+  key() {
+    return {
+      'PK': { 'S': `USER#${
+        ( `00000` + this.userNumber ).slice( -6 )
+      }` },
+      'SK': { 'S': `#USER` }
+    }
+  }
+
+  toItem() {
+    return {
+      ...this.key(),
+      'Type': { 'S': `user` },
+      'Name': { 'S': this.name },
+      'Email': { 'S': this.email },
+      'DateJoined': { 'S': this.dateJoined.toISOString() },
+      'NumberTOS': { 'N': this.numberTOS.toString() },
+      'NumberFollows': { 'N': this.numberFollows.toString() }
+    }
+  }
+}
+
+const userFromItem = ( item ) => {
+  return new User( {
+    name: item.Name.S,
+    email: item.Email.S,
+    userNumber: item.PK.S.split( `#` )[1],
+    dateJoined: item.DateJoined.S,
+    numberTOS: item.NumberTOS.N
+  } )
+}
+
+module.exports = { User, userFromItem }
+```
+
+While the terms of service can be updated at any time, the website must compare the current Terms of Service to the last one accepted by the user, if any exists to begin with. I ended up using a `getUserDetails` module to easily access the user and the Terms of Service previously agreed to.
+
+```js:title=data/getUserDetails.js
+const getUserDetails = async ( tableName, user ) => {
+  if ( !tableName ) throw Error(
+    `Must give the name of the DynamoDB table` 
+  )
+  try {
+    const result = await dynamoDB.query( {
+      TableName: tableName,
+      KeyConditionExpression: `#pk = :pk`,
+      ExpressionAttributeNames: { '#pk': `PK` },
+      ExpressionAttributeValues: { ':pk': user.pk() }
+    } ).promise()
+    if ( !result.Items ) return {
+      error: `User does not exist`
+    }
+    return { user: result.Items.map( ( item ) => {
+      switch ( item.Type.S ) {
+        case `user`: return userFromItem( item )
+        case `terms of service`: return tosFromItem( item )
+        default: 
+          throw Error(
+            `Could not parse type ${item.Type.S}`
+          )
+      }
+    } ) }
+  } catch( error ) {
+    console.log( `Failed to get user`, error )
+    return { error: `Could not get user` }
+  }
+}
+
+module.exports = { getUserDetails }
+```
+
+### Project
+
+Each project is uniquely identified with the slug associated to it. The project's followers need to be queried while the projects the user follows must be queried too. Luckily, DynamoDB has Global Secondary Indexes that allow for different querying methods. The *PK* and *SK* are used to query the user's follows.
+
+|                  | PK                     | SK                             |
+|------------------|------------------------|--------------------------------|
+| Project          | PROJECT#[Project Slug] | #PROJECT                       |
+| Project Follow   | USER#[User Number]     | #PROJECT#[User Follow Number]  |
+
+The Global Secondary Indexes are use to query the project's followers.
+
+|                  | GSI1PK                 | GSI1SK                           |
+|------------------|------------------------|----------------------------------|
+| Project          | PROJECT#[Project Slug] | #PROJECT                         |
+| Project Follow   | PROJECT#[Project Slug] | #PROJECT#[Project Follow Number] |
+
+These different indexing methods allow DynamoDB to remain simple and efficient.

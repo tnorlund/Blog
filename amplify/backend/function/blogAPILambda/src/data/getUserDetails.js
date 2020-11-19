@@ -10,7 +10,6 @@ const { userFromItem, tosFromItem } = require( `../entities` )
 const getUserDetails = async ( tableName, user ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
   try {
-    console.log(`user.key`, user.key())
     const result = await dynamoDB.query( {
       TableName: tableName,
       KeyConditionExpression: `#pk = :pk`,
@@ -18,7 +17,6 @@ const getUserDetails = async ( tableName, user ) => {
       ExpressionAttributeValues: { ':pk': user.pk() }
     } ).promise()
     if ( !result.Items ) return { error: `User does not exist` }
-    console.log(`result`, result)
     return { user: result.Items.map( ( item ) => {
       switch ( item.Type.S ) {
         case `user`: return userFromItem( item )

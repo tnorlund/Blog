@@ -9,7 +9,7 @@ export default function Profile( { user, setModal } ) {
   // A function for signing out
   const signOut = async() => {
     Auth.signOut()
-      .then( () => setModal( false ) )
+      .then( () => window.location.reload() )
       .catch( error => {
         console.log( `errored signing out`, error )
       } )

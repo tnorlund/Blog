@@ -10,11 +10,10 @@ import { Date, Title } from './styles'
 export default function Project( { data } ) {
   // Destructure the response from the original query.
   const { project, posts } = data
-  const title = project.frontmatter.title
+  const { title, slug } = project.frontmatter
   const body = project.body
   const icon = project.frontmatter.icon.publicURL
   
-  console.log(posts)
   return(
     <PageBody>
       <Title>{title}</Title>

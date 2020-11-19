@@ -94,8 +94,17 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
   table td, table th {
-    border: 1px solid var(--color-text);
     padding: 0.2em 0.6em;
+  }
+  table td {
+    border-left: 1px dotted var(--color-text);
+    border-right: 1px dotted var(--color-text);
+  }
+  table td:first-child {
+    border-left: none;
+  }
+  table td:last-child {
+    border-right: none;
   }
   tbody tr:nth-child(odd) {
     background: var(--color-accentBackground);
