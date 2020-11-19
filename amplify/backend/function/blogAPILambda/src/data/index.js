@@ -5,6 +5,8 @@ const { getBlog } = require( `./getBlog` )
 const { getUser } = require( `./getUser` )
 const { getUserDetails } = require( `./getUserDetails` )
 const { addTOSToUser } = require( `./addTOStoUser` )
+const { addProjectToBlog } = require( `./addProjectToBlog` )
+const { addFollowToProject } = require( `./addFollowToProject` )
 
 module.exports = {
   addUserToBlog,
@@ -13,5 +15,7 @@ module.exports = {
   getUser,
   resetBlog,
   getUserDetails,
-  addTOSToUser
+  addTOSToUser,
+  addProjectToBlog,
+  addFollowToProject
 }
