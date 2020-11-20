@@ -9,21 +9,24 @@ const { projectFromItem } = require( `../entities` )
  */
 const addFollowToProject = async ( tableName, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
-  const { project, error } = await incrementNumberFollows( tableName, project )
-  if ( error ) return { error: error }
-  try {
-    await dynamoDB.putItem( {
-      TableName: tableName,
-      Item: project.toItem(),
-      ConditionExpression: `attribute_not_exists(PK)`
-    } ).promise()
-    return { project: project }
-  } catch( error ) {
-    let errorMessage = `Could not add project to blog`
-    if ( error.code === `ConditionalCheckFailedException` )
-      errorMessage = `${project.title} is already in DynamoDB`
-    return { 'error': errorMessage }
-  }
+  const {
+    projectResponse, error
+  } = await incrementNumberFollows( tableName, project )
+  console.log( projectResponse )
+  // if ( error ) return { error: error }
+  // try {
+  //   await dynamoDB.putItem( {
+  //     TableName: tableName,
+  //     Item: project.toItem(),
+  //     ConditionExpression: `attribute_not_exists(PK)`
+  //   } ).promise()
+  //   return { project: project }
+  // } catch( error ) {
+  //   let errorMessage = `Could not add project to blog`
+  //   if ( error.code === `ConditionalCheckFailedException` )
+  //     errorMessage = `${project.title} is already in DynamoDB`
+  //   return { 'error': errorMessage }
+  // }
 }
 
 /**
@@ -46,7 +49,7 @@ const incrementNumberFollows = async ( tableName, project ) => {
     } ).promise()
     if ( !response.Attributes ) return { 'error': `Could not find project` }
     project.numberFollows = response.Attributes.NumberFollows.N
-    return { 'project': project }
+    return { 'projectResponse': project }
   } catch( error ) {
     let errorMessage = `Could not follow project`
     if ( error.code === `ConditionalCheckFailedException` )

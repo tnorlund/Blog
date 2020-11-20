@@ -17,7 +17,6 @@ export default function TermsOfService( { user, setLoading } ) {
   const version = new Date( result.mdx.frontmatter.version )
   // An accept function that logs the user in
   const accept = async() => {
-    console.log( `user`, { ...user } )
     try {
       const { tos, error } = await API.post(
         `blogAPI`,

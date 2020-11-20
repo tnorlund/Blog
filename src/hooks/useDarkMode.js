@@ -13,7 +13,6 @@ const setBodyColors = mode => {
 }
 
 export const useDarkMode = () => {
-  console.log( `COLOR_MODE_KEY`, COLOR_MODE_KEY )
   const [colorMode, setLSColorMode] = useLocalStorage( COLOR_MODE_KEY )
 
   // If the user prefers to use dark mode from a media query

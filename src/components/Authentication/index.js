@@ -36,6 +36,7 @@ const handleState = async ( tosVersion ) => {
   // When an error occurs, default to the login state.
   if ( sessionError ) return { error: sessionError, state: `login` }
   const { user, dbError } = await userFromDB( parseUser( session ) )
+  console.log( `user details`, user )
   // When an error occurs, default to the login state.
   if ( dbError ) return { error: dbError, state: `login` }
   // Iterate over the different elements returned in order to parse them.
@@ -73,7 +74,7 @@ export default function Authentication( { open, setModal } ) {
   // State for Authentication process
   const [ authState, setAuthState ] = useState( `login` )
   // State for User
-  const [ user, setUser ] = useState()
+  const [ user, setUser ] = useSessionStorage( AUTH_KEY )
   // Don't want Session storage to handle user data.
   // const [ user, setUser ] = useSessionStorage( USER_KEY )
 
@@ -112,6 +113,7 @@ export default function Authentication( { open, setModal } ) {
       } )
     // Set the state of the modal view to not be loading.
     setLoading( false )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ open, authState, tos, loading ] )
 
   if ( open )

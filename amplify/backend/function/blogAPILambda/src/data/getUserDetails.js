@@ -14,7 +14,8 @@ const getUserDetails = async ( tableName, user ) => {
       TableName: tableName,
       KeyConditionExpression: `#pk = :pk`,
       ExpressionAttributeNames: { '#pk': `PK` },
-      ExpressionAttributeValues: { ':pk': user.pk() }
+      ExpressionAttributeValues: { ':pk': user.pk() },
+      ScanIndexForward: false
     } ).promise()
     if ( !result.Items ) return { error: `User does not exist` }
     return { user: result.Items.map( ( item ) => {

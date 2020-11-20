@@ -69,7 +69,9 @@ export const TextInput = styled.input`
 
 export const TextDiv = styled.div`
   padding-bottom: 0.5em;
-  margin-left: 1em;
+  /* margin-left: 1em; */
+  width: 98%;
+  justify-self: center;
 `
 
 export const ButtonDiv = styled.div`

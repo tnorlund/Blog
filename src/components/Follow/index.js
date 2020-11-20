@@ -1,9 +1,17 @@
 import React from 'react'
 import { FollowDiv } from './styles'
-// require(`dotenv`).config()
+import { useSessionStorage } from 'hooks'
+import { AUTH_KEY } from 'utils/constants'
 
-export default function Footer( { slug } ) {
+const handleFollow = async ( user, slug ) => {
+  console.log( `user`, user )
+}
+
+export default function Follow( { slug } ) {
+  const [ user, setUser ] = useSessionStorage( AUTH_KEY )
   return(
-    <FollowDiv>Follow</FollowDiv>
+    <>{user && <FollowDiv onClick={
+      () => handleFollow( user, slug )
+    } >Follow</FollowDiv>}</>
   )
 }
