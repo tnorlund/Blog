@@ -40,10 +40,11 @@ export const SquareDiv = styled.div`
   background: var(--color-b);
   display: block;
   /* position: absolute; */
-  border-radius: 1.5vw;
+  border-radius: 3vw;
   width: 20vw;
   height: 20vw;
   ${mediaQueries.minTablet} {
+    border-radius: 1.5vw;
     width: 10vw;
     height: 10vw;
   }

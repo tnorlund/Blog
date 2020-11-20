@@ -1,6 +1,5 @@
 import React from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
-import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 
 import {
   PostDiv, PostTitle, PostDate, Description, ProjectDiv, IconDiv, Icon, Title,
