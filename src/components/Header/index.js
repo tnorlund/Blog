@@ -9,7 +9,7 @@ import { Configure } from 'utils/auth'
 Configure()
 
 export default function Header( { site } ) {
-  const [open, setModal] = useState( `user`, false )
+  const [open, setModal] = useState( false )
   return (
     <>
       <HeaderDiv>

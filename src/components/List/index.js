@@ -1,8 +1,10 @@
 import React from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
+import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
+
 import {
   PostDiv, PostTitle, PostDate, Description, ProjectDiv, IconDiv, Icon, Title,
-  DescriptionDiv
+  DescriptionDiv, SquareContent, SquareDiv
 } from './styles'
 
 export default function List( { type } ) {
@@ -24,7 +26,8 @@ export default function List( { type } ) {
       filter: { frontmatter: { slug: { regex: "^/projects/[a-z]+$/" } } }
     ) {
       nodes {
-        id
+        id,
+        excerpt,
         frontmatter { slug, title, description, icon { publicURL } }
       }
     }
@@ -47,18 +50,22 @@ export default function List( { type } ) {
   if ( type === `project` )
     return(
       <>
-        {project.nodes.map( ( { frontmatter: { title, slug, icon, description } } ) => (
+        {project.nodes.map( ( { excerpt,
+          frontmatter: { title, slug, icon }
+        } ) => (
           <ProjectDiv key={title}>
             <Link to={slug}>
               <IconDiv>
-                <Icon
-                  src={icon.publicURL}
-                  alt={title}
-                />
+                <SquareDiv><SquareContent>
+                  <Icon
+                    src={icon.publicURL}
+                    alt={title}
+                  />
+                </SquareContent></SquareDiv>
               </IconDiv>
               <DescriptionDiv>
                 <Title>{title}</Title>
-                <Description>{description}</Description>
+                <Description>{excerpt}</Description>
               </DescriptionDiv>
             </Link>
           </ProjectDiv>
