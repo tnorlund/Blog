@@ -13,6 +13,7 @@ const setBodyColors = mode => {
 }
 
 export const useDarkMode = () => {
+  console.log( `COLOR_MODE_KEY`, COLOR_MODE_KEY )
   const [colorMode, setLSColorMode] = useLocalStorage( COLOR_MODE_KEY )
 
   // If the user prefers to use dark mode from a media query
@@ -23,8 +24,8 @@ export const useDarkMode = () => {
     )
   )
 
-  // The useDarkMode initialization is in useEffect to exclude it from server
-  // -side rendering. This will run on the client after React hydration. The
+  // The useDarkMode initialization is in useEffect to exclude it from server-
+  // side rendering. This will run on the client after React hydration. The
   // colors are set in gatsby-ssr, before the React component tree mounts.
   useEffect( () => {
     const initialColorMode = document.body.style.getPropertyValue(

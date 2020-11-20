@@ -5,7 +5,7 @@ import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 
 /**
- * 
+ *
  * @param {Object} Duties The duties.
  */
 function Duties( { duties } ) {
@@ -103,16 +103,16 @@ export default function Resume() {
         companies. I&apos;m currently trying to find a position related to
         computer vision and/or data science.
       </Description>
-        {positions.map( ( { title, company, start, end, duties } ) => (
-          <>
-            <JobDiv>
-              <JobTitle>{title}</JobTitle>
-              <JobLocation>{company}</JobLocation>
-              <JobDate>{start} - {end}</JobDate>
-            </JobDiv>
-            <Duties duties={duties} />
-          </>
-        ) ) }
+      {positions.map( ( { title, company, start, end, duties } ) => (
+        <>
+          <JobDiv>
+            <JobTitle>{title}</JobTitle>
+            <JobLocation>{company}</JobLocation>
+            <JobDate>{start} - {end}</JobDate>
+          </JobDiv>
+          <Duties duties={duties} />
+        </>
+      ) ) }
       <MainTitle>My Skills</MainTitle>
       <Description>
         Through school or work, I&apos;ve always tried to learn as many skills

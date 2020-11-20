@@ -3,7 +3,6 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
     node: true,
   },
   extends: [
@@ -14,7 +13,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true
     },
-    ecmaVersion: 12,
+    ecmaVersion: 2020,
     sourceType: `module`
   },
   plugins: [`react`, `react-hooks`, `markdown`],

@@ -137,8 +137,6 @@ app.post( `/blog`, async ( request, response ) => {
  * Gets a specific user.
  */
 app.get( `/user`, async ( request, response ) => {
-  // Should use path parameters now
-  // const params = request.apiGateway.event.queryStringParameters
   const params = request.query
   if ( !params.name )
     response.json( {
@@ -176,7 +174,6 @@ app.get( `/user`, async ( request, response ) => {
  * Get a specific user's details. 
  */
 app.get( `/user-details`, async ( request, response ) => {
-  console.log(`querying user details`)
   const params = request.query
   if ( !params.name )
     response.json( {
@@ -205,11 +202,12 @@ app.get( `/user-details`, async ( request, response ) => {
  * Adds a user to the blog.
  */
 app.post( `/user`, async ( request, response ) => {
-  if ( !request.body.name )
+  const params = request.body
+  if ( !params.name )
     response.json( {
       statusCode: 400, error: `Must give name in body of request`
     } )
-  else if ( !request.body.email )
+  else if ( !params.email )
     response.json( {
       statusCode: 400, error: `Must give email in body of request`
     } )
@@ -226,7 +224,6 @@ app.post( `/user`, async ( request, response ) => {
  * Adds a terms of service to a user.
  */
 app.post( `/tos`, async ( request, response ) => {
-  console.log(`posting TOS`)
   const params = request.body
   if ( !params.name )
     response.json( {

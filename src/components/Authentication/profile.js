@@ -1,16 +1,14 @@
 import React from 'react'
 import { Title, ButtonDiv, BodyDiv } from './styles'
-import Amplify, { Auth, API } from 'aws-amplify'
-import credentials from '../../aws-exports'
+import { Auth } from 'aws-amplify'
 
-
-
-export default function Profile( { user, setModal } ) {
+export default function Profile( { user, setAuthState } ) {
   // A function for signing out
   const signOut = async() => {
     Auth.signOut()
-      .then( () => window.location.reload() )
+      .then( () => setAuthState( `login` ) )
       .catch( error => {
+        // eslint-disable-next-line no-console
         console.log( `errored signing out`, error )
       } )
   }

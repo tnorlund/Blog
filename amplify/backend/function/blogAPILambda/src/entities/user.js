@@ -1,11 +1,16 @@
+/**
+ * User library
+ */
 class User {
   /**
    * A user object.
-   * @param {Object} details The details of the user.
+   * @param {object} options
+   * @param {String} options.name The name of the user.
+   * @param {Number|String} [options.userNumber=`0`] The number of the user.
    */
-  constructor( { 
+  constructor( {
     name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0`,
-    numberFollows = `0` 
+    numberFollows = `0`
   } ) {
     if ( !name ) throw Error( `Must give the user's name` )
     this.name = name

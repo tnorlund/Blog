@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
-import { useEventListener } from 'hooks'
+import { useEventListener, useSessionStorage } from 'hooks'
 import { Close, ModalBehind, ModalDiv } from './styles'
-import Amplify, { Auth, API } from 'aws-amplify'
 import ReactLoading from 'react-loading'
-import credentials from '../../aws-exports'
+import { getCurrentSession, parseUser, userFromDB } from 'utils/auth'
+
+import { AUTH_KEY, TOS_KEY } from 'utils/constants'
 
 import Login from './login'
 import Profile from './profile'
@@ -15,46 +16,6 @@ import ForgotSubmit from './forgotSubmit'
 import TermsOfService from './tos'
 
 /**
- * Gets the current Cognito User Session if the user is logged in.
- */
-async function getCurrentSession() {
-  return await Auth.currentSession()
-}
-
-/**
- * Gets the useful user data from the current Cognito user session.
- * @param {Object} CognitoUserSession The current cognito user session.
- */
-const parseUser = ( CognitoUserSession ) => {
-  const { name, email, ...restOfUser } = CognitoUserSession.idToken.payload
-  return {
-    name: name, email: email, userNumber: restOfUser[ `custom:UserNumber` ]
-  }
-}
-
-/**
- * Requests the user using the API.
- * @param {Object} requestedUser The parsed user data.
- */
-const userFromDB = async( requestedUser ) => {
-  Amplify.configure( credentials )
-  try {
-    const { user, error } = await API.get(
-      `blogAPI`,
-      `/user-details?name=${
-        requestedUser.name.replace(` `, `\ `)
-      }&email=${
-        requestedUser.email
-      }&number=${
-        requestedUser.userNumber
-      }`
-    )
-    if ( error ) return { error: error }
-    else return { user: user }
-  } catch( error ) { return { error: error } }
-}
-
-/**
  * Handles the state of the modal view.
  * @param {String} tosVersion The current version of the Terms of Service.
  *
@@ -63,66 +24,95 @@ const userFromDB = async( requestedUser ) => {
  * of Service agreement.
  */
 const handleState = async ( tosVersion ) => {
-  let requestedUser, tos
-  const session = await getCurrentSession()
-  const parsedUser = parseUser( session )
-  const { user, error } = await userFromDB( parsedUser )
-  console.log(`user`, user)
+  let requestedUser
+  /** @type {[Object]} The agreed to Terms of Services. */
+  let tos = []
+  /** @type {String} The most recent Terms of Service agreed to. */
+  let recentVersion
+
+  const { session, sessionError } = await getCurrentSession()
+  // When there is no user signed in, the session is undefined.
+  if ( !session ) return { state: `login` }
   // When an error occurs, default to the login state.
-  if ( error )  return { error: error, state: `login` }
+  if ( sessionError ) return { error: sessionError, state: `login` }
+  const { user, dbError } = await userFromDB( parseUser( session ) )
+  // When an error occurs, default to the login state.
+  if ( dbError ) return { error: dbError, state: `login` }
   // Iterate over the different elements returned in order to parse them.
   user.map( element => {
     if ( element.name && element.email )
       requestedUser = element
+    if ( element.userNumber && element.version )
+      tos.push( element )
   } )
   // When no user details are returned from the DB, set the state to login.
   if ( !requestedUser ) return { state: `login` }
   // When the user has not agreed to any Terms of Service, set the state to
   // Terms of Service.
-  if ( requestedUser.numberTOS == 0 ) 
+  if ( requestedUser.numberTOS == 0 )
+    return { user: requestedUser, state: `tos` }
+  // Iterate over the different Terms of Services already agreed to to find
+  // the most recent version.
+  tos.map( element => {
+    if ( tos.length == 1 ) recentVersion = element.version
+  } )
+  // When the most recent agreed to Terms of Service is not this one, set the
+  // state to Terms of Service so that the user can agree to the most recent
+  // version.
+  if ( Date( tosVersion ) != Date( recentVersion ) )
     return { user: requestedUser, state: `tos` }
   // Otherwise, the user will be shown their profile.
-  else return { user: requestedUser, state: `profile` }
+  return { user: requestedUser, state: `profile` }
 }
 
 export default function Authentication( { open, setModal } ) {
+  // The session's state of the authentication modal view.
+  // const [modal, setModal] = useSessionStorage( AUTH_KEY, false )
   // Use a state for whether the page is still loading data from the server.
   const [ loading, setLoading ] = useState( true )
   // State for Authentication process
   const [ authState, setAuthState ] = useState( `login` )
   // State for User
   const [ user, setUser ] = useState()
+  // Don't want Session storage to handle user data.
+  // const [ user, setUser ] = useSessionStorage( USER_KEY )
+
+
   // Get the reference to the Auth modal view.
   const ref = useRef()
   // When the user hits the escape key, close out of the modal.
   useEventListener( `keydown`, ( event ) => {
-    if( event?.key === `Escape` ) setModal()
+    if( event?.key === `Escape` ) setModal( false )
   } )
   // Get the version of the current TOS
-  const tosVersion = new Date(
+  const [tos, ] = useSessionStorage( TOS_KEY, new Date(
     useStaticQuery( graphql`
       { mdx(
         fileAbsolutePath: { regex: "/tos/" }
       ) { frontmatter { version } } }
     ` ).mdx.frontmatter.version
-  )
+  ) )
   // Before the modal view is rendered, set the styles of the document.
   useEffect( () => {
+    setLoading( true )
     if ( open ) document.body.style.overflowY = `hidden`
     if ( ref.current ) {
       ref.current.style.zIndex = 3
       // ref.current.style.width = `100px`
       // ref.current.style.height = `100px`
     }
-    handleState( tosVersion ).then( 
-      ( { user, requestedUser, error, state } ) => {
-        console.log( `requestedUser`, requestedUser )
+    if (
+      authState == `login` || authState == `profile` || authState == `tos`
+    ) handleState( tos ).then(
+      ( { user, error, state } ) => {
+        // eslint-disable-next-line no-console
+        if ( error ) console.log( `error`, error )
         setUser( user )
         setAuthState( state )
       } )
     // Set the state of the modal view to not be loading.
     setLoading( false )
-  }, [ open ] )
+  }, [ open, authState, tos, loading ] )
 
   if ( open )
     return (
@@ -131,8 +121,7 @@ export default function Authentication( { open, setModal } ) {
           // The modal view will either be authenticated or not.
           loading &&
           <ModalDiv
-            onClick={ event => event.stopPropagation() }
-            { ...{ ref } }
+            onClick={ event => event.stopPropagation() } { ...{ ref } }
           >
             <ReactLoading type={`spokes`} color={
               getComputedStyle( document.documentElement )
@@ -147,33 +136,32 @@ export default function Authentication( { open, setModal } ) {
             { ...{ ref } }
           >
             <Close onClick={ () => setModal( false ) } />
-            {
+
+            { // The Login view can either log the user in or change to the
+              // signup or forgot views.
               authState == `login` &&
-              <Login setAuthState={setAuthState} setModal={setModal}/>
-            }
-            {
+              <Login setLoading={setLoading} setAuthState={setAuthState}/> }
+
+            { // The Profile view can only log out.
               authState == `profile` &&
-              <Profile user={user} setModal={setModal}/>
-            }
-            {
-              authState == `signup` &&
-              <SignUp setAuthState={setAuthState} />
-            }
-            {
-              authState == `check` &&
-              <Check/>
-            }
-            {
-              authState == `forgot` &&
-              <Forgot setAuthState={setAuthState} />
-            }
-            {
+              <Profile user={user} setAuthState={setAuthState} /> }
+
+            { // The signup state goes to either the login or check state
+              authState == `signup` && <SignUp setAuthState={setAuthState} /> }
+
+            { // The check state just says "Check your email" and doesn't go to
+              // any other page.
+              authState == `check` && <Check setAuthState={setAuthState} /> }
+
+            { // The forgot state goes to sign in or the forgotSubmit state.
+              authState == `forgot` && <Forgot setAuthState={setAuthState} /> }
+
+            { // The forgotSubmit state only goes to the login state.
               authState == `forgotSubmit` &&
-              <ForgotSubmit setAuthState={setAuthState} />
-            }
-            {
+              <ForgotSubmit setAuthState={setAuthState} /> }
+            { // The Terms of Service state only goes to the profile state.
               authState == `tos` &&
-              <TermsOfService user={user} setModal={setModal} />
+              <TermsOfService user={user} setLoading={setLoading} />
             }
           </ModalDiv>
         }

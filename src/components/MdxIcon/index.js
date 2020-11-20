@@ -14,6 +14,6 @@ export default function MdxIcon( { filename } ) {
   result.allFile.nodes.forEach( node => {
     if ( node.publicURL.endsWith( filename ) ) url = node.publicURL
   } )
-  if (!url) throw new Error(`Cannot find '.svg' ${filename}`)
+  if ( !url ) throw new Error( `Cannot find '.svg' ${filename}` )
   return <Icon src={url} width={`100%`}/>
 }

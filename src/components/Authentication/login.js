@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Title, TextDiv, TextInput, ButtonDiv, Error, Link } from './styles'
 import { Auth } from 'aws-amplify'
 
-export default function Login( { setAuthState, setModal } ) {
+export default function Login( { setLoading, setAuthState } ) {
   // Sets the state for the login form.
   const [ loginState, setLoginState ] = useState( {
     email: ``, password: ``, error: ``
@@ -20,7 +20,7 @@ export default function Login( { setAuthState, setModal } ) {
       Auth.signIn( email, password )
         .then( () => {
           // Once the credentials have been set, remove the modal view.
-          setModal( false )
+          setLoading( true )
         } )
         .catch( error => {
           if ( error.code == `UserNotConfirmedException` ) setLoginState( {

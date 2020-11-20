@@ -2,15 +2,17 @@ import React from 'react'
 import DarkToggle from '../DarkToggle'
 import Nav from '../Nav'
 import Authentication from '../Authentication'
+
+import { AUTH_KEY } from 'utils/constants'
 import { HeaderDiv, Logo, IconDiv, Div, Icon } from './styles'
-import { useQueryParam } from 'hooks'
-import Amplify from 'aws-amplify'
-import config from '../../aws-exports'
+import { useSessionStorage, useQueryParam } from 'hooks'
+import { Configure } from 'utils/auth'
 
-Amplify.configure( config )
-
+/** Ensure that Amplify is configured on each page. */
+Configure()
 
 export default function Header( { site } ) {
+  // const [modal, setModal] = useSessionStorage( AUTH_KEY, false )
   const [modal, setModal] = useQueryParam( `user`, false )
   // Set the state of the authorization process. Start the process with `login`
   // const [authState, setAuthState] = useQueryParam( `auth`, `login` )
@@ -25,9 +27,7 @@ export default function Header( { site } ) {
         </IconDiv>
         <IconDiv>
           <Div>
-            <Icon onClick={
-              () => setModal( true )
-            }/>
+            <Icon onClick={ () => setModal( true ) }/>
           </Div>
           <DarkToggle />
         </IconDiv>

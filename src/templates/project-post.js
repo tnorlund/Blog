@@ -1,5 +1,6 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
+import Follow from 'components/Follow'
 import { PageBody, Icon } from 'components/styles'
 import { PostDiv, PostTitle, PostDate, Description } from 'components/List/styles'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
@@ -13,21 +14,22 @@ export default function Project( { data } ) {
   const { title, slug } = project.frontmatter
   const body = project.body
   const icon = project.frontmatter.icon.publicURL
-  
+
   return(
     <PageBody>
+      <Follow />
       <Title>{title}</Title>
       <Icon src={icon} alt={title} height={`150px`} />
       <Mdx>{body}</Mdx>
-      {posts.edges.map( 
+      {posts.edges.map(
         ( { node: { frontmatter: { title, slug, description, date } } } ) =>
-        <PostDiv key={title}>
-          <PostTitle>
-            <Link to={slug} rel={title}>{title}</Link>
-          </PostTitle>
-          <PostDate>{date}</PostDate>
-          <Description>{description}</Description>
-        </PostDiv>
+          <PostDiv key={title}>
+            <PostTitle>
+              <Link to={slug} rel={title}>{title}</Link>
+            </PostTitle>
+            <PostDate>{date}</PostDate>
+            <Description>{description}</Description>
+          </PostDiv>
       )}
     </PageBody>
   )

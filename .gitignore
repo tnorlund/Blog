@@ -8,6 +8,9 @@ public
 # Mac files
 .DS_Store
 
+# Environment
+.env
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -17,7 +20,7 @@ amplify/backend/awscloudformation
 build/
 dist/
 node_modules/
-aws-exports.js
+*/aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplify-build-config.json

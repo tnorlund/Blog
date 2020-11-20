@@ -14,7 +14,7 @@ export default function SignUp( { setAuthState } ) {
     if ( signUpState.password.a != signUpState.password.b )
       setSignUpState( { ...signUpState, error: `Passwords must match` } )
     else {
-      Amplify.configure( credentials )
+      // Amplify.configure( credentials )
       const { statusCode, body } = await API.get( `blogAPI`, `/blog` )
       if ( statusCode != 200 )
         setSignUpState( { ...signUpState, error: `Couldn't get Blog data` } )
@@ -31,7 +31,7 @@ export default function SignUp( { setAuthState } ) {
           if ( !result.userConfirmed ) setAuthState( `check` )
         } ).catch( error => {
           console.log( `error`, error )
-          setSignUpState( { ...signUpState, error: error.message } ) 
+          setSignUpState( { ...signUpState, error: error.message } )
         } )}
     }
   }

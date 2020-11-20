@@ -9,7 +9,7 @@ const { projectFromItem } = require( `../entities` )
  */
 const addFollowToProject = async ( tableName, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
-  const { project, error } = await incrementNumberFollows( tableName )
+  const { project, error } = await incrementNumberFollows( tableName, project )
   if ( error ) return { error: error }
   try {
     await dynamoDB.putItem( {

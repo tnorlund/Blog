@@ -56,5 +56,5 @@ export const useStorage = ( storage, key, initialValue, options = {} ) => {
 export const useLocalStorage = ( ...args ) =>
   useStorage( typeof window !== `undefined` && localStorage, ...args )
 
-export const useSesscionStorage = ( ...args ) =>
+export const useSessionStorage = ( ...args ) =>
   useStorage( typeof window !== `undefined` && sessionStorage, ...args )

@@ -3,7 +3,7 @@ import React from "react"
 import { useStaticQuery, Link, graphql } from "gatsby"
 
 // import { rhythm } from "../utils/typography"
-export default function Layout({ children }) {
+export default function Layout( { children } ) {
   const data = useStaticQuery(
     graphql`
       query {

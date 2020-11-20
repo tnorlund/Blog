@@ -1,3 +1,19 @@
+/**
+ * @type {String} The key used to change the user details using session
+ * storage. */
+export const USER_KEY = `user`
+
+/**
+ * @type {String} The key used to change the authentication modal view using
+ * session storage. */
+export const AUTH_KEY = `auth`
+
+/**
+ * @type {String} The key used to change the version of the most recent Terms 
+ * of Service using session storage. */
+export const TOS_KEY = `tos`
+
+/** @type {String} The key used to change the color mode using local storage. */
 export const COLOR_MODE_KEY = `color-mode`
 
 export const INITIAL_COLOR_MODE_CSS_PROP = `--initial-color-mode`
@@ -122,3 +138,5 @@ export const typography = {
   minLineHeight: 1.5,
   maxLineHeight: 1.8,
 }
+
+
