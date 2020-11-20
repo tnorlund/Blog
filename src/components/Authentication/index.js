@@ -15,6 +15,13 @@ import Forgot from './forgot'
 import ForgotSubmit from './forgotSubmit'
 import TermsOfService from './tos'
 
+const loadingColor = () => {
+  if ( typeof window !== `undefined` ) {
+    return getComputedStyle( document.documentElement )
+      .getPropertyValue( `--color-b` )
+  } else return `black`
+}
+
 /**
  * Handles the state of the modal view.
  * @param {String} tosVersion The current version of the Terms of Service.
@@ -126,8 +133,7 @@ export default function Authentication( { open, setModal } ) {
             onClick={ event => event.stopPropagation() } { ...{ ref } }
           >
             <ReactLoading type={`spokes`} color={
-              getComputedStyle( document.documentElement )
-                .getPropertyValue( `--color-b` )
+              loadingColor()
             }/>
           </ModalDiv>
         }
