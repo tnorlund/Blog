@@ -21,11 +21,17 @@ I've had experience using a few different relational databases, but DynamoDB is 
 
 Amplify uses Cognito for their authentication, so I ended up using Cognito. It gets expensive with a larger user-base, but we'll see where this goes.
 
+![Cognito](./AWSLogos_Cognito.svg)
+
 Cognito handles the authentication and segments users based on the roles given to them. By using Cognito User Groups, I'm able to assign specific people 'Admin' access to the API. This allows me to change the website by using an API that only I have permission to use.
 
 # Creating the Database
 
-Again, I've had no experience with DynamoDB. This book helped me tremendously, and after purchasing the book, you're invited to a group of other DynamoDB developers. DeBrie has an organized system for creating a Dynamo DB table.
+Again, I've had no experience with DynamoDB. This book helped me tremendously, and after purchasing the book, you're invited to a group of other DynamoDB developers. 
+
+![DynamoDB](./AWSLogos_DynamoDB.svg)
+
+DeBrie has an organized system for creating a Dynamo DB table.
 
 1. [Understand the application](#understanding-the-application)
 2. [Create an ERD](#erd)
@@ -46,7 +52,11 @@ The entity relationship diagram describes how the datas relate to one another. T
 
 ## Access Patterns 
 
-The best way to go about the understanding the access patterns would be to list them by entity.
+The best way to go about the understanding the access patterns would be to list them by entity. These accesses are either creating something, reading something, updating something, or deleting something. Amplify sets up an API Gateway that allows you to define your access patterns and the permissions required for each.
+
+![API Gateway](./AWSLogos_APIGateway.svg)
+
+I decided to separate the patterns into the 3 main entities seen in the ERD above. 
 
 **User**
 - Create a user
@@ -66,9 +76,13 @@ These alone don't mean much, but they help when deciding the primary keys and so
 
 ## Primary Key and Indexes
 
-DynamoDB uses a single table to organize all the data. This means that the relationships, sorting, and access patterns use a combination of the partition key, *PK*, and the sort key, *SK*, to create, read, update, and delete the date on the database. Both the *PK* and *SK* make the primary key are used to get a specific row from the DynamoDB table. 
+DynamoDB uses a single table to organize all the data. This means that the relationships, sorting, and access patterns use a combination of the partition key, *PK*, and the sort key, *SK*, to access the data. Both the *PK* and *SK* are used to access the specific row requested from the table. 
 
-I found the best way to implement both the *PK* and *SK* was to create them while implementing the API's backend.
+Amplify also creates a Lambda function when it creates the API Gateway. This Lambda function is what contains the logic for each access pattern found in API Gateway.
+
+![Lambda](./AWSLogos_Lambda.svg)
+
+I found the best way to implement both the *PK* and *SK* was to create them while implementing the Lambda function.
 
 ### User
 
