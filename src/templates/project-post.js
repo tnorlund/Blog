@@ -2,7 +2,9 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import Follow from 'components/Follow'
 import { PageBody, Icon } from 'components/styles'
-import { PostDiv, PostTitle, PostDate, Description } from 'components/List/styles'
+import {
+  PostDiv, PostTitle, PostDate, Description
+} from 'components/List/styles'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 // import ProjectPostList from 'views/ProjectPostList'
 import { Date, Title } from './styles'

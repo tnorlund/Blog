@@ -22,9 +22,10 @@ let bodyParser = require( `body-parser` )
 let express = require( `express` )
 const {
   addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
-  addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject
+  addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject,
+  addPostToBlog, getPost
 } = require( `./data` )
-const { User, TOS, Project } = require( `./entities` )
+const { User, Post, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
 const ADMINGROUP = `Admin`
 
@@ -262,8 +263,7 @@ app.post( `/tos`, async ( request, response ) => {
  * Adds a terms of service to a user.
  */
 app.post( `/project`, async ( request, response ) => {
-  const username = getUserName( request )
-  if ( await isAdmin( username ) ) {
+  if ( await isAdmin( getUserName( request ) ) ) {
     const params = request.body
     if ( !params.slug )
       response.json( {
@@ -376,6 +376,52 @@ app.delete( `/project-follow`, async ( request, response ) => {
     )
     if ( error ) response.json( { statusCode: 500, error: error } )
     else response.json( { statusCode: 200, user: user, project: project } )
+  }
+} )
+
+/**
+ * Adds a post to the blog.
+ */
+app.post( `/post`, async ( request, response ) => {
+  if ( await isAdmin( getUserName( request ) ) ) {
+    const params = request.body
+    if ( !params.slug )
+      response.json( {
+        statusCode: 400, error: `Must give slug in body`
+      } )
+    else if ( !params.title )
+      response.json( {
+        statusCode: 400, error: `Must give title in body`
+      } )
+    else {
+      const { slug, title } = params
+      const requestedPost = new Post( { slug, title } )
+      const { post, error } = await addPostToBlog(
+        tableName, requestedPost
+      )
+      if ( error ) response.json( { statusCode: 500, error: error } )
+      else response.json( { statusCode: 200, post: post } )
+    }
+  } else response.json(
+    { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
+  )
+} )
+
+/**
+ * Gets a post from the database.
+ */
+app.get( `/post`, async ( request, response ) => {
+  const params = request.query
+  if ( typeof params.slug === undefined )
+    response.json( { statusCode: 400, error: `Must give slug in query.` } )
+  else if ( typeof params.title === undefined )
+    response.json( { statusCode: 400, error: `Must give title in query` } )
+  else {
+    const { slug, title } = request.query
+    const requestedPost = new Post( { slug, title } )
+    const { post, error } = await getPost( tableName, requestedPost )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, post: post } )
   }
 } )
 

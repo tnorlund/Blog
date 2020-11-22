@@ -3,6 +3,7 @@ import { graphql } from "gatsby"
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 import { PageBody } from '../components/styles'
 import Toc from 'components/Toc'
+import Comments from 'components/Comments'
 import PrevNext from '../components/PrevNext'
 import { Date, Title } from './styles'
 
@@ -17,6 +18,7 @@ export default function Post( { data } ) {
       <Date>{date}</Date>
       <Mdx>{body}</Mdx>
       <PrevNext prev={prev?.frontmatter} next={next?.frontmatter} />
+      <Comments slug={ slug } title={ title } />
     </PageBody>
   )
 }

@@ -35,7 +35,7 @@ class TOS {
       'Type': { 'S': `terms of service` },
       'Version': { 'S': this.version.toISOString() },
       'DateAccepted': { 'S': this.dateAccepted.toISOString() },
-      'TOSNumber': { 'N': this.tosNumber.toString() }
+      'NumberTOS': { 'N': this.tosNumber.toString() }
     }
   }
 }

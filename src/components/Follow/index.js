@@ -9,17 +9,7 @@ import { API } from 'aws-amplify'
 import { AUTH_KEY } from 'utils/constants'
 
 const addFollow = async ( requestedUser, slug, title ) => {
-  await API.post(
-    `blogAPI`,
-    `/project`,
-    { body: {
-      slug: slug,
-      title: title,
-      name: requestedUser.name,
-      email: requestedUser.email,
-      userNumber: requestedUser.userNumber
-    } }
-  )
+
   try {
     const { projectFollow, error } = await API.post(
       `blogAPI`,
@@ -44,17 +34,6 @@ const addFollow = async ( requestedUser, slug, title ) => {
 }
 
 const removeFollow = async ( requestedUser, slug, title ) => {
-  // await API.post(
-  //   `blogAPI`,
-  //   `/project`,
-  //   { body: {
-  //     slug: slug,
-  //     title: title,
-  //     name: requestedUser.name,
-  //     email: requestedUser.email,
-  //     userNumber: requestedUser.userNumber
-  //   } }
-  // )
   try {
     // const { user, project, error } 
     const response = await API.del(
@@ -75,6 +54,19 @@ const removeFollow = async ( requestedUser, slug, title ) => {
   } catch( error ) {
     console.log( `errored`, error )
   }
+}
+
+/**
+ * Adds a project through the API.
+ * @param {String} slug The slug of the project.
+ * @param {String} title The title of the project.
+ */
+const addProject = async ( slug, title ) => {
+  const response = await API.post(
+    `blogAPI`,
+    `/project`,
+    { body: { slug: slug, title: title } }
+  )
 }
 
 const getProject = async ( slug, title ) => {

@@ -176,5 +176,11 @@
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "analytics": {
+    "blogKinesis": {
+      "service": "Kinesis",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

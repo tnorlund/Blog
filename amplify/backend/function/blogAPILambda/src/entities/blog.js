@@ -3,7 +3,7 @@ class Blog {
    * A blog object.
    * @param {Map} details The detail of the blog.
    */
-  constructor( { 
+  constructor( {
     numberUsers = `0`, numberPosts = `0`, numberProjects = `0`
   } ) {
     if ( parseInt( numberUsers ) < 0 )

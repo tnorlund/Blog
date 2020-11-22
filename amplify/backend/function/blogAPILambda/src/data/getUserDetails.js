@@ -29,7 +29,6 @@ const getUserDetails = async ( tableName, user ) => {
       }
     } ) }
   } catch( error ) {
-    console.log( `Failed to get user`, error )
     return { error: `Could not get user` }
   }
 }

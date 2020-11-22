@@ -9,6 +9,8 @@ const { addProjectToBlog } = require( `./addProjectToBlog` )
 const { addFollowToProject } = require( `./addFollowToProject` )
 const { removeFollowFromProject } = require( `./removeFollowFromProject` )
 const { getProject } = require( `./getProject` )
+const { addPostToBlog } = require( `./addPostToBlog` )
+const { getPost } = require( `./getPost` )
 
 module.exports = {
   addUserToBlog,
@@ -21,5 +23,7 @@ module.exports = {
   addProjectToBlog,
   addFollowToProject,
   removeFollowFromProject,
-  getProject
+  getProject,
+  addPostToBlog,
+  getPost
 }

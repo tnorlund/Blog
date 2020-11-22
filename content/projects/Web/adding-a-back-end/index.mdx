@@ -94,7 +94,7 @@ The user needs to be accessible by a unique identifier. This unique identifier e
 | User             | USER#[User Number] | #USER                          |
 | Terms Of Service | USER#[User Number] | #TOS#[Terms Of Service Number] |
 
-The backend code is simplified by storing the entities in the `entities` folder and the data accesses patterns in the `data` folder. Here's an example of the user entity.
+The backend code is simplified by storing the entities in the `/entities` folder and the data accesses patterns in the `/data` folder. Here's an example of the user entity.
 
 ```js:title=entities/user.js
 class User {
@@ -197,16 +197,50 @@ Now the user and their details are accessible through the client. You can create
 
 Each project is uniquely identified with the slug associated to it. The project's followers need to be queried while the projects the user follows must be queried too. Luckily, DynamoDB has Global Secondary Indexes that allow for different querying methods. The *PK* and *SK* are used to query the user's follows.
 
-|                  | PK                     | SK                             |
-|------------------|------------------------|--------------------------------|
-| Project          | PROJECT#[Project Slug] | #PROJECT                       |
-| Project Follow   | USER#[User Number]     | #PROJECT#[User Follow Number]  |
+|                  | PK                     | SK                            |
+|------------------|------------------------|-------------------------------|
+| Project          | #PROJECT               | PROJECT#[Project Slug]        |
+| Project Follow   | USER#[User Number]     | #PROJECT#[User Follow Number] |
 
-The Global Secondary Indexes are use to query the project's followers.
+The user can request their details by querying a partition key `USER#[User Number]` with a response of their data, the Terms of Services agreed to, and the projects they follow. The Global Secondary Indexes are use to query the project's followers.
 
 |                  | GSI1PK                 | GSI1SK                           |
 |------------------|------------------------|----------------------------------|
-| Project          | PROJECT#[Project Slug] | #PROJECT                         |
+| Project          | PROJECT#[Project Slug] | PROJECT#[Project Slug]           |
 | Project Follow   | PROJECT#[Project Slug] | #PROJECT#[Project Follow Number] |
 
-These different indexing methods allow DynamoDB to remain simple and efficient.
+The project and the project's followers are queried by the Global Secondary Index's partition key, *GSI1PK*. These different indexing methods allow DynamoDB to remain simple and efficient.
+
+### Comments
+
+The comments are requested by both the user and the post:
+- Get all of the user's comments
+- Get all comments per post
+
+Both of these access patterns are achieved by multiple primary keys. This first uses *PK* and *SK* to request all of the comments the user has made.
+
+|         | PK                 | SK                             |
+|---------|--------------------|--------------------------------|
+| Post    | POST#[Post Slug]   | #POST                          |
+| Comment | USER#[User Number] | #COMMENT#[User Comment Number] |
+| Vote    | USER#[User Number] | #COMMENT#[User Vote Number]    |
+
+The Global Secondary Index is used to query the all of the comments per post.
+
+|         | GSI1PK           | GSI1SK                                       |
+|---------|------------------|----------------------------------------------|
+| Post    | POST#[Post Slug] | #POST                                        |
+| Comment | POST#[Post Slug] | #COMMENT#[Post Comment Number]               |
+| Vote    | POST#[Post Slug] | #COMMENT#[Post Comment Number]#[Vote Number] |
+
+# Analytics
+
+After adding all of this, I'd like to understand how people interact with it. Amplify makes analytics really easy by integrating Kinesis.
+
+![Kinesis](./AWSLogos_Kinesis.svg)
+
+Kinesis records when someone visits the website, clicks on button, and much more. There's not that much to share yet, because I haven't recorded that much. 
+
+# Conclusion
+
+This was a lot of work, and I know that I had the option to use [Disqus](https://disqus.com), but this was a great introduction for me. I was able to pick up a large portion of the services AWS has to offer while also learning how to optimize and construct DynamoDB tables.

@@ -1,6 +1,6 @@
 const { User } = require( `./entities` )
 const { addUserToBlog } = require( `./data` )
-const async = require( `async` )
+// const async = require( `async` )
 
 exports.handler = ( event, context, callback ) => {
   // Define the URL that you want the user to be directed to after verification
@@ -22,7 +22,7 @@ exports.handler = ( event, context, callback ) => {
 
     // Add this user to the DynamoDB.
     const newUser = new User( { name: name, email: email } )
-    
+
     // Look through the different regions to see which region the event was
     // called from.
     const hyphenRegions = [
@@ -48,13 +48,17 @@ exports.handler = ( event, context, callback ) => {
 
     addUserToBlog( tableName, newUser )
       .then( ( { user, error } ) => {
+        // eslint-disable-next-line no-console
         if ( error ) console.log( `Couldn't add user`, error )
+        // eslint-disable-next-line no-console
+        else console.log( `Added user`, user )
         callback( null, event )
       } )
       .catch( error => {
+        // eslint-disable-next-line no-console
         console.log( `caught error`, error )
         callback( null, event )
-    } )
+      } )
 
     // Make the callback to complete the event.
     // callback( null, event )
