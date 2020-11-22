@@ -1,6 +1,8 @@
 const AWS = require( `aws-sdk` )
 const dynamoDB = new AWS.DynamoDB()
-const { userFromItem, tosFromItem } = require( `../entities` )
+const {
+  userFromItem, tosFromItem, projectFollowFromItem
+} = require( `../entities` )
 
 /**
  * Retrieves the user from DynamoDB.
@@ -22,6 +24,7 @@ const getUserDetails = async ( tableName, user ) => {
       switch ( item.Type.S ) {
         case `user`: return userFromItem( item )
         case `terms of service`: return tosFromItem( item )
+        case `project follow`: return projectFollowFromItem( item )
         default: throw Error( `Could not parse type ${item.Type.S}` )
       }
     } ) }

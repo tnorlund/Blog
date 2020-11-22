@@ -17,7 +17,7 @@ export default function Project( { data } ) {
 
   return(
     <PageBody>
-      <Title>{title}</Title><Follow />
+      <Title>{title}</Title><Follow slug={slug} title={title}/>
       <Icon src={icon} alt={title} height={`150px`} />
       <Mdx>{body}</Mdx>
       {posts.edges.map(

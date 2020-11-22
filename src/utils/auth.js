@@ -72,7 +72,7 @@ export function parseUser( CognitoUserSession ) {
  * @returns {{dbError: String, user: String}} Either the error or the user from
  *   the database.
  */
-export const userFromDB = async( requestedUser ) => {
+export const updateUser = async( requestedUser ) => {
   // Check to see if the require parameters are given.
   if ( !requestedUser.name ) return { dbError: `No name given` }
   if ( !requestedUser.email ) return { dbError: `No email given` }
@@ -85,6 +85,83 @@ export const userFromDB = async( requestedUser ) => {
       `/user-details?name=${name}&email=${ email }&number=${ userNumber }`
     )
     if ( error ) return { dbError: error }
-    else return { user: user }
+    if ( user.length < 1 ) return { user: undefined }
+    else {
+      const userDetails = new User( user.shift() )
+      user.map( element => {
+        if ( element.userNumber && element.version )
+          userDetails.addTOS( element )
+        if ( element.slug && element.title )
+          userDetails.addFollow( element )
+      } )
+      return { user: userDetails }
+    }
   } catch( error ) { return { dbError: error } }
+}
+
+const parseDate = ( dateString ) => {
+  const parsed = dateString.split( /\D+/ )
+  return( new Date( Date.UTC(
+    parsed[0], --parsed[1], parsed[2], parsed[3], parsed[4], parsed[5],
+    parsed[6]
+  ) ) )
+}
+
+export class Follow {
+  constructor( { slug, title } ) {
+    if ( typeof slug === undefined )
+      throw Error( `Must give the slug of the project.` )
+    this.slug = slug
+    if ( typeof title === undefined )
+      throw Error( `Must give the title of the project.` )
+    this.title = title
+  }
+}
+
+export class TOS {
+  constructor( { dateAccepted, tosNumber, userNumber, version } ) {
+    if ( typeof dateAccepted === undefined )
+      throw Error( `Must give the date the Terms of Service was accepted.` )
+    this.dateAccepted = parseDate( dateAccepted )
+    if ( typeof tosNumber === undefined )
+      throw Error( `Must give the number of Terms of Services agreed to.` )
+    this.tosNumber = parseInt( tosNumber )
+    if ( typeof userNumber === undefined )
+      throw Error( `Must give the user's number.` )
+    this.userNumber = parseInt( userNumber )
+    if ( typeof version === undefined )
+      throw Error( `Must give the Terms of Service's version.` )
+    this.version = parseDate( version )
+  }
+}
+
+export class User {
+  constructor( {
+    name, email, userNumber, numberFollows, NumberTOS, dateJoined
+  } ) {
+    if ( typeof name === undefined ) throw Error( `Must give user's name` )
+    this.name = name
+    if ( typeof email === undefined ) throw Error( `Must give user's email` )
+    this.email = email
+    if ( typeof userNumber === undefined )
+      throw Error( `Must give user's userNumber` )
+    this.userNumber = parseInt( userNumber )
+    if ( typeof numberFollows === undefined )
+      throw Error( `Must give user's numberFollows` )
+    this.numberFollows = parseInt( numberFollows )
+    if ( typeof NumberTOS === undefined )
+      throw Error( `Must give user's NumberTOS` )
+    this.NumberTOS = parseInt( NumberTOS )
+    if ( typeof dateJoined === undefined )
+      throw Error( `Must give user's dateJoined` )
+    this.dateJoined = parseDate( dateJoined )
+    this.terms = []
+    this.follows = []
+  }
+  addTOS( details ) {
+    this.terms.push( new TOS( { ...details } ) )
+  }
+  addFollow( details ) {
+    this.follows.push( new Follow( { ...details } ) )
+  }
 }

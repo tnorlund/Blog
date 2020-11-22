@@ -2,24 +2,28 @@ const AWS = require( `aws-sdk` )
 const dynamoDB = new AWS.DynamoDB()
 const { ProjectFollow } = require( `../entities` )
 
-/**
- * Adds a project's follow to DynamoDB.
- * @param {String} tableName The name of the DynamoDB table.
- * @param {Object} project   The project to add.
- */
-const addFollowToProject = async ( tableName, user, project ) => {
+// Find the project the user wants to unfollow
+// Decrement the number of projects the user follows
+// Decrement the number of followers the project has
+// Remove the specific project follow
+
+const removeFollowFromProject = async ( tableName, user, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
   try {
     // Increment the number of the project's followers.
     const {
       projectResponse, projectError
-    } = await incrementNumberProjectFollows( tableName, project )
+    } = await decrementNumberProjectFollows( tableName, project )
     if ( projectError ) return { error: projectError }
+    // eslint-disable-next-line no-console
+    console.log( `projectResponse`, projectResponse )
     // Increment the number of projects the user follows.
-    const { userResponse, userError } = await incrementNumberUserFollows(
+    const { userResponse, userError } = await decrementNumberUserFollows(
       tableName, user
     )
     if ( userError ) return { error: userError }
+    // eslint-disable-next-line no-console
+    console.log( `userResponse`, userResponse )
     // Add the project's follow to the DB.
     const projectFollow = new ProjectFollow( {
       userName: userResponse.name, userNumber: userResponse.userNumber,
@@ -27,27 +31,31 @@ const addFollowToProject = async ( tableName, user, project ) => {
       slug: projectResponse.slug, title: projectResponse.title,
       projectFollowNumber: projectResponse.numberFollows
     } )
-    await dynamoDB.putItem( {
+    // eslint-disable-next-line no-console
+    console.log( `projectFollow.toItem()`, projectFollow.toItem() )
+    await dynamoDB.deleteItem( {
       TableName: tableName,
-      Item: projectFollow.toItem(),
-      ConditionExpression: `attribute_not_exists(PK)`
+      Key: projectFollow.key(),
+      ConditionExpression: `attribute_exists(PK)`
     } ).promise()
-    return { projectFollow: projectFollow }
+    return { user: userResponse, project: projectResponse }
   } catch( error ) {
-    let errorMessage = `Could not add ${user.name} as a follower to 
-      ${project.title}`
+    // eslint-disable-next-line no-console
+    console.log( `error`, error )
+    // eslint-disable-next-line max-len
+    let errorMessage = `Could not remove ${user.name} as a follower to ${project.title}`
     if ( error.code === `ConditionalCheckFailedException` )
-      errorMessage = `${user.name} is already following ${project.title}`
+      errorMessage = `${user.name} is not following ${project.title}`
     return { 'error': errorMessage }
   }
 }
 
 /**
- * Increments a project's number of followers in DynamoDB.
+ * Decrements a project's number of followers in DynamoDB.
  * @param {String} tableName The name of the DynamoDB table.
  * @param {Object} project   The project to increment the number of followers.
  */
-const incrementNumberProjectFollows = async ( tableName, project ) => {
+const decrementNumberProjectFollows = async ( tableName, project ) => {
   if ( !tableName )
     throw new Error( `Must give the name of the DynamoDB table` )
   try {
@@ -55,14 +63,15 @@ const incrementNumberProjectFollows = async ( tableName, project ) => {
       TableName: tableName,
       Key: project.key(),
       ConditionExpression: `attribute_exists(PK)`,
-      UpdateExpression: `SET #count = #count + :inc`,
+      UpdateExpression: `SET #count = #count - :dec`,
       ExpressionAttributeNames: { '#count': `NumberFollows` },
-      ExpressionAttributeValues: { ':inc': { 'N': `1` } },
+      ExpressionAttributeValues: { ':dec': { 'N': `1` } },
       ReturnValues: `ALL_NEW`
     } ).promise()
     if ( !response.Attributes )
       return { 'projectError': `Could not find project` }
-    project.numberFollows = response.Attributes.NumberFollows.N
+    // project.numberFollows = response.
+    // Send the original back to ensure the correct keys are set.
     return { 'projectResponse': project }
   } catch( error ) {
     let errorMessage = `Could not follow project`
@@ -73,12 +82,12 @@ const incrementNumberProjectFollows = async ( tableName, project ) => {
 }
 
 /**
- * Increments a user's number of projects that they follow in DynamoDB.
+ * Decrements a user's number of projects that they follow in DynamoDB.
  * @param {String} tableName The name of the DynamoDB table.
  * @param {Object} user      The user to increment the number of projects they
  *                           follow.
  */
-const incrementNumberUserFollows = async ( tableName, user ) => {
+const decrementNumberUserFollows = async ( tableName, user ) => {
   if ( !tableName )
     throw new Error( `Must give the name of the DynamoDB table` )
   try {
@@ -86,20 +95,24 @@ const incrementNumberUserFollows = async ( tableName, user ) => {
       TableName: tableName,
       Key: user.key(),
       ConditionExpression: `attribute_exists(PK)`,
-      UpdateExpression: `SET #count = #count + :inc`,
+      UpdateExpression: `SET #count = #count - :dec`,
       ExpressionAttributeNames: { '#count': `NumberFollows` },
-      ExpressionAttributeValues: { ':inc': { 'N': `1` } },
+      ExpressionAttributeValues: { ':dec': { 'N': `1` } },
       ReturnValues: `ALL_NEW`
     } ).promise()
     if ( !response.Attributes ) return { 'userError': `Could not find project` }
-    user.numberFollows = response.Attributes.NumberFollows.N
+    // Remove the last fo
+    user.numberFollows = String(
+      parseInt( response.Attributes.NumberFollows.N ) + 1
+    )
+    // Send the original back to esnure the correct keys are set.
     return { 'userResponse': user }
   } catch( error ) {
-    let errorMessage = `Could not follow project`
+    let errorMessage = `Could not unfollow project`
     if ( error.code === `ConditionalCheckFailedException` )
       errorMessage = `User does not exist`
     return { 'userError': errorMessage }
   }
 }
 
-module.exports = { addFollowToProject }
+module.exports = { removeFollowFromProject }

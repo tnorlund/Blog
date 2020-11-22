@@ -12,7 +12,7 @@ class TOS {
     this.tosNumber = parseInt( tosNumber )
     if ( !version )
       throw Error( `Must give terms of service's version` )
-    this.version = new Date(version)
+    this.version = new Date( version )
     this.dateAccepted = dateAccepted
   }
 
@@ -22,7 +22,7 @@ class TOS {
   key() {
     return {
       'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
-      'SK': { 'S': `#TOS#${ ( `00000` + this.tosNumber ).slice( -6 ) }`}
+      'SK': { 'S': `#TOS#${ ( `00000` + this.tosNumber ).slice( -6 ) }` }
     }
   }
 
@@ -48,7 +48,7 @@ class TOS {
 const tosFromItem = ( item ) => {
   return new TOS( {
     userNumber: item.PK.S.split( `#` )[1],
-    tosNumber: item.SK.S.split( `#` )[1],
+    tosNumber: item.SK.S.split( `#` )[2],
     version: item.Version.S,
     dateAccepted: item.DateAccepted.S
   } )

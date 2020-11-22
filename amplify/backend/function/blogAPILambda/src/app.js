@@ -20,10 +20,11 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider(
 )
 let bodyParser = require( `body-parser` )
 let express = require( `express` )
-const { 
-  addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog
+const {
+  addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
+  addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject
 } = require( `./data` )
-const { User, TOS } = require( `./entities` )
+const { User, TOS, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
 const ADMINGROUP = `Admin`
 
@@ -33,10 +34,14 @@ const ADMINGROUP = `Admin`
  */
 const isAdmin = async ( username ) => {
   try {
-    const result = await cognitoIdentityServiceProvider.listUsersInGroup(
+    const { Users } = await cognitoIdentityServiceProvider.listUsersInGroup(
       { GroupName: ADMINGROUP, UserPoolId: USERPOOLID }
     ).promise()
-    const found = result.Users.map( user => {
+    // If there are no users in the ADMIN group, then return false.
+    if ( Users === undefined || Users.length == 0 ) return false
+    // Iterate over the users found in the ADMIN group and check to see if the
+    // username given is found in the ADMIN group.
+    const found = Users.map( user => {
       if ( username == user.Username ) return true
     } )
     if ( !found ) return false
@@ -67,7 +72,6 @@ if( process.env.ENV && process.env.ENV !== `NONE` ) {
   tableName = tableName + `-` + process.env.ENV
 }
 
-console.log( `blogLambdaAPI` )
 // TODO: update in case is required to use that definition
 const userIdPresent = true
 const partitionKeyName = `PK`
@@ -171,7 +175,7 @@ app.get( `/user`, async ( request, response ) => {
 } )
 
 /**
- * Get a specific user's details. 
+ * Get a specific user's details.
  */
 app.get( `/user-details`, async ( request, response ) => {
   const params = request.query
@@ -246,11 +250,132 @@ app.post( `/tos`, async ( request, response ) => {
     const requestedUser = new User( {
       name: name, email: email, userNumber: number
     } )
-    const { tos, error} = await addTOSToUser(
+    const { tos, error } = await addTOSToUser(
       tableName, requestedUser, version
     )
     if ( error ) response.json( { statusCode: 500, error: error } )
     else response.json( { statusCode: 200, tos: tos } )
+  }
+} )
+
+/**
+ * Adds a terms of service to a user.
+ */
+app.post( `/project`, async ( request, response ) => {
+  const username = getUserName( request )
+  if ( await isAdmin( username ) ) {
+    const params = request.body
+    if ( !params.slug )
+      response.json( {
+        statusCode: 400, error: `Must give slug in body`
+      } )
+    else if ( !params.title )
+      response.json( {
+        statusCode: 400, error: `Must give title in body`
+      } )
+    else {
+      const { slug, title } = params
+      const requestedProject = new Project( { slug, title } )
+      const { project, error } = await addProjectToBlog(
+        tableName, requestedProject
+      )
+      if ( error ) response.json( { statusCode: 500, error: error } )
+      else response.json( { statusCode: 200, project: project } )
+    }
+  } else response.json(
+    { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
+  )
+} )
+
+/**
+ * Gets a project from the database.
+ */
+app.get( `/project`, async ( request, response ) => {
+  const params = request.query
+  if ( typeof params.slug === undefined )
+    response.json( { statusCode: 400, error: `Must give slug in query.` } )
+  else if ( typeof params.title === undefined )
+    response.json( { statusCode: 400, error: `Must give title in query` } )
+  else {
+    const { slug, title } = params
+    const requestedProject = new Project( { slug, title } )
+    const { project, error } = await getProject( tableName, requestedProject )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, project: project } )
+  }
+} )
+
+/**
+ * Adds a follow to a project.
+ */
+app.post( `/project-follow`, async ( request, response ) => {
+  const params = request.body
+  if ( !params.slug )
+    response.json( {
+      statusCode: 400, error: `Must give project slug in body`
+    } )
+  else if ( !params.title )
+    response.json( {
+      statusCode: 400, error: `Must give project title in body`
+    } )
+  else if ( !params.name )
+    response.json( {
+      statusCode: 400, error: `Must give user's name in body`
+    } )
+  else if ( !params.email )
+    response.json( {
+      statusCode: 400, error: `Must give user's email in body`
+    } )
+  else if ( !params.userNumber )
+    response.json( {
+      statusCode: 400, error: `Must give user's number in body`
+    } )
+  else {
+    const { slug, title, name, email, userNumber } = params
+    const project = new Project( { slug, title } )
+    const user = new User( { name, email, userNumber } )
+    const { projectFollow, error } = await addFollowToProject(
+      tableName, user, project
+    )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, projectFollow: projectFollow } )
+  }
+} )
+
+/**
+ * Removes a follow from the user and project.
+ */
+app.delete( `/project-follow`, async ( request, response ) => {
+  const params = request.body
+  if ( !params.slug )
+    response.json( {
+      statusCode: 400, error: `Must give project slug in body`
+    } )
+  else if ( !params.title )
+    response.json( {
+      statusCode: 400, error: `Must give project title in body`
+    } )
+  else if ( !params.name )
+    response.json( {
+      statusCode: 400, error: `Must give user's name in body`
+    } )
+  else if ( !params.email )
+    response.json( {
+      statusCode: 400, error: `Must give user's email in body`
+    } )
+  else if ( !params.userNumber )
+    response.json( {
+      statusCode: 400, error: `Must give user's number in body`
+    } )
+  else {
+    const { slug, title, name, email, userNumber } = params
+    const requestedProject = new Project( { slug, title } )
+    const requestedUser = new User( { name, email, userNumber } )
+    const { user, project, error } = await removeFollowFromProject(
+      tableName, requestedUser, requestedProject
+    )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, user: user, project: project } )
   }
 } )
 

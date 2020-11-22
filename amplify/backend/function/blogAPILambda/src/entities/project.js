@@ -14,15 +14,15 @@ class Project {
   /**
    * @returns {Object} The partition key.
    */
-  pk() { return { 'PK': { 'S': `PROJECT#${ this.slug }` } } }
+  pk() { return { 'PK': { 'S': `#PROJECT` } } }
 
   /**
    * @returns {Object} The primary key.
    */
   key() {
     return {
-      'PK': { 'S': `PROJECT#${ this.slug }` },
-      'SK': { 'S': `#PROJECT` }
+      'PK': { 'S': `#PROJECT` },
+      'SK': { 'S': `PROJECT#${ this.slug }` }
     }
   }
 
@@ -65,7 +65,7 @@ const projectFromItem = ( item ) => {
   return new Project ( {
     slug: item.Slug.S,
     title: item.Title.S,
-    numberFollows: item.NumberFollows.S
+    numberFollows: item.NumberFollows.N
   } )
 }
 

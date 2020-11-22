@@ -9,7 +9,7 @@ const { Blog, blogFromItem } = require( `../entities` )
  */
 const addProjectToBlog = async ( tableName, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
-  const { blog, error } = await incrementNumberProjects( tableName )
+  const { error } = await incrementNumberProjects( tableName )
   if ( error ) return { error: error }
   try {
     await dynamoDB.putItem( {
@@ -52,7 +52,6 @@ const incrementNumberProjects = async ( tableName ) => {
       errorMessage = `Blog does not exist`
     return { 'error': errorMessage }
   }
-  
 }
 
 module.exports = { addProjectToBlog }

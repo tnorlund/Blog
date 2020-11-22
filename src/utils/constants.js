@@ -9,7 +9,7 @@ export const USER_KEY = `user`
 export const AUTH_KEY = `auth`
 
 /**
- * @type {String} The key used to change the version of the most recent Terms 
+ * @type {String} The key used to change the version of the most recent Terms
  * of Service using session storage. */
 export const TOS_KEY = `tos`
 
@@ -56,7 +56,7 @@ export const COLORS = {
   },
 }
 
-const { gray, brown, blue, red } = COLORS
+const { gray, brown, blue, red, orange } = COLORS
 
 export const MODE_COLORS = {
   text: {
@@ -115,7 +115,10 @@ export const MODE_COLORS = {
     light: brown.darker,
     dark: brown.darkest,
   },
-
+  orange: {
+    light: orange.dark,
+    dark: orange.darker,
+  },
   filter: {
     light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
       + ` brightness(103%) contrast(116%)`,

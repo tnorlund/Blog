@@ -3,7 +3,7 @@ import { graphql, useStaticQuery } from 'gatsby'
 import { useEventListener, useSessionStorage } from 'hooks'
 import { Close, ModalBehind, ModalDiv } from './styles'
 import ReactLoading from 'react-loading'
-import { getCurrentSession, parseUser, userFromDB } from 'utils/auth'
+import { getCurrentSession, parseUser, updateUser  } from 'utils/auth'
 
 import { AUTH_KEY, TOS_KEY } from 'utils/constants'
 
@@ -22,6 +22,10 @@ const loadingColor = () => {
   } else return `black`
 }
 
+// TODO
+// - Iterate over the different Terms of Services already agreed to to find
+//   the most recent version.
+
 /**
  * Handles the state of the modal view.
  * @param {String} tosVersion The current version of the Terms of Service.
@@ -31,7 +35,6 @@ const loadingColor = () => {
  * of Service agreement.
  */
 const handleState = async ( tosVersion ) => {
-  let requestedUser
   /** @type {[Object]} The agreed to Terms of Services. */
   let tos = []
   /** @type {String} The most recent Terms of Service agreed to. */
@@ -42,35 +45,22 @@ const handleState = async ( tosVersion ) => {
   if ( !session ) return { state: `login` }
   // When an error occurs, default to the login state.
   if ( sessionError ) return { error: sessionError, state: `login` }
-  const { user, dbError } = await userFromDB( parseUser( session ) )
-  console.log( `user details`, user )
+  const { user, dbError } = await updateUser( parseUser( session ) )
   // When an error occurs, default to the login state.
   if ( dbError ) return { error: dbError, state: `login` }
-  // Iterate over the different elements returned in order to parse them.
-  user.map( element => {
-    if ( element.name && element.email )
-      requestedUser = element
-    if ( element.userNumber && element.version )
-      tos.push( element )
-  } )
   // When no user details are returned from the DB, set the state to login.
-  if ( !requestedUser ) return { state: `login` }
+  if ( !user ) return { state: `login` }
   // When the user has not agreed to any Terms of Service, set the state to
   // Terms of Service.
-  if ( requestedUser.numberTOS == 0 )
-    return { user: requestedUser, state: `tos` }
-  // Iterate over the different Terms of Services already agreed to to find
-  // the most recent version.
-  tos.map( element => {
-    if ( tos.length == 1 ) recentVersion = element.version
-  } )
+  if ( user.numberTOS == 0 || user.terms.length == 0 )
+    return { user: user, state: `tos` }
   // When the most recent agreed to Terms of Service is not this one, set the
   // state to Terms of Service so that the user can agree to the most recent
   // version.
   if ( Date( tosVersion ) != Date( recentVersion ) )
-    return { user: requestedUser, state: `tos` }
+    return { user: userFromDB, state: `tos` }
   // Otherwise, the user will be shown their profile.
-  return { user: requestedUser, state: `profile` }
+  return { user: user, state: `profile` }
 }
 
 export default function Authentication( { open, setModal } ) {
@@ -110,18 +100,23 @@ export default function Authentication( { open, setModal } ) {
       // ref.current.style.height = `100px`
     }
     if (
-      authState == `login` || authState == `profile` || authState == `tos`
+      open &&
+      ( authState == `login` || authState == `profile` || authState == `tos` )
     ) handleState( tos ).then(
       ( { user, error, state } ) => {
         // eslint-disable-next-line no-console
         if ( error ) console.log( `error`, error )
+        console.log( {user, error, state} )
         setUser( user )
         setAuthState( state )
       } )
     // Set the state of the modal view to not be loading.
     setLoading( false )
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ open, authState, tos, loading ] )
+  }, [ open, authState, 
+    // tos, 
+    // loading 
+  ] )
 
   if ( open )
     return (

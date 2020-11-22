@@ -4,15 +4,18 @@ class ProjectFollow {
    * @param {Object} details The details about the project's follow.
    */
   constructor( {
-    userName, userNumber, userFollowNumber, projectFollowNumber, slug, title, dateFollowed = new Date()
+    userName, userNumber, userFollowNumber, projectFollowNumber, slug, title,
+    dateFollowed = new Date()
   } ) {
-    if ( !userName ) throw Error( `Must give user's name` )
+    if ( typeof userName === undefined ) throw Error( `Must give user's name` )
     this.userName = userName
-    if ( !userNumber ) throw Error( `Must give the user's number` )
+    if ( typeof userNumber === undefined )
+      throw Error( `Must give the user's number` )
     this.userNumber = userNumber
-    if ( !userFollowNumber ) throw Error( `Must give the number of projects the user follows` )
+    if ( typeof userFollowNumber === undefined )
+      throw Error( `Must give the number of projects the user follows` )
     this.userFollowNumber = userFollowNumber
-    if ( !projectFollowNumber )
+    if ( typeof projectFollowNumber === undefined )
       throw Error( `Must give the project's follow number` )
     /** The number of current followers of this project + 1. */
     this.projectFollowNumber = projectFollowNumber
@@ -36,9 +39,7 @@ class ProjectFollow {
   key() {
     return {
       'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
-      'SK': { 
-        'S': `#PROJECT#${ ( `00000` + this.userFollowNumber ).slice( -6 ) }` 
-      }
+      'SK': { 'S': `#PROJECT#${ this.slug }` }
     }
   }
 
@@ -55,7 +56,9 @@ class ProjectFollow {
   gsi1() {
     return {
       'GSI1PK': { 'S': `PROJECT#${ this.slug }` },
-      'GSI1SK': { 'S': `#PROJECT${ this.projectFollowNumber }` }
+      'GSI1SK': {
+        'S': `#PROJECT${ ( `00000` + this.projectFollowNumber ).slice( -6 ) }`
+      }
     }
   }
 

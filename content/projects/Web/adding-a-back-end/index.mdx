@@ -1,8 +1,8 @@
 ---
-title: Adding Comments
-slug: /projects/web/adding-comments
+title: Adding A Back End
+slug: /projects/web/adding-a-back-end
 date: "2020-10-26T11:38:53"
-description: "I added a way to login. Each user can now add comments to posts."
+description: "I added a way to login, follow projects, and comment on posts using Amplify."
 showToc: true
 ---
 
@@ -62,10 +62,11 @@ I decided to separate the patterns into the 3 main entities seen in the ERD abov
 - Create a user
 - Accept a terms of service
 - Check to see if the latest terms of service has been accepted
+- View followed projects per user
 - View comments per user
 
 **Projects**
-- Subscribe to a project
+- Follow a project
 - Get all users that follow a project
 
 **Post**
@@ -189,6 +190,8 @@ const getUserDetails = async ( tableName, user ) => {
 
 module.exports = { getUserDetails }
 ```
+
+Now the user and their details are accessible through the client. You can create an account by clicking in the top right corner.
 
 ### Project
 
