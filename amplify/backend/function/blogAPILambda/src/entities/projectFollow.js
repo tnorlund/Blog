@@ -1,3 +1,4 @@
+const { ZeroPadNumber } = require( `./utils` )
 class ProjectFollow {
   /**
    * A project's follow object.
@@ -33,7 +34,7 @@ class ProjectFollow {
    * @returns {Object} The partition key.
    */
   pk() {
-    return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
+    return { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` }
   }
 
   /**
@@ -41,7 +42,7 @@ class ProjectFollow {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
       'SK': { 'S': `#PROJECT#${ this.slug }` }
     }
   }
@@ -60,7 +61,7 @@ class ProjectFollow {
     return {
       'GSI1PK': { 'S': `PROJECT#${ this.slug }` },
       'GSI1SK': {
-        'S': `#PROJECT${ ( `00000` + this.projectFollowNumber ).slice( -6 ) }`
+        'S': `#PROJECT#${ ZeroPadNumber( this.projectFollowNumber ) }`
       }
     }
   }
@@ -89,9 +90,9 @@ class ProjectFollow {
 const projectFollowFromItem = ( item ) => {
   return new ProjectFollow( {
     userName: item.UserName.S,
-    userNumber: parseInt( item.PK.S.split( `#` )[1] ),
-    userFollowNumber: item.SK.S.split( `#` )[2],
-    projectFollowNumber: item.GSI1SK.S.split( `#` )[1],
+    userNumber: parseInt( item.PK.S.split( `#` )[1] ).toString(),
+    userFollowNumber: parseInt( item.SK.S.split( `#` )[2] ).toString(),
+    projectFollowNumber: parseInt( item.GSI1SK.S.split( `#` )[2] ).toString(),
     slug: item.GSI1PK.S.split( `#` )[1],
     email: item.Email.S,
     title: item.Title.S,

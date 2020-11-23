@@ -17,6 +17,8 @@ const getPost = async ( tableName, post ) => {
     if ( !result.Item ) return { error: `Project does not exist` }
     else return { post: postFromItem( result.Item ) }
   } catch( error ) {
+    // eslint-disable-next-line no-console
+    console.log( `ERROR getPost `, error )
     return { error: `Could not get project` }
   }
 }

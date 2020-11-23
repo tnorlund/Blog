@@ -23,7 +23,8 @@ let express = require( `express` )
 const {
   addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
   addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject,
-  addPostToBlog, getPost, getProjectDetails, removeProject, updateProject
+  addPostToBlog, getPost, getProjectDetails, removeProject, updateProject,
+  addCommentToPost
 } = require( `./data` )
 const { User, Post, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
@@ -335,7 +336,6 @@ app.delete( `/project`, async ( request, response ) => {
  */
 app.post( `/project-update`, async ( request, response ) => {
   if ( await isAdmin( getUserName( request ) ) ) {
-    console.log( `isAdmin` )
     const params = request.body
     if ( !params.slug )
       response.json( {
@@ -352,11 +352,9 @@ app.post( `/project-update`, async ( request, response ) => {
     else {
       const { slug, title, numberFollows } = params
       const requestedProject = new Project( { slug, title, numberFollows } )
-      console.log( `requestedProject`, requestedProject )
       const { project, error } = await updateProject(
         tableName, requestedProject
       )
-      console.log( { project, error } )
       if ( error ) response.json( { statusCode: 500, error: error } )
       else response.json( { statusCode: 200, project: project } )
     }
@@ -479,10 +477,13 @@ app.post( `/post`, async ( request, response ) => {
       } )
     else {
       const { slug, title } = params
+      console.log( { slug, title } )
       const requestedPost = new Post( { slug, title } )
+      console.log( requestedPost )
       const { post, error } = await addPostToBlog(
         tableName, requestedPost
       )
+      console.log( { post, error } )
       if ( error ) response.json( { statusCode: 500, error: error } )
       else response.json( { statusCode: 200, post: post } )
     }
@@ -501,11 +502,50 @@ app.get( `/post`, async ( request, response ) => {
   else if ( typeof params.title === undefined )
     response.json( { statusCode: 400, error: `Must give title in query` } )
   else {
-    const { slug, title } = request.query
+    const { slug, title } = params
+    console.log( { slug, title } )
     const requestedPost = new Post( { slug, title } )
+    console.log( requestedPost )
     const { post, error } = await getPost( tableName, requestedPost )
+    console.log( { post, error } )
     if ( error ) response.json( { statusCode: 500, error: error } )
     else response.json( { statusCode: 200, post: post } )
+  }
+} )
+
+/**
+ * Adds a new comment to a post.
+ */
+app.post( `/comment`, async ( request, response ) => {
+  const params = request.body
+  if ( !params.name ) response.json( {
+    statusCode: 400, error: `Must give user's name in body of request`
+  } )
+  else if ( !params.email ) response.json( {
+    statusCode: 400, error: `Must give user's email in body of request`
+  } )
+  else if ( !params.userNumber ) response.json( {
+    statusCode: 400, error: `Must give the user's number in body of request`
+  } )
+  else if ( !params.slug ) response.json( {
+    statusCode: 400, error: `Must give the post's slug in body of request`
+  } )
+  else if ( !params.title ) response.json( {
+    statusCode: 400, error: `Must give the post's title in body of request`
+  } )
+  else if ( !params.text ) response.json( {
+    statusCode: 400,
+    error: `Must give the text of the comment in in body of request`
+  } )
+  else {
+    const { name, email, userNumber, slug, title, text } = params
+    const requestedUser = new User( { name, email, userNumber } )
+    const requestedPost = new Post( { slug, title } )
+    const { comment, error } = await addCommentToPost(
+      tableName, requestedUser, requestedPost, text
+    )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, comment: comment } )
   }
 } )
 

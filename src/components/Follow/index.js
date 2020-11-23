@@ -98,6 +98,8 @@ export default function Follow( { slug, title } ) {
   // Before the modal view is rendered, set the styles of the document.
   useEffect( () => {
     getProject( slug, title, setError ).then( ( { project, error } ) => {
+      // If the project is not in the database and the use is an administrator,
+      // give them the opportunity to create the project.
       if ( error == `Project does not exist` && user.isAdmin )
         setWarning( true )
       else setFollowNumber( project.numberFollows )

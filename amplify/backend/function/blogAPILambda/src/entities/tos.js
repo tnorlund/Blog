@@ -1,3 +1,4 @@
+const { ZeroPadNumber } = require( `./utils` )
 class TOS {
   /**
    * A Terms of Service object.
@@ -21,8 +22,8 @@ class TOS {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
-      'SK': { 'S': `#TOS#${ ( `00000` + this.tosNumber ).slice( -6 ) }` }
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
+      'SK': { 'S': `#TOS#${ ZeroPadNumber( this.tosNumber ) }` }
     }
   }
 

@@ -2,6 +2,12 @@ const AWS = require( `aws-sdk` )
 const dynamoDB = new AWS.DynamoDB()
 const { ProjectFollow } = require( `../entities` )
 
+// TODO
+// [ ] Remove user's Project Follow
+// [ ] Recount the numbers of the Project's Follows
+// [ ]   - Get the Project's Follows
+// [ ]   - Set the correct counts for each Project's Follows
+
 const removeFollowFromProject = async ( tableName, user, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
   try {

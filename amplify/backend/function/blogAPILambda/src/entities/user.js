@@ -1,3 +1,4 @@
+const { ZeroPadNumber } = require( `./utils` )
 /**
  * User library
  */
@@ -28,7 +29,7 @@ class User {
    * @returns {Object} The partition key.
    */
   pk() {
-    return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
+    return { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` }
   }
 
   /**
@@ -36,7 +37,7 @@ class User {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
       'SK': { 'S': `#USER` }
     }
   }
