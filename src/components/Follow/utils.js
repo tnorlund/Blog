@@ -1,12 +1,54 @@
 import { getCurrentSession, updateUser  } from 'utils/auth'
 import { API } from 'aws-amplify'
 
+/**
+ * Removes a project and its followers using the API.
+ * @param {String} slug          The slug of the project.
+ * @param {String} title         The title of the project.
+ * @param {Number} numberFollows The new number of followers of the project.
+ * @param {Function} setError    The function used to set an error if there is
+ *                               any while retrieving data from the database.
+ * @param {Function} setWarning  The function used to set whether the project
+ *                               was retrieved successfully from the database.
+ * @param {Function} setUser     The function used to set the user details in
+ *                               session storage.
+ */
+export const updateProject = async(
+  slug, title, numberFollows, setError, setWarning, setUser
+) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`,
+      `/project-update`,
+      { body: {
+        title: title, slug: slug, numberFollows: String( numberFollows )
+      } }
+    )
+    if ( error ) setError( error )
+    const { session, sessionError } = await getCurrentSession()
+    if ( sessionError ) setError( sessionError )
+    const { user, dbError } = await updateUser( session )
+    if ( dbError ) setError( dbError )
+    else setUser( user )
+  } catch( error ) { setError( error ) }
+}
 
+/**
+ * Removes a project and its followers using the API.
+ * @param {String} slug         The slug of the project.
+ * @param {String} title        The title of the project.
+ * @param {Function} setError   The function used to set an error if there is
+ *                              any while retrieving data from the database.
+ * @param {Function} setWarning The function used to set whether the project
+ *                              was retrieved successfully from the database.
+ * @param {Function} setUser    The function used to set the user details in
+ *                              session storage.
+ */
 export const removeProject = async(
   slug, title, setError, setWarning, setUser
 ) => {
   try {
-    const { project, error } = await API.del(
+    const { error } = await API.del(
       `blogAPI`,
       `/project`,
       { body: { title: title, slug: slug } }
@@ -49,7 +91,6 @@ export const getProjectDetails = async( slug, title, setError ) => {
 export const removeFollow = async (
   requestedUser, slug, title, setUser, setError
 ) => {
-  console.log( { requestedUser, slug, title, setUser, setError } )
   try {
     // const { user, project, error }
     const { error } = await API.del(
@@ -138,5 +179,8 @@ export const addProject = async ( slug, title, setWarning, setError ) => {
     { body: { slug: slug, title: title } }
   )
   if ( error ) setError( error )
-  else setWarning( false )
+  else {
+    setWarning( false )
+    setError()
+  }
 }

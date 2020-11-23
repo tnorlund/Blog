@@ -13,6 +13,7 @@ const { addPostToBlog } = require( `./addPostToBlog` )
 const { getPost } = require( `./getPost` )
 const { getProjectDetails } = require( `./getProjectDetails` )
 const { removeProject } = require( `./removeProject` )
+const { updateProject } = require( `./updateProject` )
 
 module.exports = {
   addUserToBlog,
@@ -29,5 +30,6 @@ module.exports = {
   addPostToBlog,
   getPost,
   getProjectDetails,
-  removeProject
+  removeProject,
+  updateProject
 }

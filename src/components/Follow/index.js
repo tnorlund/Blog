@@ -4,20 +4,62 @@ import Modal from 'components/Modal'
 import {
   FollowButton, FollowingButton, FollowDiv, Follower, FollowDetails,
   AdminWarning, WarningDiv, WarningButton, FollowNumber, Title, User,
-  Name, DateDiv, Remove
+  Name, DateDiv, Remove, More, Less, Controls, ControlsNumber,
+  WarningDescription, EmailButton
 } from './styles'
 import { AUTH_KEY } from 'utils/constants'
 import {
   removeFollow, getProject, addFollow, addProject, getProjectDetails,
-  removeProject
+  removeProject, updateProject
 } from './utils'
 
-function ProjectDetails( details, setUser, setError ) {
-  const { title, slug } = details[0]
+/**
+ * Adds a string to the user's clipboard.
+ * @param {String} str The string added to the clipboard.
+ */
+function copyStringToClipboard ( str ) {
+  // Create new element
+  let el = document.createElement( `textarea` )
+  // Set value (string to be copied)
+  el.value = str
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute( `readonly`, `` )
+  el.style = { position: `absolute`, left: `-9999px` }
+  document.body.appendChild( el )
+  // Select text inside element
+  el.select()
+  // Copy text to clipboard
+  document.execCommand( `copy` )
+  // Remove temporary element
+  document.body.removeChild( el )
+}
+
+/**
+ * Creates the modal view for administrative control over the project.
+ * @param {Object}   details    The project details and its followers.
+ * @param {Function} setUser    The function used to set the user details in
+ *                              session storage.
+ * @param {Function} setError   The function used to set an error if there is
+ *                              any while retrieving data from the database.
+ * @param {Function} setWarning The function used to set whether the project
+ *                              was retrieved successfully from the database.
+ */
+function ProjectDetails( details, setUser, setError, setWarning ) {
+  const { title, slug, numberFollows } = details[0]
   const followers = details.slice( 1, details.length )
+  const emails = followers.map( follower => follower.email ).join( `, ` )
   return(
     <>
       <Title>{ title }</Title>
+      <Controls>
+        <div><Less onClick={ () => updateProject(
+          slug, title, numberFollows - 1, setError, setWarning, setUser
+        ) }/></div>
+        <ControlsNumber>{ numberFollows }</ControlsNumber>
+        <div><More onClick={ () => updateProject(
+          slug, title, numberFollows + 1, setError, setWarning, setUser
+        ) }/></div>
+      </Controls>
       <div>
         {
           followers.map( ( { userName, email, userNumber, dateFollowed } ) => (
@@ -32,6 +74,9 @@ function ProjectDetails( details, setUser, setError ) {
           ) )
         }
       </div>
+      <EmailButton onClick={
+        () => copyStringToClipboard( emails )
+      }>Followers&apos;s Emails</EmailButton>
     </>
   )
 }
@@ -114,14 +159,18 @@ export default function Follow( { slug, title } ) {
       }
       {
         error
-      && <WarningDiv><AdminWarning/>{error}</WarningDiv>
+      && <WarningDiv>
+        <AdminWarning/><WarningDescription>{error}</WarningDescription>
+      </WarningDiv>
       }
       {
         projectDetails.content && projectDetails.content.length > 0 && !warning
         && <Modal open={ projectDetails.open } closeModal={
           () => setProjectDetails( { ...projectDetails, open: false } )
         } contents={
-          ProjectDetails( projectDetails.content, setUser, setError )
+          ProjectDetails(
+            projectDetails.content, setUser, setError, setWarning
+          )
         }/>
       }
     </>

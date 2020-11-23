@@ -23,7 +23,7 @@ let express = require( `express` )
 const {
   addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
   addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject,
-  addPostToBlog, getPost, getProjectDetails, removeProject
+  addPostToBlog, getPost, getProjectDetails, removeProject, updateProject
 } = require( `./data` )
 const { User, Post, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
@@ -322,6 +322,41 @@ app.delete( `/project`, async ( request, response ) => {
       const { project, error } = await removeProject(
         tableName, requestedProject
       )
+      if ( error ) response.json( { statusCode: 500, error: error } )
+      else response.json( { statusCode: 200, project: project } )
+    }
+  } else response.json(
+    { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
+  )
+} )
+
+/**
+ * Updates a project on an Admin level.
+ */
+app.post( `/project-update`, async ( request, response ) => {
+  if ( await isAdmin( getUserName( request ) ) ) {
+    console.log( `isAdmin` )
+    const params = request.body
+    if ( !params.slug )
+      response.json( {
+        statusCode: 400, error: `Must give slug in body`
+      } )
+    else if ( !params.title )
+      response.json( {
+        statusCode: 400, error: `Must give title in body`
+      } )
+    else if ( !params.numberFollows )
+      response.json( {
+        statusCode: 400, error: `Must give number of follows in body`
+      } )
+    else {
+      const { slug, title, numberFollows } = params
+      const requestedProject = new Project( { slug, title, numberFollows } )
+      console.log( `requestedProject`, requestedProject )
+      const { project, error } = await updateProject(
+        tableName, requestedProject
+      )
+      console.log( { project, error } )
       if ( error ) response.json( { statusCode: 500, error: error } )
       else response.json( { statusCode: 200, project: project } )
     }
