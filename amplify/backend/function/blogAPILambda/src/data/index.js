@@ -11,6 +11,8 @@ const { removeFollowFromProject } = require( `./removeFollowFromProject` )
 const { getProject } = require( `./getProject` )
 const { addPostToBlog } = require( `./addPostToBlog` )
 const { getPost } = require( `./getPost` )
+const { getProjectDetails } = require( `./getProjectDetails` )
+const { removeProject } = require( `./removeProject` )
 
 module.exports = {
   addUserToBlog,
@@ -25,5 +27,7 @@ module.exports = {
   removeFollowFromProject,
   getProject,
   addPostToBlog,
-  getPost
+  getPost,
+  getProjectDetails,
+  removeProject
 }

@@ -3,7 +3,7 @@ import { graphql, useStaticQuery } from 'gatsby'
 import { useEventListener, useSessionStorage } from 'hooks'
 import { Close, ModalBehind, ModalDiv } from './styles'
 import ReactLoading from 'react-loading'
-import { getCurrentSession, parseUser, updateUser  } from 'utils/auth'
+import { getCurrentSession, updateUser  } from 'utils/auth'
 
 import { AUTH_KEY, TOS_KEY } from 'utils/constants'
 
@@ -35,8 +35,6 @@ const loadingColor = () => {
  * of Service agreement.
  */
 const handleState = async ( tosVersion ) => {
-  /** @type {[Object]} The agreed to Terms of Services. */
-  let tos = []
   /** @type {String} The most recent Terms of Service agreed to. */
   let recentVersion
 
@@ -45,20 +43,20 @@ const handleState = async ( tosVersion ) => {
   if ( !session ) return { state: `login` }
   // When an error occurs, default to the login state.
   if ( sessionError ) return { error: sessionError, state: `login` }
-  const { user, dbError } = await updateUser( parseUser( session ) )
+  const { user, dbError } = await updateUser( session )
   // When an error occurs, default to the login state.
   if ( dbError ) return { error: dbError, state: `login` }
   // When no user details are returned from the DB, set the state to login.
   if ( !user ) return { state: `login` }
   // When the user has not agreed to any Terms of Service, set the state to
   // Terms of Service.
-  if ( user.numberTOS == 0 || user.terms.length == 0 )
+  if ( user.tosNumber == 0 || user.terms.length == 0 )
     return { user: user, state: `tos` }
   // When the most recent agreed to Terms of Service is not this one, set the
   // state to Terms of Service so that the user can agree to the most recent
   // version.
   if ( Date( tosVersion ) != Date( recentVersion ) )
-    return { user: userFromDB, state: `tos` }
+    return { user: user, state: `tos` }
   // Otherwise, the user will be shown their profile.
   return { user: user, state: `profile` }
 }
@@ -106,16 +104,15 @@ export default function Authentication( { open, setModal } ) {
       ( { user, error, state } ) => {
         // eslint-disable-next-line no-console
         if ( error ) console.log( `error`, error )
-        console.log( {user, error, state} )
         setUser( user )
         setAuthState( state )
       } )
     // Set the state of the modal view to not be loading.
     setLoading( false )
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ open, authState, 
-    // tos, 
-    // loading 
+  }, [ open, authState,
+    // tos,
+    // loading
   ] )
 
   if ( open )

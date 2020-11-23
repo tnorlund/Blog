@@ -1,136 +1,129 @@
 import React, { useState, useEffect } from 'react'
-import { useTransition, Spring, useSpring, config } from 'react-spring'
-
-import {
-  FollowButton, FollowingButton, FollowDiv, Icon, TextDiv, FollowNumber
-} from './styles'
 import { useSessionStorage } from 'hooks'
-import { API } from 'aws-amplify'
+import Modal from 'components/Modal'
+import {
+  FollowButton, FollowingButton, FollowDiv, Follower, FollowDetails,
+  AdminWarning, WarningDiv, WarningButton, FollowNumber, Title, User,
+  Name, DateDiv, Remove
+} from './styles'
 import { AUTH_KEY } from 'utils/constants'
+import {
+  removeFollow, getProject, addFollow, addProject, getProjectDetails,
+  removeProject
+} from './utils'
 
-const addFollow = async ( requestedUser, slug, title ) => {
-
-  try {
-    const { projectFollow, error } = await API.post(
-      `blogAPI`,
-      `/project-follow`,
-      { body: {
-        slug: slug,
-        title: title,
-        name: requestedUser.name,
-        email: requestedUser.email,
-        userNumber: requestedUser.userNumber
-      } }
-    )
-    if ( error ) console.log( `error`, error )
-    console.log( `projectFollow`, projectFollow )
-    // setLoading( true )
-    // if ( error ) return { error: error }
-    // else return { user: user }
-  } catch( error ) {
-    // return { error: error }
-    console.log( `errored`, error )
-  }
-}
-
-const removeFollow = async ( requestedUser, slug, title ) => {
-  try {
-    // const { user, project, error } 
-    const response = await API.del(
-      `blogAPI`,
-      `/project-follow`,
-      { body: {
-        slug: slug,
-        title: title,
-        name: requestedUser.name,
-        email: requestedUser.email,
-        userNumber: requestedUser.userNumber
-      } }
-    )
-    // console.log( `user`, user )
-    // console.log( `project`, project )
-    // console.log( `error`, error )
-    console.log( `response`, response )
-  } catch( error ) {
-    console.log( `errored`, error )
-  }
-}
-
-/**
- * Adds a project through the API.
- * @param {String} slug The slug of the project.
- * @param {String} title The title of the project.
- */
-const addProject = async ( slug, title ) => {
-  const response = await API.post(
-    `blogAPI`,
-    `/project`,
-    { body: { slug: slug, title: title } }
+function ProjectDetails( details, setUser, setError ) {
+  const { title, slug } = details[0]
+  const followers = details.slice( 1, details.length )
+  return(
+    <>
+      <Title>{ title }</Title>
+      <div>
+        {
+          followers.map( ( { userName, email, userNumber, dateFollowed } ) => (
+            <User key={ userName }>
+              <Name>{ userName }</Name>
+              <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
+              <Remove onClick={ () => removeFollow(
+                { name: userName, email: email, userNumber: userNumber },
+                slug, title, setUser, setError
+              ) } />
+            </User>
+          ) )
+        }
+      </div>
+    </>
   )
 }
-
-const getProject = async ( slug, title ) => {
-  try {
-    const { project, error } = await API.get(
-      `blogAPI`,
-      `/project?slug=${ slug }&title=${ title }`
-    )
-    if ( error ) return { error: error }
-    return { project: project }
-  } catch( error ) { return { error: error } }
-}
-
 
 export default function Follow( { slug, title } ) {
   // Get the current user data
   const [ user, setUser ] = useSessionStorage( AUTH_KEY )
   // Set the project data
+  const [ followNumber, setFollowNumber ] = useState( 0 )
+  // Sets the warning whether to add a project or not.
+  const [ warning, setWarning ] = useState( false )
+  // Sets an error if one occurs.
+  const [ error, setError ] = useState()
+  // Sets whether to show the modal view of the project's details.
   const [ projectDetails, setProjectDetails ] = useState( {
-    numberFollowers: 0
-  } )
-  // Set whether to show or not.
-  const [ show, setShow ] = useState( false )
-  // React-spring
-  const fade = useSpring( {
-    config: config.wobbly,
-    opacity: show ? 1 : 0,
-    delay: 800,
-    duration: 1000
+    open: false, content: undefined
   } )
   // Before anything is rendered to the screen, get the project's data.
   // Before the modal view is rendered, set the styles of the document.
   useEffect( () => {
-    console.log(`getting data`)
-    getProject( slug, title ).then( ( { project, error } ) => {
-      if ( error == "Project does not exist" ) {
-        console.log(error)
-      }
-      else setProjectDetails( { numberFollowers: project.numberFollows } )
-      setShow( true )
-      console.log(`got data`)
+    getProject( slug, title, setError ).then( ( { project, error } ) => {
+      if ( error == `Project does not exist` && user.isAdmin )
+        setWarning( true )
+      else setFollowNumber( project.numberFollows )
     } )
-  }, [] )
+    if ( user && user.isAdmin ) {
+      getProjectDetails( slug, title, setError ).then(
+        ( project ) =>
+          setProjectDetails( { ...projectDetails, content: project } )
+      )
+    }
+  }, [ user, warning, slug, title ] )
   return(
-    <FollowDiv style={{...fade}}>
-      {
-        projectDetails.numberFollowers > 0
-        && <TextDiv>
-          <Icon />
-          <FollowNumber>{projectDetails.numberFollowers}</FollowNumber>
-        </TextDiv>
+    <>
+      {// If the project is not in the database and the current user is Admin,
+      //  give the option to add the project to the database.
+        warning
+      && <WarningDiv>
+        <div><AdminWarning/>Project not in database</div>
+        <div><WarningButton onClick={
+          () => { addProject( slug, title, setWarning, setError ) }
+        }>Add Project</WarningButton></div>
+      </WarningDiv>
       }
-      {// If the user is logged in and they are not following the project.
-        user
-      && user.follows.map( follow => follow.slug ).indexOf( slug ) < 0
-      && <FollowButton onClick={
-        () => addFollow( user, slug, title )
-      } >Follow</FollowButton>}
-      {// If the user is logged in and they are following the project.
-        user
-      && user.follows.map( follow => follow.slug ).indexOf( slug ) >= 0
-      && <FollowingButton onClick={
-        () => removeFollow( user, slug, title )
-      } >Following</FollowingButton>}
-    </FollowDiv>
+      {
+        !warning
+        && <FollowDiv>
+          <FollowDetails>
+            <div><Follower /></div><FollowNumber>{ followNumber }</FollowNumber>
+          </FollowDetails>
+          <div>
+            {// If the user is logged in and they are not following the project.
+              user &&
+              user.follows.map( follow => follow.slug ).indexOf( slug ) < 0
+            && <FollowButton onClick={
+              () => addFollow( user, slug, title, setUser, setError )
+            } >Follow</FollowButton> }
+
+            {// If the user is logged in and they are following the project.
+              user &&
+              user.follows.map( follow => follow.slug ).indexOf( slug ) >= 0
+            && <FollowingButton onClick={
+              () => removeFollow( user, slug, title, setUser, setError )
+            } >Following</FollowingButton> }
+          </div>
+        </FollowDiv>
+      }
+      {// If the user is an Admin, give the option to remove project.
+        user && user.isAdmin && !warning
+        && <WarningDiv>
+          <div><FollowButton onClick={
+            () => {
+              setProjectDetails( { ...projectDetails, open: true } )
+            }
+          }>Project Details</FollowButton></div>
+          <div><WarningButton onClick={
+            () => removeProject( slug, title, setError, setWarning, setUser )
+          }>Remove Project</WarningButton></div>
+        </WarningDiv>
+      }
+      {
+        error
+      && <WarningDiv><AdminWarning/>{error}</WarningDiv>
+      }
+      {
+        projectDetails.content && projectDetails.content.length > 0 && !warning
+        && <Modal open={ projectDetails.open } closeModal={
+          () => setProjectDetails( { ...projectDetails, open: false } )
+        } contents={
+          ProjectDetails( projectDetails.content, setUser, setError )
+        }/>
+      }
+    </>
   )
 }

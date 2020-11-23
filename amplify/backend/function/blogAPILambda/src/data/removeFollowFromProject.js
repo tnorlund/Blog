@@ -2,11 +2,6 @@ const AWS = require( `aws-sdk` )
 const dynamoDB = new AWS.DynamoDB()
 const { ProjectFollow } = require( `../entities` )
 
-// Find the project the user wants to unfollow
-// Decrement the number of projects the user follows
-// Decrement the number of followers the project has
-// Remove the specific project follow
-
 const removeFollowFromProject = async ( tableName, user, project ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
   try {

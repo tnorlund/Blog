@@ -34,12 +34,23 @@ export const Configure = () => {
 }
 
 /**
- * Gets the current Cognito User Session if the user is logged in.
+ * Gets the current Cognito User Session and parses the data.
+ *
+ * @returns Undefined if no user is logged in or a modified session Object if
+ *          someone is logged in.
  */
 export const getCurrentSession = async () => {
   try {
     const session = await Auth.currentSession()
-    return { session: session }
+    return { session: {
+      name: session.idToken.payload.name,
+      email: session.idToken.payload.email,
+      userNumber: session.idToken.payload[ `custom:UserNumber` ],
+      groups: session.idToken.payload[ `cognito:groups` ],
+      // eslint-disable-next-line max-len
+      isAdmin: session.idToken.payload[ `cognito:groups` ].indexOf( `Admin` ) >= 0,
+      session: session
+    } }
   } catch ( error ) {
     if ( error === `No current user` )
       return { session: undefined }
@@ -82,12 +93,12 @@ export const updateUser = async( requestedUser ) => {
   try {
     const { user, error } = await API.get(
       `blogAPI`,
-      `/user-details?name=${name}&email=${ email }&number=${ userNumber }`
+      `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
     )
     if ( error ) return { dbError: error }
     if ( user.length < 1 ) return { user: undefined }
     else {
-      const userDetails = new User( user.shift() )
+      const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
       user.map( element => {
         if ( element.userNumber && element.version )
           userDetails.addTOS( element )
@@ -99,6 +110,11 @@ export const updateUser = async( requestedUser ) => {
   } catch( error ) { return { dbError: error } }
 }
 
+/**
+ * Converts an ISO formatted date into a Date object.
+ * @param {String} dateString An ISO formatted date.
+ * @returns A Date object.
+ */
 const parseDate = ( dateString ) => {
   const parsed = dateString.split( /\D+/ )
   return( new Date( Date.UTC(
@@ -137,7 +153,8 @@ export class TOS {
 
 export class User {
   constructor( {
-    name, email, userNumber, numberFollows, NumberTOS, dateJoined
+    name, email, userNumber, numberFollows, numberTOS, dateJoined, groups,
+    isAdmin
   } ) {
     if ( typeof name === undefined ) throw Error( `Must give user's name` )
     this.name = name
@@ -151,10 +168,16 @@ export class User {
     this.numberFollows = parseInt( numberFollows )
     if ( typeof NumberTOS === undefined )
       throw Error( `Must give user's NumberTOS` )
-    this.NumberTOS = parseInt( NumberTOS )
+    this.tosNumber = parseInt( numberTOS )
     if ( typeof dateJoined === undefined )
       throw Error( `Must give user's dateJoined` )
     this.dateJoined = parseDate( dateJoined )
+    if ( typeof groups === undefined )
+      throw Error( `Must give user's groups` )
+    this.groups = groups
+    if ( typeof isAdmin === undefined )
+      throw Error( `Must give whether user is Admin` )
+    this.isAdmin = isAdmin
     this.terms = []
     this.follows = []
   }

@@ -29,6 +29,8 @@ const getUserDetails = async ( tableName, user ) => {
       }
     } ) }
   } catch( error ) {
+    // eslint-disable-next-line no-console
+    console.log( `ERROR getUserDetails`, error )
     return { error: `Could not get user` }
   }
 }

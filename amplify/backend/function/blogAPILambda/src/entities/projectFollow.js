@@ -4,8 +4,8 @@ class ProjectFollow {
    * @param {Object} details The details about the project's follow.
    */
   constructor( {
-    userName, userNumber, userFollowNumber, projectFollowNumber, slug, title,
-    dateFollowed = new Date()
+    userName, userNumber, email, userFollowNumber, projectFollowNumber, slug,
+    title, dateFollowed = new Date()
   } ) {
     if ( typeof userName === undefined ) throw Error( `Must give user's name` )
     this.userName = userName
@@ -15,6 +15,9 @@ class ProjectFollow {
     if ( typeof userFollowNumber === undefined )
       throw Error( `Must give the number of projects the user follows` )
     this.userFollowNumber = userFollowNumber
+    if ( typeof email === undefined )
+      throw Error( `Must give the user's email` )
+    this.email = email
     if ( typeof projectFollowNumber === undefined )
       throw Error( `Must give the project's follow number` )
     /** The number of current followers of this project + 1. */
@@ -71,6 +74,7 @@ class ProjectFollow {
       ...this.gsi1(),
       'Type': { 'S': `project follow` },
       'UserName': { 'S': this.userName },
+      'Email': { 'S': this.email },
       'Title': { 'S': this.title },
       'DateFollowed': { 'S': this.dateFollowed.toISOString() }
     }
@@ -85,10 +89,11 @@ class ProjectFollow {
 const projectFollowFromItem = ( item ) => {
   return new ProjectFollow( {
     userName: item.UserName.S,
-    userNumber: item.PK.S.split( `#` )[1],
+    userNumber: parseInt( item.PK.S.split( `#` )[1] ),
     userFollowNumber: item.SK.S.split( `#` )[2],
     projectFollowNumber: item.GSI1SK.S.split( `#` )[1],
     slug: item.GSI1PK.S.split( `#` )[1],
+    email: item.Email.S,
     title: item.Title.S,
     dateFollowed: item.DateFollowed.S
   } )

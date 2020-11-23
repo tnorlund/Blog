@@ -23,7 +23,7 @@ let express = require( `express` )
 const {
   addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
   addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject,
-  addPostToBlog, getPost
+  addPostToBlog, getPost, getProjectDetails, removeProject
 } = require( `./data` )
 const { User, Post, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
@@ -163,7 +163,7 @@ app.get( `/user`, async ( request, response ) => {
     const { user, error } = await getUser( tableName, requestedUser )
     if ( error ) response.json( { statusCode: 500, error: error } )
     else  {
-      if ( 
+      if (
         requestedUser.name != user.name ||
         requestedUser.email != user.email ||
         requestedUser.userNumber != user.userNumber
@@ -303,6 +303,55 @@ app.get( `/project`, async ( request, response ) => {
     if ( error ) response.json( { statusCode: 500, error: error } )
     else response.json( { statusCode: 200, project: project } )
   }
+} )
+
+app.delete( `/project`, async ( request, response ) => {
+  if ( await isAdmin( getUserName( request ) ) ) {
+    const params = request.body
+    if ( !params.slug )
+      response.json( {
+        statusCode: 400, error: `Must give slug in body`
+      } )
+    else if ( !params.title )
+      response.json( {
+        statusCode: 400, error: `Must give title in body`
+      } )
+    else {
+      const { slug, title } = params
+      const requestedProject = new Project( { slug, title } )
+      const { project, error } = await removeProject(
+        tableName, requestedProject
+      )
+      if ( error ) response.json( { statusCode: 500, error: error } )
+      else response.json( { statusCode: 200, project: project } )
+    }
+  } else response.json(
+    { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
+  )
+} )
+
+/**
+ * Gets the project and its followers from the database.
+ */
+app.get( `/project-details`, async ( request, response ) => {
+  if ( await isAdmin( getUserName( request ) ) ) {
+    const params = request.query
+    if ( typeof params.slug === undefined )
+      response.json( { statusCode: 400, error: `Must give slug in query.` } )
+    else if ( typeof params.title === undefined )
+      response.json( { statusCode: 400, error: `Must give title in query` } )
+    else {
+      const { slug, title } = params
+      const requestedProject = new Project( { slug, title } )
+      const { project, error } = await getProjectDetails(
+        tableName, requestedProject
+      )
+      if ( error ) response.json( { statusCode: 500, error: error } )
+      else response.json( { statusCode: 200, project: project } )
+    }
+  } else response.json(
+    { statusCode: 401, error: `Must be a part of the Admin UserGroup` }
+  )
 } )
 
 /**
@@ -597,10 +646,11 @@ app.get( `/post`, async ( request, response ) => {
 //   } )
 // } )
 app.listen( 3000, function() {
+  // eslint-disable-next-line no-console
   console.log( `App started` )
 } )
 
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
+// Export the app object. When executing the application local this does
+// nothing. However, to port it to AWS Lambda we will create a wrapper around
+// that will load the app from this file
 module.exports = app

@@ -23,7 +23,7 @@ const addFollowToProject = async ( tableName, user, project ) => {
     // Add the project's follow to the DB.
     const projectFollow = new ProjectFollow( {
       userName: userResponse.name, userNumber: userResponse.userNumber,
-      userFollowNumber: userResponse.numberFollows,
+      userFollowNumber: userResponse.numberFollows, email: userResponse.email,
       slug: projectResponse.slug, title: projectResponse.title,
       projectFollowNumber: projectResponse.numberFollows
     } )
