@@ -1,11 +1,17 @@
+const { ZeroPadNumber } = require( `./utils` )
+/**
+ * User library
+ */
 class User {
   /**
    * A user object.
-   * @param {Object} details The details of the user.
+   * @param {object} options
+   * @param {String} options.name The name of the user.
+   * @param {Number|String} [options.userNumber=`0`] The number of the user.
    */
-  constructor( { 
+  constructor( {
     name, email, userNumber = `0`, dateJoined = new Date(), numberTOS = `0`,
-    numberFollows = `0` 
+    numberFollows = `0`, numberComments = `0`, numberVotes = `0`
   } ) {
     if ( !name ) throw Error( `Must give the user's name` )
     this.name = name
@@ -15,13 +21,15 @@ class User {
     this.dateJoined = dateJoined
     this.numberTOS = parseInt( numberTOS )
     this.numberFollows = parseInt( numberFollows )
+    this.numberComments = parseInt( numberComments )
+    this.numberVotes = parseInt( numberVotes )
   }
 
   /**
    * @returns {Object} The partition key.
    */
   pk() {
-    return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
+    return { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` }
   }
 
   /**
@@ -29,7 +37,7 @@ class User {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
       'SK': { 'S': `#USER` }
     }
   }
@@ -45,7 +53,9 @@ class User {
       'Email': { 'S': this.email },
       'DateJoined': { 'S': this.dateJoined.toISOString() },
       'NumberTOS': { 'N': this.numberTOS.toString() },
-      'NumberFollows': { 'N': this.numberFollows.toString() }
+      'NumberFollows': { 'N': this.numberFollows.toString() },
+      'NumberComments': { 'N': this.numberComments.toString() },
+      'NumberVotes': { 'N': this.numberVotes.toString() }
     }
   }
 }
@@ -61,7 +71,9 @@ const userFromItem = ( item ) => {
     email: item.Email.S,
     userNumber: item.PK.S.split( `#` )[1],
     dateJoined: item.DateJoined.S,
-    numberTOS: item.NumberTOS.N
+    numberTOS: item.NumberTOS.N,
+    numberComments: item.NumberComments.N,
+    numberVotes: item.NumberVotes.N
   } )
 }
 

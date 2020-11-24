@@ -15,7 +15,7 @@ const createBlog = async ( tableName, blog ) => {
       conditionExpression: `attribute_not_exists(PK)`
     } ).promise()
     return( { blog: blog } )
-  } catch(error) {
+  } catch( error ) {
     let errorMessage = `Could not create Blog`
     if ( error.code == `ConditionalCheckFailedException` )
       errorMessage = `Blog already exists`

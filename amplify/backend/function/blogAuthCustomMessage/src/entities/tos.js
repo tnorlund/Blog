@@ -1,3 +1,4 @@
+const { ZeroPadNumber } = require( `./utils` )
 class TOS {
   /**
    * A Terms of Service object.
@@ -12,7 +13,7 @@ class TOS {
     this.tosNumber = parseInt( tosNumber )
     if ( !version )
       throw Error( `Must give terms of service's version` )
-    this.version = new Date(version)
+    this.version = new Date( version )
     this.dateAccepted = dateAccepted
   }
 
@@ -21,8 +22,8 @@ class TOS {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
-      'SK': { 'S': `#TOS#${ ( `00000` + this.tosNumber ).slice( -6 ) }`}
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
+      'SK': { 'S': `#TOS#${ ZeroPadNumber( this.tosNumber ) }` }
     }
   }
 
@@ -35,7 +36,7 @@ class TOS {
       'Type': { 'S': `terms of service` },
       'Version': { 'S': this.version.toISOString() },
       'DateAccepted': { 'S': this.dateAccepted.toISOString() },
-      'TOSNumber': { 'N': this.tosNumber.toString() }
+      'NumberTOS': { 'N': this.tosNumber.toString() }
     }
   }
 }
@@ -48,7 +49,7 @@ class TOS {
 const tosFromItem = ( item ) => {
   return new TOS( {
     userNumber: item.PK.S.split( `#` )[1],
-    tosNumber: item.SK.S.split( `#` )[1],
+    tosNumber: item.SK.S.split( `#` )[2],
     version: item.Version.S,
     dateAccepted: item.DateAccepted.S
   } )

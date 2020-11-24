@@ -1,6 +1,6 @@
 const AWS = require( `aws-sdk` )
 const dynamoDB = new AWS.DynamoDB()
-const { User, TOS, userFromItem, tosFromItem } = require( `../entities` )
+const { TOS, userFromItem, tosFromItem } = require( `../entities` )
 
 /**
  * Adds a user to DynamoDB.
@@ -13,7 +13,7 @@ const addTOSToUser = async ( tableName, user, tosVersion ) => {
   const { requestedUser, error } = await incrementTOS( tableName, user )
   if ( error ) return { error: error }
   // Set the new Terms of Service to match the user's data.
-  const tos = new TOS( { 
+  const tos = new TOS( {
     userNumber: user.userNumber, tosNumber: requestedUser.numberTOS,
     version: tosVersion
   } )
@@ -23,7 +23,7 @@ const addTOSToUser = async ( tableName, user, tosVersion ) => {
       Item: tos.toItem(),
       ConditionExpression: `attribute_not_exists(PK)`
     } ).promise()
-    return { tos: tos }
+    return { tos: tosFromItem( tos ) }
   } catch( error ) {
     let errorMessage = `Could not add Terms of Service to user`
     if ( error.code === `ConditionalCheckFailedException` )
@@ -58,7 +58,6 @@ const incrementTOS = async ( tableName, user ) => {
       errorMessage = `User does not exist`
     return { 'error': errorMessage }
   }
-  
 }
 
 module.exports = { addTOSToUser }

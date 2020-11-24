@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
-import { Title, ButtonDiv, BodyDiv } from './styles'
+import { Title, ButtonDiv, BodyDiv, WarningIcon } from './styles'
 import { Auth } from 'aws-amplify'
 
-export default function Profile( { setWorking, currentUser } ) {
+export default function Profile( setWorking, currentUser ) {
+  console.log( `rendering profile` )
   // Gets the user data from session storage.
   const [ user, setUser ] = useSessionStorage( AUTH_KEY )
   // A function for signing out
@@ -12,7 +13,6 @@ export default function Profile( { setWorking, currentUser } ) {
     setWorking( true )
     Auth.signOut()
       .then( () => {
-        console.log( `finished signing out.` )
         setUser( undefined )
         setWorking( false )
       } )
@@ -28,6 +28,7 @@ export default function Profile( { setWorking, currentUser } ) {
       <BodyDiv>
         <p><b>Name: </b>{name}</p>
         <p><b>Email: </b>{email}</p>
+        <WarningIcon/>
       </BodyDiv>
       <ButtonDiv onClick={ () => signOut() }>Sign Out</ButtonDiv>
     </>

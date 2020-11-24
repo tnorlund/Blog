@@ -3,7 +3,8 @@ import { graphql, useStaticQuery } from 'gatsby'
 import { useEventListener, useSessionStorage } from 'hooks'
 import Modal from 'components/Modal'
 
-import { Close, ModalBehind, ModalDiv } from './styles'
+
+import { ModalDiv } from './styles'
 import ReactLoading from 'react-loading'
 import { getCurrentSession, updateUser  } from 'utils/auth'
 
@@ -18,7 +19,7 @@ import ForgotSubmit from './forgotSubmit'
 import TermsOfService from './tos'
 
 
-export default function Authentication( { open, setModal } ) {
+export default function Authentication( { open, close } ) {
   // The session's state of the authentication modal view.
   // State for Authentication process
   const [ authState, setAuthState ] = useState()
@@ -42,63 +43,56 @@ export default function Authentication( { open, setModal } ) {
     ` ).mdx.frontmatter.version
   ) )
   // Before the modal view is rendered, set the styles of the document.
-  useEffect( () => {
-    console.log( `rendering` )
-    console.log( user )
-    if ( open ) document.body.style.overflowY = `hidden`
-    if ( ref.current ) { ref.current.style.zIndex = 3 }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    open,
-    // working,
-    user
-    // authState, 
-    // user
-    // tos,
-    // loading
-  ] )
+  // useEffect( () => {
+  //   console.log( `rendering` )
+  //   console.log( user )
+  //   if ( open ) document.body.style.overflowY = `hidden`
+  //   if ( ref.current ) { ref.current.style.zIndex = 3 }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   open,
+  //   // user
+  // ] )
 
-  if ( open )
-    return (
-      <ModalBehind open={open} onClick={ () => setModal( false ) }>
-        <ModalDiv
-          onClick={ event => event.stopPropagation() }
-          { ...{ ref } }
-        >
-          <Close onClick={ () => setModal( false ) } />
+  return(
+    <Modal open={ open } closeModal={ () => close() } contents={Login()}/>
+  )
 
-          { // The Login view can either log the user in or change to the
-            // signup or forgot views.
-            !user && <Login setWorking={ setWorking }/> }
 
-          { // The Profile view can only log out.
-            user && <Profile setWorking={ setWorking } currentUser={ user } /> }
+    
+    // return (
+    //   <ModalBehind open={open} onClick={ () => setModal( false ) }>
+    //     <ModalDiv
+    //       onClick={ event => event.stopPropagation() }
+    //       { ...{ ref } }
+    //     >
+    //       <Close onClick={ () => setModal( false ) } />
 
-          { // The signup state goes to either the login or check state
-            authState == `signup` && <SignUp setAuthState={setAuthState} /> }
+    //       { // The Login view can either log the user in or change to the
+    //         // signup or forgot views.
+    //         !user && <Login setWorking={ setWorking }/> }
 
-          { // The check state just says "Check your email" and doesn't go to
-            // any other page.
-            authState == `check` && <Check setAuthState={setAuthState} /> }
+    //       { // The Profile view can only log out.
+    //         user && <Profile setWorking={ setWorking } currentUser={ user } /> }
 
-          { // The forgot state goes to sign in or the forgotSubmit state.
-            authState == `forgot` && <Forgot setAuthState={setAuthState} /> }
+    //       { // The signup state goes to either the login or check state
+    //         authState == `signup` && <SignUp setAuthState={setAuthState} /> }
 
-          { // The forgotSubmit state only goes to the login state.
-            authState == `forgotSubmit` &&
-              <ForgotSubmit setAuthState={setAuthState} /> }
-          { // The Terms of Service state only goes to the profile state.
-            authState == `tos` &&
-              <TermsOfService user={user} />
-          }
-        </ModalDiv>
-      </ModalBehind>
-    )
-  else {
-    // When the modal is not being viewed, reset the styles
-    if ( typeof document !== `undefined` )
-      document.body.style.removeProperty( `overflow-y` )
-    if ( ref.current ) ref.current.style.removeProperty( `z-index` )
-    return null
-  }
+    //       { // The check state just says "Check your email" and doesn't go to
+    //         // any other page.
+    //         authState == `check` && <Check setAuthState={setAuthState} /> }
+
+    //       { // The forgot state goes to sign in or the forgotSubmit state.
+    //         authState == `forgot` && <Forgot setAuthState={setAuthState} /> }
+
+    //       { // The forgotSubmit state only goes to the login state.
+    //         authState == `forgotSubmit` &&
+    //           <ForgotSubmit setAuthState={setAuthState} /> }
+    //       { // The Terms of Service state only goes to the profile state.
+    //         authState == `tos` &&
+    //           <TermsOfService user={user} />
+    //       }
+    //     </ModalDiv>
+    //   </ModalBehind>
+    // )
 }

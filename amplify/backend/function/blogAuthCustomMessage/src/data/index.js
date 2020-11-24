@@ -7,6 +7,15 @@ const { getUserDetails } = require( `./getUserDetails` )
 const { addTOSToUser } = require( `./addTOStoUser` )
 const { addProjectToBlog } = require( `./addProjectToBlog` )
 const { addFollowToProject } = require( `./addFollowToProject` )
+const { removeFollowFromProject } = require( `./removeFollowFromProject` )
+const { getProject } = require( `./getProject` )
+const { addPostToBlog } = require( `./addPostToBlog` )
+const { getPost } = require( `./getPost` )
+const { getProjectDetails } = require( `./getProjectDetails` )
+const { removeProject } = require( `./removeProject` )
+const { updateProject } = require( `./updateProject` )
+const { addCommentToPost } = require( `./addCommentToPost` )
+const { getPostDetails } = require( `./getPostDetails` )
 
 module.exports = {
   addUserToBlog,
@@ -17,5 +26,14 @@ module.exports = {
   getUserDetails,
   addTOSToUser,
   addProjectToBlog,
-  addFollowToProject
+  addFollowToProject,
+  removeFollowFromProject,
+  getProject,
+  addPostToBlog,
+  getPost,
+  getProjectDetails,
+  removeProject,
+  updateProject,
+  addCommentToPost,
+  getPostDetails
 }

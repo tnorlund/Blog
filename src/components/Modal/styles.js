@@ -12,7 +12,7 @@ export const ModalBehind = styled.div`
   visibility: ${props => ( props.open ? `visible` : `hidden` )};
   opacity: ${props => ( props.open ? `1` : `0` )};
   transition: 0.5s;
-  z-index: 4;
+  z-index: 3;
 `
 
 export const ModalDiv = styled.div`
@@ -50,4 +50,5 @@ export const Close = styled( Cross )`
   border-radius: 0.4em;
   top: 0.5em;
   right: 0.5em;
+  cursor: pointer;
 `

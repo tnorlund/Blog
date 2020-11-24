@@ -12,9 +12,14 @@ export default function Modal( {
   const ref = useRef()
   if ( open )
     return(
-      <ModalBehind open={open} onClick={ () => closeModal() }>
-        <ModalDiv>
-          { showClose && <Close onClick={ () => closeModal() } /> }
+      <ModalBehind open={open} onClick={ () => {
+        console.log( `modal Behind` )
+        closeModal(  )
+      } }>
+        <ModalDiv
+          onClick={ event => event.stopPropagation() }
+        >
+          { showClose && <Close onClick={ () => closeModal(  ) } /> }
           { contents }
         </ModalDiv>
       </ModalBehind>

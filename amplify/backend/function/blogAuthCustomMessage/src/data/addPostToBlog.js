@@ -3,25 +3,25 @@ const dynamoDB = new AWS.DynamoDB()
 const { Blog, blogFromItem } = require( `../entities` )
 
 /**
- * Adds a project to DynamoDB.
+ * Adds a post to DynamoDB.
  * @param {String} tableName The name of the DynamoDB table.
- * @param {Object} project   The project to add.
+ * @param {Object} post      The post to add.
  */
-const addProjectToBlog = async ( tableName, project ) => {
+const addPostToBlog = async ( tableName, post ) => {
   if ( !tableName ) throw Error( `Must give the name of the DynamoDB table` )
-  const { error } = await incrementNumberProjects( tableName )
+  const { error } = await incrementNumberPosts( tableName )
   if ( error ) return { error: error }
   try {
     await dynamoDB.putItem( {
       TableName: tableName,
-      Item: project.toItem(),
+      Item: post.toItem(),
       ConditionExpression: `attribute_not_exists(PK)`
     } ).promise()
-    return { project: project }
+    return { post: post }
   } catch( error ) {
     let errorMessage = `Could not add project to blog`
     if ( error.code === `ConditionalCheckFailedException` )
-      errorMessage = `${project.title} is already in DynamoDB`
+      errorMessage = `${post.title} is already in DynamoDB`
     return { 'error': errorMessage }
   }
 }
@@ -30,7 +30,7 @@ const addProjectToBlog = async ( tableName, project ) => {
  * Increments the number of projects in the DynamoDB blog item.
  * @param {String} tableName The name of the DynamoDB table.
  */
-const incrementNumberProjects = async ( tableName ) => {
+const incrementNumberPosts = async ( tableName ) => {
   if ( !tableName )
     throw new Error( `Must give the name of the DynamoDB table` )
   let blog = new Blog( {} )
@@ -40,7 +40,7 @@ const incrementNumberProjects = async ( tableName ) => {
       Key: blog.key(),
       ConditionExpression: `attribute_exists(PK)`,
       UpdateExpression: `SET #count = #count + :inc`,
-      ExpressionAttributeNames: { '#count': `NumberProjects` },
+      ExpressionAttributeNames: { '#count': `NumberPosts` },
       ExpressionAttributeValues: { ':inc': { 'N': `1` } },
       ReturnValues: `ALL_NEW`
     } ).promise()
@@ -54,4 +54,4 @@ const incrementNumberProjects = async ( tableName ) => {
   }
 }
 
-module.exports = { addProjectToBlog }
+module.exports = { addPostToBlog }

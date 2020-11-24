@@ -67,7 +67,7 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
  *                               retrieved successfully from the database.
  * @param {Function} setError    The function used to set the error while
  *                               retrieving data from the database.
- * @param {Function} setCommment The function used to set the text of the 
+ * @param {Function} setCommment The function used to set the text of the
  *                               comment.
  */
 export const addComment = async (

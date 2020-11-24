@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import DarkToggle from '../DarkToggle'
 import Nav from '../Nav'
 import Authentication from '../Authentication'
+import Modal from 'components/Modal'
 import { HeaderDiv, Logo, IconDiv, Div, Icon } from './styles'
 import { Configure } from 'utils/auth'
 
@@ -26,9 +27,16 @@ export default function Header( { site } ) {
           <DarkToggle />
         </IconDiv>
       </HeaderDiv>
-      <Authentication
-        open={ open } setModal={ setModal }
-      />
+      <Authentication open={open} close={() => setModal(false)} />
+      {/* <Modal
+        open={ open }
+        closeModal={ () => {
+          console.log( `closing modal` )
+          setModal( false )
+        } 
+        }
+        contents={ Authentication() }
+      /> */}
     </>
   )
 }

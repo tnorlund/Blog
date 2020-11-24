@@ -1,18 +1,25 @@
+const { ZeroPadNumber } = require( `./utils` )
 class ProjectFollow {
   /**
    * A project's follow object.
    * @param {Object} details The details about the project's follow.
    */
   constructor( {
-    userName, userNumber, userFollowNumber, projectFollowNumber, slug, title, dateFollowed = new Date()
+    userName, userNumber, email, userFollowNumber, projectFollowNumber, slug,
+    title, dateFollowed = new Date()
   } ) {
-    if ( !userName ) throw Error( `Must give user's name` )
+    if ( typeof userName === undefined ) throw Error( `Must give user's name` )
     this.userName = userName
-    if ( !userNumber ) throw Error( `Must give the user's number` )
+    if ( typeof userNumber === undefined )
+      throw Error( `Must give the user's number` )
     this.userNumber = userNumber
-    if ( !userFollowNumber ) throw Error( `Must give the number of projects the user follows` )
+    if ( typeof userFollowNumber === undefined )
+      throw Error( `Must give the number of projects the user follows` )
     this.userFollowNumber = userFollowNumber
-    if ( !projectFollowNumber )
+    if ( typeof email === undefined )
+      throw Error( `Must give the user's email` )
+    this.email = email
+    if ( typeof projectFollowNumber === undefined )
       throw Error( `Must give the project's follow number` )
     /** The number of current followers of this project + 1. */
     this.projectFollowNumber = projectFollowNumber
@@ -27,7 +34,7 @@ class ProjectFollow {
    * @returns {Object} The partition key.
    */
   pk() {
-    return { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` }
+    return { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` }
   }
 
   /**
@@ -35,10 +42,8 @@ class ProjectFollow {
    */
   key() {
     return {
-      'PK': { 'S': `USER#${ ( `00000` + this.userNumber ).slice( -6 ) }` },
-      'SK': { 
-        'S': `#PROJECT#${ ( `00000` + this.userFollowNumber ).slice( -6 ) }` 
-      }
+      'PK': { 'S': `USER#${ ZeroPadNumber( this.userNumber ) }` },
+      'SK': { 'S': `#PROJECT#${ this.slug }` }
     }
   }
 
@@ -55,7 +60,9 @@ class ProjectFollow {
   gsi1() {
     return {
       'GSI1PK': { 'S': `PROJECT#${ this.slug }` },
-      'GSI1SK': { 'S': `#PROJECT${ this.projectFollowNumber }` }
+      'GSI1SK': {
+        'S': `#PROJECT#${ ZeroPadNumber( this.projectFollowNumber ) }`
+      }
     }
   }
 
@@ -68,6 +75,7 @@ class ProjectFollow {
       ...this.gsi1(),
       'Type': { 'S': `project follow` },
       'UserName': { 'S': this.userName },
+      'Email': { 'S': this.email },
       'Title': { 'S': this.title },
       'DateFollowed': { 'S': this.dateFollowed.toISOString() }
     }
@@ -82,10 +90,11 @@ class ProjectFollow {
 const projectFollowFromItem = ( item ) => {
   return new ProjectFollow( {
     userName: item.UserName.S,
-    userNumber: item.PK.S.split( `#` )[1],
-    userFollowNumber: item.SK.S.split( `#` )[2],
-    projectFollowNumber: item.GSI1SK.S.split( `#` )[1],
+    userNumber: parseInt( item.PK.S.split( `#` )[1] ).toString(),
+    userFollowNumber: parseInt( item.SK.S.split( `#` )[2] ).toString(),
+    projectFollowNumber: parseInt( item.GSI1SK.S.split( `#` )[2] ).toString(),
     slug: item.GSI1PK.S.split( `#` )[1],
+    email: item.Email.S,
     title: item.Title.S,
     dateFollowed: item.DateFollowed.S
   } )

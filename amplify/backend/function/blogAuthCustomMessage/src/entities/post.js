@@ -1,43 +1,43 @@
-class Project {
+class Post {
   /**
    * A project object.
    * @param {Object} details The details of the project.
    */
-  constructor( { slug, title, numberFollows = `0` } ) {
+  constructor( { slug, title, numberComments = `0` } ) {
     if ( !slug ) throw Error( `Must give slug` )
     this.slug = slug
     if ( !title ) throw Error( `Must give title` )
     this.title = title
-    this.numberFollows = parseInt( numberFollows )
+    this.numberComments = parseInt( numberComments )
   }
 
   /**
    * @returns {Object} The partition key.
    */
-  pk() { return { 'PK': { 'S': `#PROJECT` } } }
+  pk() { return { 'PK': { 'S': `#POST` } } }
 
   /**
    * @returns {Object} The primary key.
    */
   key() {
     return {
-      'PK': { 'S': `#PROJECT` },
-      'SK': { 'S': `PROJECT#${ this.slug }` }
+      'PK': { 'S': `#POST` },
+      'SK': { 'S': `POST#${ this.slug }` }
     }
   }
 
   /**
    * @returns {Object} The global secondary index partition key.
    */
-  gsi1pk() { return { 'S': `PROJECT#${ this.slug }` } }
+  gsi1pk() { return { 'S': `POST#${ this.slug }` } }
 
   /**
    * @returns {Object} The global secondary index primary key.
    */
   gsi1() {
     return {
-      'GSI1PK': { 'S': `PROJECT#${ this.slug }` },
-      'GSI1SK': { 'S': `#PROJECT` }
+      'GSI1PK': { 'S': `POST#${ this.slug }` },
+      'GSI1SK': { 'S': `#POST` }
     }
   }
 
@@ -48,25 +48,25 @@ class Project {
     return {
       ...this.key(),
       ...this.gsi1(),
-      'Type': { 'S': `project` },
+      'Type': { 'S': `post` },
       'Slug': { 'S': this.slug },
       'Title': { 'S': this.title },
-      'NumberFollows': { 'N': this.numberFollows.toString() }
+      'NumberComments': { 'N': this.numberComments.toString() }
     }
   }
 }
 
 /**
- * Turns the project from a DynamoDB item into the class.
+ * Turns the post from a DynamoDB item into the class.
  * @param   {Object} item The item returned from DynamoDB.
- * @returns {Object}      The project as a class.
+ * @returns {Object}      The post as a class.
  */
-const projectFromItem = ( item ) => {
-  return new Project ( {
+const postFromItem = ( item ) => {
+  return new Post ( {
     slug: item.Slug.S,
     title: item.Title.S,
-    numberFollows: item.NumberFollows.N
+    numberComments: item.NumberComments.N
   } )
 }
 
-module.exports = { Project, projectFromItem }
+module.exports = { Post, postFromItem }

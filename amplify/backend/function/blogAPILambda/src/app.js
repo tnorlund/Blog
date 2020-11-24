@@ -119,7 +119,7 @@ const convertUrlType = ( param, type ) => {
 app.get( `/blog`, async ( request, response ) => {
   const { blog, error } = await getBlog( tableName )
   if ( error ) response.json( { statusCode: 500, error: error } )
-  else response.json( { statusCode: 200, url: request.url, body: blog } )
+  else response.json( { statusCode: 200, blog: blog } )
 } )
 
 /**
