@@ -207,7 +207,7 @@ export const Confirm = ( {
 </>
 
 export const User = ( {
-  name, dateString, error, handleLoggingOut
+  name, dateString, error, handleLoggingOut, setUser, setError
 } ) => <>
   <Title>{name}</Title>
   <Description>Administrator</Description>
@@ -218,7 +218,7 @@ export const User = ( {
     vertical-align: middle;`}
     >{ error }</div>
   </WarningDiv> }
-  <SelectedButton onClick={ () => handleLoggingOut() }>
+  <SelectedButton onClick={ () => handleLoggingOut( setUser, setError ) }>
     Sign Out
   </SelectedButton>
 </>

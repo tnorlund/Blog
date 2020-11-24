@@ -35,7 +35,6 @@ export default function NoUser( user, setUser ) {
       await handleLoggingIn( email, password, setUser, setError, setConfirm )
       setEmail( `` )
       setPassword( `` )
-      setPage( `user` )
     }
   }
 
@@ -78,41 +77,43 @@ export default function NoUser( user, setUser ) {
   }
 
   // eslint-disable-next-line no-console
-  
+
   let dateString
   if ( user ) {
-    console.log( `user`, user )
-    // setPage( `user` )
     dateString = timeSince( String( user.dateJoined ) )
   }
 
   return(
     <>
-      { page == `login`
+      {!user && <>
+        { page == `login`
       && <Login {
         ...{ newUser, setEmail, setError, setPassword, email, setPage, error,
           needConfirm, login }
       }/> }
-      { page == `signup`
+        { page == `signup`
       && <SignUp {
         ...{ email, setEmail, error, setError, name, setName, password,
           setPassword, duplicatePassword, setDuplicatePassword, setPage, signup
         }
       }/> }
-      { page == `forgot`
+        { page == `forgot`
       && <Forgot {
         ...{ email, setEmail, error, setError, setPage, forgot }
       }/>}
-      { page == `confirm`
+        { page == `confirm`
       && <Confirm {
         ...{ code, setCode, password, setPassword, duplicatePassword,
           setDuplicatePassword, error, setError, setEmail, setPage, submit }
       }/>}
-      { page == `user`
-      && <User {
-        ...{ name: user.name, dateString: dateString, error: error,
-          handleLoggingOut: handleLoggingOut }
-      }/> }
+      </>}
+      {
+        user && <User {
+          ...{ name: user.name, dateString, error, handleLoggingOut, setUser,
+            setError }
+        }/>
+      }
+
     </>
   )
 }
