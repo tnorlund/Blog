@@ -114,6 +114,8 @@ export const updateUserBySession = async ( session, setUser ) => {
   } catch( error ) { console.error( error ) }
 }
 
+
+
 /**
  * Requests the user using the API.
  * @param {Object} requestedUser The parsed user data.
@@ -125,32 +127,32 @@ export const updateUserBySession = async ( session, setUser ) => {
   * Gets the user data using the API.
   * @param {*} requestedUser 
   */
-// export const updateUser = async( requestedUser ) => {
-//   // Check to see if the require parameters are given.
-//   if ( !requestedUser.name ) return { dbError: `No name given` }
-//   if ( !requestedUser.email ) return { dbError: `No email given` }
-//   if ( !requestedUser.userNumber ) return { dbError: `No number given` }
-//   // Destructure the requested user.
-//   const { name, email, userNumber } = requestedUser
-//   try {
-//     const { user, error } = await API.get(
-//       `blogAPI`,
-//       `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
-//     )
-//     if ( error ) return { dbError: error }
-//     if ( user.length < 1 ) return { user: undefined }
-//     else {
-//       const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
-//       user.map( element => {
-//         if ( element.userNumber && element.version )
-//           userDetails.addTOS( element )
-//         if ( element.slug && element.title )
-//           userDetails.addFollow( element )
-//       } )
-//       return { user: userDetails }
-//     }
-//   } catch( error ) { return { dbError: error } }
-// }
+export const updateUser = async( requestedUser ) => {
+  // Check to see if the require parameters are given.
+  if ( !requestedUser.name ) return { dbError: `No name given` }
+  if ( !requestedUser.email ) return { dbError: `No email given` }
+  if ( !requestedUser.userNumber ) return { dbError: `No number given` }
+  // Destructure the requested user.
+  const { name, email, userNumber } = requestedUser
+  try {
+    const { user, error } = await API.get(
+      `blogAPI`,
+      `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
+    )
+    if ( error ) return { dbError: error }
+    if ( user.length < 1 ) return { user: undefined }
+    else {
+      const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
+      user.map( element => {
+        if ( element.userNumber && element.version )
+          userDetails.addTOS( element )
+        if ( element.slug && element.title )
+          userDetails.addFollow( element )
+      } )
+      return { user: userDetails }
+    }
+  } catch( error ) { return { dbError: error } }
+}
 
 /**
  * Converts an ISO formatted date into a Date object.

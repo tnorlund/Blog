@@ -4,7 +4,7 @@ import { AUTH_KEY } from 'utils/constants'
 import { updateUserBySession } from 'utils/auth'
 import {
   Title, TextInput, SelectedButton, WarningDiv, WarningIcon, OptionsDiv,
-  OptionDiv
+  OptionDiv, NewTextInput, Description
 } from './styles'
 import { Auth, API } from 'aws-amplify'
 
@@ -56,9 +56,9 @@ const handleSigningUp = async ( email, password, name, setError ) => {
 }
 
 /**
- * 
- * @param {String} email 
- * @param {Function} setError 
+ *
+ * @param {String} email
+ * @param {Function} setError
  */
 const handleForgotPassword = async ( email, setError ) => {
   try {
@@ -67,11 +67,11 @@ const handleForgotPassword = async ( email, setError ) => {
 }
 
 /**
- * 
- * @param {*} email 
- * @param {*} password 
- * @param {*} code 
- * @param {*} setError 
+ *
+ * @param {*} email
+ * @param {*} password
+ * @param {*} code
+ * @param {*} setError
  */
 const handleCheckCode = async ( email, password, code, setError ) => {
   try {
@@ -81,16 +81,7 @@ const handleCheckCode = async ( email, password, code, setError ) => {
   }
 }
 
-/**
- * Gets the content of an HTML element.
- * @param {String} id The HTML ID of a specific DOM element.
- */
-const getTextInput = ( id ) => document.getElementById( id ).innerHTML
-  .replace( /<div>/g, `\n` )
-  .replace( /<\/div>/g, `` )
-  .replace( /<br>/g, `` )
-
-export default function Login( ) {
+export default function NoUser( setUser ) {
   // Sets the state for the login form.
   const [ email, setEmail ] = useState( `` )
   // Sets the state for the login form.
@@ -101,14 +92,14 @@ export default function Login( ) {
   const [ name, setName ] = useState( `` )
   // Sets the code emailed to the user.
   const [ code, setCode ] = useState( `` )
-  // Gets the user data from session storage.
-  const [ user, setUser ] = useSessionStorage( AUTH_KEY )
   // Sets an error if one occurs.
   const [ error, setError ] = useState()
   // Sets an option to resend email confirmation
   const [ needConfirm, setConfirm ] = useState( false )
   // Sets the state of the modal view.
   const [ page, setPage ] = useState( `login` )
+  // When a user first signs up, show them at the login screen.
+  const [ newUser, setNewUser ] = useState( false )
 
   // A login function that logs the user in
   const login = async() => {
@@ -117,6 +108,8 @@ export default function Login( ) {
     else {
       setError()
       handleLoggingIn( email, password, setUser, setError, setConfirm )
+      setEmail( `` )
+      setPassword( `` )
     }
   }
 
@@ -130,6 +123,8 @@ export default function Login( ) {
     else {
       setError()
       handleSigningUp( email, password, name, setError )
+      setNewUser( true )
+      setPage( `login` )
     }
   }
 
@@ -160,26 +155,26 @@ export default function Login( ) {
       { page == `login`
       && <>
         <Title>Login</Title>
-        <TextInput
-          id={ `Email` }
+        { newUser
+        && <Description>
+          Use the link in the email sent to you to confirm your email address.
+        </Description> }
+        <NewTextInput
           placeholder={ `Email` }
-          contentEditable={ `true` }
-          content={ email }
-          onInput={ () => {
-            setEmail( getTextInput( `Email` ) )
+          onChange={ ( event ) => {
+            setEmail( event.target.value )
             setError()
           } }
+          value={ email }
         />
-        <TextInput
-          css={`:not(:empty){ -webkit-text-security: disc; }`}
-          id={ `Password` }
-          placeholder={ `Password` }
-          contentEditable={ `true` }
-          content = { password }
-          onInput={ () => {
-            setPassword( getTextInput( `Password` ) )
+        <NewTextInput
+          type='password'
+          placeholder='Password'
+          onChange={ ( event ) => {
+            setPassword( event.target.value )
             setError()
           } }
+          // value={ password }
         />
         <OptionsDiv>
           <OptionDiv onClick={ () => {
@@ -208,47 +203,39 @@ export default function Login( ) {
       { page == `signup`
       && <>
         <Title>Sign Up</Title>
-        <TextInput
-          id={ `Email` }
+        <NewTextInput
           placeholder={ `Email` }
-          contentEditable={ `true` }
-          content={ email }
-          onInput={ () => {
-            setEmail( getTextInput( `Email` ) )
+          onChange={ ( event ) => {
+            setEmail( event.target.value )
             setError()
           } }
+          value={ email }
         />
-        <TextInput
-          id={ `Name` }
+        <NewTextInput
           placeholder={ `Name` }
-          contentEditable={ `true` }
-          content={ name }
-          onInput={ () => {
-            setName( getTextInput( `Name` ) )
+          onChange={ ( event ) => {
+            setName( event.target.value )
             setError()
           } }
+          value={ name }
         />
-        <TextInput
-          css={`:not(:empty){ -webkit-text-security: disc; }`}
-          id={ `Password` }
-          placeholder={ `Password` }
-          contentEditable={ `true` }
-          content = { password }
-          onInput={ () => {
-            setPassword( getTextInput( `Password` ) )
+        <NewTextInput
+          placeholder='Password'
+          type='password'
+          onChange={ ( event ) => {
+            setPassword( event.target.value )
             setError()
           } }
+          value={ password }
         />
-        <TextInput
-          css={`:not(:empty){ -webkit-text-security: disc; }`}
-          id={ `DuplicatePassword` }
-          placeholder={ `Password` }
-          contentEditable={ `true` }
-          content = { duplicatePassword }
-          onInput={ () => {
-            setDuplicatePassword( getTextInput( `DuplicatePassword` ) )
+        <NewTextInput
+          placeholder='Password'
+          type='password'
+          onChange={ ( event ) => {
+            setDuplicatePassword( event.target.value )
             setError()
           } }
+          value={ duplicatePassword }
         />
         <OptionsDiv>
           <OptionDiv onClick={ () => {
@@ -273,15 +260,13 @@ export default function Login( ) {
       { page == `forgot`
       && <>
         <Title>Forgot Password</Title>
-        <TextInput
-          id={ `Email` }
+        <NewTextInput
           placeholder={ `Email` }
-          contentEditable={ `true` }
-          content={ email }
-          onInput={ () => {
-            setEmail( getTextInput( `Email` ) )
+          onChange={ ( event ) => {
+            setEmail( event.target.value )
             setError()
           } }
+          value={ email }
         />
         <OptionsDiv>
           <OptionDiv onClick={ () => {
@@ -303,38 +288,40 @@ export default function Login( ) {
       { page == `confirm`
       && <>
         <Title>Confirm Email</Title>
-        <TextInput
-          id={ `Code` }
+        <NewTextInput
           placeholder={ `Code` }
-          contentEditable={ `true` }
-          content = { code }
-          onInput={ () => {
-            setCode( getTextInput( `Code` ) )
+          onChange={ ( event ) => {
+            setCode( event.target.value )
             setError()
           } }
+          value={ code }
         />
-        <TextInput
-          css={`:not(:empty){ -webkit-text-security: disc; }`}
-          id={ `Password` }
-          placeholder={ `Password` }
-          contentEditable={ `true` }
-          content = { password }
-          onInput={ () => {
-            setPassword( getTextInput( `Password` ) )
+        <NewTextInput
+          placeholder='Password'
+          type='password'
+          onChange={ ( event ) => {
+            setPassword( event.target.value )
             setError()
           } }
+          value={ password }
         />
-        <TextInput
-          css={`:not(:empty){ -webkit-text-security: disc; }`}
-          id={ `DuplicatePassword` }
-          placeholder={ `Password` }
-          contentEditable={ `true` }
-          content = { duplicatePassword }
-          onInput={ () => {
-            setDuplicatePassword( getTextInput( `DuplicatePassword` ) )
+        <NewTextInput
+          placeholder='Password'
+          type='password'
+          onChange={ ( event ) => {
+            setDuplicatePassword( event.target.value )
             setError()
           } }
-        />
+          value={ duplicatePassword }
+        /><OptionsDiv>
+          <OptionDiv onClick={ () => {
+            setEmail( `` )
+            setPassword( `` )
+            setDuplicatePassword( `` )
+            setError()
+            setPage( `login` )
+          } }>Sign In</OptionDiv>
+        </OptionsDiv>
         { error && <WarningDiv><WarningIcon/>
           <div
             css={`display: inline-block;
