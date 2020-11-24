@@ -89,6 +89,7 @@ export function parseUser( CognitoUserSession ) {
  *                           with the users details.
  */
 export const updateUserBySession = async ( session, setUser ) => {
+  console.log( `updateUserBySession` )
   // Get the required user detail to retrieve the user from the database.
   const { name, email } = session.attributes
   const userGroups = session.signInUserSession.idToken
@@ -101,16 +102,11 @@ export const updateUserBySession = async ( session, setUser ) => {
       }`
     )
     if ( error ) console.error( error )
-    // When the user is successfully received from the API, create a new User
-    // object and add the agreed Terms of Services, the projects the user
-    // follows, and the comments they've made.
-    const requestedUser = new User( {
-      ...user, groups: userGroups,
-      isAdmin: userGroups.indexOf( `Admin` ) >= 0
-    } )
-    tos.map( ( terms ) => requestedUser.addTOS( terms ) )
-    follows.map( ( follow ) => requestedUser.addFollow( follow ) )
-    await setUser( requestedUser )
+    // Reassemble the user.
+    const requestedUser = {
+      ...user, tos: tos, comments: comments, follows: follows
+    }
+    setUser( requestedUser )
   } catch( error ) { console.error( error ) }
 }
 
@@ -127,32 +123,32 @@ export const updateUserBySession = async ( session, setUser ) => {
   * Gets the user data using the API.
   * @param {*} requestedUser 
   */
-export const updateUser = async( requestedUser ) => {
-  // Check to see if the require parameters are given.
-  if ( !requestedUser.name ) return { dbError: `No name given` }
-  if ( !requestedUser.email ) return { dbError: `No email given` }
-  if ( !requestedUser.userNumber ) return { dbError: `No number given` }
-  // Destructure the requested user.
-  const { name, email, userNumber } = requestedUser
-  try {
-    const { user, error } = await API.get(
-      `blogAPI`,
-      `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
-    )
-    if ( error ) return { dbError: error }
-    if ( user.length < 1 ) return { user: undefined }
-    else {
-      const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
-      user.map( element => {
-        if ( element.userNumber && element.version )
-          userDetails.addTOS( element )
-        if ( element.slug && element.title )
-          userDetails.addFollow( element )
-      } )
-      return { user: userDetails }
-    }
-  } catch( error ) { return { dbError: error } }
-}
+// export const updateUser = async( requestedUser ) => {
+//   // Check to see if the require parameters are given.
+//   if ( !requestedUser.name ) return { dbError: `No name given` }
+//   if ( !requestedUser.email ) return { dbError: `No email given` }
+//   if ( !requestedUser.userNumber ) return { dbError: `No number given` }
+//   // Destructure the requested user.
+//   const { name, email, userNumber } = requestedUser
+//   try {
+//     const { user, error } = await API.get(
+//       `blogAPI`,
+//       `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
+//     )
+//     if ( error ) return { dbError: error }
+//     if ( user.length < 1 ) return { user: undefined }
+//     else {
+//       const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
+//       user.map( element => {
+//         if ( element.userNumber && element.version )
+//           userDetails.addTOS( element )
+//         if ( element.slug && element.title )
+//           userDetails.addFollow( element )
+//       } )
+//       return { user: userDetails }
+//     }
+//   } catch( error ) { return { dbError: error } }
+// }
 
 /**
  * Converts an ISO formatted date into a Date object.

@@ -4,7 +4,6 @@
  * @returns A Date object.
  */
 export const parseDate = ( dateString ) => {
-  console.log( `dateString`, dateString.split( /\D+/ ) )
   const parsed = dateString.split( /\D+/ )
   return( new Date( Date.UTC(
     parsed[0], --parsed[1], parsed[2], parsed[3], parsed[4], parsed[5],
@@ -83,54 +82,54 @@ export const secondsBetween = ( date1, date2 ) => {
  * @returns {String}    The formatted time since now.
  */
 export const timeSince = ( date ) => {
-  let dateString
+  if ( !date ) return( `` )
   if ( secondsBetween( parseDate( date ), new Date() ) < 60 )
-    dateString = `${
+    return `${
       secondsBetween( parseDate( date ), new Date() )
     } sec ago`
-  else if (
+  if (
     minutesBetween( parseDate( date ), new Date() ) < 60 &&
     minutesBetween( parseDate( date ), new Date() ) > 0
-  ) dateString = `${
+  ) return `${
     minutesBetween( parseDate( date ), new Date() )
   } min ago`
-  else if (
+  if (
     hoursBetween( parseDate( date ), new Date() ) < 60 &&
     hoursBetween( parseDate( date ), new Date() ) > 0
-  ) dateString = `${
+  ) return `${
     hoursBetween( parseDate( date ), new Date() )
   } hr ago`
-  else if (
+  if (
     daysBetween( parseDate( date ), new Date() ) < 31 &&
     daysBetween( parseDate( date ), new Date() ) > 0
   ) {
     if ( daysBetween( parseDate( date ), new Date() ) > 1 )
-      dateString = `${
+      return `${
         daysBetween( parseDate( date ), new Date() )
       } days ago`
-    else dateString = `${
+    else return `${
       daysBetween( parseDate( date ), new Date() )
     } day ago`
   }
-  else if (
+  if (
     monthsBetween( parseDate( date ), new Date() ) < 31 &&
     monthsBetween( parseDate( date ), new Date() ) > 0
   ) {
     if ( monthsBetween( parseDate( date ), new Date() ) > 1 )
-      dateString = `${
+      return `${
         monthsBetween( parseDate( date ), new Date() )
       } months ago`
-    else dateString = `${
+    else return `${
       monthsBetween( parseDate( date ), new Date() )
     } month ago`
-  } else {
-    if ( yearsBetween( parseDate( date ),  new Date() ) > 1 )
-      dateString = `${
-        yearsBetween( parseDate( date ),  new Date() )
-      } years ago`
-    else dateString = `${
-      yearsBetween( parseDate( date ),  new Date() )
-    } year ago`
   }
-  return dateString
+  // else {
+  //   if ( yearsBetween( parseDate( date ),  new Date() ) > 1 )
+  //     dateString = `${
+  //       yearsBetween( parseDate( date ),  new Date() )
+  //     } years ago`
+  //   else dateString = `${
+  //     yearsBetween( parseDate( date ),  new Date() )
+  //   } year ago`
+  // }
 }

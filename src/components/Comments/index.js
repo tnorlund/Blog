@@ -198,7 +198,7 @@ export default function Comments( { slug, title } ) {
         setCommentNumber( post.numberComments )
         setComments( comments )
       } ).catch( ( error ) => setError( error ) )
-  }, [ user, warning, uploading ] )
+  }, [ warning, uploading ] )
   return(
     <>
       {// If the user is an administrator, give the option to remove the post

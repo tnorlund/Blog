@@ -27,9 +27,9 @@ export const updateProject = async(
     if ( error ) setError( error )
     const { session, sessionError } = await getCurrentSession()
     if ( sessionError ) setError( sessionError )
-    const { user, dbError } = await updateUser( session )
+    // const { user, dbError } = await updateUser( session )
     if ( dbError ) setError( dbError )
-    else setUser( user )
+    // else setUser( user )
   } catch( error ) { 
     console.log(`error`, error )
     setError( error ) 
@@ -62,7 +62,7 @@ export const removeProject = async(
     if ( sessionError ) setError( sessionError )
     const { user, dbError } = await updateUser( session )
     if ( dbError ) setError( dbError )
-    else setUser( user )
+    // else setUser( user )
   } catch( error ) { setError( error ) }
 }
 /**
@@ -110,9 +110,9 @@ export const removeFollow = async (
     if ( error ) setError( error )
     const { session, sessionError } = await getCurrentSession()
     if ( sessionError ) setError( sessionError )
-    const { user, dbError } = await updateUser( session )
+    // const { user, dbError } = await updateUser( session )
     if ( dbError ) setError( dbError )
-    setUser( user )
+    // setUser( user )
   } catch( error ) { setError( error ) }
 }
 
@@ -160,9 +160,9 @@ export const addFollow = async (
     if ( error ) setError( error )
     const { session, sessionError } = await getCurrentSession()
     if ( sessionError ) setError( sessionError )
-    const { user, dbError } = await updateUser( session )
+    // const { user, dbError } = await updateUser( session )
     if ( dbError ) setError( dbError )
-    setUser( user )
+    // setUser( user )
   } catch( error ) { setError( error ) }
 }
 

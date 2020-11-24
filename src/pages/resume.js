@@ -15,21 +15,49 @@ function Duties( { duties } ) {
   return <ul>{dutiesList}</ul>
 }
 
+const SkillDiv = styled.div`
+border: solid 2px var(--color-b);
+border-radius: 0.3em;
+padding-right: 0.6em;
+padding-left: 0.6em;
+font-weight: bold;
+margin: 0.6em;
+`
+const SkillsDiv = styled.div`
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-evenly;
+`
+
+const JobDiv = styled.div`
+border-bottom: 2px solid var(--color-b);
+margin-bottom: 0.2em;
+`
+const JobTitle = styled.h2`
+margin-top: 1em;
+margin-bottom: 0.3em;
+`
+
+const JobLocation = styled.h3`
+font-weight: normal;
+margin-top: 0;
+margin-bottom: 0.3em;
+`
+
+const JobDate = styled.h4`
+margin: 0;
+`
+
+const MainTitle = styled.h1`
+border-bottom: 4px solid var(--color-b);
+`
+
+const Description = styled.div`
+margin-bottom: 0.3em;
+`
+
 function Skills( { skills } ) {
-  const SkillDiv = styled.div`
-    border: solid 2px var(--color-b);
-    border-radius: 0.3em;
-    padding-right: 0.6em;
-    padding-left: 0.6em;
-    font-weight: bold;
-    margin: 0.6em;
-  `
-  const SkillsDiv = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-  `
   const skillList = skills.map( ( skill ) =>
     <SkillDiv key={skill}>{skill}</SkillDiv>
   )
@@ -37,33 +65,6 @@ function Skills( { skills } ) {
 }
 
 export default function Resume() {
-  const JobDiv = styled.div`
-    border-bottom: 2px solid var(--color-b);
-    margin-bottom: 0.2em;
-  `
-  const JobTitle = styled.h2`
-    margin-top: 1em;
-    margin-bottom: 0.3em;
-  `
-
-  const JobLocation = styled.h3`
-    font-weight: normal;
-    margin-top: 0;
-    margin-bottom: 0.3em;
-  `
-
-  const JobDate = styled.h4`
-    margin: 0;
-  `
-
-  const MainTitle = styled.h1`
-    border-bottom: 4px solid var(--color-b);
-  `
-
-  const Description = styled.text`
-    margin-bottom: 0.3em;
-  `
-
   const { contentYaml } = useStaticQuery( graphql`
     {
       contentYaml {
@@ -103,16 +104,16 @@ export default function Resume() {
         companies. I&apos;m currently trying to find a position related to
         computer vision and/or data science.
       </Description>
-      {positions.map( ( { title, company, start, end, duties } ) => (
-        <>
+      {positions.map( ( { title, company, start, end, duties } ) =>
+        <div key={ title + company }>
           <JobDiv>
             <JobTitle>{title}</JobTitle>
             <JobLocation>{company}</JobLocation>
             <JobDate>{start} - {end}</JobDate>
           </JobDiv>
           <Duties duties={duties} />
-        </>
-      ) ) }
+        </div>
+      ) }
       <MainTitle>My Skills</MainTitle>
       <Description>
         Through school or work, I&apos;ve always tried to learn as many skills
