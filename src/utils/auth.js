@@ -78,37 +78,79 @@ export function parseUser( CognitoUserSession ) {
 }
 
 /**
+ * Updates the session storage with CognitoUser object.
+ *
+ * TODO
+ * [ ] Add comments of the user.
+ * [ ] Handle errors
+ *
+ * @param {Object} session   The CognitoUser returned from logging in.
+ * @param {Function} setUser The function used to set the session storage
+ *                           with the users details.
+ */
+export const updateUserBySession = async ( session, setUser ) => {
+  // Get the required user detail to retrieve the user from the database.
+  const { name, email } = session.attributes
+  const userGroups = session.signInUserSession.idToken
+    .payload[`cognito:groups`]
+  try {
+    const { user, tos, comments, follows, error } = await API.get(
+      `blogAPI`,
+      `/user-details?name=${ name }&email=${ email }&number=${
+        session.attributes[`custom:UserNumber`]
+      }`
+    )
+    if ( error ) console.error( error )
+    // When the user is successfully received from the API, create a new User
+    // object and add the agreed Terms of Services, the projects the user
+    // follows, and the comments they've made.
+    const requestedUser = new User( {
+      ...user, groups: userGroups,
+      isAdmin: userGroups.indexOf( `Admin` ) >= 0
+    } )
+    tos.map( ( terms ) => requestedUser.addTOS( terms ) )
+    follows.map( ( follow ) => requestedUser.addFollow( follow ) )
+    await setUser( requestedUser )
+  } catch( error ) { console.error( error ) }
+}
+
+/**
  * Requests the user using the API.
  * @param {Object} requestedUser The parsed user data.
  * @returns {{dbError: String, user: String}} Either the error or the user from
  *   the database.
  */
-export const updateUser = async( requestedUser ) => {
-  // Check to see if the require parameters are given.
-  if ( !requestedUser.name ) return { dbError: `No name given` }
-  if ( !requestedUser.email ) return { dbError: `No email given` }
-  if ( !requestedUser.userNumber ) return { dbError: `No number given` }
-  // Destructure the requested user.
-  const { name, email, userNumber } = requestedUser
-  try {
-    const { user, error } = await API.get(
-      `blogAPI`,
-      `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
-    )
-    if ( error ) return { dbError: error }
-    if ( user.length < 1 ) return { user: undefined }
-    else {
-      const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
-      user.map( element => {
-        if ( element.userNumber && element.version )
-          userDetails.addTOS( element )
-        if ( element.slug && element.title )
-          userDetails.addFollow( element )
-      } )
-      return { user: userDetails }
-    }
-  } catch( error ) { return { dbError: error } }
-}
+
+ /**
+  * Gets the user data using the API.
+  * @param {*} requestedUser 
+  */
+// export const updateUser = async( requestedUser ) => {
+//   // Check to see if the require parameters are given.
+//   if ( !requestedUser.name ) return { dbError: `No name given` }
+//   if ( !requestedUser.email ) return { dbError: `No email given` }
+//   if ( !requestedUser.userNumber ) return { dbError: `No number given` }
+//   // Destructure the requested user.
+//   const { name, email, userNumber } = requestedUser
+//   try {
+//     const { user, error } = await API.get(
+//       `blogAPI`,
+//       `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
+//     )
+//     if ( error ) return { dbError: error }
+//     if ( user.length < 1 ) return { user: undefined }
+//     else {
+//       const userDetails = new User( { ...( user.shift() ), ...requestedUser } )
+//       user.map( element => {
+//         if ( element.userNumber && element.version )
+//           userDetails.addTOS( element )
+//         if ( element.slug && element.title )
+//           userDetails.addFollow( element )
+//       } )
+//       return { user: userDetails }
+//     }
+//   } catch( error ) { return { dbError: error } }
+// }
 
 /**
  * Converts an ISO formatted date into a Date object.
@@ -188,3 +230,7 @@ export class User {
     this.follows.push( new Follow( { ...details } ) )
   }
 }
+
+// export class Comment {
+//   constructor( { dateAdded, slug, postCommentNumber, numberVotes} )
+// }

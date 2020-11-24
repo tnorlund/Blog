@@ -24,7 +24,7 @@ const {
   addTOSToUser, addUserToBlog, getBlog, getUser, getUserDetails, resetBlog,
   addProjectToBlog, addFollowToProject, removeFollowFromProject, getProject,
   addPostToBlog, getPost, getProjectDetails, removeProject, updateProject,
-  addCommentToPost
+  addCommentToPost, getPostDetails
 } = require( `./data` )
 const { User, Post, Project } = require( `./entities` )
 const USERPOOLID = `us-west-2_LSxeRvZrG`
@@ -198,9 +198,11 @@ app.get( `/user-details`, async ( request, response ) => {
     const requestedUser = new User( {
       name: name, email: email, userNumber: number
     } )
-    const { user, error } = await getUserDetails( tableName, requestedUser )
+    const {
+      user, tos, comments, follows, error
+    } = await getUserDetails( tableName, requestedUser )
     if ( error ) response.json( { statusCode: 500, error: error } )
-    else response.json( { statusCode: 200, user: user } )
+    else response.json( { statusCode: 200, user, tos, comments, follows } )
   }
 } )
 
@@ -546,6 +548,28 @@ app.post( `/comment`, async ( request, response ) => {
     )
     if ( error ) response.json( { statusCode: 500, error: error } )
     else response.json( { statusCode: 200, comment: comment } )
+  }
+} )
+
+/**
+ * Gets the post and its followers from the database.
+ */
+app.get( `/post-details`, async ( request, response ) => {
+  const params = request.query
+  if ( typeof params.slug === undefined ) response.json( {
+    statusCode: 400, error: `Must give post's slug in query.`
+  } )
+  else if ( typeof params.title === undefined ) response.json( {
+    statusCode: 400, error: `Must give post's title in query`
+  } )
+  else {
+    const { slug, title } = params
+    const requestedPost = new Post( { slug, title } )
+    const { post, comments, error } = await getPostDetails(
+      tableName, requestedPost
+    )
+    if ( error ) response.json( { statusCode: 500, error: error } )
+    else response.json( { statusCode: 200, post: post, comments: comments } )
   }
 } )
 

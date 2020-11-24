@@ -72,3 +72,27 @@ export const TextInput = styled.div`
   margin: 0.5em;
   display:block;
 `
+
+export const CommentText = styled.div`
+  background: var(--color-accentBackground);
+  border-radius: 0.25em;
+  padding: 0.5em;
+`
+
+export const CommentDiv = styled.div`
+  padding: 0.5em;
+`
+
+export const CommentOptions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
+export const CommentOption = styled.div`
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  cursor: pointer;
+  :hover {
+    color: var(--color-a)
+  }
+`

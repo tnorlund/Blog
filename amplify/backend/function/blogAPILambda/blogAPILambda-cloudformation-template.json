@@ -77,7 +77,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-blog-env-114924-deployment",
-          "S3Key": "amplify-builds/blogAPILambda-44397465465a62523467-build.zip"
+          "S3Key": "amplify-builds/blogAPILambda-716366516976642f6771-build.zip"
         }
       }
     },

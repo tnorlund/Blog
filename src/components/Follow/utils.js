@@ -30,7 +30,10 @@ export const updateProject = async(
     const { user, dbError } = await updateUser( session )
     if ( dbError ) setError( dbError )
     else setUser( user )
-  } catch( error ) { setError( error ) }
+  } catch( error ) { 
+    console.log(`error`, error )
+    setError( error ) 
+  }
 }
 
 /**
