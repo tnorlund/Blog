@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
-import { getPost, addPost, addComment, getPostDetails } from './utils'
+import {
+  getPost, addPost, addComment, getPostDetails, deleteComment
+} from './utils'
 import {
   Title,
   WarningDiv, WarningButton, WarningIcon,
@@ -10,6 +12,9 @@ import {
   CommentText, CommentDiv, CommentOption, CommentOptions
 } from './styles'
 import { timeSince } from 'utils/date'
+
+// TODO
+// [ ] Refactor 'uploading' to working.
 
 /**
  * Sets the contents of a div using a React Hook.
@@ -26,24 +31,46 @@ const resetTextInput = ( id ) => {
 
 /**
  * Component for each comment.
- * @param {Object} comment 
- * @param {Object} currentUser 
+ * @param {Object}   comment
+ * @param {Object}   currentUser
+ * @param {Boolean}  working
+ * @param {Function} setWorking
  */
-const Comment = ( comment, currentUser ) => {
-  const { userName, dateAdded, text, userNumber } = comment
+const Comment = (
+  slug, title, comment, currentUser, working, setWorking, setError, setWarning
+) => {
+  const { dateAdded, text, postCommentNumber } = comment
+  console.log( dateAdded )
+  const commentUserName = comment.userName
+  const commentUserNumber = comment.userNumber
+  const { email, isAdmin } = currentUser
+  const currentUserName = currentUser.name
+  const currentUserEmail = currentUser.email
+  const currentUserNumber = currentUser.userNumber
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
   // is theirs.
-  const showDelete = currentUser && ( currentUser.isAdmin || (
-    userName == currentUser.name && userNumber == currentUser.userNumber
+  const showDelete = currentUser && ( isAdmin || (
+    commentUserName == currentUserName &&
+    commentUserNumber == currentUserNumber
   ) )
   return(
-    <CommentDiv key={ userName + dateAdded + text }>
-      <Title>{ userName } - { timeSince( dateAdded ) }</Title>
+    <CommentDiv key={ commentUserName + dateAdded + text }>
+      <Title>{ commentUserName } - { timeSince( dateAdded ) }</Title>
       <CommentText>{ text }</CommentText>
       { currentUser && <CommentOptions>
         {
-          showDelete && <><CommentOption>Delete</CommentOption>|</>
+          showDelete && <><CommentOption onClick={ () => {
+            if ( !working ) {
+              setWorking( true )
+              deleteComment(
+                commentUserName, currentUserEmail, commentUserNumber, slug,
+                title, dateAdded, setError, setWarning
+              ).then( () => {
+                setWorking( false )
+              } )
+            }
+          } }>Delete</CommentOption>|</>
         }
         <CommentOption>Reply</CommentOption>
       </CommentOptions>}
@@ -66,7 +93,10 @@ export default function Comments( { slug, title } ) {
   const [ comment, setComment ] = useState( `` )
   // Sets the comments of the post.
   const [ comments, setComments ] = useState( [] )
-  const [ uploading, setUpload ] = useState( false )
+  // Sets whether currently making an API request.
+  const [ working, setWorking ] = useState( false )
+  // The comment components
+  const [ commentComponents, setCommentComponents ] = useState( [] )
   // Before anything is rendered to the screen, get the post's comments.
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
@@ -77,9 +107,15 @@ export default function Comments( { slug, title } ) {
         // post.
         if ( !post && comments.length == 0 && user && user.isAdmin )
           setWarning( true )
-        setComments( comments )
+        // setComments( comments )
+        setCommentComponents( comments.map(
+          ( comment ) => Comment(
+            slug, title, comment, user, working, setWorking, setError,
+            setWarning
+          )
+        ) )
       } ).catch( ( error ) => setError( error ) )
-  }, [ warning, uploading ] )
+  }, [slug, title, user, warning, working] )
   return(
     <>
       {// If the user is an administrator, give the option to remove the post
@@ -111,26 +147,23 @@ export default function Comments( { slug, title } ) {
         `}>
           {<SelectedButton
             onClick={ () => {
-              setUpload( true )
-              addComment(
-                user.name, user.email, user.userNumber, slug, title,
-                getTextInput( `NewComment` ), setWarning, setError, setComment
-              ).then( () => {
-                setUpload( false )
-                resetTextInput( `NewComment` )
-                setComment( `` )
-              } )
+              if ( !working ) {
+                setWorking( true )
+                addComment(
+                  user.name, user.email, user.userNumber, slug, title,
+                  getTextInput( `NewComment` ), setWarning, setError, setComment
+                ).then( () => {
+                  setWorking( false ); resetTextInput( `NewComment` )
+                  setComment( `` )
+                } )
+              }
             } }
             css={`
             margin-left: auto;
           `}>Submit</SelectedButton>}
         </div></>
         }
-        {// If there are comments from the database, show them here.
-          comments.length > 0 && comments.map(
-            ( comment ) => Comment( comment, user )
-          )
-        }
+        { commentComponents }
       </> }
       {// If the post is not found in the database, give the option to add it
       //  to the database.

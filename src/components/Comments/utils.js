@@ -18,6 +18,15 @@ export const getPost = async ( slug, title ) => {
   }
 }
 
+/**
+ * Gets the post and its comments through the API.
+ * @param {String} slug         The slug of the post.
+ * @param {String} title        The title of the post.
+ * @param {Function} setWarning The function used to set whether the post was
+ *                              retrieved successfully from the database.
+ * @param {Function} setError   The function used to set the error while
+ *                              retrieving data from the database.
+ */
 export const getPostDetails = async ( slug, title, setWarning, setError ) => {
   try {
     const { error, post, comments } = await API.get(
@@ -31,8 +40,8 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
 
 /**
  * Adds a post through an API call.
- * @param {String} slug         The slug of the post.
- * @param {String} title        The title of the post.
+ * @param {String}   slug       The slug of the post.
+ * @param {String}   title      The title of the post.
  * @param {Function} setWarning The function used to set whether the post was
  *                              retrieved successfully from the database.
  * @param {Function} setError   The function used to set the error while
@@ -50,6 +59,33 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
       setWarning( false )
       setError()
     }
+  } catch( error ) {
+    setError( error )
+  }
+}
+
+/**
+ * Adds a post through an API call.
+ * @param {String}   name       The name of the user.
+ * @param {String}   email      The email of the user.
+ * @param {Number}   userNumber The user's number.
+ * @param {String}   slug       The slug of the post.
+ * @param {String}   title      The title of the post.
+ * @param {String}   dateAdded  The date the comment was added.
+ * @param {Function} setWarning The function used to set whether the post was
+ *                              retrieved successfully from the database.
+ * @param {Function} setError   The function used to set the error while
+ *                              retrieving data from the database.
+ */
+export const deleteComment = async (
+  name, email, userNumber, slug, title, dateAdded, setError, setWarning
+) => {
+  try {
+    const { error } = await API.del(
+      `blogAPI`, `/comment`,
+      { body: { name, email, userNumber, slug, title, dateAdded } } )
+    if ( error ) setError( error )
+    else { setWarning( false ); setError() }
   } catch( error ) {
     setError( error )
   }
