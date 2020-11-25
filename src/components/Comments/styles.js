@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {
-  Warning, CircleWithCross, CircleWithMinus, CircleWithPlus
+  Warning, CircleWithCross, CircleWithMinus, CircleWithPlus, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
 
 export const Title = styled.hgroup`
@@ -22,8 +22,24 @@ export const WarningDiv = styled.div`
 export const WarningIcon = styled( Warning ).attrs( props => ( {
   size: props.size || `2.5em`
 } ) )`
-  color: var(--color-red);
+  // color: var(--color-red);
   margin-right: 1em;
+`
+
+export const Up = styled( ArrowUp ).attrs( props => ( {
+  size: props.size || `2em`
+} ) )`
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  cursor: pointer;
+`
+
+export const Down = styled( ArrowDown ).attrs( props => ( {
+  size: props.size || `2em`
+} ) )`
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  cursor: pointer;
 `
 
 export const WarningButton = styled.div`
@@ -88,6 +104,9 @@ export const CommentDiv = styled.div`
 export const CommentOptions = styled.div`
   display: flex;
   justify-content: flex-end;
+  height: 2em;
+  margin-top: 0.25em;
+  align-items: center;
 `
 
 export const CommentOption = styled.div`

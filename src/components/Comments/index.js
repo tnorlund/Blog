@@ -9,7 +9,8 @@ import {
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
   TextInput,
-  CommentText, CommentDiv, CommentOption, CommentOptions
+  CommentText, CommentDiv, CommentOption, CommentOptions,
+  Up, Down
 } from './styles'
 import { timeSince } from 'utils/date'
 
@@ -39,8 +40,8 @@ const resetTextInput = ( id ) => {
 const Comment = (
   slug, title, comment, currentUser, working, setWorking, setError, setWarning
 ) => {
-  const { dateAdded, text, postCommentNumber } = comment
-  console.log( dateAdded )
+  const { dateAdded, text, vote } = comment
+  console.log( comment )
   const commentUserName = comment.userName
   const commentUserNumber = comment.userNumber
   const { email, isAdmin } = currentUser
@@ -72,7 +73,8 @@ const Comment = (
             }
           } }>Delete</CommentOption>|</>
         }
-        <CommentOption>Reply</CommentOption>
+        <CommentOption>Reply</CommentOption>|
+        <div css={`padding-top: 0.3em;`}><Down/>{vote}<Up/></div>
       </CommentOptions>}
     </CommentDiv>
   )
