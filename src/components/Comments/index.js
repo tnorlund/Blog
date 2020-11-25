@@ -14,26 +14,7 @@ import { timeSince } from 'utils/date'
 /**
  * Sets the contents of a div using a React Hook.
  * @param {String}   id     The HTML ID of the div requested to query from.
- * @param {Function} setter The React Hook used to set the value.
  */
-const handleTextInput = ( id, setter ) => {
-  // console.log( `handleTextInput`, 
-  //   document.getElementById( id ).innerHTML
-  //     .replace( /<div>/g, `\n` )
-  //     .replace( /<\/div>/g, `` )
-  //     .replace( /<br>/g, `` )
-  // )
-  // console.log( `setter`, setter )
-  setter(
-    document.getElementById( id ).innerHTML
-      .replace( /<div>/g, `\n` )
-      .replace( /<\/div>/g, `` )
-      .replace( /<br>/g, `` )
-  )
-  console.log( `tyler` )
-  setter( `tyler` )
-}
-
 const getTextInput = ( id ) => document.getElementById( id ).innerHTML
   .replace( /<div>/g, `\n` )
   .replace( /<\/div>/g, `` )

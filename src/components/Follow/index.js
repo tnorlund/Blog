@@ -1,3 +1,6 @@
+// TODO
+// [ ] Remove a specific follower from the project
+
 import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import Modal from 'components/Modal'
@@ -16,10 +19,6 @@ export default function Follow( { slug, title } ) {
   const [ warning, setWarning ] = useState( false )
   // Sets an error if one occurs.
   const [ error, setError ] = useState()
-  // Sets whether to show the modal view of the project's details.
-  const [ projectDetails, setProjectDetails ] = useState( {
-    open: false, content: undefined
-  } )
   // Sets whether the user is an administrator or not.
   const [ isAdmin, setAdmin ] = useState( false )
   // Sets whether the user is following the project.
@@ -46,17 +45,15 @@ export default function Follow( { slug, title } ) {
         if ( project.title == title && project.slug == slug )
           setFollowing( true )
       } )
+      // When there is an Administrator, retrieve all of the project's
+      // followers.
       if ( user.isAdmin ) {
         setAdmin( true )
         getProjectDetails( slug, title, setError ).then(
-          ( followers ) => { 
-            setFollowers( followers )
-            setProjectDetails( { ...projectDetails, content: followers } )
-          }
-        )
+          ( { followers } ) => setFollowers( followers ) )
       }
     }
-  }, [ user ] )
+  }, [ slug, title, user ] )
   return(
     <>
       { warning && <Warning { ...{
@@ -71,10 +68,13 @@ export default function Follow( { slug, title } ) {
         working, setFollowNumber, setFollowing
       } } /> }
       { error && <Error error={error} /> }
-      { projectDetails.content && projectDetails.content.length > 0 && !warning
-        && <Modal open={ open } setModal={ setModal } contents={ ProjectDetails(
-          projectDetails.content, setUser, setError, setWarning
-        ) }/> }
+      { !warning && <Modal
+        open={ open } setModal={ setModal }
+        contents={ ProjectDetails(
+          title, slug, followNumber, followers, setUser, setError, setWarning,
+          setFollowNumber, followNumber, setFollowing, setWorking
+        ) }/>
+      }
     </>
   )
 }

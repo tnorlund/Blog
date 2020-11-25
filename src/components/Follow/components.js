@@ -115,10 +115,10 @@ export /**
 * @param {Function} setWarning The function used to set whether the project
 *                              was retrieved successfully from the database.
 */
-const ProjectDetails = ( details, setUser, setError, setWarning ) => {
-  const { title, slug, numberFollows } = details[0]
-  const followers = details.slice( 1, details.length )
-  const emails = followers.map( follower => follower.email ).join( `, ` )
+const ProjectDetails = (
+  title, slug, numberFollows, followers, setUser, setError, setWarning,
+  setFollowNumber, followNumber, setFollowing, setWorking
+) => {
   return(
     <>
       <Title>{ title }</Title>
@@ -139,14 +139,16 @@ const ProjectDetails = ( details, setUser, setError, setWarning ) => {
               <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
               <Remove onClick={ () => removeFollow(
                 { name: userName, email: email, userNumber: userNumber },
-                slug, title, setUser, setError
+                slug, title, setUser, setError, setFollowNumber, followNumber,
+                setFollowing, setWorking
               ) } />
             </User>
           ) )
         }
       </div>
       <EmailButton onClick={
-        () => copyStringToClipboard( emails )
+        () => copyStringToClipboard(
+          followers.map( follower => follower.email ).join( `, ` ) )
       }>Followers&apos;s Emails</EmailButton>
     </>
   )

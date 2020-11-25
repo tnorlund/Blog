@@ -71,12 +71,12 @@ export const removeProject = async(
  */
 export const getProjectDetails = async( slug, title, setError ) => {
   try {
-    const { project, error } = await API.get(
+    const { project, followers, error } = await API.get(
       `blogAPI`,
       `/project-details?slug=${ slug }&title=${ title }`
     )
     if ( error ) setError( error )
-    else return( project )
+    else return( { project, followers } )
   } catch( error ) { setError( error ) }
 }
 
