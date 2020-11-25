@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
 import {
-  getPost, addPost, addComment, getPostDetails, deleteComment
+  getPost, addPost, addComment, getPostDetails, deleteComment, deletePost
 } from './utils'
 import {
   Title,
@@ -123,7 +123,13 @@ export default function Comments( { slug, title } ) {
         user && user.isAdmin && !warning
       && <WarningDiv>
         <div><UnselectedButton>Post Details</UnselectedButton></div>
-        <div><WarningButton>Remove Post</WarningButton></div>
+        <div><WarningButton onClick={ () => {
+          setWorking( true )
+          deletePost( slug, title, setWarning, setError ).then( () => {
+            setWorking( false ); resetTextInput( `NewComment` )
+            setComment( `` )
+          } )
+        } }>Remove Post</WarningButton></div>
       </WarningDiv> }
       {// If there is no warning, show the comment title and the option to add
       //  comments.

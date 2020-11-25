@@ -42,7 +42,6 @@ export const Configure = () => {
 export const getCurrentSession = async () => {
   try {
     const session = await Auth.currentSession()
-    console.log( `session`, session )
     return {
       name: session.idToken.payload.name,
       email: session.idToken.payload.email,

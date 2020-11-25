@@ -65,6 +65,25 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
 }
 
 /**
+ * Deletes the post through an API call.
+ * @param {String}   slug       The slug of the post.
+ * @param {String}   title      The title of the post.
+ * @param {Function} setWarning The function used to set whether the post was
+ *                              retrieved successfully from the database.
+ * @param {Function} setError   The function used to set the error while
+ *                              retrieving data from the database.
+ */
+export const deletePost = async ( slug, title, setWarning, setError ) => {
+  try {
+    const { error } = await API.del(
+      `blogAPI`, `/post`,
+      { body: { slug, title } } )
+    if ( error ) setError( error )
+    else setError()
+  } catch( error ) { setError( error ) }
+}
+
+/**
  * Adds a post through an API call.
  * @param {String}   name       The name of the user.
  * @param {String}   email      The email of the user.
