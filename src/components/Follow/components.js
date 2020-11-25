@@ -49,8 +49,11 @@ export const Following = ( {
 } ) =>
   <FollowDiv>
     <FollowDetails>
-      <div><Follower /></div><FollowNumber>{ followNumber }</FollowNumber>
+      <div><Follower /></div>{
+        ( followNumber > 0 ) && <FollowNumber>{ followNumber }</FollowNumber>
+      }
     </FollowDetails>
+    {user &&
     <div css={`margin-top:0.3em;`}>
       {user && !isFollowing && <AddFollow {
         ...{
@@ -64,7 +67,8 @@ export const Following = ( {
           followNumber, setFollowing, working, setWorking
         }
       }/>}
-    </div>
+    </div>}
+    {!user && <div></div>}
   </FollowDiv>
 
 export const Warning = ( {

@@ -5,6 +5,7 @@ import {
 
 export const Title = styled.hgroup`
   margin-top: 0;
+  margin-left: 0.5em;
   font-weight: bold;
 `
 

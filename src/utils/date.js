@@ -94,7 +94,7 @@ export const timeSince = ( date ) => {
     minutesBetween( parseDate( date ), new Date() )
   } min ago`
   if (
-    hoursBetween( parseDate( date ), new Date() ) < 60 &&
+    hoursBetween( parseDate( date ), new Date() ) < 24 &&
     hoursBetween( parseDate( date ), new Date() ) > 0
   ) return `${
     hoursBetween( parseDate( date ), new Date() )
@@ -119,17 +119,11 @@ export const timeSince = ( date ) => {
       return `${
         monthsBetween( parseDate( date ), new Date() )
       } months ago`
-    else return `${
-      monthsBetween( parseDate( date ), new Date() )
-    } month ago`
+    else return `${ monthsBetween( parseDate( date ), new Date() ) } month ago`
   }
-  // else {
-  //   if ( yearsBetween( parseDate( date ),  new Date() ) > 1 )
-  //     dateString = `${
-  //       yearsBetween( parseDate( date ),  new Date() )
-  //     } years ago`
-  //   else dateString = `${
-  //     yearsBetween( parseDate( date ),  new Date() )
-  //   } year ago`
-  // }
+  else {
+    if ( yearsBetween( parseDate( date ),  new Date() ) > 1 )
+      return `${ yearsBetween( parseDate( date ),  new Date() ) } years ago`
+    return `${ yearsBetween( parseDate( date ),  new Date() ) } year ago`
+  }
 }
