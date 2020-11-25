@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import {
   handleLoggingIn, handleCheckCode, handleForgotPassword, handleSigningUp,
-  handleLoggingOut
+  handleLoggingOut, resendConfrimationEmail
 } from './utils'
 import { timeSince } from 'utils/date'
 import { Login, SignUp, Forgot, Confirm, User } from './states'
 
-export default function NoUser( user, setUser ) {
+export default function HandleStates( user, setUser ) {
   // Sets the state for the login form.
   const [ email, setEmail ] = useState( `` )
   // Sets the state for the login form.
@@ -33,8 +33,6 @@ export default function NoUser( user, setUser ) {
     else {
       setError()
       await handleLoggingIn( email, password, setUser, setError, setConfirm )
-      setEmail( `` )
-      setPassword( `` )
     }
   }
 
@@ -76,20 +74,13 @@ export default function NoUser( user, setUser ) {
     }
   }
 
-  // eslint-disable-next-line no-console
-
-  let dateString
-  if ( user ) {
-    dateString = timeSince( String( user.dateJoined ) )
-  }
-
   return(
     <>
       {!user && <>
         { page == `login`
       && <Login {
         ...{ newUser, setEmail, setError, setPassword, email, setPage, error,
-          needConfirm, login }
+          needConfirm, login, resendConfrimationEmail, setNewUser }
       }/> }
         { page == `signup`
       && <SignUp {
@@ -109,8 +100,9 @@ export default function NoUser( user, setUser ) {
       </>}
       {
         user && <User {
-          ...{ name: user.name, dateString, error, handleLoggingOut, setUser,
-            setError }
+          ...{ name: user.name, dateString: timeSince(
+            String( user.dateJoined )
+          ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin }
         }/>
       }
 

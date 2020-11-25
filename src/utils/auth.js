@@ -104,7 +104,8 @@ export const updateUserBySession = async ( session, setUser ) => {
     if ( error ) console.error( error )
     // Reassemble the user.
     const requestedUser = {
-      ...user, tos: tos, comments: comments, follows: follows
+      ...user, tos, comments, follows,
+      isAdmin: userGroups.indexOf( `Admin` ) >= 0
     }
     setUser( requestedUser )
   } catch( error ) { console.error( error ) }

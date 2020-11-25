@@ -35,21 +35,30 @@ export const handleSigningUp = async ( email, password, name, setError ) => {
     const { error, blog } = await API.get( `blogAPI`, `/blog` )
     if ( error ) setError( error )
     else {
-      const result = await Auth.signUp( {
+      await Auth.signUp( {
         username: email, password: password, attributes: {
           email: email, name: name,
           'custom:UserNumber': `${ blog.numberUsers + 1 }`
         }
       } )
-      console.log( result )
     }
-  } catch( error ) {
-    setError( error.message )
+  } catch( error ) { setError( error.message ) }
+}
+
+export const resendConfrimationEmail = async (
+  email, setError, setNewUser
+) => {
+  try {
+    await Auth.resendSignUp( email )
+    setError()
+    setNewUser( false )
+  } catch ( error ) {
+    setError( error )
   }
 }
 
 /**
- *
+ * Sends a code to the user's email in order for them to verify their identity.
  * @param {String} email
  * @param {Function} setError
  */
@@ -60,11 +69,12 @@ export const handleForgotPassword = async ( email, setError ) => {
 }
 
 /**
- *
- * @param {*} email
- * @param {*} password
- * @param {*} code
- * @param {*} setError
+ * Resets the user's password after submitting the code emailed to them.
+ * @param {String}   email       The user's email.
+ * @param {String}   password    The user's new password.
+ * @param {String}   code        The code emailed to the user.
+ * @param {Function} setError    The function used to set the error if one
+ *                               occurs.
  */
 export const handleCheckCode = async ( email, password, code, setError ) => {
   try {
@@ -75,16 +85,14 @@ export const handleCheckCode = async ( email, password, code, setError ) => {
 }
 
 /**
- * 
- * @param {Function} setUser 
- * @param {Function} setError 
+ * Logs the user out and removes the user data from the session storage.
+ * @param {Function} setUser  The function used to set the user's detail into
+ *                            session storage.
+ * @param {Function} setError The function used to set the error if one occurs.
  */
 export const handleLoggingOut = async ( setUser, setError ) => {
   try {
     await Auth.signOut()
     setUser( undefined )
-  } catch ( error ) {
-    console.log( error )
-    setError( error.message )
-  }
+  } catch ( error ) { setError( error.message ) }
 }

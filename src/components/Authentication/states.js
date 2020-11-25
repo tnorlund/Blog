@@ -1,12 +1,12 @@
 import React from 'react'
 import {
   Title, SelectedButton, WarningDiv, WarningIcon, OptionsDiv,
-  OptionDiv, NewTextInput, Description
+  OptionDiv, NewTextInput, Description, UserType, UserDetails
 } from './styles'
 
 export const Login = ( {
   newUser, setEmail, setError, setPassword, email, setPage, error, needConfirm,
-  login
+  login, resendConfrimationEmail
 } ) => <>
   <Title>Login</Title>
   { newUser
@@ -40,7 +40,9 @@ export const Login = ( {
       setPassword( `` )
       setPage( `forgot` )
     } }>Forgot Password</OptionDiv>{
-      needConfirm && <>|<OptionDiv>Resend Email</OptionDiv></>
+      needConfirm && <>|<OptionDiv onClick={
+        () => { resendConfrimationEmail( email, setError ) }
+      }>Resend Email</OptionDiv></>
     }
   </OptionsDiv>
   { error && <WarningDiv><WarningIcon/>
@@ -207,10 +209,12 @@ export const Confirm = ( {
 </>
 
 export const User = ( {
-  name, dateString, error, handleLoggingOut, setUser, setError
+  name, dateString, error, handleLoggingOut, setUser, setError, isAdmin
 } ) => <>
-  <Title>{name}</Title>
-  <Description>Administrator</Description>
+  <UserDetails>
+    <Title>{name}</Title>
+    {isAdmin && <UserType>Administrator</UserType>}
+  </UserDetails>
   <Description>Joined { dateString }</Description>
   { error && <WarningDiv><WarningIcon/>
     <div

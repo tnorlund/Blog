@@ -1,8 +1,7 @@
-import styled, { css } from 'styled-components'
-import { Close as Cross } from 'styled-icons/material'
-import {
-  Warning, CircleWithCross, CircleWithMinus, CircleWithPlus
-} from 'styled-icons/entypo'
+import styled from 'styled-components'
+import { Warning } from 'styled-icons/entypo'
+import { mediaQueries } from 'utils/mediaQueries'
+
 
 export const WarningIcon = styled( Warning ).attrs( props => ( {
   size: props.size || `2.5em`
@@ -16,13 +15,6 @@ export const ModalDiv = styled.div`
   z-index: 1;
 `
 
-export const Title = styled.hgroup`
-  font-size: 2em;
-  font-weight: bold;
-
-  padding: 0.5em;
-  width: max-content;
-`
 export const BodyDiv = styled.div`
   margin: 1em;
 `
@@ -46,16 +38,18 @@ export const NewTextInput = styled.input`
   border-radius: 0.25em;
   margin: 1em;
   padding: 0.5em;
-  margin-top: 0;`
+  margin-top: 1em;
+  margin-bottom: 0;
+  ${mediaQueries.minTablet} { margin-bottom: 0.5em; }
+`
 
 export const OptionsDiv = styled.div`
   display: flex;
   padding-bottom: 0.5em;
   padding-right: 0.75em;
   padding-left: 0.75em;
-  padding-top: 0;
-  /* margin-left: 1em;
-  margin-right: 1em; */
+  padding-top: 0.25em;
+  margin-top: 0.5em;
 `
 
 export const OptionDiv = styled.div`
@@ -96,14 +90,40 @@ export const TextInput = styled.div`
   padding: 0.5em;
   margin-top: 0;
   display: block;
+  ${mediaQueries.minTablet} {
+    padding-top: 1em;
+  }
 `
 
-// export const TextDiv = styled.div`
-//   padding-bottom: 0.5em;
-//   /* margin-left: 1em; */
-//   width: 98%;
-//   justify-self: center;
-// `
+export const UserDetails = styled.div`
+  display: block;
+  ${mediaQueries.minTablet} {
+    display: flex;
+  }
+`
+
+export const Title = styled.hgroup`
+  font-size: 2em;
+  font-weight: bold;
+  width: max-content;
+  padding: 0.5em;
+  padding-bottom: 0.2em;
+  ${mediaQueries.minTablet} {
+    padding: 0.5em;
+  }
+`
+
+export const UserType = styled.div`
+  padding-top: 0;
+  padding-bottom: 2em;
+  padding-left: 1.5em;
+  ${mediaQueries.minTablet} {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 0em;
+    height: max-content;
+  }
+`
 
 export const ButtonDiv = styled.div`
   margin: 1em;
@@ -113,9 +133,7 @@ export const ButtonDiv = styled.div`
   padding: 0.1em;
   border-radius: 0.2em;
   font-weight: bold;
-  :hover {
-    color: var(--color-a);
-  }
+  :hover { color: var(--color-a); }
 `
 
 export const Description = styled.div`
