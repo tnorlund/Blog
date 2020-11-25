@@ -15,6 +15,7 @@ export const WarningDiv = styled.div`
   justify-content: space-between;
   height: 2.68em;
   padding-top: 1em;
+  padding-bottom: 1em;
 `
 
 export const WarningIcon = styled( Warning ).attrs( props => ( {

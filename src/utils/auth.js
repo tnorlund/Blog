@@ -42,7 +42,7 @@ export const Configure = () => {
 export const getCurrentSession = async () => {
   try {
     const session = await Auth.currentSession()
-    return { session: {
+    return {
       name: session.idToken.payload.name,
       email: session.idToken.payload.email,
       userNumber: session.idToken.payload[ `custom:UserNumber` ],
@@ -50,7 +50,7 @@ export const getCurrentSession = async () => {
       // eslint-disable-next-line max-len
       isAdmin: session.idToken.payload[ `cognito:groups` ].indexOf( `Admin` ) >= 0,
       session: session
-    } }
+    }
   } catch ( error ) {
     if ( error === `No current user` )
       return { session: undefined }
@@ -78,6 +78,28 @@ export function parseUser( CognitoUserSession ) {
 }
 
 /**
+ * Sets the user data in session storage.
+ * @param {Function} setUser The function that sets the user details in the
+ *                           session storage.
+ */
+export const updateUser = async ( setUser ) => {
+  const {
+    name, email, userNumber, isAdmin
+  } = await getCurrentSession()
+  try {
+    const { user, tos, comments, follows, error } = await API.get(
+      `blogAPI`,
+      `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
+    )
+    if ( error ) console.error( error )
+    setUser( {
+      ...user, tos, comments, follows,
+      isAdmin
+    } )
+  } catch( error ) { console.error( error ) }
+}
+
+/**
  * Updates the session storage with CognitoUser object.
  *
  * TODO
@@ -89,7 +111,6 @@ export function parseUser( CognitoUserSession ) {
  *                           with the users details.
  */
 export const updateUserBySession = async ( session, setUser ) => {
-  console.log( `updateUserBySession` )
   // Get the required user detail to retrieve the user from the database.
   const { name, email } = session.attributes
   const userGroups = session.signInUserSession.idToken

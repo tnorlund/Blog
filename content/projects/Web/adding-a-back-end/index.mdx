@@ -207,7 +207,7 @@ The user can request their details by querying a partition key `USER#[User Numbe
 |                  | GSI1PK                 | GSI1SK                           |
 |------------------|------------------------|----------------------------------|
 | Project          | PROJECT#[Project Slug] | PROJECT#[Project Slug]           |
-| Project Follow   | PROJECT#[Project Slug] | #PROJECT#[Project Follow Number] |
+| Project Follow   | PROJECT#[Project Slug] | #PROJECT#[Date Followed]         |
 
 The project and the project's followers are queried by the Global Secondary Index's partition key, *GSI1PK*. These different indexing methods allow DynamoDB to remain simple and efficient.
 

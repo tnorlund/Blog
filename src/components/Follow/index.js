@@ -1,85 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import Modal from 'components/Modal'
-import {
-  FollowButton, FollowingButton, FollowDiv, Follower, FollowDetails,
-  AdminWarning, WarningDiv, WarningButton, FollowNumber, Title, User,
-  Name, DateDiv, Remove, More, Less, Controls, ControlsNumber,
-  WarningDescription, EmailButton
-} from './styles'
 import { AUTH_KEY } from 'utils/constants'
+import { getProject, getProjectDetails } from './utils'
 import {
-  removeFollow, getProject, addFollow, addProject, getProjectDetails,
-  removeProject, updateProject
-} from './utils'
-
-/**
- * Adds a string to the user's clipboard.
- * @param {String} str The string added to the clipboard.
- */
-function copyStringToClipboard ( str ) {
-  // Create new element
-  let el = document.createElement( `textarea` )
-  // Set value (string to be copied)
-  el.value = str
-  // Set non-editable to avoid focus and move outside of view
-  el.setAttribute( `readonly`, `` )
-  el.style = { position: `absolute`, left: `-9999px` }
-  document.body.appendChild( el )
-  // Select text inside element
-  el.select()
-  // Copy text to clipboard
-  document.execCommand( `copy` )
-  // Remove temporary element
-  document.body.removeChild( el )
-}
-
-/**
- * Creates the modal view for administrative control over the project.
- * @param {Object}   details    The project details and its followers.
- * @param {Function} setUser    The function used to set the user details in
- *                              session storage.
- * @param {Function} setError   The function used to set an error if there is
- *                              any while retrieving data from the database.
- * @param {Function} setWarning The function used to set whether the project
- *                              was retrieved successfully from the database.
- */
-function ProjectDetails( details, setUser, setError, setWarning ) {
-  const { title, slug, numberFollows } = details[0]
-  const followers = details.slice( 1, details.length )
-  const emails = followers.map( follower => follower.email ).join( `, ` )
-  return(
-    <>
-      <Title>{ title }</Title>
-      <Controls>
-        <div><Less onClick={ () => updateProject(
-          slug, title, numberFollows - 1, setError, setWarning, setUser
-        ) }/></div>
-        <ControlsNumber>{ numberFollows }</ControlsNumber>
-        <div><More onClick={ () => updateProject(
-          slug, title, numberFollows + 1, setError, setWarning, setUser
-        ) }/></div>
-      </Controls>
-      <div>
-        {
-          followers.map( ( { userName, email, userNumber, dateFollowed } ) => (
-            <User key={ userName }>
-              <Name>{ userName }</Name>
-              <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
-              <Remove onClick={ () => removeFollow(
-                { name: userName, email: email, userNumber: userNumber },
-                slug, title, setUser, setError
-              ) } />
-            </User>
-          ) )
-        }
-      </div>
-      <EmailButton onClick={
-        () => copyStringToClipboard( emails )
-      }>Followers&apos;s Emails</EmailButton>
-    </>
-  )
-}
+  Following, Warning, Error, AdminControls, ProjectDetails
+} from './components'
 
 export default function Follow( { slug, title } ) {
   // Get the current user data
@@ -94,87 +20,61 @@ export default function Follow( { slug, title } ) {
   const [ projectDetails, setProjectDetails ] = useState( {
     open: false, content: undefined
   } )
+  // Sets whether the user is an administrator or not.
+  const [ isAdmin, setAdmin ] = useState( false )
+  // Sets whether the user is following the project.
+  const [ isFollowing, setFollowing ] = useState( false )
+  // Sets whether an API call is being made
+  const [ working, setWorking ] = useState( false )
+  // Sets whether the project details modal view is shown or not.
+  const [ open, setModal ] = useState( false )
+  const [ followers, setFollowers ] = useState( [] )
   // Before anything is rendered to the screen, get the project's data.
   // Before the modal view is rendered, set the styles of the document.
   useEffect( () => {
     getProject( slug, title, setError ).then( ( { project, error } ) => {
       // If the project is not in the database and the use is an administrator,
       // give them the opportunity to create the project.
-      if ( error == `Project does not exist` && user.isAdmin )
+      if ( error == `Project does not exist` )
         setWarning( true )
       else setFollowNumber( project.numberFollows )
     } )
-    if ( user && user.isAdmin ) {
-      getProjectDetails( slug, title, setError ).then(
-        ( project ) =>
-          setProjectDetails( { ...projectDetails, content: project } )
-      )
+    if ( user ) {
+      // Iterate over the projects the user follows. If the title is found in
+      // the projects they follow, set the state to following.
+      user.follows.map( ( project ) => {
+        if ( project.title == title && project.slug == slug )
+          setFollowing( true )
+      } )
+      if ( user.isAdmin ) {
+        setAdmin( true )
+        getProjectDetails( slug, title, setError ).then(
+          ( followers ) => { 
+            setFollowers( followers )
+            setProjectDetails( { ...projectDetails, content: followers } )
+          }
+        )
+      }
     }
-  }, [ user, warning, slug, title ] )
+  }, [ user ] )
   return(
     <>
-      {// If the project is not in the database and the current user is Admin,
-      //  give the option to add the project to the database.
-        warning
-      && <WarningDiv>
-        <div><AdminWarning/>Project not in database</div>
-        <div><WarningButton onClick={
-          () => { addProject( slug, title, setWarning, setError ) }
-        }>Add Project</WarningButton></div>
-      </WarningDiv>
-      }
-      {
-        !warning
-        && <FollowDiv>
-          <FollowDetails>
-            <div><Follower /></div><FollowNumber>{ followNumber }</FollowNumber>
-          </FollowDetails>
-          <div>
-            {// If the user is logged in and they are not following the project.
-              user &&
-              user.follows.map( follow => follow.slug ).indexOf( slug ) < 0
-            && <FollowButton onClick={
-              () => addFollow( user, slug, title, setUser, setError )
-            } >Follow</FollowButton> }
-
-            {// If the user is logged in and they are following the project.
-              user &&
-              user.follows.map( follow => follow.slug ).indexOf( slug ) >= 0
-            && <FollowingButton onClick={
-              () => removeFollow( user, slug, title, setUser, setError )
-            } >Following</FollowingButton> }
-          </div>
-        </FollowDiv>
-      }
-      {// If the user is an Admin, give the option to remove project.
-        user && user.isAdmin && !warning
-        && <WarningDiv>
-          <div><FollowButton onClick={
-            () => {
-              setProjectDetails( { ...projectDetails, open: true } )
-            }
-          }>Project Details</FollowButton></div>
-          <div><WarningButton onClick={
-            () => removeProject( slug, title, setError, setWarning, setUser )
-          }>Remove Project</WarningButton></div>
-        </WarningDiv>
-      }
-      {
-        error
-      && <WarningDiv>
-        <AdminWarning/><WarningDescription>{error}</WarningDescription>
-      </WarningDiv>
-      }
-      {
-        projectDetails.content && projectDetails.content.length > 0 && !warning
-        && <Modal open={ projectDetails.open } closeModal={
-          () => setProjectDetails( { ...projectDetails, open: false } )
-        } contents={
-          ProjectDetails(
-            projectDetails.content, setUser, setError, setWarning
-          )
-        }/>
-      }
+      { warning && <Warning { ...{
+        isAdmin, slug, title, setWarning, setError, working, setWorking
+      } } /> }
+      { !warning && <Following { ...{
+        user, slug, title, setUser, setError, setFollowNumber, followNumber,
+        setFollowing, isFollowing, working, setWorking
+      } }/> }
+      { user && user.isAdmin && !warning && <AdminControls { ...{
+        slug, title, setError, setWarning, setUser, setModal, setWorking,
+        working, setFollowNumber, setFollowing
+      } } /> }
+      { error && <Error error={error} /> }
+      { projectDetails.content && projectDetails.content.length > 0 && !warning
+        && <Modal open={ open } setModal={ setModal } contents={ ProjectDetails(
+          projectDetails.content, setUser, setError, setWarning
+        ) }/> }
     </>
   )
 }

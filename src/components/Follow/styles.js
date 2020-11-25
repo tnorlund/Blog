@@ -11,8 +11,6 @@ export const FollowButton = styled.div`
   justify-self: right;
   padding: 0.5em;
   border-radius: 0.25em;
-  top: 0.5em;
-  right: 0.5em;
   cursor: pointer;
 `
 
@@ -23,8 +21,6 @@ export const FollowingButton = styled.div`
   justify-self: right;
   padding: 0.5em;
   border-radius: 0.25em;
-  top: 0.5em;
-  right: 0.5em;
   cursor: pointer;
 `
 
@@ -82,7 +78,8 @@ export const WarningDiv = styled.div`
   display: flex;
   font-weight: bold;
   justify-content: space-between;
-  height: 2.68em;
+  align-items: center;
+  height: 2.75em;
   padding-top: 1em;
 `
 
@@ -121,7 +118,7 @@ export const FollowDetails = styled.div`
 `
 
 export const FollowNumber = styled.div`
-  padding: 0.25em;
+  padding: 0.4em;
   padding-left: 0em;
 `
 

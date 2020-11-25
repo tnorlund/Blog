@@ -9,19 +9,7 @@ import {
   TextInput,
   CommentText, CommentDiv, CommentOption, CommentOptions
 } from './styles'
-
-/**
- * Converts an ISO formatted date into a Date object.
- * @param {String} dateString An ISO formatted date.
- * @returns A Date object.
- */
-const parseDate = ( dateString ) => {
-  const parsed = dateString.split( /\D+/ )
-  return( new Date( Date.UTC(
-    parsed[0], --parsed[1], parsed[2], parsed[3], parsed[4], parsed[5],
-    parsed[6]
-  ) ) )
-}
+import { timeSince } from 'utils/date'
 
 /**
  * Sets the contents of a div using a React Hook.
@@ -55,93 +43,6 @@ const resetTextInput = ( id ) => {
   document.getElementById( id ).innerHTML = ``
 }
 
-function yearsBetween( date1, date2 ) {
-  return Math.abs(
-    new Date( Math.abs( date1 - date2 ) ).getUTCFullYear() - 1970
-  )
-}
-
-function monthsBetween( date1, date2 ) {
-  let months = ( date2.getFullYear() - date1.getFullYear() ) * 12
-  months -= date1.getMonth()
-  months += date2.getMonth()
-  return months <= 0 ? 0 : months
-}
-
-function daysBetween( date1, date2 ) {
-  // The number of milliseconds in one day
-  const ONE_DAY = 1000 * 60 * 60 * 24
-  // Calculate the difference in milliseconds
-  const differenceMs = Math.abs( date1 - date2 )
-  // Convert back to days and return
-  return Math.round( differenceMs / ONE_DAY )
-}
-
-function hoursBetween( date1, date2 ) {
-  return Math.floor( ( Math.abs( date1 - date2 ) / 1000 ) / 60 / 60 )
-}
-
-function minutesBetween( date1, date2 ) {
-  return Math.floor( ( Math.abs( date1 - date2 ) / 1000 ) / 60 )
-}
-
-function secondsBetween( date1, date2 ) {
-  return Math.floor( Math.abs( date1 - date2 ) / 1000 )
-}
-
-function handleDateString( dateAdded ) {
-  let dateString
-  if ( secondsBetween( parseDate( dateAdded ), new Date() ) < 60 )
-    dateString = `${
-      secondsBetween( parseDate( dateAdded ), new Date() )
-    } sec ago`
-  else if (
-    minutesBetween( parseDate( dateAdded ), new Date() ) < 60 &&
-    minutesBetween( parseDate( dateAdded ), new Date() ) > 0
-  ) dateString = `${
-    minutesBetween( parseDate( dateAdded ), new Date() )
-  } min ago`
-  else if (
-    hoursBetween( parseDate( dateAdded ), new Date() ) < 60 &&
-    hoursBetween( parseDate( dateAdded ), new Date() ) > 0
-  ) dateString = `${
-    hoursBetween( parseDate( dateAdded ), new Date() )
-  } hr ago`
-  else if (
-    daysBetween( parseDate( dateAdded ), new Date() ) < 31 &&
-    daysBetween( parseDate( dateAdded ), new Date() ) > 0
-  ) {
-    if ( daysBetween( parseDate( dateAdded ), new Date() ) > 1 )
-      dateString = `${
-        daysBetween( parseDate( dateAdded ), new Date() )
-      } days ago`
-    else dateString = `${
-      daysBetween( parseDate( dateAdded ), new Date() )
-    } day ago`
-  }
-  else if (
-    monthsBetween( parseDate( dateAdded ), new Date() ) < 31 &&
-    monthsBetween( parseDate( dateAdded ), new Date() ) > 0
-  ) {
-    if ( monthsBetween( parseDate( dateAdded ), new Date() ) > 1 )
-      dateString = `${
-        monthsBetween( parseDate( dateAdded ), new Date() )
-      } months ago`
-    else dateString = `${
-      monthsBetween( parseDate( dateAdded ), new Date() )
-    } month ago`
-  } else {
-    if ( yearsBetween( parseDate( dateAdded ),  new Date() ) > 1 )
-      dateString = `${
-        yearsBetween( parseDate( dateAdded ),  new Date() )
-      } years ago`
-    else dateString = `${
-      yearsBetween( parseDate( dateAdded ),  new Date() )
-    } year ago`
-  }
-  return dateString
-}
-
 /**
  * Component for each comment.
  * @param {Object} comment 
@@ -157,7 +58,7 @@ const Comment = ( comment, currentUser ) => {
   ) )
   return(
     <CommentDiv key={ userName + dateAdded + text }>
-      <Title>{ userName } - { handleDateString( dateAdded ) }</Title>
+      <Title>{ userName } - { timeSince( dateAdded ) }</Title>
       <CommentText>{ text }</CommentText>
       { currentUser && <CommentOptions>
         {
@@ -172,8 +73,6 @@ const Comment = ( comment, currentUser ) => {
 export default function Comments( { slug, title } ) {
   // Get the current user data
   const [ user, setUser ] = useSessionStorage( AUTH_KEY )
-  // Set the number of comments in the post
-  const [ commentNumber, setCommentNumber ] = useState( 0 )
   // Sets the warning whether to add a project or not.
   const [ warning, setWarning ] = useState( false )
   // Sets an error if one occurs.
@@ -191,11 +90,12 @@ export default function Comments( { slug, title } ) {
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
       ( { post, comments, error } ) => {
-        // If the project does not exist and the user is an administrator
-        // give them the opportunity to add the post to the database.
-        if ( error == `Project does not exist` && user.isAdmin )
+        if ( error ) setError( error )
+        // If the post does not exist in the data base, there are no
+        // comments, and the user is an administrator, allow them to create the
+        // post.
+        if ( !post && comments.length == 0 && user && user.isAdmin )
           setWarning( true )
-        setCommentNumber( post.numberComments )
         setComments( comments )
       } ).catch( ( error ) => setError( error ) )
   }, [ warning, uploading ] )

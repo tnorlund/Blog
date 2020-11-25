@@ -1,4 +1,4 @@
-import { getCurrentSession, updateUser  } from 'utils/auth'
+import { updateUser  } from 'utils/auth'
 import { API } from 'aws-amplify'
 
 /**
@@ -25,32 +25,32 @@ export const updateProject = async(
       } }
     )
     if ( error ) setError( error )
-    const { session, sessionError } = await getCurrentSession()
-    if ( sessionError ) setError( sessionError )
-    // const { user, dbError } = await updateUser( session )
-    if ( dbError ) setError( dbError )
-    // else setUser( user )
-  } catch( error ) { 
-    console.log(`error`, error )
-    setError( error ) 
-  }
+    await updateUser( setUser )
+  } catch( error ) { setError( error ) }
 }
 
 /**
  * Removes a project and its followers using the API.
- * @param {String} slug         The slug of the project.
- * @param {String} title        The title of the project.
- * @param {Function} setError   The function used to set an error if there is
- *                              any while retrieving data from the database.
- * @param {Function} setWarning The function used to set whether the project
- *                              was retrieved successfully from the database.
- * @param {Function} setUser    The function used to set the user details in
- *                              session storage.
+ * @param {String} slug              The slug of the project.
+ * @param {String} title             The title of the project.
+ * @param {Function} setError        The function used to set an error if there
+ *                                   is any while retrieving data from the
+ *                                   database.
+ * @param {Function} setWarning      The function used to set whether the
+ *                                   project was retrieved successfully from
+ *                                   the database.
+ * @param {Function} setUser         The function used to set the user details
+ *                                   in session storage.
+ * @param {Function} setWorking      The function used to set whether an API
+ *                                   call is being made.
+ * @param {Function} setFollowNumber The function used to set the number of
+ *                                   followers of the project.
  */
 export const removeProject = async(
-  slug, title, setError, setWarning, setUser
+  slug, title, setError, setWarning, setUser, setWorking, setFollowNumber
 ) => {
   try {
+    setFollowNumber( 0 )
     const { error } = await API.del(
       `blogAPI`,
       `/project`,
@@ -58,12 +58,9 @@ export const removeProject = async(
     )
     if ( error ) setError( error )
     else setWarning( true )
-    const { session, sessionError } = await getCurrentSession()
-    if ( sessionError ) setError( sessionError )
-    const { user, dbError } = await updateUser( session )
-    if ( dbError ) setError( dbError )
-    // else setUser( user )
+    await updateUser( setUser )
   } catch( error ) { setError( error ) }
+  setWorking( false )
 }
 /**
  * Gets the project and its followers using the API.
@@ -80,39 +77,6 @@ export const getProjectDetails = async( slug, title, setError ) => {
     )
     if ( error ) setError( error )
     else return( project )
-  } catch( error ) { setError( error ) }
-}
-
-/**
-* Removes the user's follow from the project.
-* @param {Object}   requestedUser The user requested to leave the project.
-* @param {String}   slug          The slug of the project.
-* @param {String}   title         The title of the project.
-* @param {Function} setUser       The function used to set the user details in
-*                                 session storage.
-*/
-export const removeFollow = async (
-  requestedUser, slug, title, setUser, setError
-) => {
-  try {
-    // const { user, project, error }
-    const { error } = await API.del(
-      `blogAPI`,
-      `/project-follow`,
-      { body: {
-        slug: slug,
-        title: title,
-        name: requestedUser.name,
-        email: requestedUser.email,
-        userNumber: requestedUser.userNumber
-      } }
-    )
-    if ( error ) setError( error )
-    const { session, sessionError } = await getCurrentSession()
-    if ( sessionError ) setError( sessionError )
-    // const { user, dbError } = await updateUser( session )
-    if ( dbError ) setError( dbError )
-    // setUser( user )
   } catch( error ) { setError( error ) }
 }
 
@@ -134,18 +98,30 @@ export const getProject = async ( slug, title ) => {
 
 /**
  * Adds the user as a follower to the project.
- * @param {Object}   requestedUser The user requested to follow the project.
- * @param {String}   slug          The slug of the project.
- * @param {String}   title         The title of the project.
- * @param {Function} setUser       The function used to set the user details in
- *                                 session storage.
- * @param {Function} setError      The function used to set an error if there is
- *                                 any while retrieving data from the database.
+ * @param {Object}   requestedUser   The user requested to follow the project.
+ * @param {String}   slug            The slug of the project.
+ * @param {String}   title           The title of the project.
+ * @param {Function} setUser         The function used to set the user details
+ *                                   in session storage.
+ * @param {Function} setError        The function used to set an error if there
+ *                                   is any while retrieving data from the
+ *                                   database.
+ * @param {Function} setFollowNumber The function used to set the number of
+ *                                   users that follow the project.
+ * @param {Number}   followNumber    The number of users that follow the
+ *                                   project.
+ * @param {Function} setFollowing    The function that sets whether the user is
+ *                                   following the project or not.
+ * @param {Function} setWorking      The function used to set whether an API
+ *                                   call is being made.
  */
 export const addFollow = async (
-  requestedUser, slug, title, setUser, setError
+  requestedUser, slug, title, setUser, setError, setFollowNumber, followNumber,
+  setFollowing, setWorking
 ) => {
   try {
+    setFollowNumber( ++followNumber )
+    setFollowing( true )
     const { error } = await API.post(
       `blogAPI`,
       `/project-follow`,
@@ -158,12 +134,60 @@ export const addFollow = async (
       } }
     )
     if ( error ) setError( error )
-    const { session, sessionError } = await getCurrentSession()
-    if ( sessionError ) setError( sessionError )
-    // const { user, dbError } = await updateUser( session )
-    if ( dbError ) setError( dbError )
-    // setUser( user )
-  } catch( error ) { setError( error ) }
+    await updateUser( setUser )
+  } catch( error ) {
+    setFollowNumber( --followNumber )
+    setFollowing( false )
+    setError( error )
+  }
+  setWorking( false )
+}
+
+/**
+ * Removes the user's follow from the project.
+ * @param {Object}   requestedUser   The user requested to leave the project.
+ * @param {String}   slug            The slug of the project.
+ * @param {String}   title           The title of the project.
+ * @param {Function} setUser         The function used to set the user details
+ *                                   in session storage.
+ * @param {Function} setError        The function used to set an error if there
+ *                                   is any while retrieving data from the
+ *                                   database.
+ * @param {Function} setFollowNumber The function used to set the number of
+ *                                   users that follow the project.
+ * @param {Number}   followNumber    The number of users that follow the
+ *                                   project.
+ * @param {Function} setFollowing    The function that sets whether the user is
+ *                                   following the project or not.
+ * @param {Function} setWorking      The function used to set whether an API
+ *                                   call is being made.
+ */
+export const removeFollow = async (
+  requestedUser, slug, title, setUser, setError, setFollowNumber, followNumber,
+  setFollowing, setWorking
+) => {
+  try {
+    setFollowing( false )
+    setFollowNumber( --followNumber )
+    const { error } = await API.del(
+      `blogAPI`,
+      `/project-follow`,
+      { body: {
+        slug: slug,
+        title: title,
+        name: requestedUser.name,
+        email: requestedUser.email,
+        userNumber: requestedUser.userNumber
+      } }
+    )
+    if ( error ) setError( error )
+    await updateUser( setUser )
+  } catch( error ) {
+    setFollowing( true )
+    setFollowNumber( ++followNumber )
+    setError( error )
+  }
+  setWorking( false )
 }
 
 /**
@@ -174,8 +198,12 @@ export const addFollow = async (
  *                              was retrieved successfully from the database.
  * @param {Function} setError   The function used to set an error if there is
  *                              any while retrieving data from the database.
+ * @param {Function} setWorking The function used to set whether an API call is
+ *                              being made.
  */
-export const addProject = async ( slug, title, setWarning, setError ) => {
+export const addProject = async (
+  slug, title, setWarning, setError, setWorking
+) => {
   const { error } = await API.post(
     `blogAPI`,
     `/project`,
@@ -186,4 +214,20 @@ export const addProject = async ( slug, title, setWarning, setError ) => {
     setWarning( false )
     setError()
   }
+  setWorking( false )
+}
+
+/**
+ * Adds a string to the user's clipboard.
+ * @param {String} str The string added to the clipboard.
+ */
+export const copyStringToClipboard = ( str ) => {
+  let element = document.createElement( `textarea` )
+  element.value = str
+  element.setAttribute( `readonly`, `` )
+  element.style = { position: `absolute`, left: `-9999px` }
+  document.body.appendChild( element )
+  element.select()
+  document.execCommand( `copy` )
+  document.body.removeChild( element )
 }

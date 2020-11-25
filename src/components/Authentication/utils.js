@@ -89,10 +89,12 @@ export const handleCheckCode = async ( email, password, code, setError ) => {
  * @param {Function} setUser  The function used to set the user's detail into
  *                            session storage.
  * @param {Function} setError The function used to set the error if one occurs.
+ * @param {Function} setEmail The function used to set the user's email.
  */
-export const handleLoggingOut = async ( setUser, setError ) => {
+export const handleLoggingOut = async ( setUser, setError, setEmail ) => {
   try {
     await Auth.signOut()
-    setUser( undefined )
+    setUser()
+    setEmail( `` )
   } catch ( error ) { setError( error.message ) }
 }

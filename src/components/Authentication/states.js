@@ -6,7 +6,7 @@ import {
 
 export const Login = ( {
   newUser, setEmail, setError, setPassword, email, setPage, error, needConfirm,
-  login, resendConfrimationEmail
+  login, resendConfrimationEmail, setNewUser
 } ) => <>
   <Title>Login</Title>
   { newUser
@@ -41,7 +41,7 @@ export const Login = ( {
       setPage( `forgot` )
     } }>Forgot Password</OptionDiv>{
       needConfirm && <>|<OptionDiv onClick={
-        () => { resendConfrimationEmail( email, setError ) }
+        () => { resendConfrimationEmail( email, setError, setNewUser ) }
       }>Resend Email</OptionDiv></>
     }
   </OptionsDiv>
@@ -209,7 +209,8 @@ export const Confirm = ( {
 </>
 
 export const User = ( {
-  name, dateString, error, handleLoggingOut, setUser, setError, isAdmin
+  name, dateString, error, handleLoggingOut, setUser, setError, isAdmin,
+  setEmail
 } ) => <>
   <UserDetails>
     <Title>{name}</Title>
@@ -222,7 +223,9 @@ export const User = ( {
     vertical-align: middle;`}
     >{ error }</div>
   </WarningDiv> }
-  <SelectedButton onClick={ () => handleLoggingOut( setUser, setError ) }>
+  <SelectedButton onClick={
+    () => handleLoggingOut( setUser, setError, setEmail ) }
+  >
     Sign Out
   </SelectedButton>
 </>

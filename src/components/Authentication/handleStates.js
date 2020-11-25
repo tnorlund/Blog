@@ -102,7 +102,8 @@ export default function HandleStates( user, setUser ) {
         user && <User {
           ...{ name: user.name, dateString: timeSince(
             String( user.dateJoined )
-          ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin }
+          ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin,
+          setEmail }
         }/>
       }
 
