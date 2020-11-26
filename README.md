@@ -1,2 +1,3 @@
 # Blog
-Personal blog
+
+A personal blog where I share me!
