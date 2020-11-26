@@ -12,7 +12,7 @@ export const ModalBehind = styled.div`
   visibility: ${props => ( props.open ? `visible` : `hidden` )};
   opacity: ${props => ( props.open ? `1` : `0` )};
   transition: 0.5s;
-  z-index: 3;
+  z-index: 4;
 `
 
 export const ModalDiv = styled.div`
