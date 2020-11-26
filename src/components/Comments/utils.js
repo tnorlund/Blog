@@ -200,5 +200,45 @@ export const addDownVote = async (
     )
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
-  } catch( error ) { setError( error ) }
+  } catch( error ) {
+    setError( error )
+  }
+}
+
+/**
+ * Removes a vote from a comment.
+ * @param {String}   name             The name of the user.
+ * @param {String}   email            The email of the user.
+ * @param {Number}   userNumber       The user's number.
+ * @param {String}   slug             The slug of the post.
+ * @param {Number}   commentNumber    The comment number that is being removed.
+ * @param {Boolean}  up               Whether the vote is an up-vote or a
+ *                                    down-vote.
+ * @param {String}   commentDateAdded The date-time the comment was added.
+ * @param {String}   voteDateAdded    The date-time the vote was added.
+ * @param {Function} setError         The function used to set the error while
+ *                                    retrieving data from the database.
+ * @param {Function} setWarning       The function used to set whether the post
+ *                                    was retrieved successfully from the
+ *                                    database.
+ */
+export const removeVote = async (
+  name, email, userNumber, slug, commentNumber, up, commentDateAdded,
+  voteDateAdded, setError, setWarning
+) => {
+  try {
+    const { error } = await API.del(
+      `blogAPI`, `/vote`,
+      { body: {
+        name, email, userNumber, slug, commentNumber, up, commentDateAdded,
+        voteDateAdded
+      } } )
+    if ( error ) {
+      console.log( `error`, error )
+      setError( error )
+    }
+    else { setWarning( false ); setError() }
+  } catch( error ) {
+    setError( error )
+  }
 }

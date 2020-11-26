@@ -3,7 +3,7 @@ import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
 import {
   getPost, addPost, addComment, getPostDetails, deleteComment, deletePost,
-  addUpVote, addDownVote
+  addUpVote, addDownVote, removeVote
 } from './utils'
 import {
   Title,
@@ -11,7 +11,7 @@ import {
   SelectedButton, UnselectedButton,
   TextInput,
   CommentText, CommentDiv, CommentOption, CommentOptions,
-  Up, Down
+  Up, Down, SelectedDown, SelectedUp
 } from './styles'
 import { timeSince } from 'utils/date'
 
@@ -42,7 +42,6 @@ const Comment = (
   slug, title, comment, currentUser, working, setWorking, setError, setWarning
 ) => {
   const { dateAdded, text, vote } = comment
-  console.log( comment )
   const commentUserName = comment.userName
   const commentUserNumber = comment.userNumber
   const { email, isAdmin } = currentUser
@@ -57,6 +56,24 @@ const Comment = (
     commentUserName == currentUserName &&
     commentUserNumber == currentUserNumber
   ) )
+  // Get the down-vote if the user has made one on this comment.
+  const myDownVotes = comment.votes.filter( ( vote ) => {
+    if ( vote.userName == currentUserName &&
+      vote.userNumber == currentUserNumber &&
+      !vote.up ) return vote
+  } )
+  const myDownVote = (
+    ( myDownVotes.length == 1 ) ? myDownVotes[ 0 ] : undefined
+  )
+  // Get the up-vote if the user has made one on this comment
+  const myUpVotes = comment.votes.filter( ( vote ) => {
+    if ( vote.userName == currentUserName &&
+      vote.userNumber == currentUserNumber &&
+      vote.up ) return vote
+  } )
+  const myUpVote = (
+    ( myUpVotes.length == 1 ) ? myUpVotes[ 0 ] : undefined
+  )
   return(
     <CommentDiv key={ commentUserName + dateAdded + text }>
       <Title>{ commentUserName } - { timeSince( dateAdded ) }</Title>
@@ -74,25 +91,51 @@ const Comment = (
           } }>Delete</CommentOption>|</>
         }
         <CommentOption>Reply</CommentOption>|
-        <div css={`padding-top: 0.3em;`}><Down onClick={
-          () => {
+        <div css={`padding-top: 0.3em;`}>
+          { myDownVote && <SelectedDown onClick={
+            () => {
+              if ( !working ) {
+                setWorking( true )
+                removeVote(
+                  currentUserName, email, currentUserNumber, slug,
+                  commentNumber, false, dateAdded, myDownVote.dateAdded,
+                  setError, setWarning
+                ).then( () => setWorking( false ) )
+              }
+            }
+          }/>}
+          { !myDownVote && <Down onClick={
+            () => {
+              if ( !working ) {
+                setWorking ( true )
+                addDownVote(
+                  currentUserName, email, currentUserNumber, slug,
+                  commentNumber, dateAdded, setError, setWarning
+                ).then( () => setWorking( false ) )
+              }
+            }
+          }/> }
+          {vote}
+          { myUpVote && <SelectedUp onClick={ () => {
+            if ( !working ) {
+              setWorking( true )
+              removeVote(
+                currentUserName, email, currentUserNumber, slug,
+                commentNumber, true, dateAdded, myUpVote.dateAdded,
+                setError, setWarning
+              ).then( () => setWorking( false ) )
+            }
+          } } />}
+          { !myUpVote && <Up onClick={ () => {
             if ( !working ) {
               setWorking ( true )
-              addDownVote(
+              addUpVote(
                 currentUserName, email, currentUserNumber, slug, commentNumber,
                 dateAdded, setError, setWarning
               ).then( () => setWorking( false ) )
             }
-          }
-        }/>{vote}<Up onClick={ () => {
-          if ( !working ) {
-            setWorking ( true )
-            addUpVote(
-              currentUserName, email, currentUserNumber, slug, commentNumber,
-              dateAdded, setError, setWarning
-            ).then( () => setWorking( false ) )
-          }
-        } }/></div>
+          } }/> }
+        </div>
       </CommentOptions>}
     </CommentDiv>
   )

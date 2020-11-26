@@ -54,9 +54,13 @@ export const COLORS = {
     light: `#F46275`,
     dark: `#B54857`,
   },
+  green: {
+    light: `#2ABF1D`,
+    dark: `#22A83E`,
+  },
 }
 
-const { gray, brown, blue, red, orange } = COLORS
+const { gray, brown, blue, red, orange, green } = COLORS
 
 export const MODE_COLORS = {
   text: {
@@ -86,6 +90,10 @@ export const MODE_COLORS = {
   red: {
     light: red.light,
     dark: red.dark,
+  },
+  green: {
+    light: green.light,
+    dark: green.dark,
   },
   gray: {
     light: gray.regular,

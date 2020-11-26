@@ -34,12 +34,30 @@ export const Up = styled( ArrowUp ).attrs( props => ( {
   cursor: pointer;
 `
 
+export const SelectedUp = styled( ArrowUp ).attrs( props => ( {
+  size: props.size || `2em`
+} ) )`
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  cursor: pointer;
+  color: var(--color-green)
+`
+
 export const Down = styled( ArrowDown ).attrs( props => ( {
   size: props.size || `2em`
 } ) )`
   margin-right: 0.25em;
   margin-left: 0.25em;
   cursor: pointer;
+`
+
+export const SelectedDown = styled( ArrowDown ).attrs( props => ( {
+  size: props.size || `2em`
+} ) )`
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  cursor: pointer;
+  color: var(--color-red)
 `
 
 export const WarningButton = styled.div`
