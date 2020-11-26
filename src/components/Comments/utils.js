@@ -144,3 +144,61 @@ export const addComment = async (
     setError( error )
   }
 }
+
+/**
+ * Adds an up-vote to a comment.
+ * @param {String}   name          The name of the user.
+ * @param {String}   email         The email of the user.
+ * @param {Number}   userNumber    The user's number.
+ * @param {String}   slug          The slug of the post.
+ * @param {Number}   commentNumber The comment number that is being up-voted.
+ * @param {String}   dateAdded     The date-time the comment was created.
+ * @param {Function} setError      The function used to set the error while
+ *                                 retrieving data from the database.
+ * @param {Function} setWarning    The function used to set whether the post
+ *                                 was retrieved successfully from the
+ *                                 database.
+ */
+export const addUpVote = async (
+  name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
+) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/vote`,
+      { body: {
+        name, email, userNumber, slug, dateAdded, commentNumber, up: true
+      } }
+    )
+    if ( error ) setError( error )
+    else { setWarning( false ); setError() }
+  } catch( error ) { setError( error ) }
+}
+
+/**
+ * Adds a down-vote to a comment.
+ * @param {String}   name          The name of the user.
+ * @param {String}   email         The email of the user.
+ * @param {Number}   userNumber    The user's number.
+ * @param {String}   slug          The slug of the post.
+ * @param {Number}   commentNumber The comment number that is being down-voted.
+ * @param {String}   dateAdded     The date-time the comment was added.
+ * @param {Function} setError      The function used to set the error while
+ *                                 retrieving data from the database.
+ * @param {Function} setWarning    The function used to set whether the post
+ *                                 was retrieved successfully from the
+ *                                 database.
+ */
+export const addDownVote = async (
+  name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
+) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/vote`,
+      { body: {
+        name, email, userNumber, slug, dateAdded, commentNumber, up: false
+      } }
+    )
+    if ( error ) setError( error )
+    else { setWarning( false ); setError() }
+  } catch( error ) { setError( error ) }
+}

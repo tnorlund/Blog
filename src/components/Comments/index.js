@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
 import {
-  getPost, addPost, addComment, getPostDetails, deleteComment, deletePost
+  getPost, addPost, addComment, getPostDetails, deleteComment, deletePost,
+  addUpVote, addDownVote
 } from './utils'
 import {
   Title,
@@ -48,6 +49,7 @@ const Comment = (
   const currentUserName = currentUser.name
   const currentUserEmail = currentUser.email
   const currentUserNumber = currentUser.userNumber
+  const commentNumber = comment.postCommentNumber
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
   // is theirs.
@@ -67,14 +69,30 @@ const Comment = (
               deleteComment(
                 commentUserName, currentUserEmail, commentUserNumber, slug,
                 title, dateAdded, setError, setWarning
-              ).then( () => {
-                setWorking( false )
-              } )
+              ).then( () => setWorking( false ) )
             }
           } }>Delete</CommentOption>|</>
         }
         <CommentOption>Reply</CommentOption>|
-        <div css={`padding-top: 0.3em;`}><Down/>{vote}<Up/></div>
+        <div css={`padding-top: 0.3em;`}><Down onClick={
+          () => {
+            if ( !working ) {
+              setWorking ( true )
+              addDownVote(
+                currentUserName, email, currentUserNumber, slug, commentNumber,
+                dateAdded, setError, setWarning
+              ).then( () => setWorking( false ) )
+            }
+          }
+        }/>{vote}<Up onClick={ () => {
+          if ( !working ) {
+            setWorking ( true )
+            addUpVote(
+              currentUserName, email, currentUserNumber, slug, commentNumber,
+              dateAdded, setError, setWarning
+            ).then( () => setWorking( false ) )
+          }
+        } }/></div>
       </CommentOptions>}
     </CommentDiv>
   )
