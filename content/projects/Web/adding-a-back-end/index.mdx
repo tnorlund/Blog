@@ -8,10 +8,10 @@ showToc: true
 
 import MdxIcon from 'components/MdxIcon'
 
-After playing around with the Amplify command-line interface, I felt like I had the chops to add some more interactivity to this website. After a good week of learning the Amplify and AWS SDK, I was able to assemble something that's:
+After playing around with the Amplify command-line interface, I felt like I had the chops to add some more interactivity to this website. With a lot of coffee, and plenty of stack overflow, I was able to assemble something that's:
 - scalable
 - fast
-- *relatively* cheap
+- cheap
 
 Amplify combines [Cognito](https://aws.amazon.com/cognito/), [API Gateway](https://aws.amazon.com/api-gateway/), and [DynamoDB](https://aws.amazon.com/dynamodb/), which allows developers to quickly ship a product. This was a great way to jump headfirst into the AWS ecosystem.
 
@@ -219,11 +219,11 @@ The comments are requested by both the user and the post:
 
 Both of these access patterns are achieved by multiple primary keys. This first uses *PK* and *SK* to request all of the comments the user has made.
 
-|         | PK                 | SK                             |
-|---------|--------------------|--------------------------------|
-| Post    | POST#[Post Slug]   | #POST                          |
-| Comment | USER#[User Number] | #COMMENT#[User Comment Number] |
-| Vote    | USER#[User Number] | #COMMENT#[User Vote Number]    |
+|         | PK                 | SK                    |
+|---------|--------------------|-----------------------|
+| Post    | POST#[Post Slug]   | #POST                 |
+| Comment | USER#[User Number] | #COMMENT#[Date Adeed] |
+| Vote    | USER#[User Number] | #VOTE#[Date Adeed]    |
 
 The Global Secondary Index is used to query the all of the comments per post.
 
