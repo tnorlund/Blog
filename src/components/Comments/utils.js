@@ -35,7 +35,10 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
     )
     if ( error ) setError( error )
     else return { post, comments }
-  } catch( error ) { setError( error ) }
+  } catch( error ) { 
+    // console.log( `error`, error )
+    setError( `Couldn't get post details` )
+  }
 }
 
 /**
@@ -99,11 +102,15 @@ export const deletePost = async ( slug, title, setWarning, setError ) => {
 export const deleteComment = async (
   name, email, userNumber, slug, title, dateAdded, setError, setWarning
 ) => {
+  console.log( `delete`, { name, email, userNumber, slug, title, dateAdded } )
   try {
     const { error } = await API.del(
       `blogAPI`, `/comment`,
       { body: { name, email, userNumber, slug, title, dateAdded } } )
-    if ( error ) setError( error )
+    if ( error ) {
+      console.log( `error`, error )
+      setError( error )
+    }
     else { setWarning( false ); setError() }
   } catch( error ) {
     setError( error )
@@ -162,6 +169,10 @@ export const addComment = async (
 export const addUpVote = async (
   name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
 ) => {
+  console.log(
+    `up`,
+    { name, email, userNumber, slug, commentNumber, dateAdded }
+  )
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,

@@ -41,6 +41,7 @@ const resetTextInput = ( id ) => {
 const Comment = (
   slug, title, comment, currentUser, working, setWorking, setError, setWarning
 ) => {
+  console.log( comment )
   const { dateAdded, text, vote } = comment
   const commentUserName = comment.userName
   const commentUserNumber = comment.userNumber
@@ -130,7 +131,7 @@ const Comment = (
             if ( !working ) {
               setWorking ( true )
               addUpVote(
-                currentUserName, email, currentUserNumber, slug, commentNumber,
+                currentUserName, email, commentUserNumber, slug, commentNumber,
                 dateAdded, setError, setWarning
               ).then( () => setWorking( false ) )
             }
