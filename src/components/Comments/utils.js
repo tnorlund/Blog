@@ -1,6 +1,24 @@
 import { API } from 'aws-amplify'
 
 /**
+ * Removes the contents of an editable div.
+ * @param {String} id The HTML ID of the dive requested to remove the contents
+ *                    of.
+ */
+export const resetTextInput = ( id ) => {
+  document.getElementById( id ).innerHTML = ``
+}
+
+/**
+ * Sets the contents of a div using a React Hook.
+ * @param {String}   id     The HTML ID of the div requested to query from.
+ */
+export const getTextInput = ( id ) => document.getElementById( id ).innerHTML
+  .replace( /<div>/g, `\n` )
+  .replace( /<\/div>/g, `` )
+  .replace( /<br>/g, `` )
+
+/**
  * Gets a post through the API.
  * @param {String} slug  The slug of the post.
  * @param {String} title The title of the post.
@@ -13,9 +31,7 @@ export const getPost = async ( slug, title ) => {
     )
     if ( error ) return { error: error }
     else return { post: post }
-  } catch( error ) {
-    return { error: error }
-  }
+  } catch( error ) { return { error: error } }
 }
 
 /**
@@ -35,10 +51,7 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
     )
     if ( error ) setError( error )
     else return { post, comments }
-  } catch( error ) {
-    console.log( `error`, error )
-    setError( `Couldn't get post details` )
-  }
+  } catch( error ) { setError( `Couldn't get post details` ) }
 }
 
 /**
@@ -58,13 +71,8 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
       { body: { slug: slug, title: title } }
     )
     if ( error ) setError( error )
-    else {
-      setWarning( false )
-      setError()
-    }
-  } catch( error ) {
-    setError( error )
-  }
+    else { setWarning( false ); setError() }
+  } catch( error ) { setError( error ) }
 }
 
 /**
@@ -106,14 +114,9 @@ export const deleteComment = async (
     const { error } = await API.del(
       `blogAPI`, `/comment`,
       { body: { name, email, userNumber, slug, title, dateAdded } } )
-    if ( error ) {
-      console.log( `error`, error )
-      setError( error )
-    }
+    if ( error ) setError( error )
     else { setWarning( false ); setError() }
-  } catch( error ) {
-    setError( error )
-  }
+  } catch( error ) { setError( error ) }
 }
 
 /**
@@ -141,14 +144,8 @@ export const addComment = async (
       { body: { name, email, userNumber, slug, title, text } }
     )
     if ( error ) setError( error )
-    else {
-      setComment( `` )
-      setWarning( false )
-      setError()
-    }
-  } catch( error ) {
-    setError( error )
-  }
+    else { setComment( `` ); setWarning( false ); setError() }
+  } catch( error ) { setError( error ) }
 }
 
 /**
@@ -168,10 +165,6 @@ export const addComment = async (
 export const addUpVote = async (
   name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
 ) => {
-  console.log(
-    `up`,
-    { name, email, userNumber, slug, commentNumber, dateAdded }
-  )
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
@@ -201,10 +194,6 @@ export const addUpVote = async (
 export const addDownVote = async (
   name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
 ) => {
-  console.log(
-    `down`,
-    { name, email, userNumber, slug, commentNumber, dateAdded }
-  )
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
@@ -214,9 +203,7 @@ export const addDownVote = async (
     )
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
-  } catch( error ) {
-    setError( error )
-  }
+  } catch( error ) { setError( error ) }
 }
 
 /**
@@ -247,12 +234,7 @@ export const removeVote = async (
         name, email, userNumber, slug, commentNumber, up, commentDateAdded,
         voteDateAdded
       } } )
-    if ( error ) {
-      console.log( `error`, error )
-      setError( error )
-    }
+    if ( error ) setError( error )
     else { setWarning( false ); setError() }
-  } catch( error ) {
-    setError( error )
-  }
+  } catch( error ) { setError( error ) }
 }
