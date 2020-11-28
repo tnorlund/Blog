@@ -35,8 +35,8 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
     )
     if ( error ) setError( error )
     else return { post, comments }
-  } catch( error ) { 
-    // console.log( `error`, error )
+  } catch( error ) {
+    console.log( `error`, error )
     setError( `Couldn't get post details` )
   }
 }
@@ -102,7 +102,6 @@ export const deletePost = async ( slug, title, setWarning, setError ) => {
 export const deleteComment = async (
   name, email, userNumber, slug, title, dateAdded, setError, setWarning
 ) => {
-  console.log( `delete`, { name, email, userNumber, slug, title, dateAdded } )
   try {
     const { error } = await API.del(
       `blogAPI`, `/comment`,
@@ -202,6 +201,10 @@ export const addUpVote = async (
 export const addDownVote = async (
   name, email, userNumber, slug, commentNumber, dateAdded, setError, setWarning
 ) => {
+  console.log(
+    `down`,
+    { name, email, userNumber, slug, commentNumber, dateAdded }
+  )
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,

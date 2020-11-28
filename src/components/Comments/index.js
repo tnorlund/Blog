@@ -14,6 +14,7 @@ import {
   Up, Down, SelectedDown, SelectedUp
 } from './styles'
 import { timeSince } from 'utils/date'
+import { UpVote, DownVote } from './components'
 
 // TODO
 // [ ] Refactor 'uploading' to working.
@@ -57,6 +58,7 @@ const Comment = (
     commentUserName == currentUserName &&
     commentUserNumber == currentUserNumber
   ) )
+  console.log( comment.votes )
   // Get the down-vote if the user has made one on this comment.
   const myDownVotes = comment.votes.filter( ( vote ) => {
     if ( vote.userName == currentUserName &&
@@ -93,49 +95,17 @@ const Comment = (
         }
         <CommentOption>Reply</CommentOption>|
         <div css={`padding-top: 0.3em;`}>
-          { myDownVote && <SelectedDown onClick={
-            () => {
-              if ( !working ) {
-                setWorking( true )
-                removeVote(
-                  currentUserName, email, currentUserNumber, slug,
-                  commentNumber, false, dateAdded, myDownVote.dateAdded,
-                  setError, setWarning
-                ).then( () => setWorking( false ) )
-              }
-            }
-          }/>}
-          { !myDownVote && <Down onClick={
-            () => {
-              if ( !working ) {
-                setWorking ( true )
-                addDownVote(
-                  currentUserName, email, currentUserNumber, slug,
-                  commentNumber, dateAdded, setError, setWarning
-                ).then( () => setWorking( false ) )
-              }
-            }
-          }/> }
+          <DownVote { ...{
+            myDownVote, working, setWorking, currentUserName, email,
+            currentUserNumber, slug, commentNumber, dateAdded, setError,
+            setWarning, commentUserNumber, myUpVote
+          } }/>
           {vote}
-          { myUpVote && <SelectedUp onClick={ () => {
-            if ( !working ) {
-              setWorking( true )
-              removeVote(
-                currentUserName, email, currentUserNumber, slug,
-                commentNumber, true, dateAdded, myUpVote.dateAdded,
-                setError, setWarning
-              ).then( () => setWorking( false ) )
-            }
-          } } />}
-          { !myUpVote && <Up onClick={ () => {
-            if ( !working ) {
-              setWorking ( true )
-              addUpVote(
-                currentUserName, email, commentUserNumber, slug, commentNumber,
-                dateAdded, setError, setWarning
-              ).then( () => setWorking( false ) )
-            }
-          } }/> }
+          <UpVote { ...{
+            myUpVote, working, setWorking, currentUserName, email,
+            currentUserNumber, slug, commentNumber, dateAdded, setError,
+            setWarning, commentUserNumber, myDownVote
+          } }/>
         </div>
       </CommentOptions>}
     </CommentDiv>

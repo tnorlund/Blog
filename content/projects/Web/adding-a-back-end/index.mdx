@@ -222,16 +222,16 @@ Both of these access patterns are achieved by multiple primary keys. This first 
 |         | PK                 | SK                    |
 |---------|--------------------|-----------------------|
 | Post    | POST#[Post Slug]   | #POST                 |
-| Comment | USER#[User Number] | #COMMENT#[Date Adeed] |
-| Vote    | USER#[User Number] | #VOTE#[Date Adeed]    |
+| Comment | USER#[User Number] | #COMMENT#[Date Added] |
+| Vote    | USER#[User Number] | #VOTE#[Date Added]    |
 
 The Global Secondary Index is used to query the all of the comments per post.
 
-|         | GSI1PK           | GSI1SK                                       |
-|---------|------------------|----------------------------------------------|
-| Post    | POST#[Post Slug] | #POST                                        |
-| Comment | POST#[Post Slug] | #COMMENT#[Post Comment Number]               |
-| Vote    | POST#[Post Slug] | #COMMENT#[Post Comment Number]#[Vote Number] |
+|         | GSI1PK           | GSI1SK                                          |
+|---------|------------------|-------------------------------------------------|
+| Post    | POST#[Post Slug] | #POST                                           |
+| Comment | POST#[Post Slug] | #COMMENT#[Date Added]                           |
+| Vote    | POST#[Post Slug] | #COMMENT#[Comment Date Adeed]#VOTE#[Date Added] |
 
 # Analytics
 
