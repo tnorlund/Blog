@@ -24,6 +24,9 @@ export default function Comments( { slug, title } ) {
   const [ working, setWorking ] = useState( false )
   // The comment components
   const [ commentComponents, setCommentComponents ] = useState( [] )
+  // The comment key of the comment the user is replying to
+  const [ showReply, setShowReply ] = useState()
+  const [ reply, setReply ] = useState( `` )
   // Before anything is rendered to the screen, get the post's comments.
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
@@ -31,16 +34,15 @@ export default function Comments( { slug, title } ) {
         // If the post does not exist in the data base, there are no
         // comments, and the user is an administrator, allow them to create the
         // post.
-        if ( !post && comments.length == 0 && user && user.isAdmin )
-          setWarning( true )
+        if ( !post && user && user.isAdmin ) setWarning( true )
         setCommentComponents( Object.values( comments ).map(
           ( comment ) => Comment( {
             slug, title, comment, user, working, setWorking, setError,
-            setWarning
+            setWarning, showReply, setShowReply, reply, setReply
           } )
         ) )
       } ).catch( ( error ) => setError( error ) )
-  }, [slug, title, user, warning, working] )
+  }, [slug, title, user, warning, working, showReply] )
   return(
     <>
       <AdminControls { ...{

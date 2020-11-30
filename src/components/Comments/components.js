@@ -4,7 +4,7 @@ import {
   addUpVote, addDownVote, removeVote, getTextInput, resetTextInput
 } from './utils'
 import {
-  Title,
+  Title, TextInput,
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
   CommentText, CommentDiv, CommentOption, CommentOptions,
@@ -188,7 +188,8 @@ export const Delete = ( {
   </>
 
 export const Comment = ( {
-  slug, title, comment, user, working, setWorking, setError, setWarning
+  slug, title, comment, user, working, setWorking, setError, setWarning,
+  showReply, setShowReply, reply, setReply
 } ) => {
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
@@ -234,7 +235,12 @@ export const Comment = ( {
             showDelete, working, setWorking, slug, title, setError, setWarning,
             comment, user
           } }/>
-          <CommentOption>Reply</CommentOption>|
+          <CommentOption
+            onClick={ () => {
+              if ( !working )
+                setShowReply( comment.userName + comment.dateAdded + text )
+            } }
+          >Reply</CommentOption>|
           <div css={`padding-top: 0.3em;`}>
             <DownVote { ...{
               myDownVote, working, setWorking, currentUserName, email,
@@ -249,6 +255,36 @@ export const Comment = ( {
             } }/>
           </div>
         </CommentOptions>
+      }
+      { showReply == comment.userName + comment.dateAdded + text &&
+      <div>
+        <TextInput
+          id={ comment.userName + comment.dateAdded + text }
+          contentEditable={ `true` }
+          content = { reply }
+          css={`margin-right: 0;`}
+        />
+        <div css={ `margin: 0.5em; margin-top: 0; margin-right: 0;` }>
+          <SelectedButton
+            onClick={ () => {
+              if ( !working ) {
+                setWorking( true )
+                console.log( `tyler` )
+                setWorking( false )
+                // addComment(
+                //   user.name, user.email, user.userNumber, slug, title,
+                //   getTextInput( `NewComment` ), setWarning, setError,
+                //   setComment
+                // ).then( () => {
+                //   setWorking( false ); resetTextInput( `NewComment` )
+                //   setComment( `` )
+                // } )
+              }
+            } }
+            css={ `margin-left: auto;` }
+          >Reply</SelectedButton>
+        </div>
+      </div>
       }
     </CommentDiv>
   )

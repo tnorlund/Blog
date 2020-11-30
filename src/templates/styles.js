@@ -17,10 +17,26 @@ export const Description = styled.div`
   margin-bottom:1em;
 `
 
+const TwitterIcon = styled( Twitter ).attrs( props => ( {
+  size: props.size || `6.1em`
+} ) )`
+  margin-top: 0.5em;
+`
+
+const LinkedInIcon = styled( LinkedinSquare ).attrs( props => ( {
+  size: props.size || `7em`
+} ) )``
+
+const GithubIcon = styled( Github ).attrs( props => ( {
+  size: props.size || `5.5em`
+} ) )`
+  margin-top: 0.65em;
+`
+
 export const Icons = {
-  LinkedinSquare,
-  Twitter,
-  Github
+  LinkedInIcon,
+  TwitterIcon,
+  GithubIcon
 }
 
 export const SocialsDiv = styled.div`
@@ -28,6 +44,7 @@ export const SocialsDiv = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  vertical-align: center;
   margin-bottom: 1.666rem;
 `
 

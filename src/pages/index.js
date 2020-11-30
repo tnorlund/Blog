@@ -10,14 +10,15 @@ function Social( { metadata } ) {
   const { github, linkedin, twitter } = metadata.siteMetadata.social
   const social = [
     {
-      title: `twitter`, icon: `Twitter`, url:`https://twitter.com/${twitter}`
+      title: `twitter`, icon: `TwitterIcon`,
+      url:`https://twitter.com/${twitter}`
     },
     {
-      title: `linkedin`, icon: `LinkedinSquare`,
+      title: `linkedin`, icon: `LinkedInIcon`,
       url: `https://www.linkedin.com/in/${linkedin}`
     },
     {
-      title: `github`, icon: `Github`, url: `https://github.com/${github}`
+      title: `github`, icon: `GithubIcon`, url: `https://github.com/${github}`
     },
   ]
   const socials = social.map( ( { url, title, icon } ) => {
@@ -25,7 +26,9 @@ function Social( { metadata } ) {
     return(
       <div key={title}>
         <a href={url} aria-label={title}>
-          <Icon size="75px" />
+          <Icon
+            // size="75px"
+          />
         </a>
       </div>
     )

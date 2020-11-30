@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {
-  Warning, CircleWithCross, CircleWithMinus, CircleWithPlus, ArrowUp, ArrowDown
+  Warning, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
 
 export const Title = styled.hgroup`
