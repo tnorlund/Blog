@@ -7,8 +7,20 @@ export default function PrevNext( { prev, next } ) {
   return(
     <PreviousNext>
       {
-        ( prev && <Left><Link to={prev.slug}>← {prev.title}</Link></Left> ) || <div></div>}
-      {next && <Link to={next.slug}>{next.title} →</Link>}
+        (
+          prev && <Left>
+            <Link to={prev.slug}>
+              ← {prev.title}
+            </Link>
+          </Left>
+        ) ||
+        <div></div>
+      }
+      {
+        next && <Right><Link to={next.slug}>
+          {next.title} →
+        </Link></Right>
+      }
     </PreviousNext>
   )
 }

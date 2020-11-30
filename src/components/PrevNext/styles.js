@@ -2,23 +2,21 @@ import { mediaQueries } from 'utils/mediaQueries'
 import styled from 'styled-components'
 
 export const Left = styled.div`
-  justify-content: left;
+  text-align: left;
 `
 
 export const Right = styled.div`
-  justify-content: right;
+  text-align: right;
 `
 
 export const PreviousNext = styled.div`
-  display: grid;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* flex-wrap: wrap; */
+  width: 100%;
   margin-top: 3em;
   position: relative;
-  width: 100%;
-  grid-template-rows: auto auto;
   ${mediaQueries.minTablet} {
-    grid-template-columns: auto auto;
+    flex-direction: row;
   }
 `

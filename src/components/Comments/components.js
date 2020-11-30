@@ -14,8 +14,8 @@ import { timeSince } from 'utils/date'
 
 export const UpVote = ( {
   myUpVote, working, setWorking, currentUserName, email,
-  currentUserNumber, slug, commentNumber, dateAdded, setError, setWarning,
-  commentUserNumber, myDownVote
+  currentUserNumber, slug, commentNumber, dateAdded, commentDateAdded,
+  setError, setWarning, commentUserNumber, myDownVote
 } ) =>
   <>
     {
@@ -24,7 +24,7 @@ export const UpVote = ( {
           setWorking( true )
           removeVote(
             currentUserName, email, currentUserNumber, slug,
-            commentNumber, true, dateAdded, myUpVote.dateAdded,
+            commentNumber, true, commentDateAdded, myUpVote.dateAdded,
             setError, setWarning
           ).then( () => setWorking( false ) )
         }
@@ -36,18 +36,18 @@ export const UpVote = ( {
           if ( myDownVote )
             removeVote(
               currentUserName, email, currentUserNumber, slug,
-              commentNumber, false, dateAdded, myDownVote.dateAdded,
+              commentNumber, false, commentDateAdded, myDownVote.dateAdded,
               setError, setWarning
             ).then(
               () => addUpVote(
-                currentUserName, email, commentUserNumber, slug, commentNumber,
-                dateAdded, setError, setWarning
+                currentUserName, email, commentUserNumber, slug, dateAdded,
+                commentDateAdded, setError, setWarning
               ).then( () => setWorking( false ) )
             )
           else
             addUpVote(
-              currentUserName, email, commentUserNumber, slug, commentNumber,
-              dateAdded, setError, setWarning
+              currentUserName, email, commentUserNumber, slug, dateAdded,
+              commentDateAdded, setError, setWarning
             ).then( () => setWorking( false ) )
         }
       } }/>
@@ -56,8 +56,8 @@ export const UpVote = ( {
 
 export const DownVote = ( {
   myDownVote, working, setWorking, currentUserName, email, currentUserNumber,
-  slug, commentNumber, dateAdded, setError, setWarning, commentUserNumber,
-  myUpVote
+  slug, commentNumber, commentDateAdded, setError, setWarning,
+  commentUserNumber, myUpVote
 } ) =>
   <>
     {
@@ -67,7 +67,7 @@ export const DownVote = ( {
             setWorking( true )
             removeVote(
               currentUserName, email, currentUserNumber, slug,
-              commentNumber, false, dateAdded, myDownVote.dateAdded,
+              commentNumber, false, commentDateAdded, myDownVote.dateAdded,
               setError, setWarning
             ).then( () => setWorking( false ) )
           }
@@ -81,18 +81,18 @@ export const DownVote = ( {
             if ( myUpVote )
               removeVote(
                 currentUserName, email, currentUserNumber, slug,
-                commentNumber, true, dateAdded, myUpVote.dateAdded,
+                commentNumber, true, commentDateAdded, myUpVote.dateAdded,
                 setError, setWarning
               ).then(
                 () => addDownVote(
                   currentUserName, email, commentUserNumber, slug,
-                  commentNumber, dateAdded, setError, setWarning
+                  commentNumber, commentDateAdded, setError, setWarning
                 ).then( () => setWorking( false ) )
               )
             else
               addDownVote(
                 currentUserName, email, commentUserNumber, slug,
-                commentNumber, dateAdded, setError, setWarning
+                commentNumber, commentDateAdded, setError, setWarning
               ).then( () => setWorking( false ) )
           }
         }
@@ -165,8 +165,8 @@ export const AdminControls = ( {
   </>
 
 export const Delete = ( {
-  showDelete, working, setWorking, commentUserName, currentUserEmail,
-  commentUserNumber, slug, title, dateAdded, setError, setWarning
+  showDelete, working, setWorking, slug, title, setError, setWarning, comment,
+  user
 } ) =>
   <>
     {
@@ -177,8 +177,8 @@ export const Delete = ( {
               if ( !working ) {
                 setWorking( true )
                 deleteComment(
-                  commentUserName, currentUserEmail, commentUserNumber, slug,
-                  title, dateAdded, setError, setWarning
+                  comment.userName, user.email, comment.userNumber, slug,
+                  title, comment.dateAdded, setError, setWarning
                 ).then( () => setWorking( false ) )
               }
             } }>Delete
@@ -190,62 +190,62 @@ export const Delete = ( {
 export const Comment = ( {
   slug, title, comment, user, working, setWorking, setError, setWarning
 } ) => {
-  const { dateAdded, text, vote } = comment
-  const commentUserName = comment.userName
-  const commentUserNumber = comment.userNumber
-  const { email, isAdmin } = user
-  const currentUserName = user.name
-  const currentUserEmail = user.email
-  const currentUserNumber = user.userNumber
-  const commentNumber = comment.postCommentNumber
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
   // is theirs.
-  const showDelete = user && ( isAdmin || (
-    commentUserName == currentUserName &&
-    commentUserNumber == currentUserNumber
-  ) )
+  const showDelete = Boolean( user && ( user.isAdmin || (
+    comment.userName == user.name &&
+    comment.userNumber == user.userNumber
+  ) ) )
+  const { dateAdded, text, vote } = comment
+  const commentDateAdded = comment.dateAdded
+  const commentUserNumber = comment.userNumber
+  const { email } = user
+  const currentUserName = user.name
+  const currentUserNumber = user.userNumber
+
+  const commentNumber = comment.postCommentNumber
+
   // Get the down-vote if the user has made one on this comment.
-  const myDownVotes = comment.votes.filter( ( vote ) => {
-    if ( vote.userName == currentUserName &&
-      vote.userNumber == currentUserNumber &&
+  const myDownVotes = Object.values( comment.votes ).filter( ( vote ) => {
+    if ( vote.userName == user.name &&
+      vote.userNumber == user.userNumber &&
       !vote.up ) return vote
   } )
   const myDownVote = (
     ( myDownVotes.length == 1 ) ? myDownVotes[ 0 ] : undefined
   )
   // Get the up-vote if the user has made one on this comment
-  const myUpVotes = comment.votes.filter( ( vote ) => {
-    if ( vote.userName == currentUserName &&
-      vote.userNumber == currentUserNumber &&
+  const myUpVotes = Object.values( comment.votes ).filter( ( vote ) => {
+    if ( vote.userName == user.name &&
+      vote.userNumber == user.userNumber &&
       vote.up ) return vote
   } )
   const myUpVote = (
     ( myUpVotes.length == 1 ) ? myUpVotes[ 0 ] : undefined
   )
   return(
-    <CommentDiv key={ commentUserName + dateAdded + text }>
-      <Title>{ commentUserName } - { timeSince( dateAdded ) }</Title>
+    <CommentDiv key={ comment.userName + comment.dateAdded + text }>
+      <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
       <CommentText>{ text }</CommentText>
       {
         user && <CommentOptions>
           <Delete { ...{
-            showDelete, working, setWorking, commentUserName,
-            currentUserEmail, commentUserNumber, slug, title, dateAdded,
-            setError, setWarning
+            showDelete, working, setWorking, slug, title, setError, setWarning,
+            comment, user
           } }/>
           <CommentOption>Reply</CommentOption>|
           <div css={`padding-top: 0.3em;`}>
             <DownVote { ...{
               myDownVote, working, setWorking, currentUserName, email,
-              currentUserNumber, slug, commentNumber, dateAdded, setError,
-              setWarning, commentUserNumber, myUpVote
+              currentUserNumber, slug, commentNumber, commentDateAdded,
+              dateAdded, setError, setWarning, commentUserNumber, myUpVote
             } }/>
             {vote}
             <UpVote { ...{
               myUpVote, working, setWorking, currentUserName, email,
-              currentUserNumber, slug, commentNumber, dateAdded, setError,
-              setWarning, commentUserNumber, myDownVote
+              currentUserNumber, slug, commentNumber, commentDateAdded,
+              dateAdded, setError, setWarning, commentUserNumber, myDownVote
             } }/>
           </div>
         </CommentOptions>

@@ -27,14 +27,13 @@ export default function Comments( { slug, title } ) {
   // Before anything is rendered to the screen, get the post's comments.
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
-      ( { post, comments, error } ) => {
-        if ( error ) setError( error )
+      ( { post, comments } ) => {
         // If the post does not exist in the data base, there are no
         // comments, and the user is an administrator, allow them to create the
         // post.
         if ( !post && comments.length == 0 && user && user.isAdmin )
           setWarning( true )
-        setCommentComponents( comments.map(
+        setCommentComponents( Object.values( comments ).map(
           ( comment ) => Comment( {
             slug, title, comment, user, working, setWorking, setError,
             setWarning
