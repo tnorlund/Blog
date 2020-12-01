@@ -52,6 +52,7 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
       `blogAPI`,
       `/post-details?slug=${ slug }&title=${ title }`
     )
+    console.log( `comments`, comments )
     if ( error ) { setError( error ); return { error: error } }
     else return { post, comments }
   } catch( error ) { setError( `Couldn't get post details` ) }
@@ -152,12 +153,47 @@ export const addComment = async (
 }
 
 /**
+ * Adds a reply to a comment.
+ * @param {String}   name        The name of the user.
+ * @param {String}   email       The email of the user.
+ * @param {Number}   userNumber  The user's number.
+ * @param {String}   slug        The slug of the post.
+ * @param {String}   title       The title of the post.
+ * @param {String}   text        The text of the comment.
+ * @param {[String]} replyChain  A list of the comment's dates the reply is
+ *                               being added to.
+ * @param {Function} setWarning  The function used to set whether the post was
+ *                               retrieved successfully from the database.
+ * @param {Function} setError    The function used to set the error while
+ *                               retrieving data from the database.
+ * @param {Function} setCommment The function used to set the text of the
+ *                               comment.
+ */
+export const replyToComment = async (
+  name, email, userNumber, slug, title, text, replyChain, setWarning, setError,
+  setReply
+) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`,
+      `/reply`,
+      { body: { name, email, userNumber, slug, title, text, replyChain } }
+    )
+    if ( error ) setError( error )
+    else { setReply( `` ); setWarning( false ); setError() }
+  } catch( error ) {
+    setError( `Network error` )
+  }
+
+}
+
+/**
  * Adds an up-vote to a comment.
  * @param {String}   name        The name of the user.
  * @param {String}   email       The email of the user.
  * @param {Number}   userNumber  The user's number.
  * @param {String}   slug        The slug of the post.
- * @param {Number}   commentDate The comment's date-time that is being up-voted.
+ * @param {Number}   replyChain The comment's date-time that is being up-voted.
  * @param {String}   dateAdded   The date-time the comment was created.
  * @param {Function} setError    The function used to set the error while
  *                               retrieving data from the database.
@@ -165,13 +201,13 @@ export const addComment = async (
  *                               was retrieved successfully from the database.
  */
 export const addUpVote = async (
-  name, email, userNumber, slug, commentDate, dateAdded, setError, setWarning
+  name, email, userNumber, slug, replyChain, setError, setWarning
 ) => {
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
       { body: {
-        name, email, userNumber, slug, dateAdded, up: true
+        name, email, userNumber, slug, replyChain, up: true
       } }
     )
     if ( error ) setError( error )
@@ -185,7 +221,7 @@ export const addUpVote = async (
  * @param {String}   email       The email of the user.
  * @param {Number}   userNumber  The user's number.
  * @param {String}   slug        The slug of the post.
- * @param {Number}   commentDate The comment number that is being down-voted.
+ * @param {Number}   replyChain The comment number that is being down-voted.
  * @param {String}   dateAdded   The date-time the comment was added.
  * @param {Function} setError    The function used to set the error while
  *                               retrieving data from the database.
@@ -193,13 +229,13 @@ export const addUpVote = async (
  *                               was retrieved successfully from the database.
  */
 export const addDownVote = async (
-  name, email, userNumber, slug, commentDate, dateAdded, setError, setWarning
+  name, email, userNumber, slug, replyChain, setError, setWarning
 ) => {
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
       { body: {
-        name, email, userNumber, slug, dateAdded, commentDate, up: false
+        name, email, userNumber, slug, replyChain, up: false
       } }
     )
     if ( error ) setError( error )
