@@ -8,11 +8,14 @@ import {
 } from './components'
 
 // TODO
-// [ ] Show replies
-// [ ] Show comments when no one is logged in
+// [X] Show replies
+// [X] Show comments when no one is logged in
 // [ ] Hide options when user does not own comment or not logged in
 // [ ] Prevent empty comment submission
 // [ ] HTML render comments
+// [ ] Fix deleting comments
+// [ ]   - Delete all replies and votes on delete
+// [ ] Add up-vote when submitting a reply or comment
 
 export default function Comments( { slug, title } ) {
   // Get the current user data

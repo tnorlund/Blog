@@ -171,7 +171,6 @@ export const addComment = async (
  */
 export const replyToComment = async (
   name, email, userNumber, slug, title, text, replyChain, setWarning, setError,
-  setReply
 ) => {
   try {
     const { error } = await API.post(
@@ -180,7 +179,7 @@ export const replyToComment = async (
       { body: { name, email, userNumber, slug, title, text, replyChain } }
     )
     if ( error ) setError( error )
-    else { setReply( `` ); setWarning( false ); setError() }
+    else { setWarning( false ); setError() }
   } catch( error ) {
     setError( `Network error` )
   }

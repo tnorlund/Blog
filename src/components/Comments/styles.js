@@ -9,6 +9,11 @@ export const Title = styled.hgroup`
   font-weight: bold;
 `
 
+export const VoteDiv = styled.div`
+  padding-top: 0.3em; 
+  display: flex;
+`
+
 export const WarningDiv = styled.div`
   color: var(--color-red);
   display: flex;
@@ -17,6 +22,12 @@ export const WarningDiv = styled.div`
   height: 2.68em;
   padding-top: 1em;
   padding-bottom: 1em;
+`
+
+export const VoteNumber = styled.div`
+  width: 1.5em;
+  padding-top: 0.2em;
+  text-align: center;
 `
 
 export const WarningIcon = styled( Warning ).attrs( props => ( {
@@ -114,6 +125,7 @@ export const CommentText = styled.div`
   border-radius: 0.25em;
   padding: 0.5em;
 `
+
 
 export const CommentDiv = styled.div`
   padding: 0.5em;

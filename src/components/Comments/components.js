@@ -9,14 +9,13 @@ import {
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
   CommentText, CommentDiv, CommentOption, CommentOptions,
-  Up, Down, SelectedDown, SelectedUp
+  Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv
 } from './styles'
 import { timeSince } from 'utils/date'
 
 export const UpVote = ( {
-  myUpVote, working, setWorking, currentUserName, email,
-  currentUserNumber, slug, commentNumber, commentDateAdded,
-  setError, setWarning, commentUserNumber, myDownVote, replyChain
+  myUpVote, working, setWorking, slug, setError, setWarning,
+  myDownVote, user, comment
 } ) =>
   <>
     {
@@ -24,30 +23,32 @@ export const UpVote = ( {
         if ( !working ) {
           setWorking( true )
           removeVote(
-            currentUserName, email, currentUserNumber, slug,
-            commentNumber, true, commentDateAdded, myUpVote.dateAdded,
-            setError, setWarning
+            user.name, user.email, user.userNumber, slug,
+            comment.postCommentNumber, true, comment.dateAdded,
+            myUpVote.dateAdded, setError, setWarning
           ).then( () => setWorking( false ) )
         }
       } } />
     } {
       !myUpVote && <Up onClick={ () => {
-        if ( !working ) {
+        if ( !working && typeof user != `undefined` ) {
           setWorking ( true )
           if ( myDownVote )
             removeVote(
-              currentUserName, email, currentUserNumber, slug,
-              commentNumber, false, commentDateAdded, myDownVote.dateAdded,
-              setError, setWarning
+              user.name, user.email, user.userNumber, slug,
+              comment.postCommentNumber, false, comment.dateAdded,
+              myDownVote.dateAdded, setError, setWarning
             ).then(
               () => addUpVote(
-                currentUserName, email, commentUserNumber, slug, replyChain,
+                user.name, user.email, comment.userNumber,
+                slug, comment.replyChain.concat( [comment.dateAdded] ),
                 setError, setWarning
               ).then( () => setWorking( false ) )
             )
           else
             addUpVote(
-              currentUserName, email, commentUserNumber, slug, replyChain,
+              user.name, user.email, comment.userNumber, slug,
+              comment.replyChain.concat( [comment.dateAdded] ),
               setError, setWarning
             ).then( () => setWorking( false ) )
         }
@@ -56,9 +57,8 @@ export const UpVote = ( {
   </>
 
 export const DownVote = ( {
-  myDownVote, working, setWorking, currentUserName, email, currentUserNumber,
-  slug, commentNumber, commentDateAdded, setError, setWarning,
-  commentUserNumber, myUpVote, replyChain
+  myDownVote, working, setWorking, slug, setError, setWarning, myUpVote, user,
+  comment
 } ) =>
   <>
     {
@@ -67,9 +67,9 @@ export const DownVote = ( {
           if ( !working ) {
             setWorking( true )
             removeVote(
-              currentUserName, email, currentUserNumber, slug,
-              commentNumber, false, commentDateAdded, myDownVote.dateAdded,
-              setError, setWarning
+              user.name, user.email, user.userNumber, slug,
+              comment.postCommentNumber, false, comment.dateAdded,
+              myDownVote.dateAdded, setError, setWarning
             ).then( () => setWorking( false ) )
           }
         }
@@ -77,22 +77,24 @@ export const DownVote = ( {
     } {
       !myDownVote && <Down onClick={
         () => {
-          if ( !working ) {
+          if ( !working && typeof user != `undefined` ) {
             setWorking ( true )
             if ( myUpVote )
               removeVote(
-                currentUserName, email, currentUserNumber, slug,
-                commentNumber, true, commentDateAdded, myUpVote.dateAdded,
-                setError, setWarning
+                user.name, user.email, user.userNumber, slug,
+                comment.postCommentNumber, true, comment.dateAdded,
+                myUpVote.dateAdded, setError, setWarning
               ).then(
                 () => addDownVote(
-                  currentUserName, email, commentUserNumber, slug, replyChain,
+                  user.name, user.email, comment.userNumber, slug,
+                  comment.replyChain.concat( [comment.dateAdded] ),
                   setError, setWarning
                 ).then( () => setWorking( false ) )
               )
             else
               addDownVote(
-                currentUserName, email, commentUserNumber, slug, replyChain,
+                user.name, user.email, comment.userNumber, slug,
+                comment.replyChain.concat( [comment.dateAdded] ),
                 setError, setWarning
               ).then( () => setWorking( false ) )
           }
@@ -192,7 +194,6 @@ export const Comment = ( {
   slug, title, comment, user, working, setWorking, setError, setWarning,
   showReply, setShowReply, reply, setReply, isReply = false
 } ) => {
-  console.log( `comment`, comment )
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
   // is theirs.
@@ -200,35 +201,26 @@ export const Comment = ( {
     comment.userName == user.name &&
     comment.userNumber == user.userNumber
   ) ) )
-  const { dateAdded, text, vote } = comment
-  const commentDateAdded = comment.dateAdded
-  const commentUserNumber = comment.userNumber
-  const { email } = user
-  const currentUserName = user.name
-  const currentUserNumber = user.userNumber
-  const commentNumber = comment.postCommentNumber
-  const replyChain = comment.replyChain.concat( [comment.dateAdded] )
-  if ( isReply )
-    console.log( `replyChain`, replyChain )
   // Get the down-vote if the user has made one on this comment.
   const myDownVotes = Object.values( comment.votes ).filter( ( vote ) => {
-    if ( vote.userName == user.name &&
+    if ( typeof user != `undefined` && (
+      vote.userName == user.name &&
       vote.userNumber == user.userNumber &&
-      !vote.up ) return vote
+      !vote.up ) ) return vote
   } )
   const myDownVote = (
     ( myDownVotes.length == 1 ) ? myDownVotes[ 0 ] : undefined
   )
   // Get the up-vote if the user has made one on this comment
   const myUpVotes = Object.values( comment.votes ).filter( ( vote ) => {
-    if ( vote.userName == user.name &&
+    if ( typeof user != `undefined` && (
+      vote.userName == user.name &&
       vote.userNumber == user.userNumber &&
-      vote.up ) return vote
+      vote.up ) ) return vote
   } )
   const myUpVote = (
     ( myUpVotes.length == 1 ) ? myUpVotes[ 0 ] : undefined
   )
-  console.log( `myUpVote`, myUpVote )
   const replies = Object.values( comment.replies ).map(
     repliedComment => Comment( {
       slug, title, comment:repliedComment, user, working, setWorking, setError,
@@ -239,10 +231,10 @@ export const Comment = ( {
     return(
       <CommentDiv
         css={`padding-right: 0;`}
-        key={ comment.userName + comment.dateAdded + text }
+        key={ comment.userName + comment.dateAdded + comment.text }
       >
         <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
-        <CommentText>{ text }</CommentText>
+        <CommentText>{ comment.text }</CommentText>
         {
           user && <CommentOptions>
             <Delete { ...{
@@ -252,30 +244,43 @@ export const Comment = ( {
             <CommentOption
               onClick={ () => {
                 if ( !working )
-                  setShowReply( comment.userName + comment.dateAdded + text )
+                  setShowReply(
+                    comment.userName + comment.dateAdded + comment.text
+                  )
               } }
             >Reply</CommentOption>|
-            <div css={`padding-top: 0.3em;`}>
+            <VoteDiv>
               <DownVote { ...{
-                myDownVote, working, setWorking, currentUserName, email,
-                currentUserNumber, slug, commentNumber, commentDateAdded,
-                dateAdded, setError, setWarning, commentUserNumber, myUpVote,
-                replyChain
+                myDownVote, working, setWorking, slug, setError, setWarning,
+                myUpVote, user, comment
               } }/>
-              {vote}
+              <VoteNumber>{comment.vote}</VoteNumber>
               <UpVote { ...{
-                myUpVote, working, setWorking, currentUserName, email,
-                currentUserNumber, slug, commentNumber, commentDateAdded,
-                dateAdded, setError, setWarning, commentUserNumber, myDownVote,
-                replyChain
+                myUpVote, working, setWorking, slug, setError, setWarning,
+                myDownVote, user, comment
               } }/>
-            </div>
+            </VoteDiv>
           </CommentOptions>
         }
-        { showReply == comment.userName + comment.dateAdded + text &&
+        {
+          !user && <CommentOptions>
+            <VoteDiv>
+              <DownVote { ...{
+                myDownVote, working, setWorking, slug, setError, setWarning,
+                myUpVote, user, comment
+              } }/>
+              <VoteNumber>{comment.vote}</VoteNumber>
+              <UpVote { ...{
+                myUpVote, working, setWorking, slug, setError, setWarning,
+                myDownVote, user, comment
+              } }/>
+            </VoteDiv>
+          </CommentOptions>
+        }
+        { showReply == comment.userName + comment.dateAdded + comment.text &&
       <div>
         <TextInput
-          id={ comment.userName + comment.dateAdded + text }
+          id={ comment.userName + comment.dateAdded + comment.text }
           contentEditable={ `true` }
           content = { reply }
           css={`margin-right: 0; `}
@@ -287,12 +292,17 @@ export const Comment = ( {
                 setWorking( true )
                 replyToComment(
                   user.name, user.email, user.userNumber, slug, title,
-                  getTextInput( comment.userName + comment.dateAdded + text ),
-                  [ comment.dateAdded ], setWarning, setError, setReply
+                  getTextInput(
+                    comment.userName + comment.dateAdded + comment.text
+                  ),
+                  comment.replyChain.concat( [comment.dateAdded] ),
+                  setWarning, setError
                 ).then( () => {
                   setWorking( false )
-                  setShowReply()
-                  resetTextInput( comment.userName + comment.dateAdded + text )
+                  resetTextInput(
+                    comment.userName + comment.dateAdded + comment.text
+                  )
+                  setShowReply( ` ` )
                   setReply( `` )
                 } )
               }
@@ -307,9 +317,9 @@ export const Comment = ( {
     )
   else
     return(
-      <CommentDiv key={ comment.userName + comment.dateAdded + text }>
+      <CommentDiv key={ comment.userName + comment.dateAdded + comment.text }>
         <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
-        <CommentText>{ text }</CommentText>
+        <CommentText>{ comment.text }</CommentText>
         {
           user && <CommentOptions>
             <Delete { ...{
@@ -319,30 +329,43 @@ export const Comment = ( {
             <CommentOption
               onClick={ () => {
                 if ( !working )
-                  setShowReply( comment.userName + comment.dateAdded + text )
+                  setShowReply(
+                    comment.userName + comment.dateAdded + comment.text
+                  )
               } }
             >Reply</CommentOption>|
-            <div css={`padding-top: 0.3em;`}>
+            <VoteDiv>
               <DownVote { ...{
-                myDownVote, working, setWorking, currentUserName, email,
-                currentUserNumber, slug, commentNumber, commentDateAdded,
-                dateAdded, setError, setWarning, commentUserNumber, myUpVote,
-                replyChain
+                myDownVote, working, setWorking, slug, setError, setWarning,
+                myUpVote, user, comment
               } }/>
-              {vote}
+              <VoteNumber>{comment.vote}</VoteNumber>
               <UpVote { ...{
-                myUpVote, working, setWorking, currentUserName, email,
-                currentUserNumber, slug, commentNumber, commentDateAdded,
-                dateAdded, setError, setWarning, commentUserNumber, myDownVote,
-                replyChain
+                myUpVote, working, setWorking, slug, setError, setWarning,
+                myDownVote, user, comment
               } }/>
-            </div>
+            </VoteDiv>
           </CommentOptions>
         }
-        { showReply == comment.userName + comment.dateAdded + text &&
+        {
+          !user && <CommentOptions>
+            <VoteDiv>
+              <DownVote { ...{
+                myDownVote, working, setWorking, slug, setError, setWarning,
+                myUpVote, user, comment
+              } }/>
+              <VoteNumber>{comment.vote}</VoteNumber>
+              <UpVote { ...{
+                myUpVote, working, setWorking, slug, setError, setWarning,
+                myDownVote, user, comment
+              } }/>
+            </VoteDiv>
+          </CommentOptions>
+        }
+        { showReply == comment.userName + comment.dateAdded + comment.text &&
         <div>
           <TextInput
-            id={ comment.userName + comment.dateAdded + text }
+            id={ comment.userName + comment.dateAdded + comment.text }
             contentEditable={ `true` }
             content = { reply }
             css={`margin-right: 0; `}
@@ -354,14 +377,16 @@ export const Comment = ( {
                   setWorking( true )
                   replyToComment(
                     user.name, user.email, user.userNumber, slug, title,
-                    getTextInput( comment.userName + comment.dateAdded + text ),
-                    [ comment.dateAdded ], setWarning, setError, setReply
+                    getTextInput(
+                      comment.userName + comment.dateAdded + comment.text
+                    ),
+                    [ comment.dateAdded ], setWarning, setError
                   ).then( () => {
                     setWorking( false )
                     resetTextInput(
-                      comment.userName + comment.dateAdded + text
+                      comment.userName + comment.dateAdded + comment.text
                     )
-                    setShowReply()
+                    setShowReply( ` ` )
                     setReply( `` )
                   } )
                 }
