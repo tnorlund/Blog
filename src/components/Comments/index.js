@@ -10,7 +10,7 @@ import {
 // TODO
 // [X] Show replies
 // [X] Show comments when no one is logged in
-// [ ] Hide options when user does not own comment or not logged in
+// [X] Hide options when user does not own comment or not logged in
 // [ ] Prevent empty comment submission
 // [ ] HTML render comments
 // [ ] Fix deleting comments
@@ -37,7 +37,6 @@ export default function Comments( { slug, title } ) {
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
       ( { post, comments } ) => {
-        console.log( `re-rendering` )
         // If the post does not exist in the data base, there are no
         // comments, and the user is an administrator, allow them to create the
         // post.
@@ -49,7 +48,7 @@ export default function Comments( { slug, title } ) {
           } )
         ) )
       } ).catch( ( error ) => setError( error ) )
-  }, [slug, title, user, warning, working, showReply] )
+  }, [slug, title, user, warning, working, showReply, reply] )
   return(
     <>
       <AdminControls { ...{

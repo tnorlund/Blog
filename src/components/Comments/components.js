@@ -181,7 +181,8 @@ export const Delete = ( {
                 setWorking( true )
                 deleteComment(
                   comment.userName, user.email, comment.userNumber, slug,
-                  title, comment.dateAdded, setError, setWarning
+                  title, comment.replyChain.concat( [comment.dateAdded] ),
+                  setError, setWarning
                 ).then( () => setWorking( false ) )
               }
             } }>Delete
@@ -299,11 +300,11 @@ export const Comment = ( {
                   setWarning, setError
                 ).then( () => {
                   setWorking( false )
+                  setReply( `` )
                   resetTextInput(
                     comment.userName + comment.dateAdded + comment.text
                   )
-                  setShowReply( ` ` )
-                  setReply( `` )
+                  setShowReply( `` )
                 } )
               }
             } }
@@ -383,11 +384,11 @@ export const Comment = ( {
                     [ comment.dateAdded ], setWarning, setError
                   ).then( () => {
                     setWorking( false )
+                    setReply( `` )
                     resetTextInput(
                       comment.userName + comment.dateAdded + comment.text
                     )
                     setShowReply( ` ` )
-                    setReply( `` )
                   } )
                 }
               } }

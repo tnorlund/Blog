@@ -26,7 +26,7 @@ export const WarningDiv = styled.div`
 
 export const VoteNumber = styled.div`
   width: 1.5em;
-  padding-top: 0.2em;
+  padding-top: 0.1em;
   text-align: center;
 `
 
@@ -129,6 +129,7 @@ export const CommentText = styled.div`
 
 export const CommentDiv = styled.div`
   padding: 0.5em;
+  padding-bottom: 0;
 `
 
 export const CommentOptions = styled.div`

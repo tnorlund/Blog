@@ -111,12 +111,12 @@ export const deletePost = async ( slug, title, setWarning, setError ) => {
  *                              retrieving data from the database.
  */
 export const deleteComment = async (
-  name, email, userNumber, slug, title, dateAdded, setError, setWarning
+  name, email, userNumber, slug, title, replyChain, setError, setWarning
 ) => {
   try {
     const { error } = await API.del(
       `blogAPI`, `/comment`,
-      { body: { name, email, userNumber, slug, title, dateAdded } } )
+      { body: { name, email, userNumber, slug, title, replyChain } } )
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
   } catch( error ) { setError( error ) }
