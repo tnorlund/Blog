@@ -52,7 +52,6 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
       `blogAPI`,
       `/post-details?slug=${ slug }&title=${ title }`
     )
-    console.log( `comments`, comments )
     if ( error ) { setError( error ); return { error: error } }
     else return { post, comments }
   } catch( error ) { setError( `Couldn't get post details` ) }

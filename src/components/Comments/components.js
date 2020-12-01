@@ -203,20 +203,20 @@ export const Comment = ( {
   ) ) )
   // Get the down-vote if the user has made one on this comment.
   const myDownVotes = Object.values( comment.votes ).filter( ( vote ) => {
-    if ( typeof user != `undefined` && (
-      vote.userName == user.name &&
+    if (
+      user && vote.userName == user.name &&
       vote.userNumber == user.userNumber &&
-      !vote.up ) ) return vote
+      !vote.up ) return vote
   } )
   const myDownVote = (
     ( myDownVotes.length == 1 ) ? myDownVotes[ 0 ] : undefined
   )
   // Get the up-vote if the user has made one on this comment
   const myUpVotes = Object.values( comment.votes ).filter( ( vote ) => {
-    if ( typeof user != `undefined` && (
-      vote.userName == user.name &&
+    if (
+      user && vote.userName == user.name &&
       vote.userNumber == user.userNumber &&
-      vote.up ) ) return vote
+      vote.up ) return vote
   } )
   const myUpVote = (
     ( myUpVotes.length == 1 ) ? myUpVotes[ 0 ] : undefined

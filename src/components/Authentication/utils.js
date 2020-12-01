@@ -94,7 +94,7 @@ export const handleCheckCode = async ( email, password, code, setError ) => {
 export const handleLoggingOut = async ( setUser, setError, setEmail ) => {
   try {
     await Auth.signOut()
-    setUser()
+    setUser( undefined )
     setEmail( `` )
   } catch ( error ) { setError( error.message ) }
 }
