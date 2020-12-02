@@ -8,9 +8,16 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "cSpell.enabled": true,
   "cSpell.words": [
     "apos",
-    "frontmatter"
-  ]
+    "frontmatter",
+    "helvetica",
+    "neue"
+  ],
+  "eslint.validate": [ "javascript" ],
+  "eslint.enable": true
 }
