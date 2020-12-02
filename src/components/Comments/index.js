@@ -7,16 +7,6 @@ import {
   SubmitComment, Error, Comment, Warning, AdminControls
 } from './components'
 
-// TODO
-// [X] Show replies
-// [X] Show comments when no one is logged in
-// [X] Hide options when user does not own comment or not logged in
-// [ ] Prevent empty comment submission
-// [ ] HTML render comments
-// [ ] Fix deleting comments
-// [ ]   - Delete all replies and votes on delete
-// [ ] Add up-vote when submitting a reply or comment
-
 export default function Comments( { slug, title } ) {
   // Get the current user data
   const user = useSessionStorage( AUTH_KEY )[0]
@@ -32,6 +22,7 @@ export default function Comments( { slug, title } ) {
   const [ commentComponents, setCommentComponents ] = useState( [] )
   // The comment key of the comment the user is replying to
   const [ showReply, setShowReply ] = useState()
+  // The comment where to show the reply text input
   const [ reply, setReply ] = useState( `` )
   // Before anything is rendered to the screen, get the post's comments.
   useEffect( () => {

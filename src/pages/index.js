@@ -26,9 +26,7 @@ function Social( { metadata } ) {
     return(
       <div key={title}>
         <a href={url} aria-label={title}>
-          <Icon
-            // size="75px"
-          />
+          <Icon/>
         </a>
       </div>
     )

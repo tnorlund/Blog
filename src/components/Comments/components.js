@@ -12,6 +12,11 @@ import {
   Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv
 } from './styles'
 import { timeSince } from 'utils/date'
+import { Markup } from 'interweave'
+
+// TODO
+// [ ] Show user info in a modal view
+// [ ] Allow admin control to change name of user
 
 export const UpVote = ( {
   myUpVote, working, setWorking, slug, setError, setWarning,
@@ -235,7 +240,7 @@ export const Comment = ( {
         key={ comment.userName + comment.dateAdded + comment.text }
       >
         <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
-        <CommentText>{ comment.text }</CommentText>
+        <CommentText><Markup content={comment.text} /></CommentText>
         {
           user && <CommentOptions>
             <Delete { ...{
@@ -320,7 +325,9 @@ export const Comment = ( {
     return(
       <CommentDiv key={ comment.userName + comment.dateAdded + comment.text }>
         <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
-        <CommentText>{ comment.text }</CommentText>
+        <CommentText>
+          <Markup content={comment.text} />
+        </CommentText>
         {
           user && <CommentOptions>
             <Delete { ...{

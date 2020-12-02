@@ -14,12 +14,6 @@ export const resetTextInput = ( id ) => {
  * @param {String}   id     The HTML ID of the div requested to query from.
  */
 export const getTextInput = ( id ) => document.getElementById( id ).innerHTML
-  .replace( /<div>/g, `\n` )
-  .replace( /<\/div>/g, `` )
-  .replace( /<br>/g, `` )
-  .replace( /&nbsp;/g, `` )
-  .replace( /<b>/g, `` )
-  .replace( /<\/b>/g, `` )
 
 /**
  * Gets a post through the API.
@@ -134,21 +128,23 @@ export const deleteComment = async (
  *                               retrieved successfully from the database.
  * @param {Function} setError    The function used to set the error while
  *                               retrieving data from the database.
- * @param {Function} setCommment The function used to set the text of the
+ * @param {Function} setComment  The function used to set the text of the
  *                               comment.
  */
 export const addComment = async (
   name, email, userNumber, slug, title, text, setWarning, setError, setComment
 ) => {
-  try {
-    const { error } = await API.post(
-      `blogAPI`,
-      `/comment`,
-      { body: { name, email, userNumber, slug, title, text } }
-    )
-    if ( error ) setError( error )
-    else { setComment( `` ); setWarning( false ); setError() }
-  } catch( error ) { setError( error ) }
+  if ( text != `` ) {
+    try {
+      const { error } = await API.post(
+        `blogAPI`,
+        `/comment`,
+        { body: { name, email, userNumber, slug, title, text } }
+      )
+      if ( error ) setError( error )
+      else { setComment( `` ); setWarning( false ); setError() }
+    } catch( error ) { setError( error ) }
+  }
 }
 
 /**

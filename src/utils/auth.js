@@ -29,7 +29,9 @@ export const Configure = () => {
         "tableName": process.env.GATSBY_DYNAMO_TABLE,
         "region": process.env.GATSBY_AWS_REGION
       }
-    ]
+    ],
+    "aws_mobile_analytics_app_id": process.env.GATSBY_ANALYTICS_APP_ID,
+    "aws_mobile_analytics_app_region": process.env.GATSBY_ANALYTICS_REGION
   } )
 }
 

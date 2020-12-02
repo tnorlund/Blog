@@ -44,6 +44,7 @@
     "gatsby-transformer-remark": "^2.10.0",
     "gatsby-transformer-sharp": "^2.6.0",
     "gatsby-transformer-yaml": "^2.5.0",
+    "interweave": "^12.6.0",
     "katex": "^0.12.0",
     "lodash": "^4.17.20",
     "mdx": "github:silvenon/vscode-mdx",
