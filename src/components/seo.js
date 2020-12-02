@@ -2,13 +2,34 @@ import React from "react"
 import { Helmet } from "react-helmet"
 import favicon from '../../content/favicon.svg'
 
+function capitalize( str ) {
+  return str.charAt( 0 ).toUpperCase() + str.slice( 1 )
+}
+
+const titles = {
+  '/': `Tyler Norlund`,
+  '/resume': `Resume`,
+  '/projects': `Projects`,
+  '/projects/web': `Web`,
+  '/projects/vhs': `VHS`,
+  '/projects/slam': `SLAM`,
+  '/projects/rotoscope': `Rotoscope`,
+  '/blog': `Blog`
+}
+
 const SEO = ( { site, uri = ``, data, children } ) => {
   const title = site.title
-  // uri.length > 1 ? `${startCase(uri)} | ${site.title}` : site.title
-  const pageUrl = site.url + uri
+  let newTitle
+  if ( uri in titles )
+    newTitle = titles[uri]
+  else
+    newTitle = uri.split( `/` )[ uri.split( `/` ).length  - 1 ]
+      .split( `-` ).map( capitalize ).join( ` ` )
+  const pageUrl = ( uri.endsWith( `/` ) ) ?
+    site.url + uri : site.url + uri + `/`
   const desc = data?.page?.excerpt || site.description
   return(
-    <Helmet title={title}>
+    <Helmet title={newTitle}>
       <meta property="og:type" content="website" />
       <html lang="en" />
       <meta property="og:title" content={title} />
