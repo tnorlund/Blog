@@ -3,11 +3,22 @@ import {
   Warning, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
 
-export const Title = styled.hgroup`
+export const Title = styled.div`
   margin-top: 0;
   margin-left: 0.5em;
   font-weight: bold;
 `
+
+export const UserName = styled.div`
+  margin-top: 0;
+  margin-left: 0.5em;
+  font-weight: bold;
+  cursor: pointer;
+  :hover {
+    color: var(--color-a)
+  }
+`
+
 
 export const VoteDiv = styled.div`
   padding-top: 0.3em; 

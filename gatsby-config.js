@@ -13,9 +13,6 @@ const gatsbyRemarkPlugins = [
   `gatsby-remark-autolink-headers`,
   {
     resolve: `gatsby-remark-vscode`,
-    // options: {
-    //   extensions: [`mdx`, `vscode-styled-components`]
-    // },
   },
   {
     resolve: `gatsby-remark-katex`,

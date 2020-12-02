@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const path = require( `path` )
 /* The templates used to programmatically create pages. */
 const postTemplate = path.resolve( `./src/templates/blog-post.js` )
@@ -46,9 +47,10 @@ const blogPost = ( createPage, posts, resolve ) => {
 exports.createPages = async( { graphql, actions, reporter } ) => {
   const { createPage } = actions
   const { panicOnBuild } = reporter
+  // eslint-disable-next-line no-undef
   return new Promise( ( resolve, reject ) => {
     resolve(
-      graphql(`
+      graphql( `
         {
           posts: allMdx(
             filter: { frontmatter: { slug: { regex: "^/blog/[0-9a-z-]+$/" } } }
@@ -68,7 +70,7 @@ exports.createPages = async( { graphql, actions, reporter } ) => {
             edges { node { id, slug, frontmatter { slug } } }
           }
         }  
-      `).then( result => {
+      ` ).then( result => {
         // When the query fails, reject the promise.
         if ( result.errors ) {
           panicOnBuild( `🚨  ERROR: Loading "createPages" query` )
@@ -96,6 +98,7 @@ exports.createPages = async( { graphql, actions, reporter } ) => {
             ].push( post.node )
         )
         // Create pages for the posts of each Project
+        // eslint-disable-next-line no-unused-vars
         for ( const [key, value] of Object.entries( sortedProjectPosts ) ) {
           blogPost( createPage, value, resolve )
         }

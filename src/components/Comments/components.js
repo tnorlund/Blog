@@ -8,7 +8,7 @@ import {
   Title, TextInput,
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
-  CommentText, CommentDiv, CommentOption, CommentOptions,
+  CommentText, CommentDiv, CommentOption, CommentOptions, UserName,
   Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv
 } from './styles'
 import { timeSince } from 'utils/date'
@@ -239,7 +239,10 @@ export const Comment = ( {
         css={`padding-right: 0;`}
         key={ comment.userName + comment.dateAdded + comment.text }
       >
-        <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
+        <div css={`display: flex;`}>
+          <UserName>{ comment.userName }</UserName>
+          <Title> - { timeSince( comment.dateAdded ) }</Title>
+        </div>
         <CommentText><Markup content={comment.text} /></CommentText>
         {
           user && <CommentOptions>
@@ -324,7 +327,10 @@ export const Comment = ( {
   else
     return(
       <CommentDiv key={ comment.userName + comment.dateAdded + comment.text }>
-        <Title>{ comment.userName } - { timeSince( comment.dateAdded ) }</Title>
+        <div css={`display: flex;`}>
+          <UserName>{ comment.userName }</UserName>
+          <Title> - { timeSince( comment.dateAdded ) }</Title>
+        </div>
         <CommentText>
           <Markup content={comment.text} />
         </CommentText>
