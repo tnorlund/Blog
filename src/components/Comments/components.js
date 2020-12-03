@@ -45,14 +45,14 @@ export const UpVote = ( {
               myDownVote.dateAdded, setError, setWarning
             ).then(
               () => addUpVote(
-                user.name, user.email, comment.userNumber,
+                user.name, user.email, user.userNumber, comment.userNumber,
                 slug, comment.replyChain.concat( [comment.dateAdded] ),
                 setError, setWarning
               ).then( () => setWorking( false ) )
             )
           else
             addUpVote(
-              user.name, user.email, comment.userNumber, slug,
+              user.name, user.email, user.userNumber, comment.userNumber, slug,
               comment.replyChain.concat( [comment.dateAdded] ),
               setError, setWarning
             ).then( () => setWorking( false ) )
@@ -73,7 +73,7 @@ export const DownVote = ( {
             setWorking( true )
             removeVote(
               user.name, user.email, user.userNumber, slug,
-              comment.postCommentNumber, false, comment.dateAdded,
+              comment.userNumber, false, comment.dateAdded,
               myDownVote.dateAdded, setError, setWarning
             ).then( () => setWorking( false ) )
           }
@@ -87,19 +87,19 @@ export const DownVote = ( {
             if ( myUpVote )
               removeVote(
                 user.name, user.email, user.userNumber, slug,
-                comment.postCommentNumber, true, comment.dateAdded,
+                comment.userNumber, true, comment.dateAdded,
                 myUpVote.dateAdded, setError, setWarning
               ).then(
                 () => addDownVote(
-                  user.name, user.email, comment.userNumber, slug,
-                  comment.replyChain.concat( [comment.dateAdded] ),
+                  user.name, user.email, user.userNumber, comment.userNumber,
+                  slug, comment.replyChain.concat( [comment.dateAdded] ),
                   setError, setWarning
                 ).then( () => setWorking( false ) )
               )
             else
               addDownVote(
-                user.name, user.email, comment.userNumber, slug,
-                comment.replyChain.concat( [comment.dateAdded] ),
+                user.name, user.email, user.userNumber, comment.userNumber,
+                slug, comment.replyChain.concat( [comment.dateAdded] ),
                 setError, setWarning
               ).then( () => setWorking( false ) )
           }

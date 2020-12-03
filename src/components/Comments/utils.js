@@ -195,13 +195,14 @@ export const replyToComment = async (
  *                               was retrieved successfully from the database.
  */
 export const addUpVote = async (
-  name, email, userNumber, slug, replyChain, setError, setWarning
+  name, email, userNumber, commentUserNumber, slug, replyChain, setError,
+  setWarning
 ) => {
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
       { body: {
-        name, email, userNumber, slug, replyChain, up: true
+        name, email, userNumber, slug, commentUserNumber, replyChain, up: true
       } }
     )
     if ( error ) setError( error )
@@ -223,13 +224,14 @@ export const addUpVote = async (
  *                               was retrieved successfully from the database.
  */
 export const addDownVote = async (
-  name, email, userNumber, slug, replyChain, setError, setWarning
+  name, email, userNumber, commentUserNumber, slug, replyChain, setError,
+  setWarning
 ) => {
   try {
     const { error } = await API.post(
       `blogAPI`, `/vote`,
       { body: {
-        name, email, userNumber, slug, replyChain, up: false
+        name, email, userNumber, slug, commentUserNumber, replyChain, up: false
       } }
     )
     if ( error ) setError( error )
@@ -239,25 +241,26 @@ export const addDownVote = async (
 
 /**
  * Removes a vote from a comment.
- * @param {String}   name             The name of the user.
- * @param {String}   email            The email of the user.
- * @param {Number}   userNumber       The user's number.
- * @param {String}   slug             The slug of the post.
- * @param {Number}   commentNumber    The comment number that is being removed.
- * @param {Boolean}  up               Whether the vote is an up-vote or a
- *                                    down-vote.
- * @param {String}   commentDateAdded The date-time the comment was added.
- * @param {String}   voteDateAdded    The date-time the vote was added.
- * @param {Function} setError         The function used to set the error while
- *                                    retrieving data from the database.
- * @param {Function} setWarning       The function used to set whether the post
- *                                    was retrieved successfully from the
- *                                    database.
+ * @param {String}   name              The name of the user.
+ * @param {String}   email             The email of the user.
+ * @param {Number}   userNumber        The user's number.
+ * @param {String}   slug              The slug of the post.
+ * @param {Number}   commentUserNumber The comment number that is being removed.
+ * @param {Boolean}  up                Whether the vote is an up-vote or a
+ *                                     down-vote.
+ * @param {String}   commentDateAdded  The date-time the comment was added.
+ * @param {String}   voteDateAdded     The date-time the vote was added.
+ * @param {Function} setError          The function used to set the error while
+ *                                     retrieving data from the database.
+ * @param {Function} setWarning        The function used to set whether the post
+ *                                     was retrieved successfully from the
+ *                                     database.
  */
 export const removeVote = async (
   name, email, userNumber, slug, commentNumber, up, commentDateAdded,
   voteDateAdded, setError, setWarning
 ) => {
+  console.log( `commentNumber`, commentNumber )
   try {
     const { error } = await API.del(
       `blogAPI`, `/vote`,
