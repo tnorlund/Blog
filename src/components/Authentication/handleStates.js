@@ -25,6 +25,9 @@ export default function HandleStates( user, setUser ) {
   const [ page, setPage ] = useState( `login` )
   // When a user first signs up, show them at the login screen.
   const [ newUser, setNewUser ] = useState( false )
+  const [ showNewName, setShowNewName ] = useState( false )
+  // When a user wants to change their name.
+  const [ newName, setNewName ] = useState()
 
   // A login function that logs the user in
   const login = async() => {
@@ -103,7 +106,7 @@ export default function HandleStates( user, setUser ) {
           ...{ name: user.name, dateString: timeSince(
             String( user.dateJoined )
           ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin,
-          setEmail }
+          setEmail, newName, setNewName, showNewName, setShowNewName, user }
         }/>
       }
 

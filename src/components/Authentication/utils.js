@@ -1,5 +1,5 @@
 import { Auth, API } from 'aws-amplify'
-import { updateUserBySession } from 'utils/auth'
+import { updateUserBySession, updateUser } from 'utils/auth'
 
 /**
  * Handles the state of the modal view while logging in.
@@ -97,4 +97,23 @@ export const handleLoggingOut = async ( setUser, setError, setEmail ) => {
     setUser( undefined )
     setEmail( `` )
   } catch ( error ) { setError( error.message ) }
+}
+
+export const handleNewName = async (
+  name, email, userNumber, newName, setUser, setError, setShowNewName
+) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/user-name`,
+      { body: { name, email, userNumber, newName } }
+    )
+    if ( error ) setError( error )
+    else {
+      setShowNewName( false )
+      setUser()
+      updateUser( setUser )
+    }
+  } catch ( error ) {
+    setError( error.message )
+  }
 }

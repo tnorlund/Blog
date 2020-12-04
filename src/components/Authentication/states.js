@@ -1,8 +1,11 @@
 import React from 'react'
 import {
   Title, SelectedButton, WarningDiv, WarningIcon, OptionsDiv,
-  OptionDiv, NewTextInput, Description, UserType, UserDetails
+  OptionDiv, NewTextInput, Description, UserType, UserDetails,
+  UnselectedButton
 } from './styles'
+import { timeSince } from 'utils/date'
+import { handleNewName } from './utils'
 
 export const Login = ( {
   newUser, setEmail, setError, setPassword, email, setPage, error, needConfirm,
@@ -209,14 +212,40 @@ export const Confirm = ( {
 </>
 
 export const User = ( {
-  name, dateString, error, handleLoggingOut, setUser, setError, isAdmin,
-  setEmail
+  error, handleLoggingOut, setUser, setError,
+  setEmail, newName, setNewName, showNewName, setShowNewName, user
 } ) => <>
   <UserDetails>
-    <Title>{name}</Title>
-    {isAdmin && <UserType>Administrator</UserType>}
+    <Title>{user.name}</Title>
+    {user.isAdmin && <UserType>Administrator</UserType>}
   </UserDetails>
-  <Description>Joined { dateString }</Description>
+  <Description>Joined { timeSince(
+    String( user.dateJoined )
+  ) }</Description>
+  {
+    !showNewName && <UnselectedButton
+      onClick={ () => setShowNewName( !showNewName ) }
+    >Change Name</UnselectedButton>
+  }
+  {
+    showNewName && <>
+      <NewTextInput
+        placeholder={ user.name }
+        type='name'
+        onChange={ ( event ) => {
+          setNewName( event.target.value )
+          setError()
+        } }
+        value={ newName }
+      />
+      <SelectedButton onClick={
+        () =>  handleNewName(
+          user.name, user.email, user.userNumber, newName, setUser, setError,
+          setShowNewName
+        ) }
+      > Submit </SelectedButton>
+    </>
+  }
   { error && <WarningDiv><WarningIcon/>
     <div
       css={`display: inline-block;

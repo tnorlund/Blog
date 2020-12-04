@@ -33,6 +33,20 @@ export const SelectedButton = styled.div`
   }
 `
 
+export const UnselectedButton = styled.div`
+  background: var(--color-accentBackground);
+  color: var(--color-text);
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  margin: 1em;
+  cursor: pointer;
+  :hover {
+    color: var(--color-a)
+  }
+`
+
 export const NewTextInput = styled.input`
   background: var(--color-accentBackground);
   border-radius: 0.25em;
@@ -115,11 +129,11 @@ export const Title = styled.hgroup`
 
 export const UserType = styled.div`
   padding-top: 0;
-  padding-bottom: 2em;
+  /* padding-bottom: 2em; */
   padding-left: 1.5em;
   ${mediaQueries.minTablet} {
     padding-top: 1em;
-    padding-bottom: 1em;
+    /* padding-bottom: 1em; */
     padding-left: 0em;
     height: max-content;
   }
@@ -133,10 +147,14 @@ export const ButtonDiv = styled.div`
   padding: 0.1em;
   border-radius: 0.2em;
   font-weight: bold;
+  cursor: pointer;
   :hover { color: var(--color-a); }
 `
 
+
+
 export const Description = styled.div`
+  /* padding-top: 0; */
   padding-left: 1.5em;
   padding-right: 1.5em;
 `
