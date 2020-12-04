@@ -30,8 +30,9 @@ export const Configure = () => {
         "region": process.env.GATSBY_AWS_REGION
       }
     ],
-    "aws_mobile_analytics_app_id": process.env.GATSBY_ANALYTICS_APP_ID,
-    "aws_mobile_analytics_app_region": process.env.GATSBY_ANALYTICS_REGION
+    "aws_firehose_name": `blogKinesis`
+    // "aws_mobile_analytics_app_id": process.env.GATSBY_ANALYTICS_APP_ID,
+    // "aws_mobile_analytics_app_region": process.env.GATSBY_ANALYTICS_REGION
   } )
 }
 
@@ -103,10 +104,6 @@ export const updateUser = async ( setUser ) => {
 
 /**
  * Updates the session storage with CognitoUser object.
- *
- * TODO
- * [ ] Add comments of the user.
- * [ ] Handle errors
  *
  * @param {Object} session   The CognitoUser returned from logging in.
  * @param {Function} setUser The function used to set the session storage

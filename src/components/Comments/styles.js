@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import {
   Warning, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
+import { mediaQueries } from 'utils/mediaQueries'
+
 
 export const Title = styled.div`
   margin-top: 0;
@@ -19,6 +21,29 @@ export const UserName = styled.div`
   }
 `
 
+export const ModalView = styled.div`
+  display: block;
+  ${mediaQueries.minTablet} {
+    display: flex;
+  }
+`
+
+export const ModalUserName = styled.hgroup`
+  font-size: 2em;
+  font-weight: bold;
+  width: max-content;
+  padding: 0.5em;
+  padding-bottom: 0.2em;
+  ${mediaQueries.minTablet} {
+    padding: 0.5em;
+  }
+`
+
+export const ModalDescription = styled.div`
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  padding-bottom: 1em;
+`
 
 export const VoteDiv = styled.div`
   padding-top: 0.3em; 

@@ -2,17 +2,19 @@ import React from 'react'
 import {
   addPost, addComment, deleteComment, deletePost,
   addUpVote, addDownVote, removeVote, getTextInput, resetTextInput,
-  replyToComment
+  replyToComment, getUser
 } from './utils'
 import {
   Title, TextInput,
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
   CommentText, CommentDiv, CommentOption, CommentOptions, UserName,
-  Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv
+  Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv,
+  ModalView, ModalDescription, ModalUserName
 } from './styles'
 import { timeSince } from 'utils/date'
 import { Markup } from 'interweave'
+
 
 // TODO
 // [ ] Show user info in a modal view
@@ -41,7 +43,7 @@ export const UpVote = ( {
           if ( myDownVote )
             removeVote(
               user.name, user.email, user.userNumber, slug,
-              comment.postCommentNumber, false, comment.dateAdded,
+              comment.userNumber, false, comment.dateAdded,
               myDownVote.dateAdded, setError, setWarning
             ).then(
               () => addUpVote(
@@ -198,7 +200,8 @@ export const Delete = ( {
 
 export const Comment = ( {
   slug, title, comment, user, working, setWorking, setError, setWarning,
-  showReply, setShowReply, reply, setReply, isReply = false
+  showReply, setShowReply, reply, setReply,
+  setModal, modalContents, setModalContents, isReply = false
 } ) => {
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
@@ -230,7 +233,8 @@ export const Comment = ( {
   const replies = Object.values( comment.replies ).map(
     repliedComment => Comment( {
       slug, title, comment:repliedComment, user, working, setWorking, setError,
-      setWarning, showReply, setShowReply, reply, setReply, isReply: true
+      setWarning, showReply, setShowReply, reply, setReply,
+      setModal, modalContents, setModalContents, isReply: true
     } )
   )
   if ( isReply )
@@ -240,7 +244,14 @@ export const Comment = ( {
         key={ comment.userName + comment.dateAdded + comment.text }
       >
         <div css={`display: flex;`}>
-          <UserName>{ comment.userName }</UserName>
+          <UserName
+            onClick={ () => {
+              getUser( comment.userNumber, setError, setModalContents ).then(
+                () => {
+                  setModal( true )
+                } )
+            } }
+          >{ comment.userName }</UserName>
           <Title> - { timeSince( comment.dateAdded ) }</Title>
         </div>
         <CommentText><Markup content={comment.text} /></CommentText>
@@ -307,12 +318,12 @@ export const Comment = ( {
                   comment.replyChain.concat( [comment.dateAdded] ),
                   setWarning, setError
                 ).then( () => {
-                  setWorking( false )
                   setReply( `` )
                   resetTextInput(
                     comment.userName + comment.dateAdded + comment.text
                   )
-                  setShowReply( `` )
+                  setShowReply( ` ` )
+                  setWorking( false )
                 } )
               }
             } }
@@ -328,7 +339,16 @@ export const Comment = ( {
     return(
       <CommentDiv key={ comment.userName + comment.dateAdded + comment.text }>
         <div css={`display: flex;`}>
-          <UserName>{ comment.userName }</UserName>
+          <UserName
+            onClick={
+              () => {
+                getUser( comment.userNumber, setError, setModalContents ).then(
+                  () => {
+                    setModal( true )
+                  } )
+              }
+            }
+          >{ comment.userName }</UserName>
           <Title> - { timeSince( comment.dateAdded ) }</Title>
         </div>
         <CommentText>
@@ -396,12 +416,12 @@ export const Comment = ( {
                     ),
                     [ comment.dateAdded ], setWarning, setError
                   ).then( () => {
-                    setWorking( false )
                     setReply( `` )
                     resetTextInput(
                       comment.userName + comment.dateAdded + comment.text
                     )
                     setShowReply( ` ` )
+                    setWorking( false )
                   } )
                 }
               } }
@@ -414,3 +434,12 @@ export const Comment = ( {
       </CommentDiv>
     )
 }
+
+export const User = ( {
+  name, dateString,
+} ) => <>
+  <ModalView>
+    <ModalUserName>{name}</ModalUserName>
+  </ModalView>
+  <ModalDescription>Joined { dateString }</ModalDescription>
+</>

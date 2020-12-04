@@ -1,11 +1,24 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { PageBody } from 'components/styles'
 import { Icons, SocialsDiv, ProfilePic } from '../templates/styles'
 import List from 'components/List'
-
-
+import Amplify, { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+Amplify.configure(
+  {
+    "Auth": {
+      identityPoolId: `us-west-2:40405342-bab9-4f53-b88d-3fcac78f6093`,
+      region: `us-west-2`
+    },
+    "Analytics": {
+      "AWSKinesisFirehose": {
+        "region": `us-west-2`
+      }
+    }
+  }
+)
+Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 function Social( { metadata } ) {
   const { github, linkedin, twitter } = metadata.siteMetadata.social
   const social = [
@@ -38,6 +51,19 @@ function Social( { metadata } ) {
 
 const Landing = ( { data } ) => {
   const { landing, picture, metadata } = data
+  useEffect( () => {
+    const now = new Date()
+    const data = {
+      id: now.toISOString(),
+      page: `landing`
+    }
+    Analytics.record(
+      { data: data,
+        streamName: `blogKinesis` }, `AWSKinesisFirehose`
+    ).then(
+      result => console.log( `result`, result )
+    ).catch( error => console.log( `error`, error ) )
+  }, [] )
   return(
     <PageBody>
       <ProfilePic fixed={picture.img.fixed} />

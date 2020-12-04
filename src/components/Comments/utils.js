@@ -1,4 +1,6 @@
 import { API } from 'aws-amplify'
+import { User } from './components'
+import { timeSince } from 'utils/date'
 
 /**
  * Removes the contents of an editable div.
@@ -260,7 +262,6 @@ export const removeVote = async (
   name, email, userNumber, slug, commentNumber, up, commentDateAdded,
   voteDateAdded, setError, setWarning
 ) => {
-  console.log( `commentNumber`, commentNumber )
   try {
     const { error } = await API.del(
       `blogAPI`, `/vote`,
@@ -271,4 +272,21 @@ export const removeVote = async (
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
   } catch( error ) { setError( error ) }
+}
+
+export const getUser = async (
+  userNumber, setError, setModalContents
+) => {
+  try {
+    const { user, error } = await API.get(
+      `blogAPI`,
+      `/user?userNumber=${ userNumber }`
+    )
+    if ( error ) setError( error )
+    else setModalContents(
+      User( { name: user.name, dateString: timeSince( user.dateJoined ) } )
+    )
+  } catch( error ) {
+    setError( error )
+  }
 }

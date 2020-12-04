@@ -6,6 +6,8 @@ import { Title, TextInput } from './styles'
 import {
   SubmitComment, Error, Comment, Warning, AdminControls
 } from './components'
+import Modal from 'components/Modal'
+
 
 export default function Comments( { slug, title } ) {
   // Get the current user data
@@ -24,6 +26,12 @@ export default function Comments( { slug, title } ) {
   const [ showReply, setShowReply ] = useState()
   // The comment where to show the reply text input
   const [ reply, setReply ] = useState( `` )
+  // The user being displayed in the modal view
+  const [ open, setModal ] = useState( false )
+  // The contents of the user's modal view.
+  const [ modalContents, setModalContents ] = useState()
+  // The user selected
+  // const [ userNumber, setUserNumber ] = useState()
   // Before anything is rendered to the screen, get the post's comments.
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
@@ -35,11 +43,13 @@ export default function Comments( { slug, title } ) {
         setCommentComponents( Object.values( comments ).map(
           ( comment ) => Comment( {
             slug, title, comment, user, working, setWorking, setError,
-            setWarning, showReply, setShowReply, reply, setReply
+            setWarning, showReply, setShowReply, reply, setReply,
+            setModal, modalContents, setModalContents
           } )
         ) )
       } ).catch( ( error ) => setError( error ) )
-  }, [slug, title, user, warning, working, showReply, reply] )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, title, user, warning, working, showReply, reply ] )
   return(
     <>
       <AdminControls { ...{
@@ -68,6 +78,8 @@ export default function Comments( { slug, title } ) {
           </>
       }
       <Warning { ...{ warning, slug, title, setWarning, setError } }/>
+      {/* <User { ...{ open, setModal, userNumber } } /> */}
+      <Modal { ...{ open, setModal } } contents={ modalContents } />
     </>
   )
 }
