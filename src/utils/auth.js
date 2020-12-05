@@ -147,27 +147,30 @@ export const updateUserBySession = async ( session, setUser ) => {
  * @param {Date}   now   The current time.
  */
 export const FireHose = async ( title, slug, user, now = new Date() ) => {
-  Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
-  const response = await axios.get( `https://api.ipify.org?format=json` )
-  const data = ( user ) ? {
-    id: now.toISOString(),
-    title, slug,
-    ip: response.data.ip,
-    user: user.userNumber,
-    app: window.navigator.userAgent,
-    height: window.screen.height,
-    width: window.screen.width
-  } : {
-    id: now.toISOString(),
-    title, slug,
-    ip: response.data.ip,
-    user: 0,
-    app: window.navigator.userAgent,
-    height: window.screen.height,
-    width: window.screen.width
-  }
-  Analytics.record( {
-    data,
-    streamName: `BlogAnalytics`
-  }, `AWSKinesisFirehose` )
+  try {
+    Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
+    axios.get( `https://api.ipify.org?format=json` ).then( response => {
+      const data = ( user ) ? {
+        id: now.toISOString(),
+        title, slug,
+        ip: response.data.ip,
+        user: user.userNumber,
+        app: window.navigator.userAgent,
+        height: window.screen.height,
+        width: window.screen.width
+      } : {
+        id: now.toISOString(),
+        title, slug,
+        ip: response.data.ip,
+        user: 0,
+        app: window.navigator.userAgent,
+        height: window.screen.height,
+        width: window.screen.width
+      }
+      Analytics.record( {
+        data,
+        streamName: `BlogAnalytics`
+      }, `AWSKinesisFirehose` )
+    } )
+  } catch( error ) { console.log( `error`, error )}
 }

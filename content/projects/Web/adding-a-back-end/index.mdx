@@ -336,7 +336,7 @@ Kinesis Data Streams and Kinesis Data Firehose are used to record the visitor's 
 
 ![S3](./AWSLogos_S3.svg)
 
-The S3 bucket acts as a data-lake for storing raw data. Another Lambda function is then used to transform the raw data into valuable information. I'm using [ipify](https://geo.ipify.org) to obtain location and proxy information from the raw IP address. This transformed data is then stored in another DynamoDB table.
+The S3 bucket acts as a data-lake for storing raw data. AWS glue is used to process the data into a parquet file every 5 minutes. I'm using [ipify](https://geo.ipify.org) to obtain location and proxy information from the raw IP address. This transformed data is then stored in another DynamoDB table.
 
 This might be controversial, but I don't want to use Google Analytics. I had the option to use a database that uses Online Analytic Processing, *OLAP*, but I prefer to keep costs as low as possible by continuing to leverage serverless technologies. I'm continuing to use DynamoDB to store the analytics data obtained from this website.
 
