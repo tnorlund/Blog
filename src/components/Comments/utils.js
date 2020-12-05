@@ -115,7 +115,7 @@ export const deleteComment = async (
       { body: { name, email, userNumber, slug, title, replyChain } } )
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
-  } catch( error ) { setError( error ) }
+  } catch( error ) { setError( String( error ) ) }
 }
 
 /**
@@ -275,7 +275,7 @@ export const removeVote = async (
 }
 
 export const getUser = async (
-  userNumber, setError, setModalContents
+  userNumber, setError, currentUser, setCommenter
 ) => {
   try {
     const { user, error } = await API.get(
@@ -283,10 +283,41 @@ export const getUser = async (
       `/user?userNumber=${ userNumber }`
     )
     if ( error ) setError( error )
-    else setModalContents(
-      User( { name: user.name, dateString: timeSince( user.dateJoined ) } )
-    )
+    else {
+      if ( currentUser ) {
+        if ( currentUser.isAdmin )
+          setCommenter( {
+            name: user.name, email: user.email, userNumber: user.userNumber,
+            dateString: timeSince( user.dateJoined ),
+            isAdmin: true,
+          } )
+        else
+          setCommenter( {
+            name: user.name, dateString: timeSince( user.dateJoined ),
+            isAdmin: false
+          } )
+      } else
+        setCommenter( {
+          name: user.name, dateString: timeSince( user.dateJoined ),
+          isAdmin: false
+        } )
+    }
   } catch( error ) {
     setError( error )
+  }
+}
+
+export const handleNewName = async (
+  name, email, userNumber, newName, setError
+) => {
+  console.log( { name, email, userNumber, newName } )
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/user-name`,
+      { body: { name, email, userNumber, newName } }
+    )
+    if ( error ) setError( error )
+  } catch ( error ) {
+    setError( error.message )
   }
 }

@@ -116,6 +116,27 @@ export const WarningButton = styled.div`
   cursor: pointer;
   font-weight: bold;
 `
+export const NewTextInput = styled.input`
+  background: var(--color-accentBackground);
+  border-radius: 0.25em;
+  margin: 1em;
+  padding: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 0;
+  ${mediaQueries.minTablet} { margin-bottom: 0.5em; }
+`
+
+export const AdminButton = styled.div`
+  background: var(--color-red);
+  color: var(--color-background);
+  text-align: center;
+  padding: 0.5em;
+  margin-top: 0;
+  border-radius: 0.25em;
+  margin: 1em;
+  cursor: pointer;
+  font-weight: bold;
+`
 
 export const UnselectedButton = styled.div`
   background: var(--color-accentBackground);

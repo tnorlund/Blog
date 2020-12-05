@@ -4,10 +4,12 @@ import { AUTH_KEY } from 'utils/constants'
 import { getPostDetails } from './utils'
 import { Title, TextInput } from './styles'
 import {
-  SubmitComment, Error, Comment, Warning, AdminControls
+  SubmitComment, Error, Comment, Warning, AdminControls, User
 } from './components'
 import Modal from 'components/Modal'
 
+// TODO
+// [ ] Set component in index
 
 export default function Comments( { slug, title } ) {
   // Get the current user data
@@ -28,11 +30,14 @@ export default function Comments( { slug, title } ) {
   const [ reply, setReply ] = useState( `` )
   // The user being displayed in the modal view
   const [ open, setModal ] = useState( false )
-  // The contents of the user's modal view.
-  const [ modalContents, setModalContents ] = useState()
-  // The user selected
-  // const [ userNumber, setUserNumber ] = useState()
-  // Before anything is rendered to the screen, get the post's comments.
+  // Whether to show the name change or not.
+  const [ showNewName, setShowNewName ] = useState( true )
+  // When a user wants to change their name.
+  const [ newName, setNewName ] = useState()
+  // The commenter details shown in the modal view.
+  const [ commenter, setCommenter ] = useState( {
+    name: undefined, dateString: undefined, isAdmin: false
+  } )
   useEffect( () => {
     getPostDetails( slug, title, setWarning, setError ).then(
       ( { post, comments } ) => {
@@ -44,12 +49,16 @@ export default function Comments( { slug, title } ) {
           ( comment ) => Comment( {
             slug, title, comment, user, working, setWorking, setError,
             setWarning, showReply, setShowReply, reply, setReply,
-            setModal, modalContents, setModalContents
+            setModal, setCommenter
           } )
         ) )
       } ).catch( ( error ) => setError( error ) )
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, title, user, warning, working, showReply, reply ] )
+  }, [slug, title, user,
+    // warning,
+    working, showReply,
+    // reply
+  ] )
   return(
     <>
       <AdminControls { ...{
@@ -78,8 +87,13 @@ export default function Comments( { slug, title } ) {
           </>
       }
       <Warning { ...{ warning, slug, title, setWarning, setError } }/>
-      {/* <User { ...{ open, setModal, userNumber } } /> */}
-      <Modal { ...{ open, setModal } } contents={ modalContents } />
+      <Modal { ...{ open, setModal } } contents={ User( {
+        name: commenter.name, dateString: commenter.dateString,
+        email: commenter.email, userNumber: commenter.userNumber,
+        isAdmin: commenter.isAdmin,
+        newName, setNewName,
+        setWorking, working, setError
+      } ) } />
     </>
   )
 }

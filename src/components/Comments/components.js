@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   addPost, addComment, deleteComment, deletePost,
   addUpVote, addDownVote, removeVote, getTextInput, resetTextInput,
-  replyToComment, getUser
+  replyToComment, getUser, handleNewName
 } from './utils'
 import {
   Title, TextInput,
@@ -10,7 +10,7 @@ import {
   SelectedButton, UnselectedButton,
   CommentText, CommentDiv, CommentOption, CommentOptions, UserName,
   Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv,
-  ModalView, ModalDescription, ModalUserName
+  ModalView, ModalDescription, ModalUserName, AdminButton, NewTextInput
 } from './styles'
 import { timeSince } from 'utils/date'
 import { Markup } from 'interweave'
@@ -190,7 +190,7 @@ export const Delete = ( {
                   comment.userName, user.email, comment.userNumber, slug,
                   title, comment.replyChain.concat( [comment.dateAdded] ),
                   setError, setWarning
-                ).then( () => setWorking( false ) )
+                ).then( () => { setTimeout( 100 ); setWorking( false ) } )
               }
             } }>Delete
           </CommentOption>|
@@ -201,7 +201,7 @@ export const Delete = ( {
 export const Comment = ( {
   slug, title, comment, user, working, setWorking, setError, setWarning,
   showReply, setShowReply, reply, setReply,
-  setModal, modalContents, setModalContents, isReply = false
+  setModal, setCommenter, isReply = false
 } ) => {
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
@@ -234,7 +234,7 @@ export const Comment = ( {
     repliedComment => Comment( {
       slug, title, comment:repliedComment, user, working, setWorking, setError,
       setWarning, showReply, setShowReply, reply, setReply,
-      setModal, modalContents, setModalContents, isReply: true
+      setModal, setCommenter, isReply: true
     } )
   )
   if ( isReply )
@@ -246,7 +246,9 @@ export const Comment = ( {
         <div css={`display: flex;`}>
           <UserName
             onClick={ () => {
-              getUser( comment.userNumber, setError, setModalContents ).then(
+              getUser(
+                comment.userNumber, setError, user, setCommenter
+              ).then(
                 () => {
                   setModal( true )
                 } )
@@ -342,7 +344,9 @@ export const Comment = ( {
           <UserName
             onClick={
               () => {
-                getUser( comment.userNumber, setError, setModalContents ).then(
+                getUser(
+                  comment.userNumber, setError, user, setCommenter
+                ).then(
                   () => {
                     setModal( true )
                   } )
@@ -436,10 +440,29 @@ export const Comment = ( {
 }
 
 export const User = ( {
-  name, dateString,
+  name, dateString, isAdmin, email, userNumber, newName, setNewName,
+  setWorking, working, setError
 } ) => <>
   <ModalView>
     <ModalUserName>{name}</ModalUserName>
   </ModalView>
   <ModalDescription>Joined { dateString }</ModalDescription>
+  { isAdmin && <>
+    <NewTextInput
+      placeholder={ name }
+      type='name'
+      onChange={ ( event ) => {
+        setNewName( event.target.value )
+      } }
+      // value={ newName }
+    />
+    <AdminButton onClick={ () => {
+      if ( !working ) {
+        setWorking( true )
+        handleNewName( name, email, userNumber, newName, setError )
+          .then( () => setWorking( false ) )
+      }
+    } }>Change Name</AdminButton>
+    <AdminButton>Disable</AdminButton></>
+  }
 </>

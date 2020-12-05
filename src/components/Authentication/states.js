@@ -207,7 +207,7 @@ export const Confirm = ( {
     >{ error }</div>
   </WarningDiv>}
   <SelectedButton onClick={ () => submit() }>
-          Submit
+    Submit
   </SelectedButton>
 </>
 
