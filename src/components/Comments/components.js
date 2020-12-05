@@ -2,7 +2,7 @@ import React from 'react'
 import {
   addPost, addComment, deleteComment, deletePost,
   addUpVote, addDownVote, removeVote, getTextInput, resetTextInput,
-  replyToComment, getUser, handleNewName
+  replyToComment, getUser, handleNewName, disableUser
 } from './utils'
 import {
   Title, TextInput,
@@ -462,6 +462,12 @@ export const User = ( {
           .then( () => setWorking( false ) )
       }
     } }>Change Name</AdminButton>
-    <AdminButton>Disable</AdminButton></>
+    <AdminButton onClick={ () => {
+      if ( !working ) {
+        setWorking( true )
+        disableUser( userNumber, setError ).then( () => setWorking( false ) )
+      }
+    } }
+    >Disable</AdminButton></>
   }
 </>

@@ -273,6 +273,16 @@ export const removeVote = async (
   } catch( error ) { setError( error ) }
 }
 
+/**
+ * Dynamically gets the user's details.
+ * @param {String}   userNumber   The user's number.
+ * @param {Function} setError     The function used to set the error while
+ *                                retrieving data from the database.
+ * @param {Object}   currentUser  The current user that is signed in to the
+ *                                session.
+ * @param {Function} setCommenter The function used to set the attributes of
+ *                                the commenter's modal view
+ */
 export const getUser = async (
   userNumber, setError, currentUser, setCommenter
 ) => {
@@ -284,13 +294,13 @@ export const getUser = async (
     if ( error ) setError( error )
     else {
       if ( currentUser ) {
-        if ( currentUser.isAdmin )
+        if ( currentUser.isAdmin ) {
           setCommenter( {
             name: user.name, email: user.email, userNumber: user.userNumber,
             dateString: timeSince( user.dateJoined ),
             isAdmin: true,
           } )
-        else
+        } else
           setCommenter( {
             name: user.name, dateString: timeSince( user.dateJoined ),
             isAdmin: false
@@ -306,6 +316,15 @@ export const getUser = async (
   }
 }
 
+/**
+ * Changes the name of a user.
+ * @param {String}   name       The old name of the user.
+ * @param {String}   email      The email of the user.
+ * @param {String}   userNumber The number of the user.
+ * @param {String}   newName    The new name to change to.
+ * @param {Function} setError   The function used to set the error while
+ *                              accessing the database.
+ */
 export const handleNewName = async (
   name, email, userNumber, newName, setError
 ) => {
@@ -318,4 +337,20 @@ export const handleNewName = async (
   } catch ( error ) {
     setError( error.message )
   }
+}
+
+/**
+ * Disables and signs a specific user out.
+ * @param {String}   userNumber The number of the user.
+ * @param {Function} setError   The function used to set the error while
+ *                              accessing the database.
+ */
+export const disableUser = async ( userNumber, setError ) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/disable-user`,
+      { body: { userNumber } }
+    )
+    if ( error ) setError( error )
+  } catch ( error ) { setError( error ) }
 }
