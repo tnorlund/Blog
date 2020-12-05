@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStaticQuery, graphql } from "gatsby"
 import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
+import { useSessionStorage } from 'hooks'
+import { AUTH_KEY } from 'utils/constants'
+import { FireHose } from 'utils/auth'
 
 /**
  *
@@ -77,6 +80,10 @@ export default function Resume() {
     }
   ` )
   const { positions, skills } = contentYaml
+  const user = useSessionStorage( AUTH_KEY )[0]
+  useEffect( () => {
+    FireHose( `Resume`, `/resume`, user )
+  }, [ user ] )
   return(
     <PageBody>
       <Toc />

@@ -153,11 +153,17 @@ export const FireHose = async ( title, slug, user, now = new Date() ) => {
     id: now.toISOString(),
     title, slug,
     ip: response.data.ip,
-    user: user.userNumber
+    user: user.userNumber,
+    app: window.navigator.userAgent,
+    height: window.screen.height,
+    width: window.screen.width
   } : {
     id: now.toISOString(),
     title, slug,
-    ip: response.data.ip
+    ip: response.data.ip,
+    app: window.navigator.userAgent,
+    height: window.screen.height,
+    width: window.screen.width
   }
   Analytics.record( {
     data,

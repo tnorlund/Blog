@@ -40,8 +40,7 @@ function Social( { metadata } ) {
 
 const Landing = ( { data } ) => {
   const { landing, picture, metadata } = data
-  const [ user, setUserSession ] = useSessionStorage( AUTH_KEY )
-
+  const user = useSessionStorage( AUTH_KEY )[0]
   useEffect( () => {
     FireHose( `Tyler Norlund`, `/`, user )
   }, [ user ] )
