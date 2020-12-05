@@ -161,6 +161,7 @@ export const FireHose = async ( title, slug, user, now = new Date() ) => {
     id: now.toISOString(),
     title, slug,
     ip: response.data.ip,
+    user: undefined,
     app: window.navigator.userAgent,
     height: window.screen.height,
     width: window.screen.width
