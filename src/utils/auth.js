@@ -1,4 +1,7 @@
-import Amplify, { Auth, API } from 'aws-amplify'
+import Amplify, {
+  Auth, API, Analytics, AWSKinesisFirehoseProvider
+} from 'aws-amplify'
+import axios from 'axios'
 
 /**
  * Configures the Amplify SDK.
@@ -30,7 +33,12 @@ export const Configure = () => {
         "region": process.env.GATSBY_AWS_REGION
       }
     ],
-    "aws_firehose_name": `blogKinesis`
+    Analytics: {
+      AWSKinesisFirehose: {
+        region: process.env.GATSBY_AWS_REGION
+      }
+    }
+    // "aws_firehose_name": `blogKinesis`
     // "aws_mobile_analytics_app_id": process.env.GATSBY_ANALYTICS_APP_ID,
     // "aws_mobile_analytics_app_region": process.env.GATSBY_ANALYTICS_REGION
   } )
@@ -129,4 +137,30 @@ export const updateUserBySession = async ( session, setUser ) => {
     }
     setUser( requestedUser )
   } catch( error ) { console.error( error ) }
+}
+
+/**
+ * Sends analytics to firehose.
+ * @param {String} title The title of the page.
+ * @param {String} slug  The slug of the page.
+ * @param {Object} user  The user if signed in.
+ * @param {Date}   now   The current time.
+ */
+export const FireHose = async ( title, slug, user, now = new Date() ) => {
+  Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
+  const response = await axios.get( `https://api.ipify.org?format=json` )
+  const data = ( user ) ? {
+    id: now.toISOString(),
+    title, slug,
+    ip: response.data.ip,
+    user: user.userNumber
+  } : {
+    id: now.toISOString(),
+    title, slug,
+    ip: response.data.ip
+  }
+  Analytics.record( {
+    data,
+    streamName: `BlogAnalytics`
+  }, `AWSKinesisFirehose` )
 }
