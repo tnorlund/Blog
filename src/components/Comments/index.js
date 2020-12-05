@@ -30,8 +30,6 @@ export default function Comments( { slug, title } ) {
   const [ reply, setReply ] = useState( `` )
   // The user being displayed in the modal view
   const [ open, setModal ] = useState( false )
-  // Whether to show the name change or not.
-  const [ showNewName, setShowNewName ] = useState( true )
   // When a user wants to change their name.
   const [ newName, setNewName ] = useState()
   // The commenter details shown in the modal view.

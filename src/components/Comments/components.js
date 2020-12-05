@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   addPost, addComment, deleteComment, deletePost,
   addUpVote, addDownVote, removeVote, getTextInput, resetTextInput,
@@ -454,7 +454,6 @@ export const User = ( {
       onChange={ ( event ) => {
         setNewName( event.target.value )
       } }
-      // value={ newName }
     />
     <AdminButton onClick={ () => {
       if ( !working ) {

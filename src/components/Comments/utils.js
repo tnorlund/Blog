@@ -1,5 +1,4 @@
 import { API } from 'aws-amplify'
-import { User } from './components'
 import { timeSince } from 'utils/date'
 
 /**
@@ -310,7 +309,6 @@ export const getUser = async (
 export const handleNewName = async (
   name, email, userNumber, newName, setError
 ) => {
-  console.log( { name, email, userNumber, newName } )
   try {
     const { error } = await API.post(
       `blogAPI`, `/user-name`,
