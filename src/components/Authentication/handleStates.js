@@ -4,8 +4,12 @@ import {
   handleLoggingOut, resendConfrimationEmail
 } from './utils'
 import { timeSince } from 'utils/date'
-import { Login, SignUp, Forgot, Confirm, User } from './states'
+import { Login, SignUp, Forgot, Confirm, User, TOS } from './states'
+import { graphql, useStaticQuery } from "gatsby"
 
+
+// TODO
+// [ ] Show terms of service when user has not agreed to most recent
 export default function HandleStates( user, setUser ) {
   // Sets the state for the login form.
   const [ email, setEmail ] = useState( `` )
@@ -25,10 +29,16 @@ export default function HandleStates( user, setUser ) {
   const [ page, setPage ] = useState( `login` )
   // When a user first signs up, show them at the login screen.
   const [ newUser, setNewUser ] = useState( false )
+  // Sets whether to show the new name option when showing
   const [ showNewName, setShowNewName ] = useState( false )
   // When a user wants to change their name.
   const [ newName, setNewName ] = useState()
-
+  // The version of the Terms of Service
+  const terms = useStaticQuery( graphql`
+    query { mdx(fileAbsolutePath: {regex: "/tos.index.md/"}) {
+      frontmatter { version }, body
+    } }
+  ` ).mdx
   // A login function that logs the user in
   const login = async() => {
     if ( email == `` || password == `` )
@@ -102,14 +112,22 @@ export default function HandleStates( user, setUser ) {
       }/>}
       </>}
       {
-        user && <User {
+        user &&
+        Object.keys( user.tos )
+          .indexOf( terms.frontmatter.version ) >= 0 && <User {
           ...{ name: user.name, dateString: timeSince(
             String( user.dateJoined )
           ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin,
           setEmail, newName, setNewName, showNewName, setShowNewName, user }
         }/>
       }
-
+      {
+        user && Object.keys( user.tos )
+          .indexOf( terms.frontmatter.version ) < 0 && <TOS
+          body={terms.body} user={user} version={ terms.frontmatter.version }
+          setError={ setError } error={ error } setUser={ setUser }
+        />
+      }
     </>
   )
 }

@@ -5,7 +5,9 @@ import {
   UnselectedButton
 } from './styles'
 import { timeSince } from 'utils/date'
-import { handleNewName } from './utils'
+import { handleNewName, handleTOS } from './utils'
+import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
+
 
 export const Login = ( {
   newUser, setEmail, setError, setPassword, email, setPage, error, needConfirm,
@@ -256,5 +258,25 @@ export const User = ( {
     () => handleLoggingOut( setUser, setError, setEmail ) }
   >
     Sign Out
+  </SelectedButton>
+</>
+
+export const TOS = ( { body, user, version, setError, error, setUser } ) => <>
+  <UserDetails>
+    <Title>Terms of Service</Title>
+  </UserDetails>
+  <div css={`padding-left:1.5em;padding-right:1.5em;`}>
+    <Mdx>{body}</Mdx>
+  </div>
+  { error && <WarningDiv><WarningIcon/>
+    <div
+      css={`display: inline-block;
+    vertical-align: middle;`}
+    >{ error }</div>
+  </WarningDiv> }
+  <SelectedButton onClick={
+    () => handleTOS( user, version, setError, setUser )
+  } >
+    Accept
   </SelectedButton>
 </>

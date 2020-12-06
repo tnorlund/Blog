@@ -99,6 +99,19 @@ export const handleLoggingOut = async ( setUser, setError, setEmail ) => {
   } catch ( error ) { setError( error.message ) }
 }
 
+/**
+ * Requests a name change for the current user.
+ * @param {String}   name           The current user's name.
+ * @param {String}   email          The current user's email.
+ * @param {Number}   userNumber     The current user's number.
+ * @param {String}   newName        The new name requested by the user.
+ * @param {Function} setUser        The function used to set the user's detail
+ *                                  into session storage.
+ * @param {Function} setError       The function used to set the error if one
+ *                                  occurs.
+ * @param {Function} setShowNewName The function used to show the text input of
+ *                                  a new name for a user.
+ */
 export const handleNewName = async (
   name, email, userNumber, newName, setUser, setError, setShowNewName
 ) => {
@@ -108,12 +121,30 @@ export const handleNewName = async (
       { body: { name, email, userNumber, newName } }
     )
     if ( error ) setError( error )
-    else {
-      setShowNewName( false )
-      setUser()
-      updateUser( setUser )
-    }
+    else { setShowNewName( false ); setUser(); updateUser( setUser ) }
   } catch ( error ) {
     setError( error.message )
   }
+}
+
+/**
+ * Adds a terms of service to the current user signed in.
+ * @param {Object} user       The current user signed in.
+ * @param {String} version    The version of the terms of service.
+ * @param {Function} setError The function used to set the error if one occurs.
+ * @param {Function} setUser  The function used to set the user's detail into
+ *                            session storage.
+ */
+export const handleTOS = async ( user, version, setError, setUser ) => {
+  try {
+    const { error } = await API.post(
+      `blogAPI`, `/tos`,
+      { body: {
+        name: user.name, email: user.email, number: user.userNumber,
+        version: version
+      } }
+    )
+    if ( error ) setError( error )
+    else { setUser(); updateUser( setUser ) }
+  } catch( error ) { setError( error.message ) }
 }
