@@ -169,7 +169,7 @@ export const FireHose = async ( title, slug, user, now = new Date() ) => {
       }
       Analytics.record( {
         data,
-        streamName: `BlogAnalytics`
+        streamName: process.env.GATSBY_ANALYTICS_FIREHOSE
       }, `AWSKinesisFirehose` )
     } )
   // eslint-disable-next-line no-console
