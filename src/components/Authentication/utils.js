@@ -32,7 +32,9 @@ export const handleLoggingIn = async (
  */
 export const handleSigningUp = async ( email, password, name, setError ) => {
   try {
-    const { error, blog } = await API.get( `blogAPI`, `/blog` )
+    const { error, blog } = await API.get(
+      process.env.GATSBY_API_BLOG_NAME, `/blog`
+    )
     if ( error ) setError( error )
     else {
       await Auth.signUp( {
@@ -117,7 +119,7 @@ export const handleNewName = async (
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/user-name`,
+      process.env.GATSBY_API_BLOG_NAME, `/user-name`,
       { body: { name, email, userNumber, newName } }
     )
     if ( error ) setError( error )
@@ -138,7 +140,7 @@ export const handleNewName = async (
 export const handleTOS = async ( user, version, setError, setUser ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/tos`,
+      process.env.GATSBY_API_BLOG_NAME, `/tos`,
       { body: {
         name: user.name, email: user.email, number: user.userNumber,
         version: version

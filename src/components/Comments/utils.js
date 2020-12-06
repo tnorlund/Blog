@@ -24,7 +24,7 @@ export const getTextInput = ( id ) => document.getElementById( id ).innerHTML
 export const getPost = async ( slug, title ) => {
   try {
     const { post, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/post?slug=${ slug }&title=${ title }`
     )
     if ( error ) return { error: error }
@@ -44,7 +44,7 @@ export const getPost = async ( slug, title ) => {
 export const getPostDetails = async ( slug, title, setWarning, setError ) => {
   try {
     const { error, post, comments } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/post-details?slug=${ slug }&title=${ title }`
     )
     if ( error ) { setError( error ); return { error: error } }
@@ -64,7 +64,7 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
 export const addPost = async ( slug, title, setWarning, setError ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/post`,
       { body: { slug: slug, title: title } }
     )
@@ -85,7 +85,7 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
 export const deletePost = async ( slug, title, setWarning, setError ) => {
   try {
     const { error } = await API.del(
-      `blogAPI`, `/post`,
+      process.env.GATSBY_API_BLOG_NAME, `/post`,
       { body: { slug, title } } )
     if ( error ) setError( error )
     else setError()
@@ -110,7 +110,7 @@ export const deleteComment = async (
 ) => {
   try {
     const { error } = await API.del(
-      `blogAPI`, `/comment`,
+      process.env.GATSBY_API_BLOG_NAME, `/comment`,
       { body: { name, email, userNumber, slug, title, replyChain } } )
     if ( error ) setError( error )
     else { setWarning( false ); setError() }
@@ -138,7 +138,7 @@ export const addComment = async (
   if ( text != `` ) {
     try {
       const { error } = await API.post(
-        `blogAPI`,
+        process.env.GATSBY_API_BLOG_NAME,
         `/comment`,
         { body: { name, email, userNumber, slug, title, text } }
       )
@@ -170,7 +170,7 @@ export const replyToComment = async (
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/reply`,
       { body: { name, email, userNumber, slug, title, text, replyChain } }
     )
@@ -201,7 +201,7 @@ export const addUpVote = async (
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/vote`,
+      process.env.GATSBY_API_BLOG_NAME, `/vote`,
       { body: {
         name, email, userNumber, slug, commentUserNumber, replyChain, up: true
       } }
@@ -230,7 +230,7 @@ export const addDownVote = async (
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/vote`,
+      process.env.GATSBY_API_BLOG_NAME, `/vote`,
       { body: {
         name, email, userNumber, slug, commentUserNumber, replyChain, up: false
       } }
@@ -263,7 +263,7 @@ export const removeVote = async (
 ) => {
   try {
     const { error } = await API.del(
-      `blogAPI`, `/vote`,
+      process.env.GATSBY_API_BLOG_NAME, `/vote`,
       { body: {
         name, email, userNumber, slug, commentNumber, up, commentDateAdded,
         voteDateAdded
@@ -288,7 +288,7 @@ export const getUser = async (
 ) => {
   try {
     const { user, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/user?userNumber=${ userNumber }`
     )
     if ( error ) setError( error )
@@ -330,7 +330,7 @@ export const handleNewName = async (
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/user-name`,
+      process.env.GATSBY_API_BLOG_NAME, `/user-name`,
       { body: { name, email, userNumber, newName } }
     )
     if ( error ) setError( error )
@@ -348,7 +348,7 @@ export const handleNewName = async (
 export const disableUser = async ( userNumber, setError ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`, `/disable-user`,
+      process.env.GATSBY_API_BLOG_NAME, `/disable-user`,
       { body: { userNumber } }
     )
     if ( error ) setError( error )

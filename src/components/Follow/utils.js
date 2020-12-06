@@ -18,8 +18,7 @@ export const updateProject = async(
 ) => {
   try {
     const { error } = await API.post(
-      `blogAPI`,
-      `/project-update`,
+      process.env.GATSBY_API_BLOG_NAME, `/project-update`,
       { body: {
         title: title, slug: slug, numberFollows: String( numberFollows )
       } }
@@ -52,8 +51,7 @@ export const removeProject = async(
   try {
     setFollowNumber( 0 )
     const { error } = await API.del(
-      `blogAPI`,
-      `/project`,
+      process.env.GATSBY_API_BLOG_NAME, `/project`,
       { body: { title: title, slug: slug } }
     )
     if ( error ) setError( error )
@@ -72,7 +70,7 @@ export const removeProject = async(
 export const getProjectDetails = async( slug, title, setError ) => {
   try {
     const { project, followers, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/project-details?slug=${ slug }&title=${ title }`
     )
     if ( error ) setError( error )
@@ -88,7 +86,7 @@ export const getProjectDetails = async( slug, title, setError ) => {
 export const getProject = async ( slug, title ) => {
   try {
     const { project, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/project?slug=${ slug }&title=${ title }`
     )
     if ( error ) return { error: error }
@@ -123,8 +121,7 @@ export const addFollow = async (
     setFollowNumber( ++followNumber )
     setFollowing( true )
     const { error } = await API.post(
-      `blogAPI`,
-      `/project-follow`,
+      process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
       { body: {
         slug: slug,
         title: title,
@@ -170,8 +167,7 @@ export const removeFollow = async (
     setFollowing( false )
     setFollowNumber( --followNumber )
     const { error } = await API.del(
-      `blogAPI`,
-      `/project-follow`,
+      process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
       { body: {
         slug: slug,
         title: title,
@@ -205,8 +201,7 @@ export const addProject = async (
   slug, title, setWarning, setError, setWorking
 ) => {
   const { error } = await API.post(
-    `blogAPI`,
-    `/project`,
+    process.env.GATSBY_API_BLOG_NAME, `/project`,
     { body: { slug: slug, title: title } }
   )
   if ( error ) setError( error )

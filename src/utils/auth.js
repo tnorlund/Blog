@@ -99,7 +99,7 @@ export const updateUser = async ( setUser ) => {
   } = await getCurrentSession()
   try {
     const { user, tos, comments, follows, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/user-details?name=${ name }&email=${ email }&number=${ userNumber }`
     )
     if ( error ) console.error( error )
@@ -124,7 +124,7 @@ export const updateUserBySession = async ( session, setUser ) => {
     .payload[`cognito:groups`]
   try {
     const { user, tos, comments, follows, error } = await API.get(
-      `blogAPI`,
+      process.env.GATSBY_API_BLOG_NAME,
       `/user-details?name=${ name }&email=${ email }&number=${
         session.attributes[`custom:UserNumber`]
       }`
@@ -172,5 +172,6 @@ export const FireHose = async ( title, slug, user, now = new Date() ) => {
         streamName: `BlogAnalytics`
       }, `AWSKinesisFirehose` )
     } )
+  // eslint-disable-next-line no-console
   } catch( error ) { console.log( `error`, error )}
 }
