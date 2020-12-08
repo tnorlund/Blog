@@ -87,7 +87,7 @@ export const getProject = async ( slug, title ) => {
   try {
     const { project, error } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/project?slug=${ slug }&title=${ title }`
+      `/project?slug=${ slug }&title=${ title }`,
     )
     if ( error ) return { error: error }
     return { project: project }

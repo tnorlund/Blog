@@ -1,4 +1,4 @@
-import { API } from 'aws-amplify'
+import Amplify, { API } from 'aws-amplify'
 import { timeSince } from 'utils/date'
 
 /**
@@ -42,6 +42,7 @@ export const getPost = async ( slug, title ) => {
  *                              retrieving data from the database.
  */
 export const getPostDetails = async ( slug, title, setWarning, setError ) => {
+  Amplify.register( API )
   try {
     const { error, post, comments } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,

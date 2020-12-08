@@ -42,6 +42,8 @@ export const Configure = () => {
     // "aws_mobile_analytics_app_id": process.env.GATSBY_ANALYTICS_APP_ID,
     // "aws_mobile_analytics_app_region": process.env.GATSBY_ANALYTICS_REGION
   } )
+  Amplify.register( Auth )
+  Amplify.register( API )
 }
 
 /**

@@ -8,8 +8,6 @@ import { Login, SignUp, Forgot, Confirm, User, TOS } from './states'
 import { graphql, useStaticQuery } from "gatsby"
 
 
-// TODO
-// [ ] Show terms of service when user has not agreed to most recent
 export default function HandleStates( user, setUser ) {
   // Sets the state for the login form.
   const [ email, setEmail ] = useState( `` )
