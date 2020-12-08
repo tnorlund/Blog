@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const macros = require( `./src/utils/katex` )
 const sitemapOptions = require( `./src/utils/sitemap` )
-require( `dotenv` ).config()
+// require( `dotenv` ).config()
 
 const gatsbyRemarkPlugins = [
   `gatsby-remark-smartypants`,
