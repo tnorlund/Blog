@@ -9,7 +9,7 @@ public
 .DS_Store
 
 # Environment
-.env
+.env*
 
 # JSDoc
 out/
