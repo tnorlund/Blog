@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 const macros = require( `./src/utils/katex` )
 const sitemapOptions = require( `./src/utils/sitemap` )
+// Uncomment this require to work on the backend locally.
+// This causes a problem by overwriting the ENV in production.
 // require( `dotenv` ).config()
 
 const gatsbyRemarkPlugins = [
