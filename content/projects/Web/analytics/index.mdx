@@ -5,22 +5,38 @@ date: "2020-12-09T08:33:24"
 description: "Trying to understand how people use this website on how to integrate the analysis vertically."
 showToc: true
 ---
+import MdxIcon from 'components/MdxIcon'
 
-AWS offers fast, scalable compute with Lambda functions. Previously, I talked about how these functions can control access to a database through an API. I decided to ad another database and API to manage the analytics of this website.
+I decided to scale out the analytics I previously shared by diving deeper in more AWS services.
 
-# Extract
+# First Attempt
 
-![Pandas](./Pandas.svg)
+From the last post, I was using Kinesis Firehose to store visitor data in an S3 bucket. An *Extract Transform Load*, ETL, pipeline is needed to store the data in DynamoDB.
+
+![Glue](./Glue.svg)
+
+I started by using Amazon Glue, a service provided by Amazon for ETL. I had a glue crawler move through the S3 bucket every 5 minutes to transform the raw data to manageable '.parquet' files.
 
 ![Parquet](./Parquet.svg)
 
+Glue provides a table which is then used by Amazon EMR to distribute Spark clusters.
+
 ![Spark](./Spark.svg)
 
-Amazon Kinesis Firehose allows for gigabytes of data to be stored. This raw data is stored in an S3 bucket as '.parquet' files for every minute the website is up and running. 
+After running this for a week, it ended up costing me $10. This option is highly scalable, but costs a lot. I needed another option.
 
-# Transform
+# Event-driven Functions
 
-# Load
+With previous Lambda experience, I thought that running a Lambda function every time Kinesis Firehose stored a '.parquet' file in the S3 bucket would be the best option.
 
-This notebook covers a lambda function that processes a '.parquet' file being processed by AWS Glue and placed in an S3 bucket.
+My previous experience with Python came in handy when engineering the analytics data. I went with the Pandas library because of my past experience and Pandas's ability to parse '.parquet' files extremely fast.
 
+![Pandas](./Pandas.svg)
+
+This method lets me remain "serverless" while keepings costs low.
+
+# Database Architecture
+
+The DynamoDB needed to be structured after developing the ETL pipeline. The first step in doing this was creating another ERD.
+
+<MdxIcon filename={`analytics-ERD.svg`}/>
