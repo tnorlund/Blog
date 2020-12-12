@@ -40,3 +40,36 @@ This method lets me remain "serverless" while keepings costs low.
 The DynamoDB needed to be structured after developing the ETL pipeline. The first step in doing this was creating another ERD.
 
 <MdxIcon filename={`analytics-ERD.svg`}/>
+
+## Entities
+
+Rather than going through [DeBrie's](https://twitter.com/alexbdebrie?s=21) steps for designing a DynamoDB table again, I'm just going to talk about the entities used to segment the data.
+
+**Visitor**
+
+The visitor is the center of all of the analytics produced. The visitor visits unique pages, uses a browser to request these pages, and is located in a certain place. I decided to use the visitor's access patterns to determine the primary key.
+
+**Session**
+
+While each visitor visits certain pages, they produce a "session." This session will determine their habits while accessing the different pages. 
+
+The visitor, session, and other entities found in the ERD resulted in a table structure that required 2 global secondary indexes. The primary key is used to request the visitor-specific data.
+
+|                  | PK                     | SK                            |
+|------------------|------------------------|-------------------------------|
+| Visit            | VISITOR#[IP Address]   | VISIT#[Date Visited]#[Slug]   |
+| Visitor          | VISITOR#[IP Address]   | #VISITOR                      |
+| Location         | VISITOR#[IP Address]   | #LOCATION                     |
+| Browser          | VISITOR#[IP Address]   | #BROWSER#[Date Visited]       |
+| Session          | VISITOR#[IP Address]   | SESSION#[Session Start Time]  |
+
+The first global secondary index is used to request the page-specific data.
+
+|                  | GSI1PK                 | GSI1SK                        |
+|------------------|------------------------|-------------------------------|
+| Visit            | PAGE#[Slug]            | VISIT#[Date Visited]          |
+| Page             | PAGE#[Slug]            | #PAGE                         |
+| Week             | PAGE#[Slug]            | #WEEK#[Date]                  |
+| Month            | PAGE#[Slug]            | #MONTH#[Date]                 |
+
+Finally, the second global secondary index is used to request the session-specific data.
