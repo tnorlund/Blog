@@ -81,10 +81,20 @@ Finally, the second global secondary index is used to request the session-specif
 
 # Transforming the Data
 
-With the DynamoDB table designed, the functions used to process the raw data into processed data remains. I ended up following this flow diagram in the Lambda function that runs whenever Kinesis Firehose stores a '.parquet' file in the S3 bucket. 
+With the architecture of the table out of the way, the raw data needs to be processed to fit in the design. I ended up following this flow diagram in the Lambda function that runs whenever Kinesis Firehose stores a '.parquet' file in the S3 bucket. 
 
 <MdxIcon filename={`AnalyticsFlow.svg`}/>
 
 # Conclusion
 
-This was fun, and reduced the costs over 90%.
+This reduced costs over 90%, and allows me to still use EMR.
+
+![EMR](./EMR.svg)
+
+I understand why ElasticMap Reduce would still be needed. DynamoDB is mostly used for transacting data from a database, and I'm limited in how I can analyze the data after transforming the data through this single pipeline. With the raw data still in the data lake, I will always have the option to access the data using another method.
+
+To keep costs at a minimum, an ETL pipeline needs to be implemented early in the product's life. With this event-based pipeline, I can still make realtime decisions based on users while paying a fraction of what most people are currently paying. 
+
+From my experience, this is where most businesses and people fail to understand their users. It should not take days or weeks to create a report of how your users or customers use your product. They're most likely not using your product by then!
+
+Today, companies must use analytics to understand their customers rather than asking them for feedback. A centralized place to store user analytics with realtime, event-driven business decisions is required to maintain competitiveness in a web-driven economy. The real question is: how much are you willing to pay to remain competitive? 
