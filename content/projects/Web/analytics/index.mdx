@@ -74,4 +74,17 @@ The first global secondary index is used to request the page-specific data.
 
 Finally, the second global secondary index is used to request the session-specific data.
 
+|                  | GSI2PK                 | GSI2SK                        |
+|------------------|------------------------|-------------------------------|
+| Visitor          | VISITOR#[IP Address]   | #VISITOR                      |
+| Session          | VISITOR#[IP Address]   | SESSION#[Session Start Time]  |
+
+# Transforming the Data
+
+With the DynamoDB table designed, the functions used to process the raw data into processed data remains. I ended up following this flow diagram in the Lambda function that runs whenever Kinesis Firehose stores a '.parquet' file in the S3 bucket. 
+
 <MdxIcon filename={`AnalyticsFlow.svg`}/>
+
+# Conclusion
+
+This was fun, and reduced the costs over 90%.
