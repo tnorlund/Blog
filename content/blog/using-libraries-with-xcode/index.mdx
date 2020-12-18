@@ -1,0 +1,114 @@
+---
+title: Using Libraries With Xcode
+date: "2020-12-17T11:01:06"
+slug: /blog/using-libraries-with-xcode
+description: "How I setup my environment using macOS, Xcode, OpenCV, and OpenMPI."
+showToc: true
+---
+
+import MdxImage from 'components/MdxImage'
+
+I've used a Mac my whole life. They have always come across as easy to use, but Apple's IDE, Xcode, has always been difficult for me to understand. Don't get me wrong, when it comes to designing Apple software for Apple hardware, Xcode is great, but developing something like C++ with Xcode is difficult, *especially* when using third party libraries. 
+
+I decided to start refactoring a previous image-processing project I was working on that used [OpenCV](https://opencv.org), an open source image-processing library, and [Open MPI](https://www.open-mpi.org), an open source message passing interface for high performance computing.
+
+![OpenCV](./OpenCV.svg)
+
+![OpenMPI](./OpenMPI.svg)
+
+I'd like to develop an iOS app soon. I was thinking that the best way to approach this would be to use Xcode with something I already know how to use, OpenCV. Here is how I setup Xcode with OpenCV and Open MPI.
+
+# Installing Dependencies
+
+Sadly, macOS lacks a package manager. The Mac App Store doesn't cut it when it comes to managing your local packages. I've come to use [Homebrew](https://brew.sh), a package manager for both macOS and Linux. 
+![Homebrew](./Homebrew.svg)
+Installing OpenCV through Homebrew is really easy:
+
+```bash
+$ brew install opencv
+```
+
+Homebrew will install a lot more than just the OpenCV library. This will take some time, but all of the dependencies that come with help while using the library. After installing OpenCV, I installed Open MPI.
+
+```bash
+$ brew install open-mpi
+```
+
+# Setting Up Xcode
+
+Xcode is available through the Mac [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). Once installed, I'd recommend linking your GitHub account to Xcode.
+
+![Github](./Github.svg)
+
+You can do this by accessing the preferences `⌘ + ,`. You can then add accounts through the 'Accounts' tab.
+
+<MdxImage filename={'Xcode_Accounts.png'}/>
+
+Here, you can add your GitHub account and remotely commit to your repositories.
+
+<MdxImage filename={'Xcode_ActiveGithub.png'}/>
+
+## Adding Libraries
+
+Open Xcode and create a new project. Make sure you select macOS and the command line tool options.
+
+<MdxImage filename={'Xcode_CreateProject.png'}/>
+
+### OpenCV
+
+The build setting need to be configured to compile OpenCV. Use the `pkg-config` program to find the required libraries and flags.
+
+```bash
+% pkg-config --cflags --libs opencv4
+-I/usr/local/Cellar/opencv/4.5.0_5/include/opencv4 \
+-L/usr/local/Cellar/opencv/4.5.0_5/lib \
+-lopencv_gapi \
+...
+```
+
+These library and header paths can be added to Xcode in the project's build settings. These are accessed by clicking on the project's name in the top left of the window and then the 'Build Settings' tab.
+
+<MdxImage filename={'Xcode_BuildSettings.png'}/>
+
+From the 'Build Settings' tab, click the 'All' tab under that and search for 'Search Path'.
+
+<MdxImage filename={'Xcode_SearchPath.png'}/>
+
+The output from `pkg-config` provides the header search paths, `/usr/local/Cellar/opencv/4.5.0_5/include/opencv4`, and the library search paths, `/usr/local/Cellar/opencv/4.5.0_5/lib`. While adding these paths, be sure to set the search to be recursive. 
+
+<MdxImage filename={'Xcode_OpenCVPaths.png'}/>
+
+After adding the search paths, the linker flags can be added by searching for 'Other Linker Flags'. Place the entire output of the `pkg-config` call here.
+
+<MdxImage filename={'Xcode_OpenCVLinkerFlags.png'}/>
+
+### Open MPI
+
+The same process is used for adding Open MPI to the build settings. Use `pkg-config` to find the header and library paths. Open MPI has 2 required libraries. Be sure to add both `/usr/local/Cellar/open-mpi/4.0.5/lib` and `/usr/local/opt/libevent/lib`.
+
+```bash
+$ pkg-config --cflags --libs ompi
+-I/usr/local/Cellar/open-mpi/4.0.5/include \
+-L/usr/local/Cellar/open-mpi/4.0.5/lib \
+-L/usr/local/opt/libevent/lib -lmpi
+```
+
+After adding the paths, add the entire output of `pkg-config` to the linker flags.
+
+Open MPI uses a shell script to execute the MPI application. Homebrew should alias this script as `mpirun`.
+
+In order to for Xcode to call `mpirun` rather than the compiled binary of the project, go to Product > Schema > Edit Schema...
+
+<MdxImage filename={'Xcode_OriginalSchema.png'}/>
+
+Change the 'Executable' option to 'Other...' and use `⌘ + shift + g` to go the `/usr/local/Cellar/open-mpi/4.0.5/bin` directory to select `mpirun`.
+
+<MdxImage filename={'Xcode_ChangedSchema.png'}/>
+
+Add `-np 2` to the 'Arguments Passed On Launch' option under the 'Arguments' tab to run 2 threads on execution. This number is limited by the number of accessible processor cores you have on your Mac.
+
+<MdxImage filename={'Xcode_Arguments.png'}/>
+
+# Conclusion
+
+This is much harder than creating a CMAKE file. I don't know what Xcode isn't as accessible as others, but it's a good IDE that is the only option for developing software for Apple products.
