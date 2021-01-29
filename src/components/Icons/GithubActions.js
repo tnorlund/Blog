@@ -4,28 +4,33 @@ import { Spring, animated } from 'react-spring/renderprops'
 import { useInView } from 'react-hook-inview'
 
 const blue = `#4c80c1`
+const min_x = 0
+const max_x = 1
+const range = ( min_x - max_x )
+const steps = {
+  1: { length: 2 },
+  2: { length: 3 },
+  3: { length: 2 },
+  4: { length: 2 },
+  5: { length: 2 },
+  6: { length: 2 }
+}
+const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
+let start = min_x
+Object.keys( steps ).forEach( ( key, index ) => {
+  steps[ key ][`start`] = start
+  steps[ key ][`stop`] = start + ( steps[ key ].length / sum )
+  start = start + ( steps[ key ].length / sum )
+} )
 
 const GithubActions = () => {
   const [ref, inView] = useInView( {
     threshold: 1,
   } )
-  return <div
-    ref={ref}
-    style={ {
-      height: `200pt`,
-    } }
-  >
-    <Spring
-      native
-      to={{ x: inView ?  1 : 0 }}
-    >
+  return <div ref={ref} style={ { height: `200pt` } } >
+    <Spring native to={ { x: inView ?  max_x : min_x } } >
       { ( props ) => (
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 200 100"
-          preserveAspectRatio="YMax"
-        >
+        <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
           {/** Step 1
              * Expand the Play button and circle enclosing it.
              */}
@@ -34,10 +39,7 @@ const GithubActions = () => {
               position: `absolute`,
               transformOrigin: `13.5873% 33.6141%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="circle"
@@ -50,10 +52,7 @@ const GithubActions = () => {
               position: `absolute`,
               transformOrigin: `14.0086% 33.7537%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="play"
@@ -62,58 +61,18 @@ const GithubActions = () => {
             d="M25.09,30.37,31,33.75l-5.86,3.39V30.37m0-1.56a1.56,1.56,0,0,0-1.56,1.56v6.77a1.57,1.57,0,0,0,.78,1.35,1.55,1.55,0,0,0,1.56,0l5.86-3.38a1.57,1.57,0,0,0,0-2.71L25.87,29a1.55,1.55,0,0,0-.78-.21Z"
           />
           {/** Step 2
-             * Draw the line from the Play circle and the first two actions.
-             */}
-          <animated.path
-            strokeDashoffset={
-              props.x
-                .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
-                } )
-                .interpolate( x => x )
-            }
-            stroke-dasharray={`100`}
-            name="actionLine"
-            fill={`none`}
-            stroke={blue}
-            strokeWidth={`1.5625`}
-            className="Step2"
-            d="M27.18,44.19s0,7.62,7,7.62"
-          />
-          <animated.path
-            strokeDashoffset={
-              props.x
-                .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
-                } )
-                .interpolate( x => x )
-            }
-            stroke-dasharray={`100`}
-            name="actionLine"
-            fill={`none`}
-            stroke={blue}
-            strokeWidth={`1.5625`}
-            className="Step2"
-            d="M34.18,69.51c-7,0-7-6.42-7-6.42V44.19"
-          />
-          {/** Step 3
-             * Draw the first two Actions's circles.
-             */}
+            * Draw the first two Actions's circles.
+            */}
           <animated.path
             style={ {
               position: `absolute`,
               transformOrigin: `20.81625% 69.51%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="bottomCircle"
-            className="Step3"
+            className="Step2"
             fill={blue}
             d="M41.64,63.62a5.89,5.89,0,1,1-5.9,5.89,5.9,5.9,0,0,1,5.9-5.89m0-1.56a7.45,7.45,0,1,0,7.45,7.45,7.45,7.45,0,0,0-7.45-7.45Z"
           />
@@ -122,30 +81,53 @@ const GithubActions = () => {
               position: `absolute`,
               transformOrigin: `20.81625% 51.8067%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="topCircle"
-            className="Step3"
+            className="Step2"
             fill={blue}
             d="M41.64,45.91a5.9,5.9,0,1,1-5.9,5.9,5.91,5.91,0,0,1,5.9-5.9m0-1.56a7.46,7.46,0,1,0,7.45,7.46,7.46,7.46,0,0,0-7.45-7.46Z"
           />
-          {/** Step 4
-             * Draw the first two Actions's icons.
+          {/** Step 3
+             * Draw the line from the Play circle and the first two actions.
+             * Draw the Top Check mark and the left dot
              */}
+          <animated.path
+            strokeDashoffset={
+              props.x
+                .interpolate( { range: [max_x, steps[3].start, steps[3].stop, min_x], output: [100, 100, 50, 50] } )
+                .interpolate( x => x )
+            }
+            strokeDasharray={`100`}
+            name="topLine"
+            fill={`none`}
+            stroke={blue}
+            strokeWidth={`1.5625`}
+            className="Step3"
+            d="M27.18,44.19s0,7.62,7,7.62"
+          />
+          <animated.path
+            strokeDashoffset={
+              props.x
+                .interpolate( { range: [max_x, steps[3].start, steps[3].stop, min_x], output: [100, 100, 50, 50] } )
+                .interpolate( x => x )
+            }
+            strokeDasharray={`100`}
+            name="bottomLine"
+            fill={`none`}
+            stroke={blue}
+            strokeWidth={`1.5625`}
+            className="Step3"
+            d="M34.18,69.51c-7,0-7-6.42-7-6.42V44.19"
+          />
           <animated.polyline
             strokeDashoffset={
               props.x
-                .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
-                } )
+                .interpolate( { range: [max_x, steps[3].start, steps[3].stop, min_x], output: [100, 100, 50, 50] } )
                 .interpolate( x => x )
             }
-            stroke-dasharray={`100`}
+            strokeDasharray={`100`}
             name="checkMark"
             fill={`none`}
             stroke={blue}
@@ -159,28 +141,22 @@ const GithubActions = () => {
               position: `absolute`,
               transformOrigin: `19.8057% 69.5021%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            className="Step4"
+            className="Step3"
             fill={blue}
             cx="39.62" cy="69.5" r="1.25"
           />
-          {/** Step 5
-             * Draw the top right circle and the line connecting it to the left one.
+          {/** Step 4
+             * Draw the top right circle and the right dot.
              */}
           <animated.path
             style={ {
               position: `absolute`,
               transformOrigin: `30.76085% 51.8067%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="topCircle"
@@ -188,16 +164,28 @@ const GithubActions = () => {
             fill={blue}
             d="M61.53,45.91a5.9,5.9,0,1,1-5.9,5.9,5.91,5.91,0,0,1,5.9-5.9m0-1.56A7.46,7.46,0,1,0,69,51.81a7.46,7.46,0,0,0-7.45-7.46Z"
           />
+          <animated.circle
+            style={ {
+              position: `absolute`,
+              transformOrigin: `21.69275% 69.5021%`,
+              transform: props.x
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( x => `scale(${x}, ${x})` )
+            } }
+            className="Step5"
+            fill={blue}
+            cx="43.39" cy="69.51" r="1.25"
+          />
+          {/** Step 5
+             * Draw the right check and the line connecting it's circle to the previous circle.
+             */}
           <animated.line
             strokeDashoffset={
               props.x
-                .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
-                } )
+                .interpolate( { range: [max_x, steps[5].start, steps[5].stop, min_x], output: [100, 100, 50, 50] } )
                 .interpolate( x => x )
             }
-            stroke-dasharray={`100`}
+            strokeDasharray={`100`}
             name="actionLine"
             fill={`none`}
             stroke={blue}
@@ -205,71 +193,16 @@ const GithubActions = () => {
             className="Step5"
             x2="49.09" y2="51.81" x1="54.07" y1="51.81"
           />
-          {/**
-             * Step B
-             * Draw the second dot in the bottom left circle.
-             */}
-          <animated.circle
-            style={ {
-              position: `absolute`,
-              transformOrigin: `21.69275% 69.5021%`,
-              transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
-                .interpolate( x => `scale(${x}, ${x})` )
-            } }
-            className="Step5"
-            fill={`red`}
-            cx="43.39" cy="69.51" r="1.25"
-          />
-          {/** Step C
-             *
-             * Draw the line connecting the bottom right circle and scale the circle.
-             */}
-          <animated.path
-            style={ {
-              position: `absolute`,
-              transformOrigin: `30.76085% 69.4938%`,
-              transform: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
-                .interpolate( x => `scale(${x}, ${x})` )
-            } }
-            name="bottomRight-Circle"
-            fill={blue}
-            className="bottomCircle"
-            d="M61.53,63.6a5.9,5.9,0,1,1-5.9,5.89,5.9,5.9,0,0,1,5.9-5.89m0-1.56A7.46,7.46,0,1,0,69,69.49,7.46,7.46,0,0,0,61.53,62Z"
-          />
-          <animated.line
-            strokeDashoffset={
-              props.x
-                .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
-                } )
-                .interpolate( x => x )
-            }
-            stroke-dasharray={`100`}
-            className="actionLine"
-            stroke={blue}
-            strokeWidth={`1.5625`}
-            strokeLinecap={`round`}
-            x1="54.07" y1="69.49" x2="51.42" y2="69.51"
-          />
           <animated.polyline
             strokeDashoffset={
               props.x
                 .interpolate( {
-                  range: [1, 0],
-                  output: [50, 100]
+                  range: [max_x, steps[5].start, steps[5].stop, min_x],
+                  output: [100, 100, 50, 50]
                 } )
                 .interpolate( x => x )
             }
-            stroke-dasharray={`100`}
+            strokeDasharray={`100`}
             name="checkMark"
             fill={`none`}
             stroke={blue}
@@ -278,13 +211,28 @@ const GithubActions = () => {
             className="Step6"
             points="63.84 50.19 60.72 53.3 59.2 51.81"
           />
-          {/* Letters */}
+
+          {/** Step 6
+             *
+             * Fade in the circle and line butt.
+             */}
+          <animated.path
+            style={ {
+              opacity: props.x
+                .interpolate( { range: [min_x, steps[6].start, steps[6].stop, max_x], output: [0, 0, 0.5, 0.5] } )
+                .interpolate( x => x )
+            } }
+            name="bottomRight-Circle"
+            fill={blue}
+            className="bottomCircle"
+            d="M61.53,62a7.46,7.46,0,0,0-7.42,6.68h0l-2.66,0a.78.78,0,0,0,0,1.56h2.69A7.46,7.46,0,1,0,61.53,62Zm0,13.35a5.9,5.9,0,1,1,5.89-5.9A5.91,5.91,0,0,1,61.53,75.39Z"
+          />
           {/* GitHub */}
           <animated.path
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -298,7 +246,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -312,7 +260,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -325,7 +273,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -339,7 +287,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -353,7 +301,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -367,7 +315,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -382,7 +330,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -396,7 +344,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -410,7 +358,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -424,7 +372,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -438,7 +386,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -452,7 +400,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -466,7 +414,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
@@ -480,7 +428,7 @@ const GithubActions = () => {
             style={ {
               opacity: props.x
                 .interpolate( {
-                  range: [0, 1],
+                  range: [min_x, max_x],
                   output: [0, 1]
                 } )
                 .interpolate( x => x )
