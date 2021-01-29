@@ -6,10 +6,9 @@ import { useInView } from 'react-hook-inview'
 const blue = `#4c80c1`
 const min_x = 0
 const max_x = 1
-const range = ( min_x - max_x )
 const steps = {
   1: { length: 2 },
-  2: { length: 3 },
+  2: { length: 2 },
   3: { length: 2 },
   4: { length: 2 },
   5: { length: 2 },
@@ -17,22 +16,21 @@ const steps = {
 }
 const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
 let start = min_x
-Object.keys( steps ).forEach( ( key, index ) => {
+Object.keys( steps ).forEach( ( key ) => {
   steps[ key ][`start`] = start
   steps[ key ][`stop`] = start + ( steps[ key ].length / sum )
   start = start + ( steps[ key ].length / sum )
 } )
 
 const GithubActions = () => {
-  const [ref, inView] = useInView( {
-    threshold: 1,
-  } )
+  // Only show when in view
+  const [ref, inView] = useInView( { threshold: 1, } )
   return <div ref={ref} style={ { height: `200pt` } } >
     <Spring native to={ { x: inView ?  max_x : min_x } } >
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
           {/** Step 1
-             * Expand the Play button and circle enclosing it.
+             * Expand first circle
              */}
           <animated.path
             style={ {
@@ -47,12 +45,15 @@ const GithubActions = () => {
             fill={blue}
             d="M27.18,24.6a9,9,0,1,1-9,9,9,9,0,0,1,9-9m0-1.56A10.58,10.58,0,1,0,37.76,33.61,10.58,10.58,0,0,0,27.18,23Z"
           />
+          {/** Step 2
+           * Draw the first two Actions's circles and the Play button.
+          */}
           <animated.path
             style={ {
               position: `absolute`,
               transformOrigin: `14.0086% 33.7537%`,
               transform: props.x
-                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
             name="play"
@@ -60,9 +61,6 @@ const GithubActions = () => {
             fill={blue}
             d="M25.09,30.37,31,33.75l-5.86,3.39V30.37m0-1.56a1.56,1.56,0,0,0-1.56,1.56v6.77a1.57,1.57,0,0,0,.78,1.35,1.55,1.55,0,0,0,1.56,0l5.86-3.38a1.57,1.57,0,0,0,0-2.71L25.87,29a1.55,1.55,0,0,0-.78-.21Z"
           />
-          {/** Step 2
-            * Draw the first two Actions's circles.
-            */}
           <animated.path
             style={ {
               position: `absolute`,

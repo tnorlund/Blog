@@ -4,49 +4,44 @@ import { Spring, animated } from 'react-spring/renderprops'
 import { useInView } from 'react-hook-inview'
 
 const red = `#c21325`
+const min_x = 0
+const max_x = 1
+const steps = {
+  1: { length: 2 },
+  2: { length: 2 },
+  3: { length: 2 },
+  4: { length: 2 }
+}
+const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
+let start = min_x
+Object.keys( steps ).forEach( ( key ) => {
+  steps[ key ][`start`] = start
+  steps[ key ][`stop`] = start + ( steps[ key ].length / sum )
+  start = start + ( steps[ key ].length / sum )
+} )
 
 const Jest = () => {
-  const [ref, inView] = useInView( {
-    threshold: 1,
-  } )
-  return <div
-    ref={ref}
-    style={ {
-      height: `200pt`,
-    } }
-  >
-    <Spring
-      native
-      to={{ x: inView ?  1 : 0 }}
-    >
+  // Only show when in view
+  const [ref, inView] = useInView( { threshold: 1, } )
+  return <div ref={ref} style={ { height: `200pt`, } }>
+    <Spring native to={ { x: inView ?  max_x : 0 } } >
       { ( props ) => (
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 200 100"
-          preserveAspectRatio="YMax"
-        >
+        <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
           <animated.polygon
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 0.5, 1],
-                  output: [0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x )
             } }
-            name="sock"
+            name="sockInside"
             fill={`var(--color-background)`}
-            className="inside"
+            className="Step4"
             points="68.63 34.62 62.21 47.75 54.4 25.02 82.75 25.02 75.16 47.77 68.63 34.62"
           />
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 0.5, 1],
-                  output: [0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x )
             } }
             name="sock"
@@ -57,138 +52,111 @@ const Jest = () => {
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 0.5, 1],
-                  output: [0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x )
             } }
-            name="boot"
+            name="bootInside"
             fill={`var(--color-background)`}
-            className="inside"
+            className="Step4"
             d="M47.65,75c-7.53-.1-9.12-5.16-9.13-9.38,0-5.89,5.1-15.93,5.32-16.35l2.2.87c-2.73,9.48,1.18,12.64,2.57,13.43a46.51,46.51,0,0,0,7-4.62c1.4-1.32,5.26-6.94,6.63-9l.35-.53H78l.36.41c.15.17,3.74,4.29,3.74,8.49,0,5.67-6.82,8-10.86,8.57-2.69.35-11.51,4-14.69,5.41C56,72.55,50.81,75,47.74,75Z"
           />
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 0.5, 1],
-                  output: [0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x )
             } }
-            name="boot"
+            name="bootOutside"
             fill={red}
-            className="outside"
+            className="Step4"
             d="M44.9,49.79c-3.6,12.48,3.75,15.1,3.75,15.1s5.72-3.1,7.83-5.09c1.8-1.71,6.8-9.2,6.8-9.2h14.2s3.46,3.92,3.46,7.71c0,5.06-6.75,7-9.83,7.39-3.45.44-15,5.5-15,5.5s-5.47,2.59-8.36,2.59h-.07c-2.94,0-7.94-.87-8-8.19,0-5.67,5.19-15.81,5.19-15.81m33.66-1.57H62l-.7,1.06a90,90,0,0,1-6.46,8.79,41.77,41.77,0,0,1-6.17,4.08C47.34,61.09,45,58,47.19,50.45l-4.41-1.74c-.56,1.09-5.46,10.82-5.45,16.89,0,6.63,3.77,10.48,10.31,10.57h.1c3.33,0,8.77-2.53,9.38-2.82,4.28-1.87,12-5,14.3-5.29,4.42-.56,11.9-3.26,11.9-9.75,0-4.56-3.64-8.81-4-9.28l-.71-.81Z"
           />
           {/* Dots */}
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `22.44885% 50%`,
+              transformOrigin: `22.44885% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 1, 1, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_left"
+            name="leftDotInside"
             fill={`var(--color-background)`}
-            className="inside"
+            className="Step1"
             d="M44.9,54.37a4.79,4.79,0,1,1,4.79-4.78A4.79,4.79,0,0,1,44.9,54.37Z"
           />
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `22.44885% 50%`,
+              transformOrigin: `22.44885% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 1, 1, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_left"
+            name="leftDotOutside"
             fill={red}
-            className="outside"
+            className="Step1"
             d="M44.9,46a3.6,3.6,0,1,1-3.6,3.59A3.6,3.6,0,0,1,44.9,46m0-2.39a6,6,0,1,0,6,6,6,6,0,0,0-6-6Z"
           />
 
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `30.3783% 50%`,
+              transformOrigin: `30.3783% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 0, 1, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_center"
+            name="centerDotInside"
             fill={`var(--color-background)`}
-            className="outside"
+            className="Step2"
             d="M60.76,54.37a4.79,4.79,0,1,1,4.79-4.78A4.79,4.79,0,0,1,60.76,54.37Z"
           />
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `38.29355% 50%`,
+              transformOrigin: `30.3783% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 0, 1, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_center"
+            name="centerDotOutside"
             fill={red}
-            className="outside"
+            className="Step2"
             d="M60.76,46a3.6,3.6,0,1,1-3.6,3.59A3.6,3.6,0,0,1,60.76,46m0-2.39a6,6,0,1,0,6,6,6,6,0,0,0-6-6Z"
           />
 
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `38.29355% 50%`,
+              transformOrigin: `38.29355% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 0, 0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_right"
+            name="rightDotInside"
             fill={`var(--color-background)`}
-            className="inside"
+            className="Step4"
             d="M76.59,54.37a4.79,4.79,0,1,1,4.79-4.78A4.79,4.79,0,0,1,76.59,54.37Z"
           />
           <animated.path
             style={ {
               position: `absolute`,
-              transformOrigin: `30.3783% 50%`,
+              transformOrigin: `38.29355% 49.5848%`,
               transform: props.x
-                .interpolate( {
-                  range: [0, 0.166666666666667, 0.333333333333334, 0.500000000000001, 1],
-                  output: [0, 0, 0, 1, 1]
-                } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
             } }
-            name="dot_right"
+            name="rightDotOutside"
             fill={red}
-            className="outside"
+            className="Step4"
             d="M76.59,46A3.6,3.6,0,1,1,73,49.58,3.6,3.6,0,0,1,76.59,46m0-2.39a6,6,0,1,0,6,6,6,6,0,0,0-6-6Z"
           />
           {/* Letters */}
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, max_x], output: [0, 1] } )
                 .interpolate( x => x )
             } }
             name="J"
@@ -199,10 +167,7 @@ const Jest = () => {
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, max_x], output: [0, 1] } )
                 .interpolate( x => x )
             } }
             name="E"
@@ -213,10 +178,7 @@ const Jest = () => {
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, max_x], output: [0, 1] } )
                 .interpolate( x => x )
             } }
             name="S"
@@ -227,10 +189,7 @@ const Jest = () => {
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( {
-                  range: [0, 1],
-                  output: [0, 1]
-                } )
+                .interpolate( { range: [min_x, max_x], output: [0, 1] } )
                 .interpolate( x => x )
             } }
             name="T"
