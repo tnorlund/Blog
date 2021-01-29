@@ -37,9 +37,13 @@ export default function List( { type } ) {
         {blog.nodes.map(
           ( { frontmatter: { title, slug, date, description } } ) => (
             <PostDiv key={title}>
-              <PostTitle>
-                <Link to={slug} rel={title}>{title}</Link>
-              </PostTitle>
+              <Link to={slug} rel={title}>
+                <PostTitle>
+                  {/* <Link to={slug} rel={title}> */}
+                  {title}
+                  {/* </Link> */}
+                </PostTitle>
+              </Link>
               <PostDate>{date}</PostDate>
               <Description>{description}</Description>
             </PostDiv>

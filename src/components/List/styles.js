@@ -8,7 +8,12 @@ export const PostDiv = styled.div`
 `
 
 export const PostTitle = styled.h2`
+  color: var(--color-text);
+  /* background: red; */
   margin-bottom: 0;
+  &:hover {
+    color: var(--color-a);
+  }
 `
 
 export const PostDate = styled.h4`
