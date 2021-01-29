@@ -50,7 +50,7 @@ export const UserTitle = styled.hgroup`
 export const Logo = styled( Link )`
   grid-area: title;
   font-size: 2.4em;
-  /* transform: scale(1, 0.75); */
+  background-color: var(--color-b);
   color: inherit;
   justify-self: center;
 `
