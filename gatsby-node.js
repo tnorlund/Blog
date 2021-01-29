@@ -30,11 +30,30 @@ const Project = ( createPage, projects, resolve ) => {
  */
 const blogPost = ( createPage, posts, resolve ) => {
   posts.forEach( ( post, index, arr ) => {
-    const nextSlug = arr[index - 1]?.frontmatter?.slug
-      || arr[index - 1]?.node?.frontmatter?.slug || ``
-    const prevSlug = arr[index + 1]?.frontmatter?.slug
-      || arr[index + 1]?.node?.frontmatter?.slug || ``
-    const { slug } = post?.node?.frontmatter || post.frontmatter
+    let nextSlug = ``
+    let prevSlug = ``
+    if (
+      arr[index - 1] &&
+      arr[index - 1].frontmatter &&
+      arr[index - 1].frontmatter.slug
+    ) nextSlug = arr[index - 1].frontmatter.slug
+    if (
+      arr[index - 1] &&
+      arr[index - 1].node &&
+      arr[index - 1].node.frontmatter &&
+      arr[index - 1].node.frontmatter.slug
+    ) nextSlug = arr[index - 1].node.frontmatter.slug
+    if ( arr[index + 1] && arr[index + 1].frontmatter && arr[index + 1].frontmatter.slug )
+      prevSlug = arr[index + 1].frontmatter.slug
+    if ( arr[index + 1] && arr[index + 1].node && arr[index + 1].node.frontmatter.slug )
+      prevSlug = arr[index + 1].node.frontmatter.slug
+    let slug = ``
+    if ( post.frontmatter ) slug = post.frontmatter.slug
+    if (
+      post.node &&
+      post.node.frontmatter
+    ) slug = post.node.frontmatter.slug
+    // const { slug } = post?.node?.frontmatter || post.frontmatter
     createPage( {
       path: slug,
       component: postTemplate,
