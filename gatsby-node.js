@@ -53,7 +53,6 @@ const blogPost = ( createPage, posts, resolve ) => {
       post.node &&
       post.node.frontmatter
     ) slug = post.node.frontmatter.slug
-    // const { slug } = post?.node?.frontmatter || post.frontmatter
     createPage( {
       path: slug,
       component: postTemplate,

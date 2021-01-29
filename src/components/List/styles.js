@@ -67,7 +67,7 @@ export const Icon = styled.img`
 export const ProjectDiv = styled.div`
   flex: 0 auto;
   a {
-    color: var(--color-lightLink);
+    color: var(--color-text);
     display: flex;
     flex-direction: row;
   }
