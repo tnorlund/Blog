@@ -14,7 +14,8 @@ const min_x = 0
 const max_x = 1
 const steps = {
   1: { length: 3 },
-  2: { length: 1 }
+  2: { length: 1 },
+  3: { length: 1 }
 }
 const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
 let start = min_x
