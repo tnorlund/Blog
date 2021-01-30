@@ -30,9 +30,9 @@ export default function Project( { data } ) {
       {posts.edges.map(
         ( { node: { frontmatter: { title, slug, description, date } } } ) =>
           <PostDiv key={title}>
-            <PostTitle>
-              <Link to={slug} rel={title}>{title}</Link>
-            </PostTitle>
+            <Link to={slug} rel={title}>
+              <PostTitle>{title}</PostTitle>
+            </Link>
             <PostDate>{date}</PostDate>
             <Description>{description}</Description>
           </PostDiv>
