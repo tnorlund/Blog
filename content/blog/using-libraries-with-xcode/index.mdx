@@ -7,13 +7,15 @@ showToc: true
 ---
 
 import Github from 'components/Icons/Github'
+import Opencv from 'components/Icons/Opencv'
+import Homebrew from 'components/Icons/Homebrew'
 import MdxImage from 'components/MdxImage'
 
 I've used a Mac my whole life. They have always come across as easy to use, but Apple's IDE, Xcode, has always been difficult for me to understand. Don't get me wrong, when it comes to designing Apple software for Apple hardware, Xcode is great, but developing something like C++ with Xcode is difficult, *especially* when using third party libraries. 
 
 I decided to start refactoring a previous image-processing project I was working on that used [OpenCV](https://opencv.org), an open source image-processing library, and [Open MPI](https://www.open-mpi.org), an open source message passing interface for high performance computing.
 
-![OpenCV](./OpenCV.svg)
+<Opencv/>
 
 ![OpenMPI](./OpenMPI.svg)
 
@@ -22,7 +24,9 @@ I'd like to develop an iOS app soon. I was thinking that the best way to approac
 # Installing Dependencies
 
 Sadly, macOS lacks a package manager. The Mac App Store doesn't cut it when it comes to managing your local packages. I've come to use [Homebrew](https://brew.sh), a package manager for both macOS and Linux. 
-![Homebrew](./Homebrew.svg)
+
+<Homebrew />
+
 Installing OpenCV through Homebrew is really easy:
 
 ```bash
