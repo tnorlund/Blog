@@ -7,6 +7,13 @@ import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
 import { FireHose } from 'utils/auth'
 
+import Opencv from 'components/Icons/Opencv'
+import Terraform from 'components/Icons/Terraform'
+import Docker from 'components/Icons/Docker'
+import Aws from 'components/Icons/Aws'
+import Openmpi from 'components/Icons/Openmpi'
+import Tensorflow from 'components/Icons/Tensorflow'
+
 /**
  *
  * @param {Object} Duties The duties.
@@ -87,27 +94,9 @@ export default function Resume() {
   return(
     <PageBody>
       <Toc />
-      <MainTitle>Education</MainTitle>
-      <Description>
-        I did both my undergraduate and graduate school with University of
-        the Pacific. This school was great, and I had the opportunity to
-        learn a lot and develop life-long relationships. Pacific offered
-        me the opportunity to work while going to school for college
-        credit. I leveraged this in order to maximize my work experience.
-      </Description>
-      <JobDiv>
-        <JobTitle>Data Science</JobTitle>
-        <JobLocation>Master&apos;s Degree</JobLocation>
-        <JobDate>Aug 2018 - May 2020</JobDate>
-      </JobDiv>
-      <JobDiv>
-        <JobTitle>Computer Engineering</JobTitle>
-        <JobLocation>Bachelor&apos;s Degree</JobLocation>
-        <JobDate>Aug 2013 - May 2018</JobDate>
-      </JobDiv>
       <MainTitle>What I&apos;ve Done</MainTitle>
       <Description>
-        I&apos;ve been working with both hardware and software at a few
+        I&apos;ve worked with both hardware and software at a few
         companies. I&apos;m currently trying to find a position related to
         computer vision and/or data science.
       </Description>
@@ -121,12 +110,33 @@ export default function Resume() {
           <Duties duties={duties} />
         </div>
       ) }
+      <MainTitle>Education</MainTitle>
+      <Description>
+        I did both my undergraduate and graduate school with University of
+        the Pacific. This school was great, and I had the opportunity to
+        learn a lot and develop life-long relationships.
+      </Description>
+      <JobDiv>
+        <JobTitle>Data Science</JobTitle>
+        <JobLocation>Master&apos;s Degree</JobLocation>
+        <JobDate>Aug 2018 - May 2020</JobDate>
+      </JobDiv>
+      <JobDiv>
+        <JobTitle>Computer Engineering</JobTitle>
+        <JobLocation>Bachelor&apos;s Degree</JobLocation>
+        <JobDate>Aug 2013 - May 2018</JobDate>
+      </JobDiv>
       <MainTitle>My Skills</MainTitle>
       <Description>
         Through school or work, I&apos;ve always tried to learn as many skills
         as possible. Here are the skills I&apos;ve picked up thus far.
       </Description>
-      <Skills skills={skills} />
+      <Aws />
+      <Terraform />
+      <Opencv />
+      <Openmpi />
+      <Docker />
+      <Tensorflow />
     </PageBody>
   )
 }
