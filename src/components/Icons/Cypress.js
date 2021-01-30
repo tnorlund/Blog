@@ -17,13 +17,13 @@ const Cypress = () => {
           <animated.path
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, max_x], output: [0.5, 1] } )
+                .interpolate( { range: [min_x, max_x], output: [0, 1] } )
                 .interpolate( x => x ),
               position: `absolute`,
               transformOrigin: `30.14975% 50.2927%`,
               transform: props.x
                 .interpolate( { range: [min_x, max_x], output: [0, 1] } )
-                .interpolate( x => `translate3d(-${62.83185 - ( x * 62.83185 )}%,0, 0) rotate(-${ 45 - ( x * 45 ) }deg)` )
+                .interpolate( x => `translate3d(-${62.83185 - ( x * 62.83185 )}%,0, 0) rotate(-${ 90 - ( x * 90 ) }deg)` )
             } }
             name="circle"
             fill={fill}
