@@ -15,6 +15,7 @@ import Openmpi from 'components/Icons/Openmpi'
 import Tensorflow from 'components/Icons/Tensorflow'
 import React_icon from 'components/Icons/React'
 import Pandas from 'components/Icons/Pandas'
+import Spark from 'components/Icons/Spark'
 
 /**
  *
@@ -98,6 +99,7 @@ export default function Resume() {
       <Openmpi />
       <Pandas />
       <React_icon />
+      <Spark />
       <Tensorflow />
       <Terraform />
     </PageBody>
