@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery, Link } from 'gatsby'
 import { FooterDiv, PoweredBy, Icons } from './styles'
 
 export default function Footer() {
@@ -10,7 +10,11 @@ export default function Footer() {
   return (
     <FooterDiv>
       <span>
-        © {new Date().getFullYear()} - {copyright}
+        © {new Date().getFullYear()} - {copyright}<br/>
+        <Link
+          style={{ color:`white` }}
+          to={`/privacy`}
+        >Privacy Policy</Link>
       </span>
       <PoweredBy>
         Powered by

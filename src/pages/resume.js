@@ -16,6 +16,7 @@ import Tensorflow from 'components/Icons/Tensorflow'
 import React_icon from 'components/Icons/React'
 import Pandas from 'components/Icons/Pandas'
 import Spark from 'components/Icons/Spark'
+import Consul from 'components/Icons/Consul'
 
 /**
  *
@@ -94,6 +95,7 @@ export default function Resume() {
       </JobDiv>
       <MainTitle>Skills</MainTitle>
       <Aws />
+      <Consul />
       <Docker />
       <Opencv />
       <Openmpi />
