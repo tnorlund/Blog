@@ -4,18 +4,9 @@ import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage } from 'hooks'
-import { AUTH_KEY } from 'utils/constants'
+import { AUTH_KEY, PRIVACY_KEY } from 'utils/constants'
 import { FireHose } from 'utils/auth'
 
-import Opencv from 'components/Icons/Opencv'
-import Terraform from 'components/Icons/Terraform'
-import Docker from 'components/Icons/Docker'
-import Aws from 'components/Icons/Aws'
-import Openmpi from 'components/Icons/Openmpi'
-import Tensorflow from 'components/Icons/Tensorflow'
-import React_icon from 'components/Icons/React'
-import Pandas from 'components/Icons/Pandas'
-import Spark from 'components/Icons/Spark'
 import Check from 'components/Icons/Check'
 import Question from 'components/Icons/Question'
 import Cross from 'components/Icons/Cross'
@@ -68,25 +59,44 @@ const DeleteButton = styled.div`
 `
 
 const MainTitle = styled.h1`
-border-bottom: 4px solid var(--color-b);
+  border-bottom: 4px solid var(--color-b);
 `
 
-export default function Resume() {
-  const { contentYaml } = useStaticQuery( graphql`
-    {
-      contentYaml {
-        positions {
-          title, company, start(formatString: "MMM YYYY"),
-          end(formatString: "MMM YYYY"), duties
-        }
+const ShareItem = ( { name, privacyKey, privacy, setPrivacy } ) => {
+  let newPrivacy = { ...privacy }
+  return <ShareDiv
+    onClick={ () => {
+      if (
+        typeof privacy == `undefined` || !( `${privacyKey}` in privacy )
+      ) newPrivacy[privacyKey] = true
+      else if (
+        typeof privacy[privacyKey] == `boolean` && privacy[privacyKey] == true
+      ) newPrivacy[privacyKey] = false
+      else if (
+        typeof privacy[privacyKey] == `boolean` && privacy[privacyKey] == false
+      ) newPrivacy[privacyKey] = true
+      setPrivacy( newPrivacy )
+    } }
+  >
+    <IconDiv>
+      {
+        ( typeof privacy == `undefined` ||
+        !( privacyKey in privacy ) ) && <Question/>
       }
-    }
-  ` )
-  const { positions } = contentYaml
-  const user = useSessionStorage( AUTH_KEY )[0]
-  useEffect( () => {
-    FireHose( `Resume`, `/resume`, user )
-  }, [ user ] )
+      {
+        privacy[privacyKey] && typeof privacy[privacyKey] == `boolean` &&
+          privacy[privacyKey] == true && <Check/>
+        || !privacy[privacyKey] && typeof privacy[privacyKey] == `boolean` &&
+           privacy[privacyKey] == false && <Cross/>
+      }
+    </IconDiv>
+    <Details>{name}</Details>
+  </ShareDiv>
+}
+
+export default function Resume() {
+  const [ privacy, setPrivacy ] = useSessionStorage( PRIVACY_KEY )
+
   return(
     <PageBody>
       <Toc />
@@ -111,7 +121,7 @@ export default function Resume() {
       <JobTitle>What I Store</JobTitle>
       <div style={{ marginBottom: `1em` }}>
         I use visitor&apos;s data to get a better understanding of what content
-        gets visitor&apos;s attention. With the visitor&apos;s permission I
+        gets visitor&apos;s attention. With the visitor&apos;s permission, I
         store their:
         <ul style={{ paddingLeft: `1.5em` }}>
           <li>Browser</li>
@@ -152,23 +162,35 @@ export default function Resume() {
         Each visitors&apos;s data is deleted after 30 days.
       </div>
       <JobTitle>What You&apos;re Sharing</JobTitle>
-      <ShareDiv>
-        <IconDiv><Check/></IconDiv>
-        <Details>Browser</Details>
-      </ShareDiv>
-      <ShareDiv>
-        <IconDiv><Question/></IconDiv>
-        <Details>IP Address</Details>
-      </ShareDiv>
-      <ShareDiv>
-        <IconDiv><Cross/></IconDiv>
-        <Details>Window Size</Details>
-      </ShareDiv>
-      <ShareDiv>
-        <IconDiv><Question/></IconDiv>
-        <Details>Scroll Position</Details>
-      </ShareDiv>
-      <ShareButton>Stop Sharing</ShareButton>
+      <ShareItem
+        name={`Browser`}
+        privacyKey={`browser`}
+        privacy={privacy}
+        setPrivacy={setPrivacy}
+      />
+      <ShareItem
+        name={`IP Address`}
+        privacyKey={`ip`}
+        privacy={privacy}
+        setPrivacy={setPrivacy}
+      />
+      <ShareItem
+        name={`Window Size`}
+        privacyKey={`windowSize`}
+        privacy={privacy}
+        setPrivacy={setPrivacy}
+      />
+      <ShareItem
+        name={`Scroll Position`}
+        privacyKey={`scrollPosition`}
+        privacy={privacy}
+        setPrivacy={setPrivacy}
+      />
+      <ShareButton
+        onClick={ () => setPrivacy( {
+          browser:false, ip: false, windowSize: false, scrollPosition: false
+        } ) }
+      >Stop Sharing</ShareButton>
       <DeleteButton>Delete My Data</DeleteButton>
     </PageBody>
   )

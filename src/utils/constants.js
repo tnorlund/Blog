@@ -9,6 +9,12 @@ export const USER_KEY = `user`
 export const AUTH_KEY = `auth`
 
 /**
+ * @type {String} The key used to change the visitor's privacy settings using
+ *                session storage.
+ */
+export const PRIVACY_KEY = `privacy`
+
+/**
  * @type {String} The key used to change the version of the most recent Terms
  * of Service using session storage. */
 export const TOS_KEY = `tos`
