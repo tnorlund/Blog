@@ -58,6 +58,15 @@ export const COLORS = {
     light: `#2ABF1D`,
     dark: `#22A83E`,
   },
+  spark: {
+    text: `#3c3a3e`,
+    star: `#e25b26`
+  },
+  pandas: {
+    purple: `#1e1853`,
+    pink: `#e50888`,
+    yellow: `#ffcb05`,
+  }
 }
 
 const { gray, brown, blue, red, orange, green } = COLORS
@@ -139,6 +148,14 @@ export const MODE_COLORS = {
     dark: `invert(100%) sepia(3%) saturate(800%) hue-rotate(207deg)`
       + ` brightness(118%) contrast(80%)`,
   },
+  sparkText: {
+    light: COLORS.spark.text,
+    dark: gray.lighter,
+  },
+  pandasText: {
+    light: COLORS.pandas.purple,
+    dark: gray.lighter
+  }
 }
 
 export const typography = {

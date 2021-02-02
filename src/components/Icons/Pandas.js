@@ -3,7 +3,7 @@ import React from 'react'
 import { Spring, animated } from 'react-spring/renderprops'
 import { useInView } from 'react-hook-inview'
 
-const purple = `#1e1853`
+const purple = `var(--color-pandasText)`
 const pink = `#e50888`
 const yellow = `#ffcb05`
 const min_x = 0

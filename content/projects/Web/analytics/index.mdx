@@ -8,6 +8,7 @@ showToc: true
 import MdxIcon from 'components/MdxIcon'
 import Pandas from 'components/Icons/Pandas'
 import Spark from 'components/Icons/Spark'
+import Parquet from 'components/Icons/Parquet'
 
 
 I decided to scale out the analytics I previously shared by diving deeper in more AWS services.
@@ -20,7 +21,7 @@ From the last post, I was using Kinesis Firehose to store visitor data in an S3 
 
 I started by using Amazon Glue, a service provided by Amazon for ETL. I had a glue crawler move through the S3 bucket every 5 minutes to transform the raw data to manageable '.parquet' files.
 
-![Parquet](./Parquet.svg)
+<Parquet />
 
 Glue provides a table which is then used by Amazon EMR to distribute Spark clusters.
 

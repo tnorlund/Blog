@@ -91,9 +91,9 @@ const Tensorflow = () => {
             } }
             id="Small"
           >
-            <polygon fill={light}className="cls-6" points="42.09 57.02 47.25 59.9 47.25 65.75 42.09 63 42.09 57.02"/>
-            <polygon fill={mid} className="cls-4" points="47.25 54.1 42.12 57.03 47.25 59.9 52.28 57.05 47.25 54.1"/>
-            <polygon fill={dark} className="cls-5" points="52.28 62.86 52.28 57.05 47.25 59.9 47.25 65.75 52.28 62.86"/>
+            <polygon fill={dark}className="cls-6" points="42.09 57.02 47.25 59.9 47.25 65.75 42.09 63 42.09 57.02"/>
+            <polygon fill={light} className="cls-4" points="47.25 54.1 42.12 57.03 47.25 59.9 52.28 57.05 47.25 54.1"/>
+            <polygon fill={mid} className="cls-5" points="52.28 62.86 52.28 57.05 47.25 59.9 47.25 65.75 52.28 62.86"/>
           </animated.g>
           <animated.g
             style={ {

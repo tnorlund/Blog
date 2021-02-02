@@ -3,7 +3,7 @@ import React from 'react'
 import { Spring, animated } from 'react-spring/renderprops'
 import { useInView } from 'react-hook-inview'
 
-const text = `#3c3a3e`
+const text = `var(--color-sparkText)`
 const orange = `#e25b26`
 const min_x = 0
 const max_x = 1

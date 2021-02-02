@@ -25,7 +25,7 @@ function Duties( { duties } ) {
   const dutiesList = duties.map( ( duty ) =>
     <li key={duty}>{duty}</li>
   )
-  return <ul>{dutiesList}</ul>
+  return <ul style={{ paddingLeft: `1.5em` }}>{dutiesList}</ul>
 }
 
 const JobDiv = styled.div`
