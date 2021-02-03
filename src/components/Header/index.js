@@ -18,10 +18,17 @@ export default function Header( { site } ) {
   const [open, setModal] = useState( false )
   // Logic for showing whether privacy
   const privacy = useSessionStorage( PRIVACY_KEY )[0]
+
   const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
-  if ( !visitorKey ) setVisitorKey( uuidv4() )
+  // if ( typeof visitorKey == `undefined` ) setVisitorKey( uuidv4() )
+
   // Show the privacy view when is is the visitor's first time.
-  const [privacyShow, setPrivacyShow] = useState( false )
+  const [privacyShow, setPrivacyShow] = useState(
+    false
+    // !privacy ||
+    // ( privacy && privacy.shownWindow == false )
+  )
+
   useEventListener( `scroll`, () => {
     if (
       window.scrollY > 100 &&

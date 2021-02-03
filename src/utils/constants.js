@@ -15,6 +15,12 @@ export const AUTH_KEY = `auth`
 export const PRIVACY_KEY = `privacy`
 
 /**
+ * @type {String} The key used to access the visitor's unique identification
+ *                from session storage.
+ */
+export const VISITOR_KEY = `visitor`
+
+/**
  * @type {String} The key used to change the version of the most recent Terms
  * of Service using session storage. */
 export const TOS_KEY = `tos`
