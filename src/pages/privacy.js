@@ -117,16 +117,16 @@ export default function Resume() {
           All Things Digital Conference, 2010
         </div>
       </div>
-      <div style={{ marginBottom: `1em` }}>
+      <div>
         In my opinion, privacy is the most valuable asset we willing give away.
         The largest companies today make most of their money by selling our
         data. I made this website for fun, and I will <b>not</b> sell your data.
       </div>
       <SubTitle>What I Store</SubTitle>
-      <div style={{ marginBottom: `1em` }}>
+      <div>
         I use visitor&apos;s data to get a better understanding of what content
-        gets visitor&apos;s attention. With the visitor&apos;s permission, I
-        store their:
+        gets the visitor&apos;s attention. With their permission, I store each
+        visitor&apos;s:
         <ul style={{ paddingLeft: `1.5em` }}>
           <li>Browser</li>
           <li>IP Address</li>
