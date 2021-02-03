@@ -109,6 +109,7 @@ const Contents = ( { privacy, setPrivacy, setModal } ) => {
     </Description>
     <ShareButton
       onClick={ () => {
+        let newPrivacy = privacy
         if (
           privacy && (
             privacy.browser || privacy.ip || privacy.windowSize ||
@@ -117,20 +118,32 @@ const Contents = ( { privacy, setPrivacy, setModal } ) => {
         ) {
           if (
             typeof privacy.browser == `undefined`
-          ) setPrivacy( { ...privacy, browser: false, shownWindow: true } )
+          ) {
+            newPrivacy.browser = false
+            setPrivacy( { ...newPrivacy, browser: false, shownWindow: true } )
+          }
           if (
             typeof privacy.ip == `undefined`
-          ) setPrivacy( { ...privacy, ip: false, shownWindow: true } )
+          ) {
+            newPrivacy.ip = false
+            setPrivacy( { ...newPrivacy, ip: false, shownWindow: true } )
+          }
           if (
             typeof privacy.windowSize == `undefined`
-          ) setPrivacy( {
-            ...privacy, windowSize: false, shownWindow: true
-          } )
+          ) {
+            newPrivacy.windowSize = true
+            setPrivacy( {
+              ...newPrivacy, windowSize: false, shownWindow: true
+            } )
+          }
           if (
             typeof privacy.scrollPosition == `undefined`
-          ) setPrivacy( {
-            ...privacy, scrollPosition: false, shownWindow: true
-          } )
+          ) {
+            newPrivacy.scrollPosition = true
+            setPrivacy( {
+              ...newPrivacy, scrollPosition: false, shownWindow: true
+            } )
+          }
         }
         else {
           setPrivacy( {
@@ -141,7 +154,7 @@ const Contents = ( { privacy, setPrivacy, setModal } ) => {
         }
         setTimeout( () => { setModal( false ) }, 1000 )
       } }
-    >Accept</ShareButton>
+    >Agree to Share</ShareButton>
   </div>
 }
 export default function Privacy( { open, setModal } ) {
