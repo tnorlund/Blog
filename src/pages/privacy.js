@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
-import { useStaticQuery, graphql } from "gatsby"
+import React from 'react'
 import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage } from 'hooks'
-import { AUTH_KEY, PRIVACY_KEY } from 'utils/constants'
-import { FireHose } from 'utils/auth'
+import { PRIVACY_KEY } from 'utils/constants'
 
 import Check from 'components/Icons/Check'
 import Question from 'components/Icons/Question'
@@ -27,9 +25,9 @@ const Details = styled.div`
   align-items: center;
 `
 
-const JobTitle = styled.h2`
-margin-top: 1em;
-margin-bottom: 0.3em;
+const SubTitle = styled.h2`
+  margin-top: 1em;
+  margin-bottom: 0.3em;
 `
 
 const ShareButton = styled.div`
@@ -84,10 +82,16 @@ const ShareItem = ( { name, privacyKey, privacy, setPrivacy } ) => {
         !( privacyKey in privacy ) ) && <Question/>
       }
       {
-        privacy[privacyKey] && typeof privacy[privacyKey] == `boolean` &&
-          privacy[privacyKey] == true && <Check/>
-        || !privacy[privacyKey] && typeof privacy[privacyKey] == `boolean` &&
-           privacy[privacyKey] == false && <Cross/>
+        privacy &&
+        privacy[privacyKey] &&
+        privacy[privacyKey] == true &&
+        <Check/>
+      }
+      {
+        privacy &&
+        !privacy[privacyKey] &&
+        privacy[privacyKey] == false &&
+        <Cross/>
       }
     </IconDiv>
     <Details>{name}</Details>
@@ -118,7 +122,7 @@ export default function Resume() {
         The largest companies today make most of their money by selling our
         data. I made this website for fun, and I will <b>not</b> sell your data.
       </div>
-      <JobTitle>What I Store</JobTitle>
+      <SubTitle>What I Store</SubTitle>
       <div style={{ marginBottom: `1em` }}>
         I use visitor&apos;s data to get a better understanding of what content
         gets visitor&apos;s attention. With the visitor&apos;s permission, I
@@ -161,7 +165,7 @@ export default function Resume() {
         means that I need each visitor&apos;s permission to store their data.
         Each visitors&apos;s data is deleted after 30 days.
       </div>
-      <JobTitle>What You&apos;re Sharing</JobTitle>
+      <SubTitle>What You&apos;re Sharing</SubTitle>
       <ShareItem
         name={`Browser`}
         privacyKey={`browser`}
@@ -186,11 +190,31 @@ export default function Resume() {
         privacy={privacy}
         setPrivacy={setPrivacy}
       />
-      <ShareButton
-        onClick={ () => setPrivacy( {
-          browser:false, ip: false, windowSize: false, scrollPosition: false
-        } ) }
-      >Stop Sharing</ShareButton>
+      {
+        ( privacy &&
+          (
+            privacy.browser || privacy.ip || privacy.windowSize ||
+            privacy.scrollPosition
+          )
+        ) && <ShareButton
+          onClick={ () => setPrivacy( {
+            ...privacy, browser:false, ip: false, windowSize: false,
+            scrollPosition: false
+          } ) }
+        >Stop Sharing</ShareButton>
+      }
+      {
+        !privacy || (
+          !privacy.browser && !privacy.ip && !privacy.windowSize &&
+          !privacy.scrollPosition
+        ) && <ShareButton
+          onClick={ () => setPrivacy( {
+            ...privacy, browser:true, ip: true, windowSize: true,
+            scrollPosition: true
+          } ) }
+        >Start Sharing</ShareButton>
+      }
+
       <DeleteButton>Delete My Data</DeleteButton>
     </PageBody>
   )
