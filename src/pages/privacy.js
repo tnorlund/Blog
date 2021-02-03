@@ -98,6 +98,20 @@ const ShareItem = ( { name, privacyKey, privacy, setPrivacy } ) => {
   </ShareDiv>
 }
 
+/**
+ * Determines whether the show the 'Stop Sharing' button.
+ * @param {Object} privacy The visitor's privacy settings stored in session
+ *                         storage.
+ * @returns {Boolean} Whether to show 'Stop Sharing' button or not.
+ */
+const ShowStopShare = ( privacy ) => (
+  privacy &&
+  (
+    privacy.browser || privacy.ip || privacy.windowSize ||
+    privacy.scrollPosition
+  )
+)
+
 export default function Resume() {
   const [ privacy, setPrivacy ] = useSessionStorage( PRIVACY_KEY )
 
@@ -191,12 +205,7 @@ export default function Resume() {
         setPrivacy={setPrivacy}
       />
       {
-        ( privacy &&
-          (
-            privacy.browser || privacy.ip || privacy.windowSize ||
-            privacy.scrollPosition
-          )
-        ) && <ShareButton
+        ShowStopShare( privacy ) && <ShareButton
           onClick={ () => setPrivacy( {
             ...privacy, browser:false, ip: false, windowSize: false,
             scrollPosition: false
@@ -204,10 +213,7 @@ export default function Resume() {
         >Stop Sharing</ShareButton>
       }
       {
-        !privacy || (
-          !privacy.browser && !privacy.ip && !privacy.windowSize &&
-          !privacy.scrollPosition
-        ) && <ShareButton
+        !ShowStopShare( privacy ) && <ShareButton
           onClick={ () => setPrivacy( {
             ...privacy, browser:true, ip: true, windowSize: true,
             scrollPosition: true

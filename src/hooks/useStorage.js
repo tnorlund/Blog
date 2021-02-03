@@ -34,6 +34,8 @@ export const useStorage = ( storage, key, initialValue, options = {} ) => {
   }, [value, key, storage] )
 
   const setStoredValue = newValue => {
+    // Server-side rendering does not use the storage.
+    if ( typeof window == `undefined` ) return newValue
     if ( newValue === value ) return
 
     // Conform to useState API by allowing newValue to be a function which

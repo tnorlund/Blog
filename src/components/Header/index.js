@@ -19,16 +19,18 @@ export default function Header( { site } ) {
   // Logic for showing whether privacy
   const privacy = useSessionStorage( PRIVACY_KEY )[0]
 
+  // Store the unique ID of the visitor in session storage as soon as the page
+  // loads.
   const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
-  // if ( typeof visitorKey == `undefined` ) setVisitorKey( uuidv4() )
+  if ( !visitorKey ) setVisitorKey( uuidv4() )
 
-  // Show the privacy view when is is the visitor's first time.
-  const [privacyShow, setPrivacyShow] = useState(
-    false
+  // Show the privacy view when is is the visitor's first time. In order to
+  // avoid the modal view popping up on page load, only show the window after
+  // the visitor has scrolled down.
+  const [privacyShow, setPrivacyShow] = useState( false
     // !privacy ||
     // ( privacy && privacy.shownWindow == false )
   )
-
   useEventListener( `scroll`, () => {
     if (
       window.scrollY > 100 &&
@@ -38,6 +40,7 @@ export default function Header( { site } ) {
       )
     ) setPrivacyShow( true )
   } )
+
   return (
     <>
       <HeaderDiv>
