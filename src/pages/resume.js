@@ -11,6 +11,7 @@ import Amplify, {
   Auth, API, Analytics, AWSKinesisFirehoseProvider
 } from 'aws-amplify'
 
+import Adobe from 'components/Icons/Adobe'
 import Opencv from 'components/Icons/Opencv'
 import Terraform from 'components/Icons/Terraform'
 import Docker from 'components/Icons/Docker'
@@ -128,6 +129,7 @@ export default function Resume() {
         <JobDate>Aug 2013 - May 2018</JobDate>
       </JobDiv>
       <MainTitle>Skills</MainTitle>
+      <Adobe />
       <Aws />
       <Consul />
       <Docker />

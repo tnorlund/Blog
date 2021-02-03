@@ -27,17 +27,11 @@ export default function Header( { site } ) {
   // Show the privacy view when is is the visitor's first time. In order to
   // avoid the modal view popping up on page load, only show the window after
   // the visitor has scrolled down.
-  const [privacyShow, setPrivacyShow] = useState( false
-    // !privacy ||
-    // ( privacy && privacy.shownWindow == false )
-  )
+  const [privacyShow, setPrivacyShow] = useState( false )
   useEventListener( `scroll`, () => {
     if (
       window.scrollY > 100 &&
-      (
-        !privacy ||
-        ( privacy && privacy.shownWindow == false )
-      )
+      ( !privacy || ( privacy && privacy.shownWindow == false ) )
     ) setPrivacyShow( true )
   } )
 
