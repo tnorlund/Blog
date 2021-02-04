@@ -9,6 +9,10 @@ import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import { v4 as uuidv4 } from 'uuid'
 
+// import Amplify, {
+//   Auth, API, Analytics, AWSKinesisFirehoseProvider
+// } from 'aws-amplify'
+
 
 /** Ensure that Amplify is configured on each page. */
 Configure()
@@ -33,7 +37,22 @@ export default function Header( { site } ) {
       window.scrollY > 100 &&
       ( !privacy || ( privacy && privacy.shownWindow == false ) )
     ) setPrivacyShow( true )
+    // TODO
+    // [ ] Terraform Cognito User Pool and Identity Pool
+    // ---
+    // console.log( {
+    //   id: visitorKey,
+    //   date: new Date().toISOString(),
+    //   title: `Resume`,
+    //   slug: `/resume`,
+    //   app: privacy && privacy.browser? window.navigator.userAgent : undefined,
+    //   Y: privacy && privacy.scroll? window.scrollY : undefined,
+    //   X: privacy && privacy.scroll? window.scrollX : undefined,
+    //   height: privacy && privacy.windowSize? window.screen.height : undefined,
+    //   width: privacy && privacy.windowSize ? window.screen.width : undefined,
+    // } )
   } )
+
 
   return (
     <>

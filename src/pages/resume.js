@@ -3,13 +3,11 @@ import { useStaticQuery, graphql } from "gatsby"
 import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
-import { useSessionStorage, useEventListener } from 'hooks'
+import { useSessionStorage } from 'hooks'
 import { AUTH_KEY, VISITOR_KEY, PRIVACY_KEY } from 'utils/constants'
 import { FireHose } from 'utils/auth'
 
-import Amplify, {
-  Auth, API, Analytics, AWSKinesisFirehoseProvider
-} from 'aws-amplify'
+
 
 import Adobe from 'components/Icons/Adobe'
 import Opencv from 'components/Icons/Opencv'
@@ -57,29 +55,6 @@ const MainTitle = styled.h1`
 border-bottom: 4px solid var(--color-b);
 `
 
-// TODO
-// [ ] Terraform Cognito User Pool and Identity Pool
-// ---
-// const analysis = async ( title, slug, visitorKey, privacy ) => {
-//   try {
-//     Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
-//     Analytics.record( {
-//       id: visitorKey,
-//       date: new Date().toISOString(),
-//       title: `Resume`,
-//       slug: `/resume`,
-//       app: privacy && privacy.browser? window.navigator.userAgent : undefined,
-//       Y: privacy && privacy.scroll? window.scrollY : undefined,
-//       X: privacy && privacy.scroll? window.scrollX : undefined,
-//       height: privacy && privacy.windowSize? window.screen.height : undefined,
-//       width: privacy && privacy.windowSize ? window.screen.width : undefined,
-//       streamName: process.env.GATSBY_ANALYTICS_FIREHOSE
-//     }, `AWSKinesisFirehose` )
-//   } catch( error ) {
-//     console.log( `error`, error )
-//   }
-// }
-
 export default function Resume() {
   const { contentYaml } = useStaticQuery( graphql`
     {
@@ -92,16 +67,10 @@ export default function Resume() {
     }
   ` )
   const { positions } = contentYaml
-  const visitorKey = useSessionStorage( VISITOR_KEY )[0]
   const user = useSessionStorage( AUTH_KEY )[0]
-  const privacy = useSessionStorage( PRIVACY_KEY )[0]
   useEffect( () => {
     FireHose( `Resume`, `/resume`, user )
   }, [ user ] )
-  // Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
-  // useEventListener( `scroll`, () => {
-  //   analysis( `Resume`, `/resume`, visitorKey, privacy )
-  // } )
   return(
     <PageBody
     >
