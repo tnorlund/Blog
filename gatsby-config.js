@@ -17,8 +17,10 @@ const gatsbyRemarkPlugins = [
     resolve: `gatsby-remark-vscode`,
   },
   {
+    // TODO
+    // Fix broken latex
     resolve: `gatsby-remark-katex`,
-    options: { macros, throwOnError: false },
+    // options: { macros, throwOnError: false },
   },
   {
     resolve: `gatsby-remark-images`,
@@ -98,4 +100,9 @@ module.exports = {
     `gatsby-plugin-lodash`,
     `gatsby-plugin-react-helmet`,
   ],
+  // https://github.com/gatsbyjs/gatsby/discussions/28331
+  flags: {
+    PRESERVE_FILE_DOWNLOAD_CACHE: true,
+    PRESERVE_WEBPACK_CACHE: true
+  },
 }
