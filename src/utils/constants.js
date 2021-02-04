@@ -108,6 +108,10 @@ export const MODE_COLORS = {
     light: `rgba(0, 0, 0, 0.05)`,
     dark: `rgba(0, 0, 0, 0.7)`,
   },
+  blue: {
+    light: blue.light,
+    dark: blue.dark
+  },
   red: {
     light: red.light,
     dark: red.dark,

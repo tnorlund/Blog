@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage } from 'hooks'
-import { AUTH_KEY, VISITOR_KEY, PRIVACY_KEY } from 'utils/constants'
+import { AUTH_KEY } from 'utils/constants'
 import { FireHose } from 'utils/auth'
 
 

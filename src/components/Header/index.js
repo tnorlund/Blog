@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState } from 'react'
 import DarkToggle from '../DarkToggle'
 import Nav from '../Nav'
