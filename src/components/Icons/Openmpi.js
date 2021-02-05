@@ -10,11 +10,8 @@ const background = `var(--color-background)`
 const min_x = 0
 const max_x = 1
 const steps = {
-  1: { length: 2 },
-  2: { length: 4 },
-  3: { length: 1 },
-  4: { length: 1 },
-  5: { length: 1 }
+  1: { length: 1 },
+  2: { length: 1 }
 }
 const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
 let start = min_x
@@ -66,7 +63,7 @@ const Openmpi = () => {
           <animated.g
             style={ {
               position: `absolute`,
-              transformOrigin: `20.8985% 50.03832%`,
+              transformOrigin: `16.178% 50.0032%`,
               transform: props.x
                 .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => `scale(${x}, ${x})` )
