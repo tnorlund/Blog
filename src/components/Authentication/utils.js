@@ -1,5 +1,10 @@
 import { Auth, API } from 'aws-amplify'
 import { updateUserBySession, updateUser } from 'utils/auth'
+import { useSessionStorage } from 'hooks'
+import { VISITOR_KEY } from 'utils/constants'
+
+import { v4 as uuidv4 } from 'uuid'
+
 
 /**
  * Handles the state of the modal view while logging in.
@@ -15,6 +20,7 @@ export const handleLoggingIn = async (
 ) => {
   try {
     const session = await Auth.signIn( email, password )
+    console.log( session )
     await updateUserBySession( session, setUser )
   } catch ( error ) {
     if ( error.code == `UserNotConfirmedException` )
@@ -32,19 +38,15 @@ export const handleLoggingIn = async (
  */
 export const handleSigningUp = async ( email, password, name, setError ) => {
   try {
-    const { error, blog } = await API.get(
-      process.env.GATSBY_API_BLOG_NAME, `/blog`
-    )
-    if ( error ) setError( error )
-    else {
-      await Auth.signUp( {
-        username: email, password: password, attributes: {
-          email: email, name: name,
-          'custom:UserNumber': `${ blog.numberUsers + 1 }`
-        }
-      } )
-    }
-  } catch( error ) { setError( error.message ) }
+    await Auth.signUp( {
+      username: email, password: password,
+      attributes: {
+        email: email, name: name,
+      }
+    } )
+  } catch( error ) {
+    setError( error.message )
+  }
 }
 
 export const resendConfrimationEmail = async (
@@ -138,15 +140,18 @@ export const handleNewName = async (
  *                            session storage.
  */
 export const handleTOS = async ( user, version, setError, setUser ) => {
+  console.log( { version } )
   try {
-    const { error } = await API.post(
+    // const { error } =
+    const result = await API.post(
       process.env.GATSBY_API_BLOG_NAME, `/tos`,
       { body: {
-        name: user.name, email: user.email, number: user.userNumber,
+        name: user.name, email: user.email, username: user.username,
         version: version
       } }
     )
-    if ( error ) setError( error )
+    console.log( result )
+    if ( result.error ) setError( result.error )
     else { setUser(); updateUser( setUser ) }
   } catch( error ) { setError( error.message ) }
 }

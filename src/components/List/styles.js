@@ -9,7 +9,6 @@ export const PostDiv = styled.div`
 
 export const PostTitle = styled.h2`
   color: var(--color-text);
-  /* background: red; */
   margin-bottom: 0;
   &:hover {
     color: var(--color-a);
@@ -23,18 +22,12 @@ export const PostDate = styled.h4`
 
 export const Description = styled.div`
   margin-bottom: 0.3em;
-  /* margin-left: 10vw; */
 `
 
 export const IconDiv = styled.div`
   position: relative;
   display: block;
-  /* background: red; */
-  
   width: 20vw;
-  /* height: 20vw; */
-  /* padding: 0.5vw; */
-  /* margin-right: 4vw; */
   ${mediaQueries.minTablet} {
     width: 10vw;
     /* height: 10vw; */
@@ -65,8 +58,9 @@ export const SquareContent = styled.div`
 
 export const Icon = styled.img`
   margin: 0px;
-  filter: invert(84%) sepia(26%) saturate(295%) hue-rotate(157deg) 
-    brightness(99%) contrast(96%);
+  // eslint-disable-next-line max-len
+  filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(84deg)
+    brightness(104%) contrast(101%);
 `
 
 export const ProjectDiv = styled.div`

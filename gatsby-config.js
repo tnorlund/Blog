@@ -1,9 +1,11 @@
 /* eslint-disable max-len */
-const macros = require( `./src/utils/katex` )
+// TODO
+// Fix broken latex
+// const macros = require( `./src/utils/katex` )
 const sitemapOptions = require( `./src/utils/sitemap` )
 // Uncomment this require to work on the backend locally.
-// This causes a problem by overwriting the ENV in production.
-// require( `dotenv` ).config()
+// There is an error when this line is not commented out in production
+require( `dotenv` ).config()
 
 const gatsbyRemarkPlugins = [
   `gatsby-remark-smartypants`,
@@ -13,6 +15,7 @@ const gatsbyRemarkPlugins = [
   `gatsby-remark-code-titles`,
   `gatsby-remark-sub-sup`,
   `gatsby-remark-autolink-headers`,
+  // require( `remark-burger` ),
   {
     resolve: `gatsby-remark-vscode`,
   },
@@ -57,7 +60,8 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         gatsbyRemarkPlugins,
-        plugins: [`gatsby-remark-images`, `gatsby-remark-autolink-headers`],
+        remarkPlugins: [ require( `remark-burger` ) ],
+        plugins: [ `gatsby-remark-images`, `gatsby-remark-autolink-headers` ],
         extensions: [`.mdx`, `.md`]
       }
     },
@@ -101,8 +105,10 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
   ],
   // https://github.com/gatsbyjs/gatsby/discussions/28331
-  flags: {
-    PRESERVE_FILE_DOWNLOAD_CACHE: true,
-    PRESERVE_WEBPACK_CACHE: true
-  },
+  // flags: {
+  //   PRESERVE_FILE_DOWNLOAD_CACHE: true,
+  //   PRESERVE_WEBPACK_CACHE: true,
+  //   // DEV_SSR: true,
+  //   FAST_DEV: true
+  // },
 }

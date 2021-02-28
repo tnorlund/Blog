@@ -1,0 +1,125 @@
+---
+title: Continuous Integration and Continuous Delivery
+date: "2021-02-04T13:21:42"
+slug: /blog/cicd
+description: "Continuos integration and continuous delivery makes a great workflow and product"
+showToc: true
+---
+
+import CICD from 'components/Icons/CICD'
+import Vscode from 'components/Icons/Vscode'
+import Pytest from 'components/Icons/Pytest'
+import Jest from 'components/Icons/Jest'
+import Cypress from 'components/Icons/Cypress'
+import Terraform from 'components/Icons/Terraform'
+import Consul from 'components/Icons/Consul'
+import Github from 'components/Icons/Github'
+import GithubActions from 'components/Icons/GithubActions'
+import Aws from 'components/Icons/Aws'
+import CloudWatch from 'components/Icons/CloudWatch'
+import Gatsby from 'components/Icons/Gatsby'
+import GatsbyCloud from 'components/Icons/GatsbyCloud'
+import Analytics from 'components/Flow/Analytics'
+import Identity from 'components/Flow/Identity'
+import API from 'components/Flow/API'
+import ContentDelivery from 'components/Flow/ContentDelivery'
+
+In software engineering CI/CD, continuous integration and continuous delivery, connects each aspect of the software's life.
+
+<CICD />
+
+CI/CD allows me to change this website, ensure it works properly, and remain confident that the software is operating properly. While developing this *serverless* website, I decided to implement CI/CD because software development should be easy and I need a blog that is easy to manage.
+
+# Code
+
+I've used many text editors, but I tend to just use the one that's the most supported. I'd argue that today, VS Code has the largest community backing.
+
+<Vscode />
+
+I use this step to write the Javascript and Python needed to produce the webpages and request the data from the backend.
+
+# Build
+
+After writing the Javascript, the website is built using Gatsby. Gatsby is a great choice for static websites because it is fast and has great search engine optimization, SEO.
+
+<Gatsby />
+
+Gatsby optimizes and converts all of the Javascript into static HTML and Javascript that runs on the browser. This is really great because it ensures that the content is fast and responsive. The issue I have with Gatsby is the time it takes to build all of the HTML and Javascript is over 10 minutes.
+
+# Test
+
+Testing is *required*. It makes development much easier and faster. I use both Javascript and Python to serve the REST API. [Pytest](https://docs.pytest.org/en/stable/) is a great tool for testing the python package and functions I use, while [Jest](https://jestjs.io) is great for testing the Javascript package and functions I use.
+
+<Pytest /><Jest />
+
+[Cypress](https://www.cypress.io) is used to ensure all the different portions of code work together. Cypress automates webpages appearing in the browser and tests to see if the website continues to operate the same way.
+
+<Cypress />
+
+# Release
+
+After proving that the code functions properly, I update the code on my public GitHub [repository](https://github.com/tnorlund/Blog).
+
+<Github />
+
+This allows me to have a place where I can save the progress I've made, and even allows me to revert changes. GitHub offers many apps and services that integrate with your repository. I use GitHub Actions and Gatsby Cloud.
+
+<GithubActions /><GatsbyCloud />
+
+With GitHub Actions, software developers can automate their workflow by doing something every time they update their work stored in a repository. Gatsby Cloud builds the static HTML and Javascript the browser requires on the Gatsby team's infrastructure. Since Gatsby Cloud is owned by the Gatsby team, the service is optimized such that builds with Gatsby Cloud take a fraction of the time other services require. These integrations allow me to modify and integrate changes easily. 
+
+# Deploy
+
+Amazon Web Service is a fantastic product. Great infrastructure and quality support has pushed me to use AWS for most of my projects.
+
+<Aws />
+
+I learned most of the services Amazon has to offer through [AWS Amplify](https://aws.amazon.com/amplify/). Amplify is a great product, but it lacked the sophistication I was looking for. I ended up diving head first into *Infrastructure as Code*. With this, I ended up learning [Terraform](https://www.terraform.io).
+
+<Terraform />
+
+Terraform deploys all the services requested through reusable definitions. These definitions are stored in a separate GitHub [repository](https://github.com/tnorlund/Blog-backend) where I modify and integrate changes to the deployed services.
+
+## Analytics
+
+The site's analytics are handled by Kinesis Firehose. This "firehose" of data is sent through multiple processing steps to end aggregated in DynamoDB and stored in S3.
+
+<Analytics />
+
+## Identity
+
+Amazon Cognito identifies each user and visitor. When someone signs up, a Lambda Function uses Simple Email Service to send a confirmation email. When the user confirms their email, another Lambda Function adds them to the Cognito User Pool.
+
+<Identity />
+
+## API
+
+The REST API loads the content from DynamoDB after the static content loads. A unique Lambda Function is used for each query, `getComments`, `getVisitorDetails`, etc.
+
+<API />
+
+## Content Delivery
+
+The static elements of the site are accessed through a Cloudfront Distribution. This allows for the built Gatsby site to be uploaded to an S3 bucket and scaled with the Cloudfront Distribution.
+
+<ContentDelivery />
+
+# Operate
+
+[Hashicorp](https://www.hashicorp.com), the company that produces Terraform, offers Consul, a service for dynamically networking services.
+
+<Consul />
+
+Consul allows me to connect the Gatsby repository with the Terraform repository through a simple registry. This registry can change the services the website uses dynamically and securely.
+
+# Monitor
+
+AWS offers many ways to monitor the services you use. The one that I use the most is CloudWatch.
+
+<CloudWatch />
+
+CloudWatch is great because it allows you to monitor the services through live graphs, dashboards, and logs. 
+
+# Plan
+
+With all of this tied together, planning is as easy as making a pull request from GitHub. Each change requested can be accepted and sent through all of the previous steps. 

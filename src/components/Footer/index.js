@@ -12,7 +12,10 @@ export default function Footer() {
       <span>
         © {new Date().getFullYear()} - {copyright}<br/>
         <Link
-          style={{ color:`white` }}
+          style={ {
+            color: `white`,
+            cursor: `pointer`
+          } }
           to={`/privacy`}
         >Privacy Policy</Link>
       </span>

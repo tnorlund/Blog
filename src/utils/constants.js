@@ -32,13 +32,14 @@ export const INITIAL_COLOR_MODE_CSS_PROP = `--initial-color-mode`
 
 export const COLORS = {
   gray: {
+    light: `#bcbcbc`,
+    lighter: `#e5e5e5`,
+    lightest: `#f7f7f7`,
     default: `#464849`,
     dark: `#3d3d3d`,
     darker: `#1a1d23`,
     darkest: `#060606`,
-    light: `#bcbcbc`,
-    lighter: `#e5e5e5`,
-    lightest: `#f7f7f7`,
+
   },
   brown: {
     default: `#ffc88a`,
@@ -49,26 +50,27 @@ export const COLORS = {
     lighter: `#FFECD6`,
   },
   orange: {
-    default: `#f7df1e`,
-    dark: `#ff9100`,
+    light: `#F5D77A`,
+    default: `#F5D77A`,
+    dark: `#F5D162`,
     darker: `#ff7600`,
     darkest: `#b75500`,
   },
   blue: {
-    default: `#6CCCF5`,
-    dark: `#60B6DB`,
-    darker: `#5097B5`,
-    darkest: `#346275`,
     light: `#91D8F6`,
     lighter: `#B6E3F7`,
+    default: `#566FF5`,
+    dark: `#566FF5`,
+    darker: `#293475`,
+    darkest: `#131836`,
   },
   red: {
     light: `#F46275`,
-    dark: `#B54857`,
+    dark: `#F54960`,
   },
   green: {
-    light: `#2ABF1D`,
-    dark: `#22A83E`,
+    light: `#49F56D`,
+    dark: `#31F55A`,
   },
   spark: {
     text: `#3c3a3e`,
@@ -90,7 +92,7 @@ export const MODE_COLORS = {
   },
   background: {
     light: `white`,
-    dark: gray.darker,
+    dark: gray.darkest,
   },
   shadow: {
     light: gray.lighter,
@@ -101,8 +103,8 @@ export const MODE_COLORS = {
     dark: blue.lighter,
   },
   lightLink: {
-    light: blue.lighter,
-    dark: blue.lighter
+    light: blue.light,
+    dark: blue.dark
   },
   accentBackground: {
     light: `rgba(0, 0, 0, 0.05)`,
@@ -133,16 +135,16 @@ export const MODE_COLORS = {
     dark: gray.darkest,
   },
   a: {
-    light: brown.default,
-    dark: brown.darker,
+    light: orange.light,
+    dark: orange.dark,
   },
   b: {
-    light: blue.dark,
-    dark: blue.darkest,
+    light: blue.light,
+    dark: blue.darker,
   },
   c: {
-    light: blue.light,
-    dark: blue.lighter,
+    light: orange.darker,
+    dark: orange.darkest,
   },
   d: {
     light: brown.darker,
@@ -153,16 +155,24 @@ export const MODE_COLORS = {
     dark: orange.darker,
   },
   filter: {
-    light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
-      + ` brightness(103%) contrast(116%)`,
-    dark: `invert(64%) sepia(10%) saturate(1467%) hue-rotate(352deg)`
-      + ` brightness(94%) contrast(92%)`,
+    // eslint-disable-next-line max-len
+    light: `invert(86%) sepia(39%) saturate(519%) hue-rotate(346deg) brightness(98%) contrast(96%);`,
+    // eslint-disable-next-line max-len
+    dark: `filter: invert(87%) sepia(87%) saturate(999%) hue-rotate(314deg) brightness(109%) contrast(92%);`,
+    // light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
+    //   + ` brightness(103%) contrast(116%)`,
+    // dark: `invert(64%) sepia(10%) saturate(1467%) hue-rotate(352deg)`
+    //   + ` brightness(94%) contrast(92%)`,
   },
   textfilter: {
     light: `invert(0%) sepia(42%) saturate(839%) hue-rotate(2deg)`
       + ` brightness(89%) contrast(98%)`,
     dark: `invert(100%) sepia(3%) saturate(800%) hue-rotate(207deg)`
       + ` brightness(118%) contrast(80%)`,
+  },
+  socialColor: {
+    light: blue.light,
+    dark: `white`
   },
   sparkText: {
     light: COLORS.spark.text,

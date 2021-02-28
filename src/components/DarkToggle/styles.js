@@ -57,7 +57,19 @@ const SunSlashMoon = props => (
 )
 
 export const Icons = {
-  Sun: props => <Sun css="transform: scale(1.05);" {...props} />,
-  Moon: props => <Moon css="transform: scale(0.95);" {...props} />,
-  SunMoon: props => <SunSlashMoon {...props} width={props.size} />,
+  Sun: props => <Sun
+    // eslint-disable-next-line max-len
+    css="transform: scale(1.05); cursor: pointer; :hover { color: var(--color-a)};"
+    {...props}
+  />,
+  Moon: props => <Moon
+    // eslint-disable-next-line max-len
+    css="transform: scale(0.95); cursor: pointer; :hover { color: var(--color-a) };"
+    {...props}
+  />,
+  SunMoon: props => <SunSlashMoon
+    css="cursor: pointer; :hover { color: var(--color-a) };"
+    {...props}
+    width={props.size}
+  />,
 }

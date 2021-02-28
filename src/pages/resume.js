@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useStaticQuery, graphql } from "gatsby"
 import styled from 'styled-components'
 import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
-import { useSessionStorage } from 'hooks'
-import { AUTH_KEY } from 'utils/constants'
-import { FireHose } from 'utils/auth'
-
-
-
+import { useSessionStorage, useEventListener } from 'hooks'
+import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import Adobe from 'components/Icons/Adobe'
 import Opencv from 'components/Icons/Opencv'
 import Terraform from 'components/Icons/Terraform'
@@ -20,6 +16,15 @@ import React_icon from 'components/Icons/React'
 import Pandas from 'components/Icons/Pandas'
 import Spark from 'components/Icons/Spark'
 import Consul from 'components/Icons/Consul'
+import Graphql from 'components/Icons/GraphQL'
+import { v4 as uuidv4 } from 'uuid'
+import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+import { handleScroll, IncrementBuffer } from 'utils/analytics'
+
+
+/** Add Kinesis Firehose to the Amplify Analytics object. */
+Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
+
 
 /**
  *
@@ -67,10 +72,26 @@ export default function Resume() {
     }
   ` )
   const { positions } = contentYaml
-  const user = useSessionStorage( AUTH_KEY )[0]
-  useEffect( () => {
-    FireHose( `Resume`, `/resume`, user )
-  }, [ user ] )
+  /** A buffer used to store scroll events */
+  let scroll_buffer = {}
+  /** The key of the buffer of where to store the scroll data. */
+  let buffer_index = 0
+  buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
+  /** The object used to determine whether the visitor has agreed to the
+    * privacy policy.
+    */
+  const privacy = useSessionStorage( PRIVACY_KEY )[0]
+  /** The unique ID of the visitor in session storage. */
+  const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
+  if ( !visitorKey ) setVisitorKey( uuidv4() )
+  /** Send analytics data every time the user scrolls. */
+  useEventListener(
+    `scroll`,
+    async () => buffer_index = handleScroll(
+      privacy, scroll_buffer, buffer_index, Analytics,
+      visitorKey, `Resume`, `/resume`
+    )
+  )
   return(
     <PageBody
     >
@@ -102,6 +123,7 @@ export default function Resume() {
       <Aws />
       <Consul />
       <Docker />
+      <Graphql />
       <Opencv />
       <Openmpi />
       <Pandas />

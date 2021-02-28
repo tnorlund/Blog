@@ -58,5 +58,9 @@ export const Logo = styled( Link )`
 export const Icon = styled( User3 ).attrs( props => ( {
   size: props.size || `1.6em`
 } ) )`
-
+  color: white;
+  cursor: pointer;
+  :hover {
+    color: var(--color-a)
+  };
 `

@@ -20,17 +20,30 @@ export const Description = styled.div`
 const TwitterIcon = styled( Twitter ).attrs( props => ( {
   size: props.size || `6.1em`
 } ) )`
+  color: var(--color-socialColor);
   margin-top: 0.5em;
+  :hover {
+    color: var(--color-a);
+  }
 `
 
 const LinkedInIcon = styled( LinkedinSquare ).attrs( props => ( {
   size: props.size || `7em`
-} ) )``
+} ) )`
+  color: var(--color-socialColor);
+  :hover {
+    color: var(--color-a);
+  }
+`
 
 const GithubIcon = styled( Github ).attrs( props => ( {
   size: props.size || `5.5em`
 } ) )`
+  color: var(--color-socialColor);
   margin-top: 0.65em;
+  :hover {
+    color: var(--color-a);
+  }
 `
 
 export const Icons = {

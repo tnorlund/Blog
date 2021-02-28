@@ -4,6 +4,8 @@ import {
   handleLoggingOut, resendConfrimationEmail
 } from './utils'
 import { timeSince } from 'utils/date'
+import { useLocalStorage } from 'hooks'
+
 import { Login, SignUp, Forgot, Confirm, User, TOS } from './states'
 import { graphql, useStaticQuery } from "gatsby"
 
@@ -111,8 +113,10 @@ export default function HandleStates( user, setUser ) {
       </>}
       {
         user &&
-        Object.keys( user.tos )
-          .indexOf( terms.frontmatter.version ) >= 0 && <User {
+        user.tos &&
+        // Object.keys( user.tos )
+        //   .indexOf( terms.frontmatter.version ) >= 0 &&
+        <User {
           ...{ name: user.name, dateString: timeSince(
             String( user.dateJoined )
           ), error, handleLoggingOut, setUser, setError, isAdmin:user.isAdmin,
@@ -120,8 +124,11 @@ export default function HandleStates( user, setUser ) {
         }/>
       }
       {
-        user && Object.keys( user.tos )
-          .indexOf( terms.frontmatter.version ) < 0 && <TOS
+        user &&
+        !user.tos &&
+        // Object.keys( user.tos )
+        //   .indexOf( terms.frontmatter.version ) < 0 &&
+        <TOS
           body={terms.body} user={user} version={ terms.frontmatter.version }
           setError={ setError } error={ error } setUser={ setUser }
         />

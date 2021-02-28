@@ -7,6 +7,7 @@ import {
   SubmitComment, Error, Comment, Warning, AdminControls, User
 } from './components'
 import Modal from 'components/Modal'
+import Amplify, { API } from 'aws-amplify'
 
 // TODO
 // [ ] Set component in index
@@ -37,20 +38,44 @@ export default function Comments( { slug, title } ) {
     name: undefined, dateString: undefined, isAdmin: false
   } )
   useEffect( () => {
-    getPostDetails( slug, title, setWarning, setError ).then(
-      ( { post, comments } ) => {
-        // If the post does not exist in the data base, there are no
-        // comments, and the user is an administrator, allow them to create the
-        // post.
-        if ( !post && user && user.isAdmin ) setWarning( true )
-        setCommentComponents( Object.values( comments ).map(
-          ( comment ) => Comment( {
+    API.get(
+      process.env.GATSBY_API_BLOG_NAME,
+      `/post-details`,
+      {
+        response: true, queryStringParameters: { slug, title }
+      }
+    ).then( result => {
+      console.log( { result } )
+      // TODO - Why is this here???
+      if( !result.data.post && user && user.isAdmin ) setWarning( true )
+      setCommentComponents( Object.values( result.data.comments ).map(
+        comment =>
+          Comment( {
             slug, title, comment, user, working, setWorking, setError,
             setWarning, showReply, setShowReply, reply, setReply,
             setModal, setCommenter
           } )
-        ) )
-      } ).catch( ( error ) => setError( error ) )
+      ) )
+    } ).catch( error => {
+      if (
+        error.response.data == `Post does not exist` && user && user.isAdmin
+      ) setWarning( true )
+    } )
+
+    // getPostDetails( slug, title, setWarning, setError ).then(
+    //   ( { post, comments } ) => {
+    //     // If the post does not exist in the data base, there are no
+    //     // comments, and the user is an administrator, allow them to create the
+    //     // post.
+    //     if ( !post && user && user.isAdmin ) setWarning( true )
+    //     setCommentComponents( Object.values( comments ).map(
+    //       ( comment ) => Comment( {
+    //         slug, title, comment, user, working, setWorking, setError,
+    //         setWarning, showReply, setShowReply, reply, setReply,
+    //         setModal, setCommenter
+    //       } )
+    //     ) )
+    //   } ).catch( ( error ) => setError( error ) )
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, title, user,
     // warning,
@@ -88,7 +113,7 @@ export default function Comments( { slug, title } ) {
       <Modal { ...{ open, setModal } } contents={ User( {
         name: commenter.name, dateString: commenter.dateString,
         email: commenter.email, userNumber: commenter.userNumber,
-        isAdmin: commenter.isAdmin,
+        isAdmin: commenter.isAdmin, username: commenter.username,
         newName, setNewName,
         setWorking, working, setError
       } ) } />

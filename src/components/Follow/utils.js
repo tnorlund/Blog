@@ -50,14 +50,22 @@ export const removeProject = async(
 ) => {
   try {
     setFollowNumber( 0 )
-    const { error } = await API.del(
-      process.env.GATSBY_API_BLOG_NAME, `/project`,
-      { body: { title: title, slug: slug } }
+    const result = await API.del(
+      process.env.GATSBY_API_BLOG_NAME,
+      `/project`,
+      {
+        response: true,
+        body: { title, slug }
+      }
     )
-    if ( error ) setError( error )
-    else setWarning( true )
+    // if ( error ) setError( error )
+    // else setWarning( true )
+    console.log( { result } )
     await updateUser( setUser )
-  } catch( error ) { setError( error ) }
+  } catch( error ) {
+    console.warn( { error } )
+    setError( `Could not remove project` )
+  }
   setWorking( false )
 }
 /**
@@ -69,13 +77,22 @@ export const removeProject = async(
  */
 export const getProjectDetails = async( slug, title, setError ) => {
   try {
-    const { project, followers, error } = await API.get(
+    const result = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/project-details?slug=${ slug }&title=${ title }`
+      `/project-details`,
+      {
+        response: true,
+        queryStringParameters: {
+          slug, title
+        }
+      }
     )
-    if ( error ) setError( error )
-    else return( { project, followers } )
-  } catch( error ) { setError( error ) }
+    return result.data
+  } catch( error ) {
+    if ( error.response.data == `Project does not exist` )
+      return { error: error.response.data }
+    setError( `Could not get project details` )
+  }
 }
 
 /**
@@ -83,15 +100,23 @@ export const getProjectDetails = async( slug, title, setError ) => {
  * @param {String} slug  The slug of the project.
  * @param {String} title The title of the project.
  */
-export const getProject = async ( slug, title ) => {
+export const getProject = async ( slug, title, setError ) => {
   try {
-    const { project, error } = await API.get(
+    const result = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/project?slug=${ slug }&title=${ title }`,
+      `/project`,
+      {
+        response: true,
+        queryStringParameters: { slug, title }
+      }
     )
-    if ( error ) return { error: error }
-    return { project: project }
-  } catch( error ) { return { error: error } }
+    return result.data
+  } catch( error ) {
+    if ( error.response.data == `Project does not exist` ) {
+      return { error: error.response.data }
+    }
+    else setError( `Could not get project` )
+  }
 }
 
 /**
@@ -120,22 +145,28 @@ export const addFollow = async (
   try {
     setFollowNumber( ++followNumber )
     setFollowing( true )
-    const { error } = await API.post(
+    const result = await API.post(
       process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
-      { body: {
-        slug: slug,
-        title: title,
-        name: requestedUser.name,
-        email: requestedUser.email,
-        userNumber: requestedUser.userNumber
-      } }
+      {
+        response: true,
+        body: {
+          slug,
+          title,
+          name: requestedUser.name,
+          email: requestedUser.email,
+          username: requestedUser.username
+        }
+      }
     )
-    if ( error ) setError( error )
+    console.log( result )
+    // if ( error ) setError( error )
     await updateUser( setUser )
   } catch( error ) {
+    console.log( `addFollow` )
+    console.log( error )
     setFollowNumber( --followNumber )
     setFollowing( false )
-    setError( error )
+    setError( `Could not add follow` )
   }
   setWorking( false )
 }
@@ -166,19 +197,24 @@ export const removeFollow = async (
   try {
     setFollowing( false )
     setFollowNumber( --followNumber )
-    const { error } = await API.del(
-      process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
-      { body: {
-        slug: slug,
-        title: title,
-        name: requestedUser.name,
-        email: requestedUser.email,
-        userNumber: requestedUser.userNumber
-      } }
+    const result = await API.del(
+      process.env.GATSBY_API_BLOG_NAME,
+      `/project-follow`,
+      {
+        response: true,
+        body: {
+          slug: slug,
+          title: title,
+          name: requestedUser.name,
+          email: requestedUser.email,
+          username: requestedUser.username
+        }
+      }
     )
-    if ( error ) setError( error )
+    // if ( error ) setError( error )
     await updateUser( setUser )
   } catch( error ) {
+    console.log( error )
     setFollowing( true )
     setFollowNumber( ++followNumber )
     setError( error )
@@ -200,16 +236,30 @@ export const removeFollow = async (
 export const addProject = async (
   slug, title, setWarning, setError, setWorking
 ) => {
-  const { error } = await API.post(
-    process.env.GATSBY_API_BLOG_NAME, `/project`,
-    { body: { slug: slug, title: title } }
-  )
-  if ( error ) setError( error )
-  else {
-    setWarning( false )
-    setError()
+  setWorking( true )
+  try {
+    const result = await API.post(
+      process.env.GATSBY_API_BLOG_NAME,
+      `/project`,
+      {
+        response: true,
+        body: { slug, title }
+      }
+    )
+    console.log( { result } )
+  } catch( error ) {
+    console.log( { error } )
   }
-  setWorking( false )
+  // const { error } = await API.post(
+  //   process.env.GATSBY_API_BLOG_NAME, `/project`,
+  //   { body: { slug: slug, title: title } }
+  // )
+  // if ( error ) setError( error )
+  // else {
+  //   setWarning( false )
+  //   setError()
+  // }
+  // setWorking( false )
 }
 
 /**

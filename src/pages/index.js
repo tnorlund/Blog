@@ -1,12 +1,17 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { PageBody } from 'components/styles'
 import { Icons, SocialsDiv, ProfilePic } from '../templates/styles'
 import List from 'components/List'
-import { useSessionStorage } from 'hooks'
-import { AUTH_KEY } from 'utils/constants'
-import { FireHose } from 'utils/auth'
+import { useSessionStorage, useEventListener } from 'hooks'
+import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
+import { handleScroll, IncrementBuffer } from 'utils/analytics'
+import { v4 as uuidv4 } from 'uuid'
+import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+/** Add Kinesis Firehose to the Amplify Analytics object. */
+Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 function Social( { metadata } ) {
   const { github, linkedin, twitter } = metadata.siteMetadata.social
@@ -40,10 +45,26 @@ function Social( { metadata } ) {
 
 const Landing = ( { data } ) => {
   const { landing, picture, metadata } = data
-  const user = useSessionStorage( AUTH_KEY )[0]
-  useEffect( () => {
-    FireHose( `Tyler Norlund`, `/`, user )
-  }, [ user ] )
+  /** A buffer used to store scroll events */
+  let scroll_buffer = {}
+  /** The key of the buffer of where to store the scroll data. */
+  let buffer_index = 0
+  buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
+  /** The object used to determine whether the visitor has agreed to the
+    * privacy policy.
+    */
+  const privacy = useSessionStorage( PRIVACY_KEY )[0]
+  /** The unique ID of the visitor in session storage. */
+  const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
+  if ( !visitorKey ) setVisitorKey( uuidv4() )
+  /** Send analytics data every time the user scrolls. */
+  useEventListener(
+    `scroll`,
+    async () => buffer_index = handleScroll(
+      privacy, scroll_buffer, buffer_index, Analytics,
+      visitorKey, `Tyler Norlund`, `/`
+    )
+  )
   return(
     <PageBody>
       <ProfilePic fixed={picture.img.fixed} />

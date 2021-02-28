@@ -35,7 +35,25 @@ export const PoweredBy = styled.div`
 `
 
 export const Icons = {
-  Gatsby,
-  Github,
-  LogoAmplify,
+  Gatsby: styled( Gatsby )`
+    color: white;
+    cursor: pointer;
+    :hover {
+      color: var(--color-a)
+    };
+  `,
+  Github: styled( Github )`
+    color: white;
+    cursor: pointer;
+    :hover {
+      color: var(--color-a)
+    };
+  `,
+  LogoAmplify: styled( LogoAmplify )`
+    color: white;
+    cursor: pointer;
+    :hover {
+      color: var(--color-a)
+    };
+  `,
 }

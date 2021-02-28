@@ -1,13 +1,20 @@
 import React from 'react'
 import { useSessionStorage } from 'hooks'
 import Modal from 'components/Modal'
-import { PRIVACY_KEY } from 'utils/constants'
+import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import styled from 'styled-components'
 import Check from 'components/Icons/Check'
 import Question from 'components/Icons/Question'
 import Cross from 'components/Icons/Cross'
 import { Link } from 'gatsby'
 import { Title, Description } from 'components/styles/Modal'
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+/** Add Kinesis Firehose to the Amplify Analytics object. */
+Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
+
 
 const ShareDiv = styled.div`
   display: flex;
@@ -76,7 +83,9 @@ const ShareItem = ( { name, privacyKey, privacy, setPrivacy } ) => {
   </ShareDiv>
 }
 
-const Contents = ( { privacy, setPrivacy, setModal } ) => {
+const Contents = ( {
+  privacy, setPrivacy, setModal, visitorKey, setVisitorKey
+} ) => {
   return <div>
     <Title>Analytics</Title>
     <Description>
@@ -110,6 +119,7 @@ const Contents = ( { privacy, setPrivacy, setModal } ) => {
     <ShareButton
       onClick={ () => {
         let newPrivacy = privacy
+        let newVisitorKey = uuidv4()
         if (
           privacy && (
             privacy.browser || privacy.ip || privacy.windowSize ||
@@ -146,27 +156,45 @@ const Contents = ( { privacy, setPrivacy, setModal } ) => {
           }
         }
         else {
+          setVisitorKey( newVisitorKey )
           setPrivacy( {
             ...privacy, browser:true, ip: true, windowSize: true,
             scrollPosition: true, shownWindow: true
           } )
-
+          axios.get( `https://api.ipify.org?format=json` ).then( response => {
+            try {
+              Analytics.record(
+                {
+                  data: {
+                    id: newVisitorKey,
+                    ip: response.data.ip
+                  },
+                  streamName: process.env.GATSBY_ANALYTICS_FIREHOSE
+                },
+                `AWSKinesisFirehose`
+              )
+            } catch( error ) { console.warn( error ) }
+          } )
         }
         setTimeout( () => { setModal( false ) }, 1000 )
       } }
     >Agree to Share</ShareButton>
   </div>
 }
+
 export default function Privacy( { open, setModal } ) {
   const [ privacy, setPrivacy ] = useSessionStorage( PRIVACY_KEY )
-  // User stored in session storage
+  const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
+
   return <Modal
     { ...{ open, setModal } }
     contents={
       <Contents
         privacy={ privacy}
         setPrivacy={ setPrivacy }
-        setModal={setModal}
+        visitorKey={ visitorKey }
+        setVisitorKey={ setVisitorKey }
+        setModal={ setModal }
       />
     }
   />

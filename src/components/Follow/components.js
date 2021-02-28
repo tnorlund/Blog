@@ -138,12 +138,12 @@ const ProjectDetails = (
       </Controls>
       <div>
         {
-          followers.map( ( { userName, email, userNumber, dateFollowed } ) => (
-            <User key={ userName }>
-              <Name>{ userName }</Name>
+          followers.map( ( { name, email, username, dateFollowed } ) => (
+            <User key={ username }>
+              <Name>{ name }</Name>
               <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
               <Remove onClick={ () => removeFollow(
-                { name: userName, email: email, userNumber: userNumber },
+                { name, email, username },
                 slug, title, setUser, setError, setFollowNumber, followNumber,
                 setFollowing, setWorking
               ) } />

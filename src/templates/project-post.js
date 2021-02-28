@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql, Link } from "gatsby"
 import Follow from 'components/Follow'
 import { PageBody, Icon } from 'components/styles'
@@ -8,9 +8,14 @@ import {
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 // import ProjectPostList from 'views/ProjectPostList'
 import { Title } from './styles'
-import { useSessionStorage } from 'hooks'
-import { AUTH_KEY } from 'utils/constants'
-import { FireHose } from 'utils/auth'
+import { useSessionStorage, useEventListener } from 'hooks'
+import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
+import { handleScroll, IncrementBuffer } from 'utils/analytics'
+import { v4 as uuidv4 } from 'uuid'
+import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+/** Add Kinesis Firehose to the Amplify Analytics object. */
+Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 export default function Project( { data } ) {
   // Destructure the response from the original query.
@@ -18,10 +23,26 @@ export default function Project( { data } ) {
   const { title, slug } = project.frontmatter
   const body = project.body
   const icon = project.frontmatter.icon.publicURL
-  const user = useSessionStorage( AUTH_KEY )[0]
-  useEffect( () => {
-    FireHose( title, slug, user )
-  }, [slug, title, user] )
+  /** A buffer used to store scroll events */
+  let scroll_buffer = {}
+  /** The key of the buffer of where to store the scroll data. */
+  let buffer_index = 0
+  buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
+  /** The object used to determine whether the visitor has agreed to the
+    * privacy policy.
+    */
+  const privacy = useSessionStorage( PRIVACY_KEY )[0]
+  /** The unique ID of the visitor in session storage. */
+  const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
+  if ( !visitorKey ) setVisitorKey( uuidv4() )
+  /** Send analytics data every time the user scrolls. */
+  useEventListener(
+    `scroll`,
+    async () => buffer_index = handleScroll(
+      privacy, scroll_buffer, buffer_index, Analytics,
+      visitorKey, title, slug
+    )
+  )
   return(
     <PageBody>
       <Title>{title}</Title><Follow slug={slug} title={title}/>

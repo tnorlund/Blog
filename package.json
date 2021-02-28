@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-hello-world",
+  "name": "tylernorlund-blog",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
+  "description": "Tyler Norlund's Blog",
   "version": "0.1.0",
-  "license": "0BSD",
+  "license": "MIT",
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
@@ -14,6 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@aws-sdk/client-firehose": "^3.4.1",
     "@babel/runtime": "^7.12.5",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -55,6 +56,7 @@
     "react-hook-inview": "^4.3.7",
     "react-loading": "^2.0.3",
     "react-spring": "^8.0.27",
+    "remark-burger": "^1.0.1",
     "remark-parse": "^9.0.0",
     "styled-components": "^5.2.1",
     "styled-icons": "^10.26.0",

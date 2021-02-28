@@ -8,7 +8,7 @@ export const TocDiv = styled.aside`
   padding: 0.7em 1.2em;
   margin: 1em 0;
   border-radius: 0.5em;
-  box-shadow: 0 0 1em 3px var(--color-shadow);
+  box-shadow: 0 0 0.5em 1px var(--color-shadow);
   height: max-content;
   max-height: 80vh;
   z-index: 3;
@@ -50,7 +50,7 @@ export const Title = styled.h2`
 
 export const TocLink = styled.a`
   cursor: pointer;
-  color: ${p => ( p.active ? `var(--color-c)` : `var(--color-gray)` )};
+  color: ${p => ( p.active ? `var(--color-a)` : `var(--color-gray)` )};
   font-weight: ${props => props.active && `bold`};
   display: block;
   margin-left: ${props => props.depth + `em`};
