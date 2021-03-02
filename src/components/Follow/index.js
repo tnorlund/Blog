@@ -13,10 +13,25 @@ import {
   User, Name, DateDiv, Remove,
   EmailButton
 } from './styles'
-import { ProjectDetails
-} from './components'
+// import { ProjectDetails
+// } from './components'
 import { updateUser  } from 'utils/auth'
 import { API } from 'aws-amplify'
+
+/**
+ * Adds a string to the user's clipboard.
+ * @param {String} str The string added to the clipboard.
+ */
+const copyStringToClipboard = ( str ) => {
+  let element = document.createElement( `textarea` )
+  element.value = str
+  element.setAttribute( `readonly`, `` )
+  element.style = { position: `absolute`, left: `-9999px` }
+  document.body.appendChild( element )
+  element.select()
+  document.execCommand( `copy` )
+  document.body.removeChild( element )
+}
 
 export default function Follow( { slug, title } ) {
   // Get the current user data
@@ -176,6 +191,79 @@ export default function Follow( { slug, title } ) {
     }>Remove Project</WarningButton></div>
   </WarningDiv>
 
+  const ProjectDetails = <Modal
+    open={ open } setModal={ setModal }
+    contents={
+      <>
+        <Title>{ title }</Title>
+        <Controls>
+          <div><Less onClick={
+            () => {
+              API.post(
+                process.env.GATSBY_API_BLOG_NAME, `/project-update`,
+                { body: {
+                  title: title, slug: slug,
+                  numberFollows: String( followNumber - 1 )
+                } }
+              ).then( () => updateUser( setUser )
+              ).catch( () => console.warn( `could not update Project` )
+              )
+            }
+          } /></div>
+          <ControlsNumber>{ followNumber }</ControlsNumber>
+          <div><More onClick={
+            () => {
+              API.post(
+                process.env.GATSBY_API_BLOG_NAME, `/project-update`,
+                { body: {
+                  title: title, slug: slug,
+                  numberFollows: String( followNumber + 1 )
+                } }
+              ).then( () => updateUser( setUser )
+              ).catch( () => console.warn( `could not update Project` )
+              )
+            }
+          } /></div>
+        </Controls>
+        <div>
+          {
+            followers.map( ( { name, email, username, dateFollowed } ) => (
+              <User key={ username }>
+                <Name>{ name }</Name>
+                <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
+                <Remove onClick={ () => {
+                  if ( !working ) {
+                    setWorking( true )
+                    setFollowNumber( followNumber - 1 )
+                    setFollowing( true )
+                    API.del(
+                      process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
+                      {
+                        response: true,
+                        body: { slug, title, name, email, username }
+                      }
+                    ).then( () => { updateUser( setUser ); setWorking( true ) }
+                    ).catch( () => {
+                      setFollowNumber( followNumber + 1 )
+                      setFollowing( false )
+                      setError( `Could not add follow` )
+                      setWorking( false )
+                    } )
+                  }
+                }
+                } />
+              </User>
+            ) )
+          }
+        </div>
+        <EmailButton onClick={
+          () => copyStringToClipboard(
+            followers.map( follower => follower.email ).join( `, ` ) )
+        }>Followers&apos;s Emails</EmailButton>
+      </>
+    }
+  />
+
   useEffect( () => {
     /**
      * Get the project and set the project's information using the hooks.
@@ -194,7 +282,7 @@ export default function Follow( { slug, title } ) {
         error.response &&
         error.response.data == `Project does not exist`
       )
-      { console.log( `found response` ); setWarning( true )}
+        setWarning( true )
       else{
         // TODO - Set error when the API is not accessible
         console.warn( `API not working` )
@@ -245,13 +333,7 @@ export default function Follow( { slug, title } ) {
       {/* { !warning && <FollowingComp /> } */}
       { user && user.isAdmin && !warning && <AdminControls /> }
       { error && <ErrorComp /> }
-      { !warning && <Modal
-        open={ open } setModal={ setModal }
-        contents={ ProjectDetails(
-          title, slug, followNumber, followers, setUser, setError, setWarning,
-          setFollowNumber, followNumber, setFollowing, setWorking
-        ) }/>
-      }
+      {/* { !warning && <ProjectDetails /> } */}
     </>
   )
 }
