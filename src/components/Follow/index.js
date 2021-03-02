@@ -13,10 +13,9 @@ import {
   User, Name, DateDiv, Remove,
   EmailButton
 } from './styles'
-import {
-  Following, AdminControls, ProjectDetails
+import { ProjectDetails
 } from './components'
-
+import { updateUser  } from 'utils/auth'
 import { API } from 'aws-amplify'
 
 export default function Follow( { slug, title } ) {
@@ -61,59 +60,121 @@ export default function Follow( { slug, title } ) {
     </WarningDiv>
   </>
 
-  const Error = <>
+  const ErrorComp = <>
     <WarningDiv>
-      <AdminWarning/><WarningDescription>{error}</WarningDescription>
+      <AdminWarning/><WarningDescription>{ error }</WarningDescription>
     </WarningDiv>
   </>
 
-  // const ProjectDetails = <>
-  //   <Title>{ title }</Title>
-  //   <Controls>
-  //     <div><Less onClick={ () => {
-  //       API.post(
-  //         process.env.GATSBY_API_BLOG_NAME,
-  //         `/project-update`,
-  //         {
-  //           response: true,
-  //           queryStringParameters: { slug, title }
-  //         }
-  //       ).then( result => {
-  //         setFollowers( result.data.followers.map(
-  //           follower => { return { ...follower, key: follower.username } }
-  //         ) )
-  //       } ).catch( error => {
-  //         console.warn( error.response )
-  //       } )
-  //     //   updateProject(
-  //     //   slug, title, followNumber - 1, setError, setWarning, setUser
-  //     // )
-  //     } }/></div>
-  //     <ControlsNumber>{ followNumber }</ControlsNumber>
-  //     <div><More onClick={ () => updateProject(
-  //       slug, title, followNumber + 1, setError, setWarning, setUser
-  //     ) }/></div>
-  //   </Controls>
-  //   <div>
-  //     {
-  //       followers.map( ( { name, email, username, dateFollowed } ) => (
-  //         <User key={ username }>
-  //           <Name>{ name }</Name>
-  //           <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
-  //           <Remove onClick={ () => removeFollow(
-  //             { name, email, username },
-  //             slug, title, setUser, setError, setFollowNumber, followNumber,
-  //             setFollowing, setWorking
-  //           ) } />
-  //         </User>
-  //       ) )
-  //     }
-  //   </div>
-  //   <EmailButton onClick={
-  //     () => copyStringToClipboard(
-  //       followers.map( follower => follower.email ).join( `, ` ) )
-  //   }>Followers&apos;s Emails</EmailButton>
-  // </>
+  const FollowingComp = <FollowDiv>
+    {
+      /**
+       * Show the number of followers when it is greater than 0. Otherwise,
+       * show an empty div.
+       */
+      ( followNumber > 0 ) && <FollowDetails>
+        <div><Follower /></div>{ <FollowNumber>{ followNumber }</FollowNumber> }
+      </FollowDetails>
+    } { ( followNumber <= 0 ) && <div></div>}
+    {
+      /**
+       * When a user is signed in, show the button to either follow or unfollow
+       * the project.
+       */
+      user && <div css={`margin-top:0.3em;`}>
+        {
+          user && !isFollowing && <FollowButton onClick={
+            () => {
+            /**
+             * Increase the number of the project's followers. This is first
+             * done by the React Hook, and then is set by the response from the
+             * API.
+             */
+              if ( !working ) {
+                setWorking( true )
+                setFollowNumber( followNumber + 1 )
+                setFollowing( true )
+                API.post(
+                  process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
+                  {
+                    response: true,
+                    body: {
+                      slug, title, name: user.name, email: user.email,
+                      username: user.username
+                    }
+                  }
+                ).then( () => { updateUser( setUser ); setWorking( false ) }
+                ).catch( () => {
+                  setFollowNumber( followNumber - 1 )
+                  setFollowing( false )
+                  setError( `Could not add follow` )
+                  setWorking( false )
+                } )
+              }
+            }
+          } >Follow</FollowButton>
+        }
+        {
+          isFollowing && <FollowingButton onClick={
+            () => {
+            /**
+             * Decrease the number of the project's followers. This is first
+             * done by the React Hook, and then is set by the response from the
+             * API.
+             */
+              if ( !working ) {
+                setWorking( true )
+                setFollowNumber( followNumber - 1 )
+                setFollowing( true )
+                API.del(
+                  process.env.GATSBY_API_BLOG_NAME, `/project-follow`,
+                  {
+                    response: true,
+                    body: {
+                      slug, title, name: user.name, email: user.email,
+                      username: user.username
+                    }
+                  }
+                ).then( () => { updateUser( setUser ); setWorking( true ) }
+                ).catch( () => {
+                  setFollowNumber( followNumber + 1 )
+                  setFollowing( false )
+                  setError( `Could not add follow` )
+                  setWorking( false )
+                } )
+              }
+            }
+          } >Following</FollowingButton>
+        }
+      </div>
+    }
+    {
+      /**
+       * When no user is signed in, show an empty div.
+       */
+      !user && <div></div>
+    }
+  </FollowDiv>
+
+  const AdminControls = <WarningDiv>
+    <div><FollowButton onClick={
+      () => setModal( true )
+    }>Project Details</FollowButton></div>
+    <div><WarningButton onClick={
+      () => {
+        if ( !working ) {
+          setWorking( true )
+          setFollowing( false )
+          API.del(
+            process.env.GATSBY_API_BLOG_NAME,
+            `/project`,
+            { response: true, body: { title, slug } }
+          ).then( () => updateUser( setUser )
+          ).catch( () => console.warn( `Could not remove Project` ) )
+        }
+      }
+    }>Remove Project</WarningButton></div>
+  </WarningDiv>
 
   useEffect( () => {
     /**
@@ -133,9 +194,12 @@ export default function Follow( { slug, title } ) {
         error.response &&
         error.response.data == `Project does not exist`
       )
-        setWarning( true )
-      else
-        setError( `API not working` )
+      { console.log( `found response` ); setWarning( true )}
+      else{
+        // TODO - Set error when the API is not accessible
+        console.warn( `API not working` )
+        // setError( `Could not use API` )
+      }
     } )
 
     if ( user ) {
@@ -178,15 +242,9 @@ export default function Follow( { slug, title } ) {
   return(
     <>
       { warning && <WarningComp/> }
-      { !warning && <Following { ...{
-        user, slug, title, setUser, setError, setFollowNumber, followNumber,
-        setFollowing, isFollowing, working, setWorking
-      } }/> }
-      { user && user.isAdmin && !warning && <AdminControls { ...{
-        slug, title, setError, setWarning, setUser, setModal, setWorking,
-        working, setFollowNumber, setFollowing
-      } } /> }
-      { error && <Error /> }
+      {/* { !warning && <FollowingComp /> } */}
+      { user && user.isAdmin && !warning && <AdminControls /> }
+      { error && <ErrorComp /> }
       { !warning && <Modal
         open={ open } setModal={ setModal }
         contents={ ProjectDetails(
