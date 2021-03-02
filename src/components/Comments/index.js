@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useSessionStorage } from 'hooks'
 import { AUTH_KEY } from 'utils/constants'
-import { getPostDetails } from './utils'
 import { Title, TextInput } from './styles'
 import {
   SubmitComment, Error, Comment, Warning, AdminControls, User
 } from './components'
 import Modal from 'components/Modal'
-import Amplify, { API } from 'aws-amplify'
+import { API } from 'aws-amplify'
 
 // TODO
 // [ ] Set component in index
@@ -45,7 +44,6 @@ export default function Comments( { slug, title } ) {
         response: true, queryStringParameters: { slug, title }
       }
     ).then( result => {
-      console.log( { result } )
       // TODO - Why is this here???
       if( !result.data.post && user && user.isAdmin ) setWarning( true )
       setCommentComponents( Object.values( result.data.comments ).map(
@@ -58,30 +56,13 @@ export default function Comments( { slug, title } ) {
       ) )
     } ).catch( error => {
       if (
-        error.response.data == `Post does not exist` && user && user.isAdmin
+        error.response &&
+        error.response.data == `Post does not exist` &&
+        user && user.isAdmin
       ) setWarning( true )
     } )
-
-    // getPostDetails( slug, title, setWarning, setError ).then(
-    //   ( { post, comments } ) => {
-    //     // If the post does not exist in the data base, there are no
-    //     // comments, and the user is an administrator, allow them to create the
-    //     // post.
-    //     if ( !post && user && user.isAdmin ) setWarning( true )
-    //     setCommentComponents( Object.values( comments ).map(
-    //       ( comment ) => Comment( {
-    //         slug, title, comment, user, working, setWorking, setError,
-    //         setWarning, showReply, setShowReply, reply, setReply,
-    //         setModal, setCommenter
-    //       } )
-    //     ) )
-    //   } ).catch( ( error ) => setError( error ) )
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, title, user,
-    // warning,
-    working, showReply,
-    // reply
-  ] )
+  }, [ slug, title, user, working, showReply ] )
   return(
     <>
       <AdminControls { ...{

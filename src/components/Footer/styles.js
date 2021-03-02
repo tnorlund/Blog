@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { mediaQueries } from 'utils/mediaQueries'
-import { Gatsby, Github } from 'styled-icons/simple-icons'
+import { Gatsby, Github, Terraform } from 'styled-icons/simple-icons'
 import { LogoAmplify } from 'styled-icons/ionicons-solid'
 
 export const FooterDiv = styled.footer`
@@ -56,4 +56,11 @@ export const Icons = {
       color: var(--color-a)
     };
   `,
+  Terraform: styled( Terraform )`
+  color: white;
+  cursor: pointer;
+  :hover {
+    color: var(--color-a)
+  };
+`,
 }

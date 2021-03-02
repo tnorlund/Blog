@@ -19,6 +19,7 @@ import Aws from 'components/Icons/Aws'
 import CloudWatch from 'components/Icons/CloudWatch'
 import Gatsby from 'components/Icons/Gatsby'
 import GatsbyCloud from 'components/Icons/GatsbyCloud'
+import Graphql from 'components/Icons/GraphQL'
 import Analytics from 'components/Flow/Analytics'
 import Identity from 'components/Flow/Identity'
 import API from 'components/Flow/API'
@@ -66,7 +67,7 @@ This allows me to have a place where I can save the progress I've made, and even
 
 <GithubActions /><GatsbyCloud />
 
-With GitHub Actions, software developers can automate their workflow by doing something every time they update their work stored in a repository. Gatsby Cloud builds the static HTML and Javascript the browser requires on the Gatsby team's infrastructure. Since Gatsby Cloud is owned by the Gatsby team, the service is optimized such that builds with Gatsby Cloud take a fraction of the time other services require. These integrations allow me to modify and integrate changes easily. 
+With GitHub Actions, software developers can automate their workflow by doing something every time they update their work stored in a repository. Gatsby Cloud builds the static HTML and Javascript the browser requires. Since Gatsby Cloud is owned by the Gatsby team, the service is optimized such that builds with Gatsby Cloud take a fraction of the time other services require. These integrations allow me to modify and integrate changes easily. 
 
 # Deploy
 
@@ -100,17 +101,17 @@ The REST API loads the content from DynamoDB after the static content loads. A u
 
 ## Content Delivery
 
-The static elements of the site are accessed through a Cloudfront Distribution. This allows for the built Gatsby site to be uploaded to an S3 bucket and scaled with the Cloudfront Distribution.
+The static elements of the site are accessed through a CloudFront Distribution. This allows for the built Gatsby site to be uploaded to an S3 bucket and scaled with the CloudFront Distribution.
 
 <ContentDelivery />
 
 # Operate
 
-[Hashicorp](https://www.hashicorp.com), the company that produces Terraform, offers Consul, a service for dynamically networking services.
+With GitHub Actions handling the release and deployments, it makes the most sense to handle the operations in GitHub too. After talking to Gatsby support, I learned how to set environment variables using a GraphQL mutation. 
 
-<Consul />
+<Graphql />
 
-Consul, along with Terraform Cloud, allows me to connect the S3 bucket hosting the static site with a Terraform deployment through a simple registry. This allows me to have many instances of the website: development, testing, staging, etc.
+This allows me to use separate operations with branches. Each branch uses Terraform Cloud workspaces to deploy AWS services. GitHub Actions connect the Gatsby Cloud workspaces with the Terraform deployments, allowing for rapid prototyping and secure operations.
 
 # Monitor
 
@@ -118,8 +119,8 @@ AWS offers many ways to monitor the services you use. The one that I use the mos
 
 <CloudWatch />
 
-CloudWatch is great because it allows you to monitor the services through live graphs, dashboards, and logs. 
+CloudWatch is great because it allows you to monitor the services through live graphs, dashboards, and logs.
 
 # Plan
 
-With all of this tied together, planning is as easy as making a pull request from GitHub. Each change requested can be accepted and sent through all of the previous steps. 
+With all of this tied together, planning is as easy as making a pull request from GitHub. Each change is now a pull request that I can accept or decline. The GitHub Actions go through the previous steps when I accept a pull request and merge it to the main branch.

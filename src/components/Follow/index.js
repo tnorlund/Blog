@@ -14,9 +14,8 @@ import {
   EmailButton
 } from './styles'
 import {
-  Following, Warning, Error, AdminControls, ProjectDetails
+  Following, AdminControls, ProjectDetails
 } from './components'
-import { updateUser  } from 'utils/auth'
 
 import { API } from 'aws-amplify'
 
@@ -39,6 +38,83 @@ export default function Follow( { slug, title } ) {
   const [ open, setModal ] = useState( false )
   const [ followers, setFollowers ] = useState( [] )
 
+  const WarningComp = <>
+    <WarningDiv>
+      <div><AdminWarning/>Project not in database</div>
+      { isAdmin &&
+    <div><WarningButton
+      onClick={
+        () => {
+          if ( !working ) {
+            setWorking( true )
+            API.post(
+              process.env.GATSBY_API_BLOG_NAME,
+              `/project`,
+              { response: true, body: { slug, title } }
+            ).then( () => { setError(); setWorking( false ) }
+            ).catch( () => {
+              setError( `Could not add project` ); setWorking( false )
+            } )
+          } }
+      }>Add Project</WarningButton></div>
+      }
+    </WarningDiv>
+  </>
+
+  const Error = <>
+    <WarningDiv>
+      <AdminWarning/><WarningDescription>{error}</WarningDescription>
+    </WarningDiv>
+  </>
+
+  // const ProjectDetails = <>
+  //   <Title>{ title }</Title>
+  //   <Controls>
+  //     <div><Less onClick={ () => {
+  //       API.post(
+  //         process.env.GATSBY_API_BLOG_NAME,
+  //         `/project-update`,
+  //         {
+  //           response: true,
+  //           queryStringParameters: { slug, title }
+  //         }
+  //       ).then( result => {
+  //         setFollowers( result.data.followers.map(
+  //           follower => { return { ...follower, key: follower.username } }
+  //         ) )
+  //       } ).catch( error => {
+  //         console.warn( error.response )
+  //       } )
+  //     //   updateProject(
+  //     //   slug, title, followNumber - 1, setError, setWarning, setUser
+  //     // )
+  //     } }/></div>
+  //     <ControlsNumber>{ followNumber }</ControlsNumber>
+  //     <div><More onClick={ () => updateProject(
+  //       slug, title, followNumber + 1, setError, setWarning, setUser
+  //     ) }/></div>
+  //   </Controls>
+  //   <div>
+  //     {
+  //       followers.map( ( { name, email, username, dateFollowed } ) => (
+  //         <User key={ username }>
+  //           <Name>{ name }</Name>
+  //           <DateDiv>{ new Date( dateFollowed ).toDateString() }</DateDiv>
+  //           <Remove onClick={ () => removeFollow(
+  //             { name, email, username },
+  //             slug, title, setUser, setError, setFollowNumber, followNumber,
+  //             setFollowing, setWorking
+  //           ) } />
+  //         </User>
+  //       ) )
+  //     }
+  //   </div>
+  //   <EmailButton onClick={
+  //     () => copyStringToClipboard(
+  //       followers.map( follower => follower.email ).join( `, ` ) )
+  //   }>Followers&apos;s Emails</EmailButton>
+  // </>
+
   useEffect( () => {
     /**
      * Get the project and set the project's information using the hooks.
@@ -53,8 +129,13 @@ export default function Follow( { slug, title } ) {
     ).then( result => {
       setFollowNumber( result.data.numberFollows )
     } ).catch( error => {
-      if ( error.response.data == `Project does not exist` )
+      if (
+        error.response &&
+        error.response.data == `Project does not exist`
+      )
         setWarning( true )
+      else
+        setError( `API not working` )
     } )
 
     if ( user ) {
@@ -96,27 +177,7 @@ export default function Follow( { slug, title } ) {
   }, [ slug, title, user, working ] )
   return(
     <>
-      { warning &&
-      <WarningDiv>
-        <div><AdminWarning/>Project not in database</div>
-        { isAdmin &&
-          <div><WarningButton onClick={
-            () => {
-              if ( !working ) {
-                setWorking( true )
-                API.post(
-                  process.env.GATSBY_API_BLOG_NAME,
-                  `/project`,
-                  { response: true, body: { slug, title } }
-                ).then( () => { setError(); setWorking( false ) }
-                ).catch( () => {
-                  setError( `Could not add project` ); setWorking( false )
-                } )
-              } }
-          }>Add Project</WarningButton></div>
-        }
-      </WarningDiv>
-      }
+      { warning && <WarningComp/> }
       { !warning && <Following { ...{
         user, slug, title, setUser, setError, setFollowNumber, followNumber,
         setFollowing, isFollowing, working, setWorking
@@ -125,7 +186,7 @@ export default function Follow( { slug, title } ) {
         slug, title, setError, setWarning, setUser, setModal, setWorking,
         working, setFollowNumber, setFollowing
       } } /> }
-      { error && <Error error={error} /> }
+      { error && <Error /> }
       { !warning && <Modal
         open={ open } setModal={ setModal }
         contents={ ProjectDetails(

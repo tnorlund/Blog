@@ -1,15 +1,12 @@
 copyright: Tyler Norlund
 
 poweredBy: 
-  - url: https://gatsbyjs.org
+  - url: https://github.com/tnorlund/Blog
     title: Gatsby
     logo: Gatsby
-  - url: https://github.com/tnorlund/Blog
-    title: Github
-    logo: Github
-  - url: https://aws.amazon.com/amplify/
-    title: Amplify
-    logo: LogoAmplify
+  - url: https://github.com/tnorlund/Blog-backend
+    title: Terraform
+    logo: Terraform
 
 positions:
   - title: Test Technician
