@@ -12,7 +12,7 @@ export default function List( { type } ) {
     blog: allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { slug: { regex: "^/blog/[0-9a-z-]+$/" } } }
-      limit: 5
+      # limit: 5
     ) {
       nodes {
         id,

@@ -3,7 +3,10 @@ import Img from 'gatsby-image'
 import { LinkedinSquare, Twitter } from 'styled-icons/boxicons-logos'
 import { Github } from 'styled-icons/simple-icons'
 
-export const Title = styled.h1`
+export const Title = styled.div`
+  font-size: 2em;
+  font-weight: bold;
+  padding-bottom: 0.5em;
   margin-bottom: 0.5em;
   border-bottom: 4px solid var(--color-b);
 `
