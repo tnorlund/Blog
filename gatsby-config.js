@@ -43,12 +43,12 @@ const siteMetadata = {
   title: `Tyler Norlund`,
   description: `Tyler's blog where he talks about himself.`,
   keywords: [ `React`, `Gatsby` ],
-  site: `https://tylernorlund.com`,
+  site: `https://www.tylernorlund.com`,
   author: {
     name: `Tyler Norlund`,
   },
   lang: `en`,
-  siteUrl: `https://tylernorlund.com`,
+  siteUrl: `https://www.tylernorlund.com`,
   social: {
     twitter: `tylernorlund`,
     linkedin: `tyler-norlund`,
