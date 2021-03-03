@@ -35,7 +35,7 @@ const SEO = ( { site, uri = ``, data, children } ) => {
   else
     newTitle = uri.split( `/` )[ uri.split( `/` ).length  - 1 ]
       .split( `-` ).map( capitalize ).join( ` ` )
-  const pageUrl = ( site.siteUrl.endsWith( `/` ) ) ?
+  const pageUrl = ( uri.endsWith( `/` ) ) ?
     site.siteUrl + uri : site.siteUrl + uri + `/`
   const desc = data?.page?.excerpt || site.description
   return(
