@@ -28,11 +28,11 @@ const Pandas = () => {
   return <div ref={ref} style={ { height: `200pt`, } }>
     <Spring native to={{ x: inView ?  max_x : min_x }}>
       { ( props ) => (
-        <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
+        <svg width="100%" height="100%" viewBox="0 0 200 100">
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="11.89" y="36.38" width="5.98" height="40.4"
@@ -40,7 +40,7 @@ const Pandas = () => {
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="21.31" y="51.31" width="5.98" height="12.23"
@@ -48,7 +48,7 @@ const Pandas = () => {
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,-${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="21.31" y="26.41" width="5.98" height="12.26"
@@ -57,7 +57,7 @@ const Pandas = () => {
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,-${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="30.56" y="36.38" width="5.98" height="12.26"
@@ -65,7 +65,7 @@ const Pandas = () => {
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="30.56" y="61.28" width="5.98" height="12.26"
@@ -74,7 +74,7 @@ const Pandas = () => {
           <animated.rect
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,-${x}%, 0)` )
             } }
             fill={purple} className="cls-1" x="39.81" y="23.22" width="5.98" height="40.4"
