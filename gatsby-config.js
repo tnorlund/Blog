@@ -41,10 +41,13 @@ const gatsbyRemarkPlugins = [
 
 const siteMetadata = {
   title: `Tyler Norlund`,
+  description: `Tyler's blog where he talks about himself.`,
+  keywords: [ `React`, `Gatsby` ],
+  url: `https:tylernorlund.com`,
   author: {
     name: `Tyler Norlund`,
   },
-  description: `A personal blog where I talk about myself.`,
+  lang: `en`,
   siteUrl: `https://tylernorlund.com/`,
   social: {
     twitter: `tylernorlund`,

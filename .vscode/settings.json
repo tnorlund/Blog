@@ -18,6 +18,11 @@
     "helvetica",
     "neue"
   ],
-  "eslint.validate": [ "javascript" ],
-  "eslint.enable": true
+  "eslint.validate": [
+    "javascript"
+  ],
+  "eslint.enable": true,
+  "cSpell.ignoreWords": [
+    "openmpi"
+  ]
 }
