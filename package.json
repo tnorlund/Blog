@@ -20,6 +20,7 @@
     "@mdx-js/react": "^1.6.22",
     "aws-amplify": "^3.3.21",
     "axios": "^0.21.1",
+    "eslint-webpack-plugin": "^2.5.2",
     "gatsby": "^2.32.9",
     "gatsby-image": "^2.10.0",
     "gatsby-plugin-catch-links": "^2.9.0",

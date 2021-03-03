@@ -35,6 +35,7 @@ const SEO = ( { site, uri = ``, data, children } ) => {
       <meta property="og:title" content={title} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:description" content={desc} />
+      <meta name="robots" content="noindex,follow"></meta>
       <meta name="description" content={desc} />
       <link rel="canonical" href={pageUrl} />
       <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />

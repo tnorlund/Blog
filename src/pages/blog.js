@@ -1,7 +1,7 @@
 import React from "react"
 import List from 'components/List'
 import { PageBody } from 'components/styles'
-import { Title, Description } from '../templates/styles'
+import { Title } from '../templates/styles'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
@@ -35,9 +35,6 @@ export default function Blog() {
   return(
     <PageBody>
       <Title>Posts</Title>
-      <Description>
-        These are blog posts that I&apos;d like to share.
-      </Description>
       <List type={`blog`} />
     </PageBody>
   )

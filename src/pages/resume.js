@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React from 'react'
 import { useStaticQuery, graphql } from "gatsby"
 import styled from 'styled-components'
 import Toc from 'components/Toc'
@@ -6,9 +6,7 @@ import { PageBody } from 'components/styles'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import Adobe from 'components/Icons/Adobe'
-// const Adobe = lazy( () => import( `components/Icons/Adobe` ) )
 import Opencv from 'components/Icons/Opencv'
-// const Opencv = lazy( () => import( `components/Icons/Opencv` ) )
 import Terraform from 'components/Icons/Terraform'
 import Docker from 'components/Icons/Docker'
 import Aws from 'components/Icons/Aws'
@@ -23,10 +21,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
 
-
 /** Add Kinesis Firehose to the Amplify Analytics object. */
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
-
 
 /**
  *
@@ -94,7 +90,6 @@ export default function Resume() {
       visitorKey, `Resume`, `/resume`
     )
   )
-  const renderLoader = () => <div height={`200pt`}/>
   return(
     <PageBody
     >
@@ -122,23 +117,12 @@ export default function Resume() {
         <JobDate>Aug 2013 - May 2018</JobDate>
       </JobDiv>
       <MainTitle>Skills</MainTitle>
-      {/* <Suspense */}
-        // fallback={renderLoader()} >
-        <Adobe />
-      {/* </Suspense> */}
-      {/* <Suspense
-        fallback={renderLoader()} >
-        <Aws />
-      </Suspense> */}
-      {/* <Aws /> */}
+      <Adobe />
+      <Aws />
       <Consul />
       <Docker />
       <Graphql />
-      {/* <Opencv /> */}
-      {/* <Suspense
-        fallback={renderLoader()} > */}
-        <Opencv />
-      {/* </Suspense> */}
+      <Opencv />
       <Openmpi />
       <Pandas />
       <React_icon />
