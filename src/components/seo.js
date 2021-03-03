@@ -44,7 +44,7 @@ const SEO = ( { site, uri = ``, data, children } ) => {
       <html lang="en" />
       <meta
         name="image"
-        content={`${site.siteUrl}/${result.picture.img.fixed.src}`}
+        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
       />
       <meta name="description" content={desc} />
       <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />
@@ -55,7 +55,7 @@ const SEO = ( { site, uri = ``, data, children } ) => {
       <meta property="og:description" content={desc} />
       <meta
         property="og:image"
-        content={`${site.siteUrl}/${result.picture.img.fixed.src}`}
+        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
       />
 
       {children}
