@@ -28,7 +28,7 @@ const Terraform = () => {
   return <div ref={ref} style={ { height: `200pt`, } }>
     <Spring native to={ { x: inView ?  max_x : min_x } } >
       { ( props ) => (
-        <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
+        <svg width="100%" height="100%" viewBox="0 0 200 100">
           <animated.polygon
             style={ {
               transformOrigin: `9.33275% 35.4176%`,
@@ -43,7 +43,7 @@ const Terraform = () => {
           <animated.polygon
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[1].start, steps[1].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,-${x}%, 0)` )
             } }
             fill={light}
@@ -53,7 +53,7 @@ const Terraform = () => {
           <animated.polygon
             style={ {
               transform: props.x
-                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [100, 100, 0, 0] } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [120, 120, 0, 0] } )
                 .interpolate( x => `translate3d(0,${x}%, 0)` )
             } }
             fill={light}
