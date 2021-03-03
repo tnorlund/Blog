@@ -57,6 +57,17 @@ const SEO = ( { site, uri = ``, data, children } ) => {
         property="og:image"
         content={`${site.siteUrl}${result.picture.img.fixed.src}`}
       />
+      <meta property="og:image:alt" content={desc}></meta>
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:url" content={pageUrl} />
+      <meta name="twitter:description" content={desc} />
+      <meta
+        name="twitter:image"
+        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
+      />
+      <meta name="twitter:image:alt" content={desc}></meta>
 
       {children}
     </Helmet>
