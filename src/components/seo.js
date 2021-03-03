@@ -20,7 +20,6 @@ const titles = {
 }
 
 const SEO = ( { site, uri = ``, data, children } ) => {
-
   const result = useStaticQuery( graphql`
   {
     picture: file( name: {eq: "PortraitMeta"} ) {
@@ -36,23 +35,29 @@ const SEO = ( { site, uri = ``, data, children } ) => {
   else
     newTitle = uri.split( `/` )[ uri.split( `/` ).length  - 1 ]
       .split( `-` ).map( capitalize ).join( ` ` )
-  const pageUrl = ( uri.endsWith( `/` ) ) ?
-    site.url + uri : site.url + uri + `/`
+  const pageUrl = ( site.siteUrl.endsWith( `/` ) ) ?
+    site.siteUrl + uri : site.siteUrl + uri + `/`
   const desc = data?.page?.excerpt || site.description
   return(
     <Helmet title={newTitle}>
       <meta property="og:type" content="website" />
       <html lang="en" />
-      <meta name="image" content={result.picture.img.fixed.src} />
+      <meta
+        name="image"
+        content={`${site.siteUrl}/${result.picture.img.fixed.src}`}
+      />
       <meta name="description" content={desc} />
       <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />
+      <link rel="canonical" href={pageUrl} />
 
       <meta property="og:title" content={title} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:description" content={desc} />
-      <meta property="og:image" content={result.picture.img.fixed.src} />
+      <meta
+        property="og:image"
+        content={`${site.siteUrl}/${result.picture.img.fixed.src}`}
+      />
 
-      {/* <link rel="canonical" href={pageUrl} /> */}
       {children}
     </Helmet>
   )
