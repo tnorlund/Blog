@@ -70,8 +70,8 @@ const Landing = ( { data } ) => {
       <ProfilePic fixed={picture.img.fixed} />
       <Social metadata={metadata} />
       <MDXRenderer>{landing.body}</MDXRenderer>
-      <h1>Projects</h1>
-      <List type={`project`} />
+      {/* <h1>Projects</h1>
+      <List type={`project`} /> */}
       <h1>Blog</h1>
       <List type={`blog`} />
     </PageBody>
