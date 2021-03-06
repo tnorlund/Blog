@@ -24,6 +24,7 @@ import Analytics from 'components/Flow/Analytics'
 import Identity from 'components/Flow/Identity'
 import API from 'components/Flow/API'
 import ContentDelivery from 'components/Flow/ContentDelivery'
+import NewAPI from 'components/Flow/NewAPI'
 
 In software engineering CI/CD, continuous integration and continuous delivery, connects each aspect of the software's life.
 
@@ -98,6 +99,7 @@ Amazon Cognito identifies each user and visitor. When someone signs up, a Lambda
 The REST API loads the content from DynamoDB after the static content loads. A unique Lambda Function is used for each query, `getComments`, `getVisitorDetails`, etc.
 
 <API />
+<NewAPI />
 
 ## Content Delivery
 
