@@ -21,9 +21,9 @@ import Gatsby from 'components/Icons/Gatsby'
 import GatsbyCloud from 'components/Icons/GatsbyCloud'
 import Graphql from 'components/Icons/GraphQL'
 import Analytics from 'components/Flow/Analytics'
+import ContentDelivery from 'components/Flow/ContentDelivery'
 import Identity from 'components/Flow/Identity'
 import API from 'components/Flow/API'
-import ContentDelivery from 'components/Flow/ContentDelivery'
 
 In software engineering CI/CD, continuous integration and continuous delivery, connects each aspect of the software's life.
 
@@ -71,56 +71,55 @@ With GitHub Actions, software developers can automate their workflow by doing so
 
 # Deploy
 
-Amazon Web Service is a fantastic product. Great infrastructure and quality support has pushed me to use AWS for most of my projects.
+Everything needs to be deployed to Amazon Web Service.
 
 <Aws />
 
-I learned most of the services Amazon has to offer through [AWS Amplify](https://aws.amazon.com/amplify/). Amplify is a great product, but it lacked the sophistication I was looking for. I ended up diving head first into *Infrastructure as Code*. With this, I ended up learning [Terraform](https://www.terraform.io).
+Amazon Web Service offers many *services* to *serve* you content at a global scale. *Service*.
+
+[Terraform](https://www.terraform.io) is a service that treats the AWS services as code.
 
 <Terraform />
 
-Terraform deploys all the services requested through reusable definitions. These definitions are stored in a separate GitHub [repository](https://github.com/tnorlund/Blog-backend) where I modify and integrate changes to the deployed services.
+Since I can treat the infrastructure as code, I can code both the frontend and backend while managing both in GitHub Repositories.
 
-## Analytics
-
-The site's analytics are handled by Kinesis Firehose. This "firehose" of data is sent through multiple processing steps to end aggregated in DynamoDB and stored in S3.
-
-<Analytics />
-
-## Identity
-
-Amazon Cognito identifies each user and visitor. When someone signs up, a Lambda Function uses Simple Email Service to send a confirmation email. When the user confirms their email, another Lambda Function adds them to the Cognito User Pool.
-
-<Identity />
-
-## API
-
-The REST API loads the content from DynamoDB after the static content loads. A unique Lambda Function is used for each query, `getComments`, `getVisitorDetails`, etc.
-
-<API />
+The backend repository is organized such that there are 3 modules: [Content Delivery](#content-delivery), [API](#api), and [Login](#login).
 
 ## Content Delivery
 
-The static elements of the site are accessed through a CloudFront Distribution. This allows for the built Gatsby site to be uploaded to an S3 bucket and scaled with the CloudFront Distribution.
+The static content is stored in an S3 bucket that is then distributed by Amazon CloudFront. This *Content Delivery Network* distributes the static content across the globe, ensuring that you get it as fast as possible.
 
+CloudFront got realtime logging at the last AWS re:Invent conference in 2020. This allows for Amazon Kinesis to process the realtime logs in *realtime*. I can then access the logs using SQL queries through Amazon Athena.
 <ContentDelivery />
+
+## API
+
+The content that changes is managed by Amazon API Gateway. The API is a secure way to transact data from Amazon DynamoDB.
+<API />
+
+## Login
+
+Finally, the content can be protected through Amazon Cognito. This service sets the permissions for the user.
+<Identity />
 
 # Operate
 
-With GitHub Actions handling the release and deployments, it makes the most sense to handle the operations in GitHub too. After talking to Gatsby support, I learned how to set environment variables using a GraphQL mutation. 
+With GitHub Actions managing the release and deployments in this CICD pipeline, it made the most sense to operate the services used through GitHub Actions as well.
+
+After talking to the folks at Gatsby Cloud, I learned of an *undocumented* GraphQL API for setting variables in `ENV`, allowing for the two repositories to operate succinctly. 
 
 <Graphql />
 
-This allows me to use separate operations with branches. Each branch uses Terraform Cloud workspaces to deploy AWS services. GitHub Actions connect the Gatsby Cloud workspaces with the Terraform deployments, allowing for rapid prototyping and secure operations.
+I'm working on the node script now, but I'll be sure to share what I do later.
 
 # Monitor
 
-AWS offers many ways to monitor the services you use. The one that I use the most is CloudWatch.
+Amazon CloudWatch is a great service that allows me to monitor the different Amazon services I use through custom dashboards.
 
 <CloudWatch />
 
-CloudWatch is great because it allows you to monitor the services through live graphs, dashboards, and logs.
+There is a huge room for improvement with realtime logging. I'm looking forward to building a more sufficient way to monitor.
 
 # Plan
 
-With all of this tied together, planning is as easy as making a pull request from GitHub. Each change is now a pull request that I can accept or decline. The GitHub Actions go through the previous steps when I accept a pull request and merge it to the main branch.
+On GitHub, anyone can file an issue and update the website through a pull request. This allows me to easily plan and update anything and ensure that it remains operational and works as I plan it to.
