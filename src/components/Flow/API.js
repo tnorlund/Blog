@@ -39,7 +39,7 @@ Object.keys( steps ).forEach( ( key ) => {
 const API = () => {
   // Only show when in view
   const [ref, inView] = useInView( { threshold: 1, } )
-  return <div ref={ref} style={ { height: `200pt`, } }>
+  return <div ref={ref} style={ { padding:`1em`, height: `128pt`, } }>
     <Spring config={{ duration: 1500 }} native to={{ x: inView ?  max_x : min_x }}>
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 200 128" preserveAspectRatio="XMaxYMax">
