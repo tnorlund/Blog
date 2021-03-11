@@ -75,7 +75,7 @@ const API = () => {
             } }
           >
             <g clipPath={`url(#APIclip-path-2)`}  >
-              <path fill={`#c33`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
+              <path fill={`#dc4637`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
               <path fill={`url(#APIlinear-gradient-2)`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
               <path fill={`#3e2823`} style={{ opacity:0.15 }} d="M18.93,30.6,7.61,11.2l-.16.29L18.68,30.75Z" />
               <path fill={`#0f9d58`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
