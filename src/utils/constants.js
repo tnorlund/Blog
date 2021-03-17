@@ -80,7 +80,11 @@ export const COLORS = {
     purple: `#1e1853`,
     pink: `#e50888`,
     yellow: `#ffcb05`,
-  }
+  },
+  postgresql: {
+    blue: `#3780b0`,
+    text: `#231f20`,
+  },
 }
 
 const { gray, brown, blue, red, orange, green } = COLORS
@@ -159,10 +163,6 @@ export const MODE_COLORS = {
     light: `invert(86%) sepia(39%) saturate(519%) hue-rotate(346deg) brightness(98%) contrast(96%);`,
     // eslint-disable-next-line max-len
     dark: `filter: invert(87%) sepia(87%) saturate(999%) hue-rotate(314deg) brightness(109%) contrast(92%);`,
-    // light: `invert(90%) sepia(72%) saturate(7448%) hue-rotate(301deg)`
-    //   + ` brightness(103%) contrast(116%)`,
-    // dark: `invert(64%) sepia(10%) saturate(1467%) hue-rotate(352deg)`
-    //   + ` brightness(94%) contrast(92%)`,
   },
   textfilter: {
     light: `invert(0%) sepia(42%) saturate(839%) hue-rotate(2deg)`
@@ -181,7 +181,11 @@ export const MODE_COLORS = {
   pandasText: {
     light: COLORS.pandas.purple,
     dark: gray.lighter
-  }
+  },
+  postgresqlText: {
+    light: COLORS.postgresql.text,
+    dark: gray.lighter,
+  },
 }
 
 export const typography = {
