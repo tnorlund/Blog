@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 
 /** Add Kinesis Firehose to the Amplify Analytics object. */
-Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
+// Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 export default function Website() {
   const result = useStaticQuery( graphql`

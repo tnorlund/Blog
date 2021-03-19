@@ -16,6 +16,7 @@ import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 export default function Post( { data } ) {
+  console.log( { data } )
   const { post, next, prev } = data
   const { title, date, slug, showToc } = post.frontmatter
   const body = post.body
@@ -55,19 +56,19 @@ export const query = graphql`
   query BlogPostBySlug(
     $slug: String!, $prevSlug: String!, $nextSlug: String!
   ) {
-    post: mdx( frontmatter: { slug: {eq: $slug} } ) {
+    post: mdx( slug: { eq: $slug } ) {
       id, body,
       frontmatter {
         title, date(formatString: "MMMM D, YYYY"), description, slug, showToc
       }
     }
-    next: mdx( frontmatter: { slug: {eq: $nextSlug} } ) {
+    next: mdx( slug: { eq: $nextSlug } ) {
       id, body,
       frontmatter {
         title, date(formatString: "MMMM DD, YYYY"), description, slug
       }
     }
-    prev: mdx( frontmatter: { slug: {eq: $prevSlug} } ) {
+    prev: mdx( slug: { eq: $prevSlug } ) {
       id, body,
       frontmatter {
         title, date(formatString: "MMMM DD, YYYY"), description, slug

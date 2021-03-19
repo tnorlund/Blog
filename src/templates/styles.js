@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Img from 'gatsby-image'
+import { GatsbyImage } from "gatsby-plugin-image";
 import { LinkedinSquare, Twitter } from 'styled-icons/boxicons-logos'
 import { Github } from 'styled-icons/simple-icons'
 
@@ -64,7 +64,7 @@ export const SocialsDiv = styled.div`
   margin-bottom: 1.666rem;
 `
 
-export const ProfilePic = styled( Img )`
+export const ProfilePic = styled( GatsbyImage )`
   border-radius: 50%;
   justify-self: center;
   margin-bottom: 1.666rem;

@@ -17,9 +17,10 @@ export default function Blog() {
   /** The key of the buffer of where to store the scroll data. */
   let buffer_index = 0
   buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
-  /** The object used to determine whether the visitor has agreed to the
-    * privacy policy.
-    */
+  /** 
+   * The object used to determine whether the visitor has agreed to the
+   * privacy policy.
+   */
   const privacy = useSessionStorage( PRIVACY_KEY )[0]
   /** The unique ID of the visitor in session storage. */
   const [ visitorKey, setVisitorKey ] = useSessionStorage( VISITOR_KEY )
@@ -35,7 +36,7 @@ export default function Blog() {
   return(
     <PageBody>
       <Title>Posts</Title>
-      <List type={`blog`} />
+      <List />
     </PageBody>
   )
 }

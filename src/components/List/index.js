@@ -6,74 +6,51 @@ import {
   DescriptionDiv, SquareContent, SquareDiv
 } from './styles'
 
-export default function List( { type } ) {
-  const { blog, project } = useStaticQuery( graphql`
+export default function List( { limit } ) {
+  const { blog: { edges } } = useStaticQuery( graphql`
   {
     blog: allMdx(
+      filter: {fileAbsolutePath: {regex: "/content/blog/"}}
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { slug: { regex: "^/blog/[0-9a-z-]+$/" } } }
-      # limit: 5
     ) {
-      nodes {
-        id,
-        frontmatter{
-          slug, title, description, date(formatString: "MMM DD, YYYY")
+      edges {
+        node {
+          id
+          frontmatter{
+            slug, title, description, date(formatString: "MMM DD, YYYY")
+          }
+          slug
+          fileAbsolutePath
         }
       }
     }
-    project: allMdx( 
-      filter: { frontmatter: { slug: { regex: "^/projects/[a-z]+$/" } } }
-    ) {
-      nodes {
-        id,
-        excerpt,
-        frontmatter { slug, title, description, icon { publicURL } }
-      }
-    }
   } ` )
-  if ( type === `blog` )
-    return(
-      <>
-        {blog.nodes.map(
-          ( { frontmatter: { title, slug, date, description } } ) => (
+    return <>
+      { limit && edges.slice(0, limit ).map(
+        ( { node } ) => {
+          const { title, date, description } = node.frontmatter
+          const { slug } = node
+          return (
+          <PostDiv key={title}>
+            <Link to={slug} rel={title}>
+              <PostTitle> {title} </PostTitle>
+            </Link>
+            <PostDate>{date}</PostDate>
+            <Description>{description}</Description>
+          </PostDiv>
+        ) } ) }
+      { !limit && edges.map(
+        ( { node } ) => {
+          const { title, date, description } = node.frontmatter
+          const { slug } = node
+          return (
             <PostDiv key={title}>
-              <Link to={slug} rel={title}>
-                <PostTitle>
-                  {/* <Link to={slug} rel={title}> */}
-                  {title}
-                  {/* </Link> */}
-                </PostTitle>
+              <Link to={`${ slug.split( `/` )[1] }/`} rel={title}>
+                <PostTitle> {title} </PostTitle>
               </Link>
               <PostDate>{date}</PostDate>
               <Description>{description}</Description>
             </PostDiv>
-          ) ) }
-      </>
-    )
-  if ( type === `project` )
-    return(
-      <>
-        {project.nodes.map( ( { excerpt,
-          frontmatter: { title, slug, icon }
-        } ) => (
-          <ProjectDiv key={title}>
-            <Link to={slug}>
-              <IconDiv>
-                <SquareDiv><SquareContent>
-                  <Icon
-                    src={icon.publicURL}
-                    alt={title}
-                  />
-                </SquareContent></SquareDiv>
-              </IconDiv>
-              <DescriptionDiv>
-                <Title>{title}</Title>
-                <Description>{excerpt}</Description>
-              </DescriptionDiv>
-            </Link>
-          </ProjectDiv>
-        ) ) }
-      </>
-    )
-  else return <>Error</>
+        ) } ) }
+    </>
 }

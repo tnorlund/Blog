@@ -55,7 +55,6 @@ export const Configure = () => {
 export const getCurrentSession = async () => {
   try {
     const session = await Auth.currentSession()
-    console.log( session.idToken )
     return {
       name: session.idToken.payload.name,
       email: session.idToken.payload.email,
@@ -101,14 +100,12 @@ export const updateUser = async ( setUser ) => {
   const {
     name, email, username, isAdmin
   } = await getCurrentSession()
-  console.log( { name, email, username, isAdmin } )
   try {
     // const { user, tos, comments, follows, error } =
     const result = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
       `/user-details?name=${ name }&email=${ email }&username=${ username }`
     )
-    console.log( `result`,  { result } )
     const { user, tos, comments, follows } = result
     setUser( {
       ...user, tos, comments, follows,
@@ -129,7 +126,6 @@ export const updateUserBySession = async ( session, setUser ) => {
   const { name, email, sub: username } = session.attributes
   const userGroups = session.signInUserSession.idToken
     .payload[`cognito:groups`]
-  console.log( { name, email, username } )
   try {
     const { user, tos, comments, follows, error } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
@@ -137,14 +133,12 @@ export const updateUserBySession = async ( session, setUser ) => {
         username
       }`
     )
-    console.log( { user, tos, comments, follows, error } )
     if ( error ) console.error( error )
     // Reassemble the user.
     const requestedUser = {
       ...user, tos, comments, follows,
       isAdmin: userGroups.indexOf( `Admin` ) >= 0
     }
-    console.log( { requestedUser } )
     setUser( requestedUser )
   } catch( error ) { console.error( error ) }
 }
