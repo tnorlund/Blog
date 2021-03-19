@@ -24,6 +24,9 @@ module.exports = {
     {
       resolve: "gatsby-plugin-mdx",
       options: {
+        gatsbyRemarkPlugins: [
+          `gatsby-remark-vscode`
+        ],
         extensions: [`.md`, `.mdx`]
       }
     },
@@ -47,6 +50,7 @@ module.exports = {
         icon: `content/favicon.svg`,
       },
     },
+    `gatsby-plugin-styled-components`,
     `gatsby-transformer-yaml`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
