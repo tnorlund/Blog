@@ -7,7 +7,8 @@ const postTemplate = path.resolve( `./src/templates/blog-post.js` )
  * @param {object}   posts      The different posts.
  * @param {function} resolve    The resolver for the original promise.
  */
- const blogPost = ( createPage, posts, resolve ) => {
+const blogPost = ( createPage, posts, resolve ) => {
+  console.log( posts )
   posts.forEach( ( post, index, arr ) => {
     /** The next slug found in the array */
     const nextSlug = arr[ index - 1 ] &&
@@ -37,7 +38,10 @@ exports.createPages = async( { graphql, actions, reporter } ) => {
     resolve(
       graphql( `
       {
-        posts: allMdx(filter: {slug: {regex: "/blog/"}}) {
+        posts: allMdx(
+          filter: { slug: { regex: "/blog/" } }
+          sort: { fields: frontmatter___date, order: DESC }
+        ) {
           edges {
             node {
               frontmatter { date, title }
