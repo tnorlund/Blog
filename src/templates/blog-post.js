@@ -16,7 +16,6 @@ import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 export default function Post( { data } ) {
-  console.log( { data } )
   const { post, next, prev } = data
   const { title, date, slug, showToc } = post.frontmatter
   const body = post.body
