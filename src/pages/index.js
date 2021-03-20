@@ -64,8 +64,10 @@ const IndexPage = () => {
           borderRadius: '50%',
           justifySelf: 'center',
           margin: '0 auto',
+          backgroundColor: `var(--color-b)`
         } }
         imgStyle={ {
+          backgroundColor: `var(--color-b)`,
           borderRadius: '50%',
         } }
         backgroundColor={`var(--color-b)`}
