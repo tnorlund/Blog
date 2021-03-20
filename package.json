@@ -44,7 +44,7 @@
     "gatsby-remark-sub-sup": "^1.0.0",
     "gatsby-remark-vscode": "^3.2.0",
     "gatsby-source-filesystem": "^2.10.0",
-    "gatsby-transformer-remark": "^2.15.0",
+    "gatsby-transformer-remark": "^2.16.1",
     "gatsby-transformer-sharp": "^2.11.0",
     "gatsby-transformer-yaml": "^2.10.0",
     "interweave": "^12.7.0",
