@@ -42,7 +42,10 @@ const IndexPage = () => {
     graphql`query {
       picture: file(name: {eq: "Portrait"}) {
         childImageSharp {
-          gatsbyImageData( width: 300 )
+          gatsbyImageData( 
+            width: 300 
+            placeholder: BLURRED
+          )
         }
       }
       metadata: site {
