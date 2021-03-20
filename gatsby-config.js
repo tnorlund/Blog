@@ -27,6 +27,17 @@ module.exports = {
         // gatsbyRemarkPlugins: [
         //   `gatsby-remark-vscode`
         // ],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1200,
+              linkImagesToOriginal: false,
+              wrapperStyle: `border-radius: 0.5em; overflow: hidden;`,
+            },
+          },
+          `gatsby-remark-copy-linked-files`
+        ],
         extensions: [`.md`, `.mdx`]
       }
     },
@@ -54,6 +65,7 @@ module.exports = {
     `gatsby-transformer-yaml`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
+    `gatsby-remark-images`,
     `gatsby-transformer-sharp`
   ],
 };
