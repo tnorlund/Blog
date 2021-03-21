@@ -73,9 +73,6 @@ export const ProjectDiv = styled.div`
   &:hover ${Icon} {
     filter: var(--color-filter);
   }
-  /* &:hover ${Title} {
-    color: var(--color-a);
-  } */
   flex-wrap: nowrap;
   padding-bottom: 3vw;
   margin-bottom: 3vw;

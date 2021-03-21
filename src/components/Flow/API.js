@@ -6,27 +6,29 @@ import { useInView } from 'react-hook-inview'
 const min_x = 0
 const max_x = 1
 const steps = {
-  1: { length: 1 }, // Chrome
-  2: { length: 1 }, // Route53
+  1: { length: 1 },
+  2: { length: 1 },
   3: { length: 1 },
-  4: { length: 1 }, // Arrow 1
-  5: { length: 1 }, // API Gateway
+  4: { length: 1 },
+  5: { length: 1 },
   6: { length: 1 },
-  7: { length: 1 }, // Arrow 2
-  8: { length: 1 }, // Lambda 1
+  7: { length: 1 },
+  8: { length: 1 },
   9: { length: 1 },
   10: { length: 1 },
   11: { length: 1 },
   12: { length: 1 },
   13: { length: 1 },
-  14: { length: 1 }, // Arrow 3
-  15: { length: 1 }, // DynamoDB
+  14: { length: 1 },
+  15: { length: 1 },
   16: { length: 1 },
-  17: { length: 1 }, // Arrow 4
-  18: { length: 1 }, // Lambda2 Arrow 5
-  19: { length: 1 }, // Arrow 6
-  20: { length: 1 }, // Arrow 7
-  21: { length: 1 }, // Arrow 8
+  17: { length: 1 },
+  18: { length: 1 },
+  19: { length: 1 },
+  20: { length: 1 },
+  21: { length: 1 },
+  22: { length: 1 },
+  23: { length: 1 },
 }
 const sum = Object.keys( steps ).reduce( ( sum, key ) => sum + parseFloat( steps[key].length || 0 ), 0 )
 let start = min_x
@@ -44,27 +46,28 @@ const API = () => {
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 207 199.21" preserveAspectRatio="XMaxYMax">
           <defs>
-            <clipPath id="APIclip-path-1"><polygon points="109.37 22.71 109.37 21.61 109.37 19.99 103.78 19.99 103.78 24.29 105.52 24.29 105.52 26.53 103.78 26.53 103.78 30.9 111.12 30.9 111.12 22.71 109.37 22.71" /></clipPath>
-            <clipPath id="APIclip-path-2"><circle cx="28.5" cy="25.04" r="25" /></clipPath>
-            <clipPath id="APIclip-path-3"><polygon points="3.5 50.04 27.3 50.04 38.34 38.99 38.34 30.72 18.66 30.72 3.5 4.72 3.5 50.04" /></clipPath>
-            <clipPath id="APIclip-path-4"><polygon points="28.5 13.67 38.34 30.72 27.3 50.04 53.5 50.04 53.5 13.67 28.5 13.67" /></clipPath>
-            <clipPath id="APIclip-path-5"><polygon points="7.47 0.04 7.47 11.5 18.66 30.72 28.5 13.67 53.5 13.67 53.5 0.04 7.47 0.04" /></clipPath>
-            <linearGradient id="APIlinear-gradient-1" x1="78.35" y1="50.15" x2="113.71" y2="14.79" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-2" x1="16.56" y1="175.14" x2="31.48" y2="183.85" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#a52a22" stopOpacity="0.6"/><stop offset="0.66" stopColor="#a52a22" stopOpacity="0"/></linearGradient>
-            <linearGradient id="APIlinear-gradient-3" x1="39.73" y1="149.71" x2="23.15" y2="159.42" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#0d562b" stopOpacity="0.4"/><stop offset="0.33" stopColor="#0d562b" stopOpacity="0"/></linearGradient>
-            <linearGradient id="APIlinear-gradient-4" x1="42.84" y1="182.3" x2="47.02" y2="164.03" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#e86324" stopOpacity="0.3"/><stop offset="0.66" stopColor="#e86324" stopOpacity="0"/></linearGradient>
-            <linearGradient id="APIlinear-gradient-5" x1="153.35" y1="50.15" x2="188.71" y2="14.79" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-6" x1="156.85" y1="121.38" x2="192.21" y2="86.02" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-7" x1="153.35" y1="124.88" x2="188.71" y2="89.52" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-8" x1="150.1" y1="128.13" x2="185.46" y2="92.77" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-9" x1="3.35" y1="124.75" x2="38.71" y2="89.4" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-10" x1="78.35" y1="124.75" x2="113.71" y2="89.4" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3b3f99" /><stop offset="1" stopColor="#5c76ba" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-11" x1="153.35" y1="199.36" x2="188.71" y2="164.01" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
-            <linearGradient id="APIlinear-gradient-12" x1="78.35" y1="199.36" x2="113.71" y2="164.01" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#1f6835" /><stop offset="1" stopColor="#6bad44" /></linearGradient>
-            <radialGradient id="APIradial-gradient-1" cx="610.42" cy="180.55" r="23.89" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3e2823" stopOpacity="0.2"/><stop offset="1" stopColor="#3e2823" stopOpacity="0"/></radialGradient>
-            <radialGradient id="APIradial-gradient-2" cx="590.45" cy="182.67" r="22.17" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3e2823" stopOpacity="0.2"/><stop offset="1" stopColor="#3e2823" stopOpacity="0"/></radialGradient>
-            <radialGradient id="APIradial-gradient-3" cx="611.44" cy="169.14" r="24.96" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#273339" stopOpacity="0.2"/><stop offset="1" stopColor="#273339" stopOpacity="0"/></radialGradient>
+            <clipPath id="API-clip-path-1"><circle cx="28.5" cy="25.04" r="25" /></clipPath>
+            <linearGradient id="API-linear-gradient-1" x1="16.56" y1="175.14" x2="31.48" y2="183.85" gradientTransform="matrix(1, 0, 0, -1, -7, 194.21)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#a52a22" stopOpacity="0.6"/><stop offset="0.66" stopColor="#a52a22" stopOpacity="0"/></linearGradient>
+            <linearGradient id="API-linear-gradient-2" x1="39.73" y1="149.71" x2="23.15" y2="159.42" gradientTransform="matrix(1, 0, 0, -1, -7, 194.21)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#0d562b" stopOpacity="0.4"/><stop offset="0.33" stopColor="#0d562b" stopOpacity="0"/></linearGradient>
+            <clipPath id="API-clip-path-2"><polygon points="3.5 50.04 27.3 50.04 38.34 38.99 38.34 30.72 18.66 30.72 3.5 4.72 3.5 50.04" /></clipPath>
+            <linearGradient id="API-linear-gradient-3" x1="42.84" y1="182.3" x2="47.02" y2="164.03" gradientTransform="matrix(1, 0, 0, -1, -7, 194.21)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#e86324" stopOpacity="0.3"/><stop offset="0.66" stopColor="#e86324" stopOpacity="0"/></linearGradient>
+            <clipPath id="API-clip-path-3"><polygon points="28.5 13.67 38.34 30.72 27.3 50.04 53.5 50.04 53.5 13.67 28.5 13.67" /></clipPath>
+            <radialGradient id="API-radial-gradient-1" cx="610.42" cy="180.55" r="23.89" gradientTransform="matrix(1, 0, 0, -1, -583, 194.21)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3e2823" stopOpacity="0.2"/><stop offset="1" stopColor="#3e2823" stopOpacity="0"/></radialGradient>
+            <clipPath id="API-clip-path-4"><polygon points="7.47 0.04 7.47 11.5 18.66 30.72 28.5 13.67 53.5 13.67 53.5 0.04 7.47 0.04" /></clipPath>
+            <radialGradient id="API-radial-gradient-2" cx="590.45" cy="182.67" r="22.17" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3e2823" stopOpacity="0.2"/><stop offset="1" stopColor="#3e2823" stopOpacity="0"/></radialGradient>
+            <radialGradient id="API-radial-gradient-3" cx="611.44" cy="169.14" r="24.96" gradientTransform="matrix(1, 0, 0, -1, -583, 194.21)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#273339" stopOpacity="0.2"/><stop offset="1" stopColor="#273339" stopOpacity="0"/></radialGradient>
+            <linearGradient id="API-linear-gradient-4" x1="78.35" y1="50.15" x2="113.71" y2="14.79" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
+            <clipPath id="API-clip-path-5"><polygon points="109.37 22.71 109.37 21.61 109.37 19.99 103.78 19.99 103.78 24.29 105.52 24.29 105.52 26.53 103.78 26.53 103.78 30.9 111.12 30.9 111.12 22.71 109.37 22.71" /></clipPath>
+            <linearGradient id="API-linear-gradient-5" x1="153.35" y1="50.15" x2="188.71" y2="14.79" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
+            <linearGradient id="API-linear-gradient-6" x1="156.85" y1="121.38" x2="192.21" y2="86.02" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
+            <linearGradient id="API-linear-gradient-7" x1="153.35" y1="124.88" x2="188.71" y2="89.52" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
+            <linearGradient id="API-linear-gradient-8" x1="150.1" y1="128.13" x2="185.46" y2="92.77" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
+            <linearGradient id="API-linear-gradient-9" x1="78.35" y1="124.75" x2="113.71" y2="89.4" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#3b3f99" /><stop offset="1" stopColor="#5c76ba" /></linearGradient>
+            <linearGradient id="API-linear-gradient-10" x1="153.35" y1="199.36" x2="188.71" y2="164.01" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#523b97" /><stop offset="1" stopColor="#836aaf" /></linearGradient>
+            <linearGradient id="API-linear-gradient-11" x1="3.35" y1="124.75" x2="38.71" y2="89.4" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#c85428" /><stop offset="1" stopColor="#f8981d" /></linearGradient>
+            <linearGradient id="API-linear-gradient-12" x1="78.35" y1="199.36" x2="113.71" y2="164.01" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#1f6835" /><stop offset="1" stopColor="#6bad44" /></linearGradient>
           </defs>
+
           <animated.g id="Chrome"
             style={ {
               position: `absolute`,
@@ -74,40 +77,40 @@ const API = () => {
                 .interpolate( x => `scale(${ x }, ${ x }) rotate(-${ 90 - ( x * 90 ) }deg` )
             } }
           >
-            <g clipPath={`url(#APIclip-path-2)`}  >
-              <path fill={`#dc4637`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
-              <path fill={`url(#APIlinear-gradient-2)`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
+            <g clipPath={`url(#API-clip-path-1)`}  >
+              <path fill={`#c33`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
+              <path fill={`url(#API-linear-gradient-1)`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
               <path fill={`#3e2823`} style={{ opacity:0.15 }} d="M18.93,30.6,7.61,11.2l-.16.29L18.68,30.75Z" />
               <path fill={`#0f9d58`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
-              <path fill={`url(#APIlinear-gradient-3)`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
+              <path fill={`url(#API-linear-gradient-2)`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
               <path fill={`#273339`} style={{ opacity:0.15 }} d="M38.1,31.09,37.87,31,27,50h.32L38.11,31.1Z" />
-              <g clipPath={`url(#APIclip-path-3)`}  >
+              <g clipPath={`url(#API-clip-path-2)`}  >
                 <path fill={`#ffce41`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
-                <path fill={`url(#APIlinear-gradient-4)`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
+                <path fill={`url(#API-linear-gradient-3)`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
               </g>
               <path fill={`#ffce41`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
-              <path fill={`url(#APIlinear-gradient-4)`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
-              <g clipPath={`url(#APIclip-path-4)`}  >
+              <path fill={`url(#API-linear-gradient-3)`} d="M28.5,13.67l9.84,17L27.3,50H53.5V13.67Z" />
+              <g clipPath={`url(#API-clip-path-3)`}  >
                 <path fill={`#dc4637`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
-                <path fill={`url(#APIlinear-gradient-2)`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
+                <path fill={`url(#API-linear-gradient-1)`} d="M7.47,0V30.72H18.66l9.84-17h25V0Z" />
               </g>
             </g>
-            <g clipPath={`url(#APIclip-path-2)`}  >
-              <path fill={`url(#APIradial-gradient-1)`} d="M28.5,13.67v6l22.27-6Z" />
+            <g clipPath={`url(#API-clip-path-1)`}  >
+              <path fill={`url(#API-radial-gradient-1)`} d="M28.5,13.67v6l22.27-6Z" />
             </g>
-            <g clipPath={`url(#APIclip-path-2)`}  >
-              <g clipPath={`url(#APIclip-path-5)`}  >
+            <g clipPath={`url(#API-clip-path-1)`}  >
+              <g clipPath={`url(#API-clip-path-4)`}  >
                 <path fill={`#0f9d58`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
-                <path fill={`url(#APIlinear-gradient-3)`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
+                <path fill={`url(#API-linear-gradient-2)`} d="M3.5,50H27.3l11-11V30.72H18.66L3.5,4.72Z" />
               </g>
             </g>
-            <g clipPath={`url(#APIclip-path-2)`}  >
-              <path fill={`url(#APIradial-gradient-2)`} d="M7.47,11.53,23.73,27.79l-5.07,2.93Z" />
+            <g clipPath={`url(#API-clip-path-1)`}  >
+              <path fill={`url(#API-radial-gradient-2)`} d="M7.47,11.53,23.73,27.79l-5.07,2.93Z" />
             </g>
-            <g clipPath={`url(#APIclip-path-2)`}  >
-              <path fill={`url(#APIradial-gradient-3)`} d="M27.32,50l6-22.22,5.07,2.93Z" />
+            <g clipPath={`url(#API-clip-path-1)`}  >
+              <path fill={`url(#API-radial-gradient-3)`} d="M27.32,50l6-22.22,5.07,2.93Z" />
             </g>
-            <g clipPath={`url(#APIclip-path-2)`}  >
+            <g clipPath={`url(#API-clip-path-1)`}  >
               <circle fill={`#f2f2f2`} cx="28.5" cy="25.04" r="11.36" />
               <circle fill={`#557ebf`} cx="28.5" cy="25.04" r="9.09" />
               <path fill={`#3e2823`} style={{ opacity:0.2 }} d="M28.5,13.39A11.35,11.35,0,0,0,17.14,24.75V25A11.36,11.36,0,0,1,28.5,13.67h25v-.28Z" />
@@ -118,71 +121,57 @@ const API = () => {
               <path fill={`#3e2823`} style={{ opacity:0.15 }} d="M28.5,49.75a25,25,0,0,0,25-24.86V25a25,25,0,0,1-50,0v-.15a25,25,0,0,0,25,24.86Z" />
             </g>
           </animated.g>
-
-          <animated.g id="Arrow1"
-            style={ {
-              opacity: props.x
-                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
-                .interpolate( x => x ),
-            } }
-          >
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="53.5" y1="21.04" x2="73.12" y2="21.04" />
-            <polygon fill={`var(--color-text)`} points="72.02 24.78 78.5 21.04 72.02 17.3 72.02 24.78" />
-          </animated.g>
-
-          <g id="Route53"  >
+          <animated.g id="Route53"  >
             <animated.rect
               style={ {
                 position: `absolute`,
                 transformOrigin: `50% 12.5487174338638%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[3].start, steps[3].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[2].start, steps[2].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-1)`} x="78.5" width="50" height="50"
+              fill={`url(#API-linear-gradient-4)`} x="78.5" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
               <path fill={`none`} stroke={`var(--color-background)`} strokeWidth={`1.5px`} d="M103.5,13.29s4.48,3.42,10.7.24l.94,1.14a8.82,8.82,0,0,0-1.64,5,12.29,12.29,0,0,0,2,7.23c2,3,1.71,5.35-1.35,6.8-1.58.75-6.51,1-10.6,3.86-4.09-2.84-9-3.11-10.6-3.86-3.06-1.45-3.32-3.81-1.35-6.8a12.29,12.29,0,0,0,2-7.23,8.82,8.82,0,0,0-1.64-5l.94-1.14C99,16.71,103.5,13.29,103.5,13.29Z" />
               <path fill={`none`} stroke={`var(--color-background)`} strokeWidth={`1.5px`} d="M103.5,8.24s-5,6.32-11.31.33l-5,6c2.11,2.51,2.58,3.75,2.74,5.32.23,2.32-1.29,4.45-2.8,7.59-1.32,2.74-.27,7.12,3.59,9.06,4.85,2.45,6.42.94,12.79,5.2,6.37-4.26,7.94-2.75,12.79-5.2,3.86-1.94,4.91-6.32,3.59-9.06-1.51-3.14-3-5.27-2.8-7.59.16-1.57.63-2.81,2.74-5.32l-5-6C108.45,14.56,103.5,8.24,103.5,8.24Z" />
               <path fill={`none`} stroke={`var(--color-background)`} strokeWidth={`1.5px`} d="M102.23,21.61H98.34L98.18,25s4-.46,3.92,1.81c-.17,3.59-4.68,2-4.68,2" />
-              <g clipPath={`url(#APIclip-path-1)`}  >
+              <g clipPath={`url(#API-clip-path-5)`}  >
                 <path fill={`none`} stroke={`var(--color-background)`} strokeWidth={`1.5px`} d="M104.44,21.61h4.71l-3.56,3.66s3.32-.46,3.39,1.87c.09,3.1-4.54,1.62-4.54,1.62" />
               </g>
             </animated.g>
-          </g>
-
-          <animated.g id="Arrow2"
+          </animated.g>
+          <animated.g id="Arrow1"
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[5].start, steps[5].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[4].start, steps[4].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x ),
             } }
           >
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="128.5" y1="21.04" x2="148.12" y2="21.04" />
-            <polygon fill={`var(--color-text)`} points="147.02 24.78 153.5 21.04 147.02 17.3 147.02 24.78" />
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="53.5" y1="21.04" x2="73.12" y2="21.04" />
+            <polygon fill={`var(--color-text)`} points="72.02 24.78 78.5 21.04 72.02 17.3 72.02 24.78" />
           </animated.g>
-
           <g id="APIGateway"  >
             <animated.rect
               style={ {
                 position: `absolute`,
                 transformOrigin: `86.231884057971% 12.5487174338638%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[6].start, steps[6].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[5].start, steps[5].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-5)`} x="153.5" width="50" height="50"
+              fill={`url(#API-linear-gradient-5)`} x="153.5" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[7].start, steps[7].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[6].start, steps[6].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
@@ -203,18 +192,16 @@ const API = () => {
               <line fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} x1="180.09" y1="20.93" x2="176.91" y2="29.07" />
             </animated.g>
           </g>
-
-          <animated.g id="Arrow3"
+          <animated.g id="Arrow2"
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[8].start, steps[8].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[7].start, steps[7].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x ),
             } }
           >
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="182.5" y1="50" x2="182.5" y2="65.83" />
-            <polygon fill={`var(--color-text)`} points="178.76 64.74 182.5 71.21 186.24 64.74 178.76 64.74" />
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="128.5" y1="21.04" x2="148.12" y2="21.04" />
+            <polygon fill={`var(--color-text)`} points="147.02 24.78 153.5 21.04 147.02 17.3 147.02 24.78" />
           </animated.g>
-
           <g id="LambdaRight"  >
             <g style={{ opacity:0.25 }}  >
               <animated.rect
@@ -222,15 +209,15 @@ const API = () => {
                   position: `absolute`,
                   transformOrigin: `87.9227053140097% 48.3058079413684%`,
                   transform: props.x
-                    .interpolate( { range: [min_x,  steps[13].start, steps[13].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( { range: [min_x,  steps[12].start, steps[12].stop, max_x], output: [0, 0, 1, 1] } )
                     .interpolate( x => `scale(${ x }, ${ x })` )
                 } }
-                fill={`url(#APIlinear-gradient-6)`} x="157" y="71.23" width="50" height="50"
+                fill={`url(#API-linear-gradient-6)`} x="157" y="71.23" width="50" height="50"
               />
               <animated.g
                 style={ {
                   opacity: props.x
-                    .interpolate( { range: [min_x, steps[14].start, steps[14].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( { range: [min_x, steps[13].start, steps[13].stop, max_x], output: [0, 0, 1, 1] } )
                     .interpolate( x => x ),
                 } }
               >
@@ -244,15 +231,15 @@ const API = () => {
                   position: `absolute`,
                   transformOrigin: `86.231884057971% 50.0627478540234%`,
                   transform: props.x
-                    .interpolate( { range: [min_x,  steps[11].start, steps[11].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( { range: [min_x,  steps[10].start, steps[10].stop, max_x], output: [0, 0, 1, 1] } )
                     .interpolate( x => `scale(${ x }, ${ x })` )
                 } }
-                fill={`url(#APIlinear-gradient-7)`} x="153.5" y="74.73" width="50" height="50"
+                fill={`url(#API-linear-gradient-7)`} x="153.5" y="74.73" width="50" height="50"
               />
               <animated.g
                 style={ {
                   opacity: props.x
-                    .interpolate( { range: [min_x, steps[12].start, steps[12].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( { range: [min_x, steps[11].start, steps[11].stop, max_x], output: [0, 0, 1, 1] } )
                     .interpolate( x => x ),
                 } }
               >
@@ -265,15 +252,15 @@ const API = () => {
                 position: `absolute`,
                 transformOrigin: `84.6618357487923% 51.6941920586316%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[9].start, steps[9].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[8].start, steps[8].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-8)`} x="150.25" y="77.98" width="50" height="50"
+              fill={`url(#API-linear-gradient-8)`} x="150.25" y="77.98" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[10].start, steps[10].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[9].start, steps[9].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
@@ -281,37 +268,31 @@ const API = () => {
               <polygon fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} points="164.53 86.09 164.53 93.48 170.11 93.48 182.85 119.98 191.42 119.98 191.42 112.43 187.96 112.43 175.54 86.09 164.53 86.09" />
             </animated.g>
           </g>
-
-          <animated.g id="Arrow4"
+          <animated.g id="Arrow3"
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[15].start, steps[15].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[14].start, steps[14].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x ),
             } }
           >
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="128.4" y1="100.09" x2="144.87" y2="100.09" />
-            <polygon fill={`var(--color-text)`} points="143.77 103.83 150.25 100.09 143.77 96.35 143.77 103.83" />
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="174.5" y1="71.21" x2="174.5" y2="55.38" />
-            <polygon fill={`var(--color-text)`} points="178.24 56.48 174.5 50 170.76 56.48 178.24 56.48" />
-            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="178.5" y1="149.21" x2="178.5" y2="133.38" />
-            <polygon fill={`var(--color-text)`} points="182.24 134.48 178.5 128 174.76 134.48 182.24 134.48" />
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="182.5" y1="50" x2="182.5" y2="65.83" />
+            <polygon fill={`var(--color-text)`} points="178.76 64.74 182.5 71.21 186.24 64.74 178.76 64.74" />
           </animated.g>
-
           <g id="DynamoDB"  >
             <animated.rect
               style={ {
                 position: `absolute`,
                 transformOrigin: `50% 50%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[16].start, steps[16].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[15].start, steps[15].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-10)`} x="78.5" y="74.61" width="50" height="50"
+              fill={`url(#API-linear-gradient-9)`} x="78.5" y="74.61" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[17].start, steps[17].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[16].start, steps[16].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
@@ -339,15 +320,15 @@ const API = () => {
                 position: `absolute`,
                 transformOrigin: `86.231884057971% 87.4512825661362%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[16].start, steps[16].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[15].start, steps[15].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-11)`} x="153.5" y="149.21" width="50" height="50"
+              fill={`url(#API-linear-gradient-10)`} x="153.5" y="149.21" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[17].start, steps[17].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[16].start, steps[16].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
@@ -363,11 +344,48 @@ const API = () => {
               <line fill={`none`} stroke={`var(--color-background)`} strokeWidth={`1.5px`} x1="166.83" y1="172.25" x2="160.41" y2="172.25" />
             </animated.g>
           </g>
-
+          <animated.g id="Arrow4"
+            style={ {
+              opacity: props.x
+                .interpolate( { range: [min_x, steps[17].start, steps[17].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( x => x ),
+            } }
+          >
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="128.4" y1="100.09" x2="144.87" y2="100.09" />
+            <polygon fill={`var(--color-text)`} points="143.77 103.83 150.25 100.09 143.77 96.35 143.77 103.83" />
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="174.5" y1="71.21" x2="174.5" y2="55.38" />
+            <polygon fill={`var(--color-text)`} points="178.24 56.48 174.5 50 170.76 56.48 178.24 56.48" />
+            <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="178.5" y1="149.21" x2="178.5" y2="133.38" />
+            <polygon fill={`var(--color-text)`} points="182.24 134.48 178.5 128 174.76 134.48 182.24 134.48" />
+          </animated.g>
+          <g id="LambdaLeft"  >
+            <g id="LambdaLeft-2"  >
+              <animated.rect
+                style={ {
+                  position: `absolute`,
+                  transformOrigin: `13.768115942029% 50%`,
+                  transform: props.x
+                    .interpolate( { range: [min_x,  steps[18].start, steps[18].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( x => `scale(${ x }, ${ x })` )
+                } }
+                fill={`url(#API-linear-gradient-11)`} x="3.5" y="74.61" width="50" height="50"
+              />
+              <animated.g
+                style={ {
+                  opacity: props.x
+                    .interpolate( { range: [min_x, steps[19].start, steps[19].stop, max_x], output: [0, 0, 1, 1] } )
+                    .interpolate( x => x ),
+                } }
+              >
+                <polygon fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} points="12.2 116.6 21.32 116.6 26.43 105.83 21.79 96.55 12.2 116.6" />
+                <polygon fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} points="17.78 82.72 17.78 90.11 23.36 90.11 36.1 116.6 44.67 116.6 44.67 109.06 41.21 109.06 28.79 82.72 17.78 82.72" />
+              </animated.g>
+            </g>
+          </g>
           <animated.g id="Arrow5"
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[18].start, steps[18].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[20].start, steps[20].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x ),
             } }
           >
@@ -378,47 +396,21 @@ const API = () => {
             <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="128.4" y1="174.21" x2="148.12" y2="174.21" />
             <polygon fill={`var(--color-text)`} points="147.02 177.95 153.5 174.21 147.02 170.47 147.02 177.95" />
           </animated.g>
-
-          <g id="LambdaLeft"  >
-            <g id="LambdaLeft-2"  >
-              <animated.rect
-                style={ {
-                  position: `absolute`,
-                  transformOrigin: `13.768115942029% 50%`,
-                  transform: props.x
-                    .interpolate( { range: [min_x,  steps[19].start, steps[19].stop, max_x], output: [0, 0, 1, 1] } )
-                    .interpolate( x => `scale(${ x }, ${ x })` )
-                } }
-                fill={`url(#APIlinear-gradient-9)`} x="3.5" y="74.61" width="50" height="50"
-              />
-              <animated.g
-                style={ {
-                  opacity: props.x
-                    .interpolate( { range: [min_x, steps[20].start, steps[20].stop, max_x], output: [0, 0, 1, 1] } )
-                    .interpolate( x => x ),
-                } }
-              >
-                <polygon fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} points="12.2 116.6 21.32 116.6 26.43 105.83 21.79 96.55 12.2 116.6" />
-                <polygon fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} points="17.78 82.72 17.78 90.11 23.36 90.11 36.1 116.6 44.67 116.6 44.67 109.06 41.21 109.06 28.79 82.72 17.78 82.72" />
-              </animated.g>
-            </g>
-          </g>
-
           <g id="S3"  >
             <animated.rect
               style={ {
                 position: `absolute`,
                 transformOrigin: `50% 87.4512825661362%`,
                 transform: props.x
-                  .interpolate( { range: [min_x,  steps[19].start, steps[19].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x,  steps[21].start, steps[21].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => `scale(${ x }, ${ x })` )
               } }
-              fill={`url(#APIlinear-gradient-12)`} x="78.5" y="149.21" width="50" height="50"
+              fill={`url(#API-linear-gradient-12)`} x="78.5" y="149.21" width="50" height="50"
             />
             <animated.g
               style={ {
                 opacity: props.x
-                  .interpolate( { range: [min_x, steps[20].start, steps[20].stop, max_x], output: [0, 0, 1, 1] } )
+                  .interpolate( { range: [min_x, steps[22].start, steps[22].stop, max_x], output: [0, 0, 1, 1] } )
                   .interpolate( x => x ),
               } }
             >
@@ -428,11 +420,10 @@ const API = () => {
               <path fill={`none`} stroke={`var(--color-background)`} strokeLinejoin={`round`} strokeWidth={`1.75px`} d="M102.56,170.88c4.92,3.33,25.2,10.12,13.81,2.43" />
             </animated.g>
           </g>
-
           <animated.g id="Arrow6"
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[21].start, steps[21].stop, max_x], output: [0, 0, 1, 1] } )
+                .interpolate( { range: [min_x, steps[23].start, steps[23].stop, max_x], output: [0, 0, 1, 1] } )
                 .interpolate( x => x ),
             } }
           >
@@ -441,6 +432,7 @@ const API = () => {
             <line fill={`none`} stroke={`var(--color-text)`} strokeWidth={`3px`} x1="53.5" y1="96.04" x2="73.12" y2="96.04" />
             <polygon fill={`var(--color-text)`} points="72.02 99.78 78.5 96.04 72.02 92.3 72.02 99.78" />
           </animated.g>
+
         </svg>
       ) }
     </Spring>

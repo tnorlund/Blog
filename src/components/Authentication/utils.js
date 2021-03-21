@@ -20,7 +20,6 @@ export const handleLoggingIn = async (
 ) => {
   try {
     const session = await Auth.signIn( email, password )
-    console.log( session )
     await updateUserBySession( session, setUser )
   } catch ( error ) {
     if ( error.code == `UserNotConfirmedException` )
@@ -140,7 +139,6 @@ export const handleNewName = async (
  *                            session storage.
  */
 export const handleTOS = async ( user, version, setError, setUser ) => {
-  console.log( { version } )
   try {
     // const { error } =
     const result = await API.post(
@@ -150,7 +148,6 @@ export const handleTOS = async ( user, version, setError, setUser ) => {
         version: version
       } }
     )
-    console.log( result )
     if ( result.error ) setError( result.error )
     else { setUser(); updateUser( setUser ) }
   } catch( error ) { setError( error.message ) }

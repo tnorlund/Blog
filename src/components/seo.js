@@ -20,14 +20,16 @@ const titles = {
 }
 
 const SEO = ( { site, uri = ``, data, children } ) => {
-  const result = useStaticQuery( graphql`
-  {
-    picture: file( name: {eq: "PortraitMeta"} ) {
-      img: childImageSharp {
-        fixed(width: 500) { ...GatsbyImageSharpFixed_withWebp }
-      }
+
+  const result = useStaticQuery( graphql`{
+  picture: file(name: {eq: "PortraitMeta"}) {
+    img: childImageSharp {
+      gatsbyImageData(width: 500, layout: FIXED)
     }
-  }` )
+  }
+}
+` )
+
   const title = site.title
   let newTitle
   if ( uri in titles )
@@ -38,14 +40,14 @@ const SEO = ( { site, uri = ``, data, children } ) => {
   const pageUrl = ( uri.endsWith( `/` ) ) ?
     site.siteUrl + uri : site.siteUrl + uri + `/`
   const desc = data?.page?.excerpt || site.description
+  const metaImageURL = `${
+    site.siteUrl
+  }/${result.picture.img.gatsbyImageData.images.fallback.src}`
   return(
     <Helmet title={newTitle}>
       <meta property="og:type" content="website" />
       <html lang="en" />
-      <meta
-        name="image"
-        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
-      />
+      <meta name="image" content={metaImageURL} />
       <meta name="description" content={desc} />
       <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />
       <link rel="canonical" href={pageUrl} />
@@ -53,20 +55,14 @@ const SEO = ( { site, uri = ``, data, children } ) => {
       <meta property="og:title" content={title} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:description" content={desc} />
-      <meta
-        property="og:image"
-        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
-      />
+      <meta property="og:image" content={metaImageURL} />
       <meta property="og:image:alt" content={desc}></meta>
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:url" content={pageUrl} />
       <meta name="twitter:description" content={desc} />
-      <meta
-        name="twitter:image"
-        content={`${site.siteUrl}${result.picture.img.fixed.src}`}
-      />
+      <meta name="twitter:image" content={metaImageURL} />
       <meta name="twitter:image:alt" content={desc}></meta>
 
       {children}

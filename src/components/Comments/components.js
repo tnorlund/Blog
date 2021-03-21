@@ -208,14 +208,12 @@ export const SubmitComment = ( {
             slug, title, text: getTextInput( `NewComment` )
           } }
         ).then( result => {
-          console.log( { result } )
           setWorking( false )
           setComment( `` )
           resetTextInput( `NewComment` )
           setWarning( false )
           setError()
         } ).catch( error => {
-          console.log( { error } )
           setError( `Could not post comment` )
           setWorking( false )
           resetTextInput( `NewComment` )
@@ -364,7 +362,6 @@ export const Comment = ( {
         <div css={`display: flex;`}>
           <UserName
             onClick={ () => {
-              console.log( { comment } )
               API.get(
                 process.env.GATSBY_API_BLOG_NAME, `/user`,
                 {
@@ -400,8 +397,6 @@ export const Comment = ( {
                 }
                 setModal( true )
               } ).catch( error => {
-                console.log( `could not get user` )
-                console.log( { error } )
                 setError( `Could not get user` )
                 setCommenter( {
                   name: `tyler`, email: `myemail`, username: `username`,

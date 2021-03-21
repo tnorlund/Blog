@@ -17,6 +17,7 @@ import Pandas from 'components/Icons/Pandas'
 import Spark from 'components/Icons/Spark'
 import Consul from 'components/Icons/Consul'
 import Graphql from 'components/Icons/GraphQL'
+import Postgresql from 'components/Icons/Postgresql'
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
@@ -125,6 +126,7 @@ export default function Resume() {
       <Opencv />
       <Openmpi />
       <Pandas />
+      <Postgresql />
       <React_icon />
       <Spark />
       <Tensorflow />

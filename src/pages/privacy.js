@@ -112,7 +112,7 @@ const ShowStopShare = ( privacy ) => (
   )
 )
 
-export default function Resume() {
+export default function Privacy() {
   const [ privacy, setPrivacy ] = useSessionStorage( PRIVACY_KEY )
 
   return(
