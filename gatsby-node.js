@@ -8,7 +8,6 @@ const postTemplate = path.resolve( `./src/templates/blog-post.js` )
  * @param {function} resolve    The resolver for the original promise.
  */
 const blogPost = ( createPage, posts, resolve ) => {
-  console.log( posts )
   posts.forEach( ( post, index, arr ) => {
     /** The next slug found in the array */
     const nextSlug = arr[ index - 1 ] &&

@@ -24,10 +24,11 @@ module.exports = {
     {
       resolve: "gatsby-plugin-mdx",
       options: {
-        // gatsbyRemarkPlugins: [
-        //   `gatsby-remark-vscode`
-        // ],
         gatsbyRemarkPlugins: [
+          `gatsby-remark-code-titles`,
+          {
+            resolve: `gatsby-remark-vscode`
+          },
           {
             resolve: `gatsby-remark-images`,
             options: {

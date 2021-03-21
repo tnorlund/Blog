@@ -177,5 +177,5 @@ export const FireHose = async ( title, slug, user, now = new Date() ) => {
       }, `AWSKinesisFirehose` )
     } )
   // eslint-disable-next-line no-console
-  } catch( error ) { console.log( `error`, error )}
+  } catch( error ) { console.error( `error`, error )}
 }
