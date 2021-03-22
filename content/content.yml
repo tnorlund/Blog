@@ -9,6 +9,14 @@ poweredBy:
     logo: Terraform
 
 positions:
+  - title: Freelance
+    company: tnorlund
+    start: 2020-09-25T00:00:00
+    location: Westlake Village, CA
+    duties:
+      - Developed scalable platforms with a focus on customer churn and conversion
+      - Integrated ETL pipelines with existing API's
+      - Consolidated existing AWS services with infrastructure as code  
   - title: Test Technician
     company: Oculus - Q Analysts
     start: 2019-03-11T00:00:00

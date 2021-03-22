@@ -1,0 +1,85 @@
+---
+title: Releasing A GitHub Action
+date: "2021-03-22T12:35:16"
+slug: /blog/releasing-a-github-action
+description: "After using other people's GitHub Actions, I thought I'd give one a shot."
+---
+
+import GithubActions from 'components/Icons/GithubActions'
+import GatsbyCloud from 'components/Icons/GatsbyCloud'
+import Graphql from 'components/Icons/GraphQL'
+
+After implementing a [CICD](/website) workflow on this site, I've learned how effective automation can be in software development.
+
+I decided to take this a step further by writing my own GitHub Action.
+
+<GithubActions />
+
+I reached out the Gatsby Cloud team to ask if there was a way to use an API to change the `ENV` of a Gatsby site built with Gatsby Cloud.
+
+<GatsbyCloud />
+
+After reaching out to Gatsby's support team, I was shown an *unsupported* GraphQL API used to change the `ENV`.
+
+<Graphql />
+
+They showed me the query and mutation used to request and change the `ENV` respectively.
+
+```
+mutation UpdateAllEnvironmentVariablesForSite(
+  $id: UUID!
+  $buildEnvironmentVariables: [TagInput!]!
+  $previewEnvironmentVariables: [TagInput!]!
+) {
+  updateBuildEnvironmentVariablesForSite: updateEnvironmentVariablesForSite(
+    id: $id
+    environmentVariables: $buildEnvironmentVariables
+    runnerType: BUILDS
+  ) {
+    success
+    message
+  }
+  updatePreviewEnvironmentVariablesForSite: updateEnvironmentVariablesForSite(
+    id: $id
+    environmentVariables: $previewEnvironmentVariables
+    runnerType: PREVIEW
+  ) {
+    success
+    message
+  }
+}
+```
+
+I wrapped this mutation along with the query in my own [GitHub Action](https://github.com/tnorlund/gatsby-cloud-action). It's really easy to add to a GitHub Action workflow:
+
+```yml {numberLines}
+name: Test and Terraform
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Unit-Tests:
+# ...
+  - name: Terraform Apply # L132
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    run: |
+      cd terraform
+      terraform apply -auto-approve
+      terraform output --json &> output.json
+
+  - name: Gatsby Cloud Sync
+    uses: tnorlund/gatsby-cloud-action@v1.1.2
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    with:
+      gatsby-token: ${{ secrets.GATSBY_TOKEN }}
+      gatsby-site-id: ${{ secrets.GATSBY_SITE_ID }}
+      terraform-output: terraform/output.json
+```
+
+The above example updates this site every 'push' to the master branch.
+
+This allows me to make a quick change, `terraform plan` to view the expected changes, and update the Gatsby site with the new services used.
