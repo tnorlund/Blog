@@ -7,7 +7,7 @@ description: "After using other people's GitHub Actions, I thought I'd give one 
 
 import GithubActions from 'components/Icons/GithubActions'
 import GatsbyCloud from 'components/Icons/GatsbyCloud'
-import Graphql from 'components/Icons/Graphql'
+import Graphql from 'components/Icons/GraphQL'
 
 After implementing a [CICD](/website) workflow on this site, I've learned how effective automation can be in software development.
 
@@ -25,7 +25,7 @@ After reaching out to Gatsby's support team, I was shown an *unsupported* GraphQ
 
 They showed me the query and mutation used to request and change the `ENV` respectively.
 
-```graphql
+```
 mutation UpdateAllEnvironmentVariablesForSite(
   $id: UUID!
   $buildEnvironmentVariables: [TagInput!]!
