@@ -12,6 +12,7 @@ import Cross from 'components/Icons/Cross'
 const ShareDiv = styled.div`
   display: flex;
   flex-basis: auto;
+  padding-left: 0.5em;
 `
 
 const IconDiv = styled.div`
@@ -33,7 +34,7 @@ const SubTitle = styled.h2`
 const ShareButton = styled.div`
   display: flex;
   background: var(--color-b);
-  color: var(--color-background);
+  color: var(--color-buttontext);
   font-weight: bold;
   justify-content: center;
   align-items: center;
@@ -46,7 +47,7 @@ const ShareButton = styled.div`
 const DeleteButton = styled.div`
   display: flex;
   background: var(--color-red);
-  color: var(--color-background);
+  color: var(--color-buttontext);
   font-weight: bold;
   justify-content: center;
   align-items: center;
@@ -118,23 +119,12 @@ export default function Privacy() {
   return(
     <PageBody>
       <Toc />
-      <MainTitle>Privacy Policy</MainTitle>
-      <div style={{ marginBottom: `1em` }}>
-      “I believe people are smart and some people want to share more data than
-      other people do. Ask them. Ask them every time. Make them tell you to
-      stop asking them if they get tired of your asking them. Let them know
-      precisely what you’re going to do with their data.”<br/>
-        <div style={{ marginLeft: `1em` }}>
-          <b>Steve Jobs</b>
-        </div>
-        <div style={{ marginLeft: `1em` }}>
-          All Things Digital Conference, 2010
-        </div>
-      </div>
+      <MainTitle>Privacy Policy / DMCA</MainTitle>
       <div>
-        In my opinion, privacy is the most valuable asset we willing give away.
-        The largest companies today make most of their money by selling our
-        data. I made this website for fun, and I will <b>not</b> sell your data.
+        TylerNorlund.com, (the "Site", "me", "I", or "mine") want you to know 
+        how I collect and use your information. I work hard to keep your 
+        information secure, and I would like to provide you with meaningful 
+        choices regarding your privacy.
       </div>
       <SubTitle>What I Store</SubTitle>
       <div>
@@ -222,6 +212,12 @@ export default function Privacy() {
       }
 
       <DeleteButton>Delete My Data</DeleteButton>
+      <SubTitle>DMCA</SubTitle>
+      <div>
+        All content used on this site is considered <a href={`https://www.copyright.gov/title17/92chap1.html#107`}>"Fair Use"</a>.
+        If there are any problems, contact <a href={`mailto:webmaster@tylernorlund.com`}>webmaster@tylernorlund.com</a>.
+      </div>
+
     </PageBody>
   )
 }

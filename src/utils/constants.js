@@ -94,6 +94,10 @@ export const MODE_COLORS = {
     light: `black`,
     dark: gray.lighter,
   },
+  buttontext: {
+    light: `white`,
+    dark: gray.lighter
+  },
   background: {
     light: `white`,
     dark: gray.darkest,

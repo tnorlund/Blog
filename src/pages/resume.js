@@ -101,7 +101,7 @@ export default function Resume() {
           <JobDiv>
             <JobTitle>{title}</JobTitle>
             <JobLocation>{company}</JobLocation>
-            <JobDate>{start} - {end}</JobDate>
+            <JobDate>{start} - { !end ? `Current` : end }</JobDate>
           </JobDiv>
           <Duties duties={duties} />
         </div>
