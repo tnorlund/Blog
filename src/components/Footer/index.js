@@ -17,7 +17,7 @@ export default function Footer() {
             cursor: `pointer`
           } }
           to={`/privacy`}
-        >Privacy Policy</Link>
+        >Privacy Policy / DMCA</Link>
       </span>
       <PoweredBy>
         Powered by
