@@ -5,19 +5,22 @@ import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
-import Adobe from 'components/Icons/Adobe'
-import Opencv from 'components/Icons/Opencv'
-import Terraform from 'components/Icons/Terraform'
-import Docker from 'components/Icons/Docker'
-import Aws from 'components/Icons/Aws'
-import Openmpi from 'components/Icons/Openmpi'
-import Tensorflow from 'components/Icons/Tensorflow'
-import React_icon from 'components/Icons/React'
-import Pandas from 'components/Icons/Pandas'
-import Spark from 'components/Icons/Spark'
-import Consul from 'components/Icons/Consul'
-import Graphql from 'components/Icons/GraphQL'
-import Postgresql from 'components/Icons/Postgresql'
+
+/** Use React Suspense and Lazy to speed up import */
+const Adobe = React.lazy( () => import( 'components/Icons/Adobe' ) )
+
+const Opencv = React.lazy( () => import( 'components/Icons/Opencv' ) )
+const Terraform = React.lazy( () => import( 'components/Icons/Terraform' ) )
+const Docker = React.lazy( () => import( 'components/Icons/Docker' ) )
+const Aws = React.lazy( () => import( 'components/Icons/Aws' ) )
+const Openmpi = React.lazy( () => import( 'components/Icons/Openmpi' ) )
+const Tensorflow = React.lazy( () => import( 'components/Icons/Tensorflow' ) )
+const React_icon = React.lazy( () => import( 'components/Icons/React' ) )
+const Pandas = React.lazy( () => import( 'components/Icons/Pandas' ) )
+const Spark = React.lazy( () => import( 'components/Icons/Spark' ) )
+const Consul = React.lazy( () => import( 'components/Icons/Consul' ) )
+const Graphql = React.lazy( () => import( 'components/Icons/GraphQL' ) )
+const Postgresql = React.lazy( () => import( 'components/Icons/Postgresql' ) )
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
@@ -118,19 +121,19 @@ export default function Resume() {
         <JobDate>Aug 2013 - May 2018</JobDate>
       </JobDiv>
       <MainTitle>Skills</MainTitle>
-      <Adobe />
-      <Aws />
-      <Consul />
-      <Docker />
-      <Graphql />
-      <Opencv />
-      <Openmpi />
-      <Pandas />
-      <Postgresql />
-      <React_icon />
-      <Spark />
-      <Tensorflow />
-      <Terraform />
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Adobe /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Aws /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Consul /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Docker /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Graphql /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Opencv /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Openmpi /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Pandas /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Postgresql /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><React_icon /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Spark /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Tensorflow /></React.Suspense>
+      <React.Suspense fallback={<div height={`200pt`}></div>}><Terraform /></React.Suspense>
     </PageBody>
   )
 }
