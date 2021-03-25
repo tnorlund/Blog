@@ -38,6 +38,8 @@ const components = {
   Pylint: loadable( () => import( `components/Icons/Pylint` ) ),
   Terraform: loadable( () => import( `components/Icons/Terraform` ) ),
   Vscode: loadable( () => import( `components/Icons/Vscode` ) ),
+  Webpack: loadable( () => import( `components/Icons/Webpack` ) ),
+  Babel: loadable( () => import( `components/Icons/Babel` ) ),
 }
 
 export const Providers = ( { children } ) => (
