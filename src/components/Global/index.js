@@ -8,8 +8,35 @@ import Footer from '../Footer'
 import Seo from '../seo'
 import { DocsGrid } from '../styles'
 import { GlobalStyle } from './styles'
+import loadable from '@loadable/component'
 
-const components = { DocsGrid }
+const components = { 
+  DocsGrid,
+  Analytics: loadable( () => import( 'components/Flow/Analytics' ) ),
+  API: loadable( () => import( 'components/Flow/API' ) ),
+  Aws: loadable( () => import( 'components/Icons/Aws' ) ),
+  CICD: loadable( () => import( 'components/Icons/CICD' ) ),
+  CloudWatch: loadable( () => import( 'components/Icons/CloudWatch' ) ),
+  Consul: loadable( () => import( 'components/Icons/Consul' ) ),
+  ContentDelivery: loadable( () => import( 'components/Flow/ContentDelivery' ) ),
+  Cypress: loadable( () => import( 'components/Icons/Cypress' ) ),
+  Docker: loadable( () => import( 'components/Icons/Docker' ) ),
+  Eslint: loadable( () => import( 'components/Icons/Eslint' ) ),
+  Gatsby: loadable( () => import( 'components/Icons/Gatsby' ) ),
+  GatsbyCloud: loadable( () => import( 'components/Icons/GatsbyCloud' ) ),
+  Github: loadable( () => import( 'components/Icons/Github' ) ),
+  GithubActions: loadable( () => import( 'components/Icons/GithubActions' ) ),
+  Graphql: loadable( () => import( 'components/Icons/GraphQL' ) ),
+  Homebrew: loadable( () => import( 'components/Icons/Homebrew' ) ),
+  Identity: loadable( () => import( 'components/Flow/Identity' ) ),
+  Jest: loadable( () => import( 'components/Icons/Jest' ) ),
+  Opencv: loadable( () => import( 'components/Icons/Opencv' ) ),
+  Openmpi: loadable( () => import( 'components/Icons/Openmpi' ) ),
+  Pytest: loadable( () => import( 'components/Icons/Pytest' ) ),
+  Pylint: loadable( () => import( 'components/Icons/Pylint' ) ),
+  Terraform: loadable( () => import( 'components/Icons/Terraform' ) ),
+  Vscode: loadable( () => import( 'components/Icons/Vscode' ) ),
+}
 
 export const Providers = ( { children } ) => (
   <MDXProvider components={components}>

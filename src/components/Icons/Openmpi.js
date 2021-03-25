@@ -32,16 +32,7 @@ const Openmpi = () => {
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="YMax">
           <defs>
-            {/* Gradient */}
-            <linearGradient
-              id="linear-gradient"
-              x1="41.8" y1="26.98" x2="41.8" y2="73.28"
-              gradientTransform="translate(47.62 -14.9) rotate(45)"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop offset="0" stopColor={darkBlue}/>
-              <stop offset="1" stopColor={blue}/>
-            </linearGradient>
+            <linearGradient id="OpenMPI-linear-gradient-1" x1="41.8" y1="26.98" x2="41.8" y2="73.28" gradientTransform="translate(47.62 -14.9) rotate(45)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#0892d1" /><stop offset="1" stopColor="#004363" /></linearGradient>
           </defs>
 
           {/* Square */}
@@ -56,7 +47,7 @@ const Openmpi = () => {
             id="Layer_6" data-name="Layer 6"
           >
             <rect
-              fill={`url(#linear-gradient)`}
+              fill={`url(#OpenMPI-linear-gradient-1)`}
               transform="translate(-23.14 44.21) rotate(-45)"
               className="cls-8"
               x="24.26" y="32.5" width="35.08" height="35.08" rx="4"
