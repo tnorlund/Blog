@@ -36,6 +36,7 @@ const components = {
   Openmpi: loadable( () => import( `components/Icons/Openmpi` ) ),
   Pytest: loadable( () => import( `components/Icons/Pytest` ) ),
   Pylint: loadable( () => import( `components/Icons/Pylint` ) ),
+  ReactIcon: loadable( () => import( `components/Icons/React` ) ),
   Terraform: loadable( () => import( `components/Icons/Terraform` ) ),
   Vscode: loadable( () => import( `components/Icons/Vscode` ) ),
   Webpack: loadable( () => import( `components/Icons/Webpack` ) ),
