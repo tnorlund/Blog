@@ -1,0 +1,34 @@
+---
+title: How the Modern Web Works
+date: "2021-03-24T20:20:03"
+slug: /blog/how-the-modern-web-works
+description: "After spending a day fixing a webpack issue, I feel comfortable enough to share my heartache and struggles."
+---
+
+I spent a lot of time today trying to render a component through SSR, server-side rendering. I'm ending today defeated because the current version of ReactDOM does not support React's `<Suspense>` tag.
+
+<ReactIcon />
+
+Now, this is a bummer, but it forced me to take a step back and understand what everything is doing. I'd like to think of this as the building blocks of the modern web. How do all these tools reduce a complex project into *only* HTML, JavaScript, and CSS?
+
+## Module Bundler
+
+Module bundlers take all of the JavaScript code the developer writes and "minifies" it to a single JavaScript file. This is the code the developer writes and the dependencies he or she uses to expedite their development. The most common module bundler is [Webpack](https://webpack.js.org).
+
+<Webpack/>
+
+Now webpack is a great tool, but the modern ES6 the developer writes cannot be run in the browser. This is where the transpiler comes in.
+
+## Transpile
+
+Classes, fat arrow functions, and much more give JavaScript syntactic sugar, making the development process easier to read, write, and express.
+
+You can write everything in the JavaScript the browser interprets, but this is 2021. Nobody got time for that. [Babel](https://babeljs.io) converts this 'edge' JavaScript into plain ES6, allowing it to run in any browser.
+
+<Babel/>
+
+## Conclusion
+
+The modern web is rendered on the server and client. Both use static JavaScript, HTML, and CSS to render functional, scalable pages. The problem I had today was that I was rendering "client" JavaScript on the "server," skipping both Babel and Webpack.
+
+The modern web is always changing, but it will always require JavaScript, HTML, and CSS. The question stands: what tools will developers continue to use to serve this static code?
