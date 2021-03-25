@@ -36,7 +36,7 @@ const macros = {
 
 for ( let index = `A`.charCodeAt(); index <= `Z`.charCodeAt(); index++ ) {
   const letter = String.fromCharCode( index )
-  // Caligraphic letters
+  // Calligraphic letters
   macros[`\\${letter}cal`] = `\\mathcal{${letter}}`
   // Blackboard bold letters
   macros[`\\${letter}bb`] = `\\mathbb{${letter}}`

@@ -12,12 +12,12 @@ const blogPost = ( createPage, posts, resolve ) => {
     /** The next slug found in the array */
     const nextSlug = arr[ index - 1 ] &&
       arr[ index - 1 ].node &&
-      arr[ index - 1 ].node.slug ? 
+      arr[ index - 1 ].node.slug ?
       arr[ index - 1 ].node.slug : ``
     /** The previous slug found in the array */
     const prevSlug = arr[ index + 1 ] &&
       arr[ index + 1 ].node &&
-      arr[ index + 1 ].node.slug ? 
+      arr[ index + 1 ].node.slug ?
       arr[ index + 1 ].node.slug : ``
     /** The slug of this post */
     const slug = post.node && post.node.slug ? post.node.slug : undefined
@@ -50,17 +50,17 @@ exports.createPages = async( { graphql, actions, reporter } ) => {
         }
       }  
     ` ).then( result => {
-      if ( result.errors ) {
-        panicOnBuild( `🚨  ERROR: Loading "createPages" query` )
-        reject( result.errors )
-      }
-      const { posts } = result.data
-      blogPost( 
-        createPage, 
-        posts.edges, 
-        // posts.edges.map( ( { frontmatter, } ) => node ),
-        resolve 
-      )
+        if ( result.errors ) {
+          panicOnBuild( `🚨  ERROR: Loading "createPages" query` )
+          reject( result.errors )
+        }
+        const { posts } = result.data
+        blogPost(
+          createPage,
+          posts.edges,
+          // posts.edges.map( ( { frontmatter, } ) => node ),
+          resolve
+        )
       } )
     )
   } )

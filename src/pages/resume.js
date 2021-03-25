@@ -7,19 +7,19 @@ import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 
 /** Use React Suspense and Lazy to speed up import */
-const Adobe = React.lazy( () => import( 'components/Icons/Adobe' ) )
-const Opencv = React.lazy( () => import( 'components/Icons/Opencv' ) )
-const Terraform = React.lazy( () => import( 'components/Icons/Terraform' ) )
-const Docker = React.lazy( () => import( 'components/Icons/Docker' ) )
-const Aws = React.lazy( () => import( 'components/Icons/Aws' ) )
-const Openmpi = React.lazy( () => import( 'components/Icons/Openmpi' ) )
-const Tensorflow = React.lazy( () => import( 'components/Icons/Tensorflow' ) )
-const React_icon = React.lazy( () => import( 'components/Icons/React' ) )
-const Pandas = React.lazy( () => import( 'components/Icons/Pandas' ) )
-const Spark = React.lazy( () => import( 'components/Icons/Spark' ) )
-const Consul = React.lazy( () => import( 'components/Icons/Consul' ) )
-// const Graphql_icon = React.lazy( () => import( 'components/Icons/GraphQL' ) )
-const Postgresql = React.lazy( () => import( 'components/Icons/Postgresql' ) )
+const Adobe = React.lazy( () => import( `components/Icons/Adobe` ) )
+const Opencv = React.lazy( () => import( `components/Icons/Opencv` ) )
+const Terraform = React.lazy( () => import( `components/Icons/Terraform` ) )
+const Docker = React.lazy( () => import( `components/Icons/Docker` ) )
+const Aws = React.lazy( () => import( `components/Icons/Aws` ) )
+const Openmpi = React.lazy( () => import( `components/Icons/Openmpi` ) )
+const Tensorflow = React.lazy( () => import( `components/Icons/Tensorflow` ) )
+const React_icon = React.lazy( () => import( `components/Icons/React` ) )
+const Pandas = React.lazy( () => import( `components/Icons/Pandas` ) )
+const Spark = React.lazy( () => import( `components/Icons/Spark` ) )
+const Consul = React.lazy( () => import( `components/Icons/Consul` ) )
+const Graphql = React.lazy( () => import( `components/Icons/GraphQL` ) )
+const Postgresql = React.lazy( () => import( `components/Icons/Postgresql` ) )
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
@@ -62,7 +62,7 @@ border-bottom: 4px solid var(--color-b);
 `
 
 export default function Resume() {
-  const isSSR = typeof window === "undefined"
+  const isSSR = typeof window === `undefined`
   const { contentYaml } = useStaticQuery( graphql`
     {
       contentYaml {
@@ -121,19 +121,32 @@ export default function Resume() {
         <JobDate>Aug 2013 - May 2018</JobDate>
       </JobDiv>
       <MainTitle>Skills</MainTitle>
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Adobe /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Aws /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Consul /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Docker /></React.Suspense> }
-      {/* {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Graphql_icon /></React.Suspense> } */}
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Opencv /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Openmpi /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Pandas /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Postgresql /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><React_icon /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Spark /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Tensorflow /></React.Suspense> }
-      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}><Terraform /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Adobe /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Aws /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Consul /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Docker /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Graphql /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Opencv /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Openmpi /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Pandas /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Postgresql /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <React_icon /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Spark /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Tensorflow /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Terraform /></React.Suspense> }
     </PageBody>
   )
 }

@@ -1,10 +1,8 @@
-
-
 /** The metadata used in the headers */
 const siteMetadata = {
   title: `Tyler Norlund`,
   description: `Tyler's blog where he talks about himself.`,
-  keywords: [ `React`, `Gatsby` ],
+  keywords: [`React`, `Gatsby`],
   site: `https://www.tylernorlund.com`,
   author: {
     name: `Tyler Norlund`,
@@ -14,20 +12,20 @@ const siteMetadata = {
   social: {
     twitter: `tylernorlund`,
     linkedin: `tyler-norlund`,
-    github: `tnorlund`
-  }
+    github: `tnorlund`,
+  },
 }
 
 module.exports = {
   siteMetadata,
   plugins: [
     {
-      resolve: "gatsby-plugin-mdx",
+      resolve: `gatsby-plugin-mdx`,
       options: {
         gatsbyRemarkPlugins: [
           `gatsby-remark-code-titles`,
           {
-            resolve: `gatsby-remark-vscode`
+            resolve: `gatsby-remark-vscode`,
           },
           {
             resolve: `gatsby-remark-images`,
@@ -37,24 +35,24 @@ module.exports = {
               wrapperStyle: `border-radius: 0.5em; overflow: hidden;`,
             },
           },
-          `gatsby-remark-copy-linked-files`
+          `gatsby-remark-copy-linked-files`,
         ],
-        extensions: [`.md`, `.mdx`]
-      }
+        extensions: [`.md`, `.mdx`],
+      },
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-source-filesystem`,
       options: {
-        name: "pages",
+        name: `pages`,
         path: `${__dirname}/content/`,
       },
-      __key: "pages",
+      __key: `pages`,
     },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Tyler's Blog`,
-        short_name: `TylersBlog`,
+        short_name: `MyBlog`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
@@ -68,6 +66,6 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-remark-images`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-catch-links`
+    `gatsby-plugin-catch-links`,
   ],
-};
+}

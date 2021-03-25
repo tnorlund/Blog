@@ -5,7 +5,6 @@ import { useInView } from 'react-hook-inview'
 
 const grey = `#b3b4b8`
 const blue = `#0892d1`
-const darkBlue = `#004363`
 const background = `var(--color-background)`
 const min_x = 0
 const max_x = 1

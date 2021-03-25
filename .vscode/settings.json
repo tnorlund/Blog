@@ -13,11 +13,32 @@
   },
   "cSpell.enabled": true,
   "cSpell.words": [
+    "CMAKE",
+    "Dodd's",
+    "Elgato",
     "apos",
+    "boldsymbol",
+    "brkt",
     "buttontext",
+    "expec",
     "frontmatter",
+    "gapi",
     "helvetica",
-    "neue"
+    "ints",
+    "libevent",
+    "lmpi",
+    "lopencv",
+    "mathbb",
+    "mathcal",
+    "mathclose",
+    "mathopen",
+    "mathrm",
+    "mpirun",
+    "neue",
+    "ompi",
+    "operatorname",
+    "pylintrc",
+    "textfilter"
   ],
   "eslint.validate": [
     "javascript"
