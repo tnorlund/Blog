@@ -17,7 +17,7 @@ If a graphic can be described as a linear equation, it can save tremendous amoun
 
 <SVG />
 
-SVG is an Extensible Markup Language where standard way of processing its data is dependent on a predetermined set of shapes. These shapes are describes by the paths that surround them. The paths are describes in a certain `viewBox`. It's 4 numbers that determine where to render the 'view' into the `viewPort`. The `viewPort` is the visible area of the webpage. These numbers can be described in `pt` or and other measurement the browser supports. 
+Your browser interprets the rendered HTML, JavaScript and CSS as a window with a `viewPort`. An SVG describes its size in the DOM as 4 numbers. It is known as the `viewBox`.
 
 ```xml
 <svg 
@@ -25,7 +25,7 @@ SVG is an Extensible Markup Language where standard way of processing its data i
 />
 ```
 
-These shapes are fairly standard. There's `circle`, `ellipse`, `line` and `polyline`, but I'm more interested in `path`. This allows you to set *Bézier* and *elliptical* curves. These curves are encoded with specific letters to determine how the `path` moves in the `viewBox`.  
+These graphics are fairly standard. There's `circle`, `ellipse`, `line` and `polyline`, but I'm more interested in `path`. This allows you to set *Bézier* and *elliptical* curves. These curves are encoded with specific letters to determine how the `path` moves in the `viewBox`.  
 
 ```xml
 <svg 
