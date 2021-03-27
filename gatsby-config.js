@@ -16,14 +16,18 @@ const siteMetadata = {
   },
 }
 
+
 module.exports = {
   siteMetadata,
+  flags: {
+    DEV_SSR: true
+  },
   plugins: [
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        gatsbyRemarkPlugins: [
-          `gatsby-remark-code-titles`,
+        remarkPlugins: [
+          { resolve: `gatsby-remark-code-titles` },
           {
             resolve: `gatsby-remark-vscode`,
           },
@@ -35,7 +39,9 @@ module.exports = {
               wrapperStyle: `border-radius: 0.5em; overflow: hidden;`,
             },
           },
-          `gatsby-remark-copy-linked-files`,
+          { resolve: `gatsby-remark-copy-linked-files` },
+          require( `remark-math` ),
+          require( `remark-html-katex` ),
         ],
         extensions: [`.md`, `.mdx`],
       },

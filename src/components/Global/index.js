@@ -41,6 +41,16 @@ const components = {
   Vscode: loadable( () => import( `components/Icons/Vscode` ) ),
   Webpack: loadable( () => import( `components/Icons/Webpack` ) ),
   Babel: loadable( () => import( `components/Icons/Babel` ) ),
+  Bezier: loadable( () => import( `components/Graph/bezier` ) ),
+  QuadraticBezier: loadable(
+    () => import( `components/Graph/QuadraticBezier` )
+  ),
+  W3C: loadable(
+    () => import( `components/Icons/w3c` )
+  ),
+  SVG: loadable(
+    () => import( `components/Icons/svg` )
+  ),
 }
 
 export const Providers = ( { children } ) => (

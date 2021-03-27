@@ -1,0 +1,69 @@
+---
+title: SVG and the Bézier Curve
+date: "2021-03-26T22:45:59"
+slug: /blog/svg-and-the-bezier-curve
+description: "What I've learned about SVG, the DOM, and a little linear algebra"
+---
+
+I've been using Illustrator for a while, and thought that it'd make sense to make sense of the pen tool.
+
+The pen tool is used to set 'anchor points' and manipulate their 'handles' if the anchor point is set to the curve type. This is a simplified explanation of a Bézier curve.
+
+# Why?
+
+If a graphic can be described as a linear equation, it can save tremendous amounts of time to describe it. The World Wide Web Consortium, [WWWc](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium), has developed a web standard, [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics), where modern day browsers can render graphics extremely efficiently.
+
+<W3C />
+
+<SVG />
+
+SVG is an Extensible Markup Language where standard way of processing its data is dependent on a predetermined set of shapes. These shapes are describes by the paths that surround them. The paths are describes in a certain `viewBox`. It's 4 numbers that determine where to render the 'view' into the `viewPort`. The `viewPort` is the visible area of the webpage. These numbers can be described in `pt` or and other measurement the browser supports. 
+
+```xml
+<svg 
+  viewBox="0, 0, 200pt, 200pt"
+/>
+```
+
+These shapes are fairly standard. There's `circle`, `ellipse`, `line` and `polyline`, but I'm more interested in `path`. This allows you to set *Bézier* and *elliptical* curves. These curves are encoded with specific letters to determine how the `path` moves in the `viewBox`.  
+
+```xml
+<svg 
+  viewBox="0, 0, 200pt, 200pt"
+>
+  <path d= "..."/>
+</svg>
+```
+
+# The Secret 
+The majority of shapes can be drawn with *Bézier* and *elliptical* curves. They both *interpolate* between their endpoints. 
+
+## Bézier
+
+These equation-described graphics are expressed with 'control points', $\mathbf{P}$. Each control point, $\mathbf{P}_{n}$, is unique in it's attributes. The different control points determine the line, $\mathbf{B}$, with respect to time, $t$, with respect to a range from 1 to 0, $0 \le t \le 1$.
+
+### Linear Bézier Curve
+
+The Bézier curve is straight when the control points are colinear.
+
+$$
+\mathbf {B} (t)=\mathbf {P} _{0}+t(\mathbf {P} _{1}-\mathbf {P} _{0})=(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}\,,\,0\leq t\leq 1
+$$
+
+
+### Quadratic Bézier Curve
+
+The quadratic Bézier curve can be linearly *interpolated* using 'control points' $\mathbf{P}_{0}$, $\mathbf{P}_{1}$, and $\mathbf{P}_{2}$.
+
+$$
+\mathbf {B} (t)=(1-t)[(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}]+t[(1-t)\mathbf {P} _{1}+t\mathbf {P} _{2}]\, ,\, 0\leq t\leq 1
+$$
+
+It is constructed by intermediate points $\mathbf {Q_{0}}$ and $\mathbf {Q_{1}}$, such that the intermediate points and 'control points' are described by $t$ to draw the line $\mathbf {B}$
+
+<QuadraticBezier />
+
+$$
+\mathbf {B} (t)=(1-t)^{3}\mathbf {P} _{0}+3(1-t)^{2}t\mathbf {P} _{1}+3(1-t)t^{2}\mathbf {P} _{2}+t^{3}\mathbf {P} _{3}\, , \,0\leq t\leq 1.
+$$
+<Bezier />
