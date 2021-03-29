@@ -8,12 +8,12 @@ const max_x = 1
 const height = 150
 const width = 200
 
-const P0 = { x: 20, y: 33 }
-const P1 = { x: 130, y: 100 }
-const P2 = { x: 180, y: 33 }
+const P0 = { x: 20, y: 100 }
+const P1 = { x: 30, y: 20 }
+const P2 = { x: 150, y: 50 }
+const P3 = { x: 180, y: 100 }
 
-
-const d = `M${P0.x},${P0.y} Q${P1.x},${P1.y} ${P2.x},${P2.y}`
+const d = `M ${P0.x} ${P0.y} C ${P1.x} ${P1.y}, ${P2.x} ${P2.y}, ${P3.x} ${P3.y}`
 
 const radius = 2
 const lineWidth = 1
@@ -34,6 +34,8 @@ const translate = ( point ) => `translate3d(${
 }px, ${
   point.y <= 0.5 * height ? point.y - letterDiff : point.y + letterDiff
 }px, 0)`
+
+const linearInterpolate = ( x0, x1, t ) => ( 1.0 - t ) * x0 + t * x1
 
 
 const QuadraticBezier = () => {
@@ -136,25 +138,40 @@ const QuadraticBezier = () => {
             <path className="cls-1" d="M6.24,6.76c-2.58,0-2.58-3-2.58-3.77s0-3.84,2.58-3.84A2.28,2.28,0,0,1,8.18.1,4.91,4.91,0,0,1,8.84,3C8.84,3.79,8.84,6.76,6.24,6.76ZM7.68,5.19a12.64,12.64,0,0,0,.14-2.36A9,9,0,0,0,7.63.46a1.43,1.43,0,0,0-1.39-1A1.42,1.42,0,0,0,4.85.57a9.28,9.28,0,0,0-.17,2.26,11.38,11.38,0,0,0,.16,2.41,1.44,1.44,0,0,0,2.84,0Z" />
           </g>
 
+          <g id="P3"
+            style={ { transform: translate( P3 ) } }
+            fill={`var(--color-text)`}>
+            <path className="cls-1" d="M-4.83,3.4h1.72v.75c-.61-.05-2.16-.05-2.84-.05s-2.25,0-2.85.05V3.4h1.72V-6H-8.8v-.74h6.63c2.64,0,4.22,1.35,4.22,3.1S.2-.65-2-.65H-4.83ZM-.39-3.66C-.39-4.8-.39-6-2.77-6H-4.92V-1.3h2.14C-.39-1.3-.39-2.54-.39-3.66Z" />
+            <path className="cls-1" d="M5.52,2.82c-.18,0-.28,0-.28-.16s.08-.14.11-.14l.36,0A1.49,1.49,0,0,0,7,2,2.2,2.2,0,0,0,7.38.68,1.12,1.12,0,0,0,6.18-.54,2.09,2.09,0,0,0,4.62.07a.57.57,0,0,1,.56.59.54.54,0,0,1-.56.57A.55.55,0,0,1,4,.63C4-.26,5-.85,6.21-.85S8.46-.2,8.46.68A2.14,2.14,0,0,1,6.87,2.62a2.19,2.19,0,0,1,1.94,2A2.4,2.4,0,0,1,6.2,6.76C4.85,6.76,3.7,6.08,3.7,5a.59.59,0,0,1,.61-.66.63.63,0,1,1,0,1.25,2.43,2.43,0,0,0,1.91.77c.64,0,1.44-.41,1.44-1.78,0-1.21-.63-1.8-1.49-1.8Z" />
+          </g>
+
           <animated.circle
             id="B"
             fill={`var(--color-text)`}
             cx={
               props.x
                 .interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } )
-                .interpolate( t => ( 1 - t )**2 * P0.x + 2 * ( 1 - t ) * t * P1.x + t**2 * P2.x )
+                .interpolate( t => ( 1 - t )**3 * P0.x + 3 * ( 1 - t )**2 * t * P1.x + 3 * ( 1 - t ) * t**2 * P2.x + t**3 * P3.x )
             }
             cy={
               props.x
                 .interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } )
-                .interpolate( t => P1.y + ( 1 - t )**2 * ( P0.y - P1.y ) + t**2 * ( P2.y - P1.y ) )
+                .interpolate( t => ( 1 - t )**3 * P0.y + 3 * ( 1 - t )**2 * t * P1.y + 3 * ( 1 - t ) * t**2 * P2.y + t**3 * P3.y )
             }
 
             r={radius}
           />
 
 
+          {/* <circle
+            id={`P2`}
+            fill={`var(--color-text)`}
+            cx={P2.x}
+            cy={P2.y}
+            r={radius}
+          /> */}
           <animated.line
+            style={{ opacity:0.5 }}
             stroke={`var(--color-c)`}
             strokeWidth={lineWidth}
             x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P0.x, P1.x ] } )}
@@ -162,6 +179,37 @@ const QuadraticBezier = () => {
             x2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.x, P2.x ] } )}
             y2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.y, P2.y ] } )}
           />
+          <animated.line
+            style={{ opacity:0.5 }}
+            stroke={`var(--color-c)`}
+            strokeWidth={lineWidth}
+            x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.x, P2.x ] } )}
+            y1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.y, P2.y ] } )}
+            x2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P2.x, P3.x ] } )}
+            y2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P2.y, P3.y ] } )}
+          />
+
+          <animated.line
+            stroke={`var(--color-c)`}
+            strokeWidth={lineWidth}
+            x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P0.x, P1.x, t ), linearInterpolate( P1.x, P2.x, t ), t ) ) }
+            y1={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P0.y, P1.y, t ), linearInterpolate( P1.y, P2.y, t ), t ) ) }
+            x2={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P1.x, P2.x, t ), linearInterpolate( P2.x, P3.x, t ), t ) ) }
+            y2={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P1.y, P2.y, t ), linearInterpolate( P2.y, P3.y, t ), t ) ) }
+          />
+          <animated.circle
+            cx={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P0.x, P1.x, t ), linearInterpolate( P1.x, P2.x, t ), t ) )}
+            cy={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P0.y, P1.y, t ), linearInterpolate( P1.y, P2.y, t ), t ) )}
+            r={radius}
+            fill={`var(--color-c)`}
+          />
+          <animated.circle
+            cx={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P1.x, P2.x, t ), linearInterpolate( P2.x, P3.x, t ), t ) ) }
+            cy={props.x.interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } ).interpolate( t => linearInterpolate( linearInterpolate( P1.y, P2.y, t ), linearInterpolate( P2.y, P3.y, t ), t ) ) }
+            r={radius}
+            fill={`var(--color-c)`}
+          />
+
 
           <line
             style={{ opacity: 0.1 }}
@@ -195,10 +243,10 @@ const QuadraticBezier = () => {
             d={d}
           />
           <circle
-            id={`P1`}
-            fill={`var(--color-c)`}
-            cx={P1.x}
-            cy={P1.y}
+            id={`P3`}
+            fill={`var(--color-text)`}
+            cx={P3.x}
+            cy={P3.y}
             r={radius}
           />
           <circle
@@ -206,13 +254,6 @@ const QuadraticBezier = () => {
             fill={`var(--color-text)`}
             cx={P0.x}
             cy={P0.y}
-            r={radius}
-          />
-          <circle
-            id={`P2`}
-            fill={`var(--color-text)`}
-            cx={P2.x}
-            cy={P2.y}
             r={radius}
           />
         </svg>

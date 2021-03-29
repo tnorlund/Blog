@@ -72,9 +72,43 @@ The intermediate points on $\overline{\mathbf{P_{0}P_{1}}}$ and $\overline{\math
 
 <QuadraticBezier />
 
+The derivative explains how the curve changes with respect to $t$:
+
+$$
+\mathbf {B} '(t)=2(1-t)(\mathbf {P} _{1}-\mathbf {P} _{0})+2t(\mathbf {P} _{2}-\mathbf {P} _{1})\,.
+$$
+
+As $t$ increases from 0 to 1, the curve leaves $\mathbf {P} _{0}$ in the direction of $\mathbf {P} _{1}$, then bends to arrive at $\mathbf {P} _{2}$ in the direction of $\mathbf {P} _{1}$.
+
 ### Cubic Bézier Curve
+
+The cubic Bézier curve uses 4 points to describe itself: $\mathbf {P} _{0}$, $\mathbf {P} _{1}$, $\mathbf {P} _{2}$, and $\mathbf {P} _{3}$:
 
 $$
 \mathbf {B} (t)=(1-t)^{3}\mathbf {P} _{0}+3(1-t)^{2}t\mathbf {P} _{1}+3(1-t)t^{2}\mathbf {P} _{2}+t^{3}\mathbf {P} _{3}\, , \,0\leq t\leq 1.
 $$
-<Bezier />
+
+<CubicBezier />
+
+A cubic Bézier curve can also be described by an affine combination of quadratic Bézier curves.
+
+$$
+\mathbf {B} (t)=(1-t)\mathbf {B} _{\mathbf {P} _{0},\mathbf {P} _{1},\mathbf {P} _{2}}(t)+t\mathbf {B} _{\mathbf {P} _{1},\mathbf {P} _{2},\mathbf {P} _{3}}(t)\,,\,0\leq t\leq 1.
+$$
+
+### Definition
+These visualizations help explain that there is a pattern in the number of 'control points' in a given Bézier curve. This pattern is a recursive point-to-point linear combination. Each pair of corresponding points explain the Bézier curve of degree $n-1$.
+
+Say that for a Bézier curve, $\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n}}$, of degree $n$ they start from the first 'control point,'
+
+$$
+\mathbf {B} _{\mathbf {P} _{0}}(t)=\mathbf {P} _{0}{\text{.}}
+$$
+
+The curve is a combination of previous curves using the control points given:
+
+$$
+\mathbf {B} (t)=\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n}}(t)=(1-t)\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n-1}}(t)+t\mathbf {B} _{\mathbf {P} _{1}\mathbf {P} _{2}\ldots \mathbf {P} _{n}}(t){\text{.}}
+$$
+
+

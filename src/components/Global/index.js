@@ -42,6 +42,9 @@ const components = {
   Webpack: loadable( () => import( `components/Icons/Webpack` ) ),
   Babel: loadable( () => import( `components/Icons/Babel` ) ),
   Bezier: loadable( () => import( `components/Graph/bezier` ) ),
+  CubicBezier: loadable(
+    () => import( `components/Graph/CubicBezier` )
+  ),
   QuadraticBezier: loadable(
     () => import( `components/Graph/QuadraticBezier` )
   ),
