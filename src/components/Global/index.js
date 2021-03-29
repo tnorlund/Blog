@@ -51,6 +51,9 @@ const components = {
   LinearBezier: loadable(
     () => import( `components/Graph/LinearBezier` )
   ),
+  Ellipse: loadable(
+    () => import( `components/Graph/Ellipse` )
+  ),
   W3C: loadable(
     () => import( `components/Icons/w3c` )
   ),
