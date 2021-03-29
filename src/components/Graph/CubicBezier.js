@@ -42,7 +42,8 @@ const QuadraticBezier = () => {
   const [ref, inView] = useInView( { threshold: 1, } )
   return <div ref={ref} style={ {
     height: `${height}pt`,
-
+    paddingTop: `1em`,
+    paddingBottom: `1em`
   } }>
     <Spring native config={{ duration: 1500 }} to={{ x: inView ?  max_x : min_x }}>
       { ( props ) => (
@@ -172,7 +173,7 @@ const QuadraticBezier = () => {
           /> */}
           <animated.line
             style={{ opacity:0.5 }}
-            stroke={`var(--color-c)`}
+            stroke={`var(--color-b)`}
             strokeWidth={lineWidth}
             x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P0.x, P1.x ] } )}
             y1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P0.y, P1.y ] } )}
@@ -181,7 +182,7 @@ const QuadraticBezier = () => {
           />
           <animated.line
             style={{ opacity:0.5 }}
-            stroke={`var(--color-c)`}
+            stroke={`var(--color-b)`}
             strokeWidth={lineWidth}
             x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.x, P2.x ] } )}
             y1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.y, P2.y ] } )}

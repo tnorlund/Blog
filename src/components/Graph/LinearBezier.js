@@ -37,7 +37,8 @@ const LinearBezier = () => {
   const [ref, inView] = useInView( { threshold: 1, } )
   return <div ref={ref} style={ {
     height: `${height}pt`,
-
+    paddingTop: `1em`,
+    paddingBottom: `1em`
   } }>
     <Spring native config={{ duration: 1500 }} to={{ x: inView ?  max_x : min_x }} loop={{ reverse: true }} >
       { ( props ) => (

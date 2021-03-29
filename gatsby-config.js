@@ -20,7 +20,8 @@ const siteMetadata = {
 module.exports = {
   siteMetadata,
   flags: {
-    DEV_SSR: true
+    DEV_SSR: true,
+    FAST_DEV: true
   },
   plugins: [
     {

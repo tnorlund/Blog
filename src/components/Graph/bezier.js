@@ -9,11 +9,10 @@ const max_x = 1
 const P0 = { x: 20, y: 50 }
 const P1 = { x: 90, y: 25 }
 const P2 = { x: 110, y: 75 }
-// const P2 = P1
 const P3 = { x: 180, y: 50 }
 
-const P1_1 = { x: 20, y: 25 }
-const P2_1 = { x: 120, y: 75 }
+const P1_1 = { x: 30, y: 25 }
+const P2_1 = { x: 170, y: 75 }
 // const P2_1 = P1_1
 
 const d0 = `M ${P0.x} ${P0.y} C ${P1.x} ${P1.y}, ${P2.x} ${P2.y}, ${P3.x} ${P3.y}`
