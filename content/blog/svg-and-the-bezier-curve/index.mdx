@@ -25,7 +25,7 @@ Your browser interprets the rendered HTML, JavaScript and CSS as a window with a
 />
 ```
 
-These graphics are fairly standard. There's `circle`, `ellipse`, `line` and `polyline`, but I'm more interested in `path`. This allows you to set *Bézier* and *elliptical* curves. These curves are encoded with specific letters to determine how the `path` moves in the `viewBox`.  
+SVG's graphics are fairly standard. There's `circle`, `ellipse`, `line` and `polyline`, but I'm more interested in `path`. This allows you to set *Bézier* and *elliptical* curves. These curves are encoded with specific letters and numbers used to determine how the `path` moves in the `viewBox`.  
 
 ```xml
 <svg 
@@ -40,7 +40,7 @@ The majority of shapes can be drawn with *Bézier* and *elliptical* curves. They
 
 ## Bézier
 
-These equation-described graphics are expressed with 'control points', $\mathbf{P}$. Each control point, $\mathbf{P}_{n}$, is unique in it's attributes. The different control points determine the line, $\mathbf{B}$, with respect to time, $t$, with respect to a range from 1 to 0, $0 \le t \le 1$.
+These equation-described graphics are expressed with 'control points', $\mathbf{P}$. Each control point, $\mathbf{P}_{n}$, is unique in it's attributes. The different control points determine the line, $\mathbf{B}$, with respect to time, $t$, such that, $0 \le t \le 1$.
 
 ### Linear Bézier Curve
 
@@ -50,16 +50,25 @@ $$
 \mathbf {B} (t)=\mathbf {P} _{0}+t(\mathbf {P} _{1}-\mathbf {P} _{0})=(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}\,,\,0\leq t\leq 1
 $$
 
+This line is interpolated *linearly*, meaning that it moves the same distance with respect to $t$.
+
+<LinearBezier />
 
 ### Quadratic Bézier Curve
 
-The quadratic Bézier curve can be linearly *interpolated* using 'control points' $\mathbf{P}_{0}$, $\mathbf{P}_{1}$, and $\mathbf{P}_{2}$.
+The quadratic Bézier curve is the path traced with $\mathbf{P}_{0}$, $\mathbf{P}_{1}$, and $\mathbf{P}_{2}$.
 
 $$
 \mathbf {B} (t)=(1-t)[(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}]+t[(1-t)\mathbf {P} _{1}+t\mathbf {P} _{2}]\, ,\, 0\leq t\leq 1
 $$
 
-It is constructed by intermediate points $\mathbf {Q_{0}}$ and $\mathbf {Q_{1}}$, such that the intermediate points and 'control points' are described by $t$ to draw the line $\mathbf {B}$
+This equation can be interpreted linearly:
+
+$$
+\mathbf {B} (t)=(1-t)^{2}\mathbf {P} _{0}+2(1-t)t\mathbf {P} _{1}+t^{2}\mathbf {P} _{2}\,,\,0\leq t\leq 1.
+$$
+
+The intermediate points on $\overline{\mathbf{P_{0}P_{1}}}$ and $\overline{\mathbf{P_{1}P_{2}}}$ create a line. This line creates the Quadratic Bézier Curve, $B$, when linearly interpolated.
 
 <QuadraticBezier />
 

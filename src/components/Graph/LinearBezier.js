@@ -5,21 +5,17 @@ import { useInView } from 'react-hook-inview'
 
 const min_x = 0
 const max_x = 1
-const height = 150
+const height = 125
 const width = 200
 
-const P0 = { x: 20, y: 33 }
-const P1 = { x: 130, y: 100 }
-const P2 = { x: 180, y: 33 }
-
-
-const d = `M${P0.x},${P0.y} Q${P1.x},${P1.y} ${P2.x},${P2.y}`
+const P0 = { x: 20, y: 66 }
+const P1 = { x: 180, y: 33 }
 
 const radius = 2
 const lineWidth = 1
 const letterDiff = 10
 
-const timeLine = { x: width / 2, y: 125 }
+const timeLine = { x: width / 2, y: 100 }
 const timeLineLength = 100
 const timeLineWidth = 1
 const timeLineRangeHeight = 5
@@ -28,21 +24,22 @@ const timeLinePadding = 15
 const _0 = { x: timeLine.x - ( timeLineLength / 2 ) - timeLinePadding, y: timeLine.y }
 const _1 = { x: timeLine.x + ( timeLineLength / 2 ) + timeLinePadding, y: timeLine.y }
 
-
 const translate = ( point ) => `translate3d(${
   point.x <= 0.5 * width ? point.x - letterDiff : point.x + letterDiff
 }px, ${
   point.y <= 0.5 * height ? point.y - letterDiff : point.y + letterDiff
 }px, 0)`
 
+// Font size: 15.97 pt
 
-const QuadraticBezier = () => {
+
+const LinearBezier = () => {
   const [ref, inView] = useInView( { threshold: 1, } )
   return <div ref={ref} style={ {
     height: `${height}pt`,
 
   } }>
-    <Spring native config={{ duration: 1500 }} to={{ x: inView ?  max_x : min_x }}>
+    <Spring native config={{ duration: 1500 }} to={{ x: inView ?  max_x : min_x }} loop={{ reverse: true }} >
       { ( props ) => (
         <svg
           width="100%"
@@ -109,13 +106,6 @@ const QuadraticBezier = () => {
             </animated.g>
           </g>
 
-          <g id="P2"
-            style={ { transform: translate( P2 ) } }
-            fill={`var(--color-text)`}
-          >
-            <path className="cls-1" d="M-4.83,3.45h1.72V4.2c-.61,0-2.16,0-2.84,0s-2.25,0-2.85,0V3.45h1.72V-6H-8.8V-6.7h6.63c2.64,0,4.22,1.34,4.22,3.09S.2-.59-2-.59H-4.83ZM-.39-3.61C-.39-4.75-.39-6-2.77-6H-4.92v4.72h2.14C-.39-1.25-.39-2.48-.39-3.61Z" />
-            <path className="cls-1" d="M8.38,6.59H3.79c0-.31,0-.33.11-.44L6.59,3.5a3.31,3.31,0,0,0,1-2.13A1.67,1.67,0,0,0,6-.41,1.76,1.76,0,0,0,4.31.64C4.9.64,5,1,5,1.22a.59.59,0,1,1-1.17,0A2.16,2.16,0,0,1,6.1-.8,2.33,2.33,0,0,1,8.71,1.37,3.23,3.23,0,0,1,7.12,3.78c-.67.52-1.06.83-2.22,1.86H7A6.23,6.23,0,0,0,8,5.58c.16-.11.27-.77.3-1h.37Z" />
-          </g>
 
           <animated.g id="P1"
             style={ {
@@ -135,31 +125,6 @@ const QuadraticBezier = () => {
             <path className="cls-1" d="M-4.83,3.4h1.72v.75c-.61-.05-2.16-.05-2.84-.05s-2.25,0-2.85.05V3.4h1.72V-6H-8.8v-.74h6.63c2.64,0,4.22,1.35,4.22,3.1S.2-.65-2-.65H-4.83ZM-.39-3.66C-.39-4.8-.39-6-2.77-6H-4.92V-1.3h2.14C-.39-1.3-.39-2.54-.39-3.66Z" />
             <path className="cls-1" d="M6.24,6.76c-2.58,0-2.58-3-2.58-3.77s0-3.84,2.58-3.84A2.28,2.28,0,0,1,8.18.1,4.91,4.91,0,0,1,8.84,3C8.84,3.79,8.84,6.76,6.24,6.76ZM7.68,5.19a12.64,12.64,0,0,0,.14-2.36A9,9,0,0,0,7.63.46a1.43,1.43,0,0,0-1.39-1A1.42,1.42,0,0,0,4.85.57a9.28,9.28,0,0,0-.17,2.26,11.38,11.38,0,0,0,.16,2.41,1.44,1.44,0,0,0,2.84,0Z" />
           </g>
-
-          <animated.circle
-            id="B"
-            fill={`var(--color-text)`}
-            cx={
-              props.x
-                .interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } )
-                .interpolate( t => ( 1 - t )**2 * P0.x + 2 * ( 1 - t ) * t * P1.x + t**2 * P2.x )
-            }
-            cy={
-              props.x
-                .interpolate( { range: [ min_x, max_x ], output: [ 0, 1 ] } )
-                .interpolate( t => P1.y + ( 1 - t )**2 * ( P0.y - P1.y ) + t**2 * ( P2.y - P1.y ) )
-            }
-
-            r={radius}
-          />
-
-          <circle
-            id={`P1`}
-            fill={`var(--color-c)`}
-            cx={P1.x}
-            cy={P1.y}
-            r={radius}
-          />
           <circle
             id={`P0`}
             fill={`var(--color-text)`}
@@ -168,51 +133,40 @@ const QuadraticBezier = () => {
             r={radius}
           />
           <circle
-            id={`P2`}
+            id={`P1`}
             fill={`var(--color-text)`}
-            cx={P2.x}
-            cy={P2.y}
+            cx={P1.x}
+            cy={P1.y}
             r={radius}
           />
-          <animated.line
-            stroke={`var(--color-c)`}
-            strokeWidth={lineWidth}
-            x1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P0.x, P1.x ] } )}
-            y1={props.x.interpolate( { range: [ min_x, max_x ], output: [ P0.y, P1.y ] } )}
-            x2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.x, P2.x ] } )}
-            y2={props.x.interpolate( { range: [ min_x, max_x ], output: [ P1.y, P2.y ] } )}
-          />
-
-          <line
-            style={{ opacity: 0.1 }}
-            strokeWidth={lineWidth}
-            stroke={`var(--color-text)`}
-            x1={P0.x} y1={P0.y}
-            x2={P1.x} y2={P1.y}
+          <animated.circle
+            id="B"
+            fill={`var(--color-text)`}
+            cx={props.x.interpolate( { range:[ min_x, max_x], output:[ P0.x, P1.x] } )}
+            cy={props.x.interpolate( { range:[ min_x, max_x], output:[ P0.y, P1.y] } )}
+            r={radius}
           />
           <line
-            style={{ opacity: 0.1 }}
-            strokeWidth={lineWidth}
-            stroke={`var(--color-text)`}
-            x1={P1.x} y1={P1.y}
-            x2={P2.x} y2={P2.y}
-          />
-          <path
             style={{ opacity:0.1 }}
             stroke={`var(--color-text)`}
             strokeWidth={lineWidth}
-            fill={`none`}
-            d={d}
+            x1={P0.x}
+            y1={P0.y}
+            x2={P1.x}
+            y2={P1.y}
           />
-          <animated.path
+          {/* 163.36769104003906 */}
+          <animated.line
             style={ {
-              opacity: props.x
+              opacity:props.x
                 .interpolate( { range: [min_x, max_x], output: [0, 1] } )
             } }
             stroke={`var(--color-text)`}
             strokeWidth={lineWidth}
-            fill={`none`}
-            d={d}
+            x1={P0.x}
+            y1={P0.y}
+            x2={P1.x}
+            y2={P1.y}
           />
         </svg>
       ) }
@@ -220,4 +174,4 @@ const QuadraticBezier = () => {
   </div>
 }
 
-export default QuadraticBezier
+export default LinearBezier

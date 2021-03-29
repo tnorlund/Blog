@@ -45,6 +45,9 @@ const components = {
   QuadraticBezier: loadable(
     () => import( `components/Graph/QuadraticBezier` )
   ),
+  LinearBezier: loadable(
+    () => import( `components/Graph/LinearBezier` )
+  ),
   W3C: loadable(
     () => import( `components/Icons/w3c` )
   ),
