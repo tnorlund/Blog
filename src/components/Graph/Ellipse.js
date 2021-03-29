@@ -18,6 +18,7 @@ Object.keys( steps ).forEach( ( key ) => {
   steps[ key ][`stop`] = start + ( steps[ key ].length / sum )
   start = start + ( steps[ key ].length / sum )
 } )
+const seconds = 2
 
 const height = 100
 const width = 200
@@ -66,7 +67,7 @@ const Ellipse = () => {
   return <div ref={ref} style={ {
     height: `${height}pt`
   } }>
-    <Spring native config={{ duration: 1500 }} to={{ x: inView ?  max_x : min_x }}>
+    <Spring native config={{ duration: 1000 * seconds }} to={{ x: inView ?  max_x : min_x }}>
       { ( props ) => (
         <svg
           width="100%"
@@ -100,7 +101,7 @@ const Ellipse = () => {
           <animated.g
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 1, originOpacity, originOpacity] } )
+                .interpolate( { range: [min_x, steps[2].start, steps[2].stop, max_x], output: [0, 1, 1, originOpacity] } )
                 .interpolate( x => x ),
             } }
           >
@@ -147,7 +148,7 @@ const Ellipse = () => {
           <animated.g
             style={ {
               opacity: props.x
-                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 1, originOpacity, originOpacity] } )
+                .interpolate( { range: [min_x, steps[3].start, steps[3].stop, max_x], output: [0, 1, 1, originOpacity] } )
                 .interpolate( x => x ),
             } }
           >
