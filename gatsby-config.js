@@ -34,6 +34,12 @@ module.exports = {
           `gatsby-remark-code-titles`,
           `gatsby-remark-copy-linked-files`,
           {
+            resolve: `gatsby-remark-katex`,
+            options: {
+              strict: `ignore`,
+            }
+          },
+          {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 1200,

@@ -75,10 +75,10 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0.5em;
   }
   /* Prevent wide equations from breaking layout. */
-  .katex-display {
+  /* .katex-display {
     overflow-x: scroll;
     overflow-y: hidden;
-  }
+  } */
   blockquote, details {
     border-left: 0.25em solid var(--color-link);
     background: var(--color-accentBackground);

@@ -74,7 +74,9 @@ These equation-described graphics are expressed with 'control points', $\mathbf{
 The Bézier curve is straight when the control points are colinear.
 
 $$
-\mathbf {B} (t)=\mathbf {P} _{0}+t(\mathbf {P} _{1}-\mathbf {P} _{0})=(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}\,,\,0\leq t\leq 1
+\begin{aligned}
+\mathbf{B}(t)\,=\,&\mathbf{P} _{0}+t(\mathbf {P} _{1}-\mathbf {P} _{0})\\\,=\,&(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}
+\end{aligned}
 $$
 
 This line is interpolated *linearly*, meaning that it moves the same distance with respect to $t$.
@@ -86,13 +88,17 @@ This line is interpolated *linearly*, meaning that it moves the same distance wi
 The quadratic Bézier curve is the path traced with $\mathbf{P}_{0}$, $\mathbf{P}_{1}$, and $\mathbf{P}_{2}$.
 
 $$
-\mathbf {B} (t)=(1-t)[(1-t)\mathbf {P} _{0}+t\mathbf {P} _{1}]+t[(1-t)\mathbf {P} _{1}+t\mathbf {P} _{2}]\, ,\, 0\leq t\leq 1
+\begin{aligned}
+\mathbf {B} (t)\,=\,&(1-t)[(1-t)\mathbf {P} _{0}t\mathbf {P} _{1}]\\+\,&t[(1-t)\mathbf {P} _{1}+t\mathbf {P} _{2}]
+\end{aligned}
 $$
 
 This equation can be interpreted linearly:
 
 $$
-\mathbf {B} (t)=(1-t)^{2}\mathbf {P} _{0}+2(1-t)t\mathbf {P} _{1}+t^{2}\mathbf {P} _{2}\,,\,0\leq t\leq 1.
+\begin{aligned}
+\mathbf {B} (t)=&(1-t)^{2}\mathbf {P} _{0}\\+&2(1-t)t\mathbf {P} _{1}\\+&t^{2}\mathbf {P} _{2}.
+\end{aligned}
 $$
 
 The intermediate points on $\overline{\mathbf{P_{0}P_{1}}}$ and $\overline{\mathbf{P_{1}P_{2}}}$ create a line. This line creates the Quadratic Bézier Curve, $B$, when linearly interpolated.
@@ -102,17 +108,26 @@ The intermediate points on $\overline{\mathbf{P_{0}P_{1}}}$ and $\overline{\math
 The derivative explains how the curve changes with respect to $t$:
 
 $$
-\mathbf {B} '(t)=2(1-t)(\mathbf {P} _{1}-\mathbf {P} _{0})+2t(\mathbf {P} _{2}-\mathbf {P} _{1})\,.
+\begin{aligned}
+\mathbf{B}'(t)\,=\,&2(1-t)(\mathbf {P} _{1}-\mathbf {P} _{0})\\+\,&2t(\mathbf {P} _{2}-\mathbf {P} _{1})\,.
+\end{aligned}
 $$
 
 As $t$ increases from 0 to 1, the curve leaves $\mathbf {P} _{0}$ in the direction of $\mathbf {P} _{1}$, then bends to arrive at $\mathbf {P} _{2}$ in the direction of $\mathbf {P} _{1}$.
+
+A linear Bézier curve explains how a quadratic Bézier curve changes with respect to $t$
 
 ### Cubic Bézier Curve
 
 The cubic Bézier curve uses 4 points to describe itself: $\mathbf {P} _{0}$, $\mathbf {P} _{1}$, $\mathbf {P} _{2}$, and $\mathbf {P} _{3}$:
 
 $$
-\mathbf {B} (t)=(1-t)^{3}\mathbf {P} _{0}+3(1-t)^{2}t\mathbf {P} _{1}+3(1-t)t^{2}\mathbf {P} _{2}+t^{3}\mathbf {P} _{3}\, , \,0\leq t\leq 1.
+\begin{aligned}
+\mathbf {B} (t)\,=\,&(1-t)^{3}\mathbf {P} _{0} \\
++\,&3(1-t)^{2}t\mathbf {P} _{1}\\
++\,&3(1-t)t^{2}\mathbf {P} _{2}\\
++\,&t^{3}\mathbf {P} _{3}.
+\end{aligned}
 $$
 
 <CubicBezier />
@@ -120,7 +135,7 @@ $$
 A cubic Bézier curve can also be described by an affine combination of quadratic Bézier curves.
 
 $$
-\mathbf {B} (t)=(1-t)\mathbf {B} _{\mathbf {P} _{0},\mathbf {P} _{1},\mathbf {P} _{2}}(t)+t\mathbf {B} _{\mathbf {P} _{1},\mathbf {P} _{2},\mathbf {P} _{3}}(t)\,,\,0\leq t\leq 1.
+\mathbf {B} (t)=(1-t)\mathbf {B} _{\mathbf {P} _{0},\mathbf {P} _{1},\mathbf {P} _{2}}(t)+t\mathbf {B} _{\mathbf {P} _{1},\mathbf {P} _{2},\mathbf {P} _{3}}(t).
 $$
 
 ### Definition
@@ -135,7 +150,9 @@ $$
 The curve is a combination of previous curves using the control points given:
 
 $$
-\mathbf {B} (t)=\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n}}(t)=(1-t)\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n-1}}(t)+t\mathbf {B} _{\mathbf {P} _{1}\mathbf {P} _{2}\ldots \mathbf {P} _{n}}(t){\text{.}}
+\begin{aligned}
+\mathbf{B}(t)\,=\,&\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n}}(t)\\=\,&(1-t)\mathbf {B} _{\mathbf {P} _{0}\mathbf {P} _{1}\ldots \mathbf {P} _{n-1}}(t)+t\mathbf {B} _{\mathbf {P} _{1}\mathbf {P} _{2}\ldots \mathbf {P} _{n}}(t){\text{.}}
+\end{aligned}
 $$
 
 # Conclusion
