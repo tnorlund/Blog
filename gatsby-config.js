@@ -16,6 +16,8 @@ const siteMetadata = {
   },
 }
 
+const remark_math = require( `remark-math` )
+const remark_html_katex = require( `remark-html-katex` )
 
 module.exports = {
   siteMetadata,
@@ -27,11 +29,10 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        remarkPlugins: [
-          { resolve: `gatsby-remark-code-titles` },
-          {
-            resolve: `gatsby-remark-vscode`,
-          },
+        gatsbyRemarkPlugins: [
+          `gatsby-remark-vscode`,
+          `gatsby-remark-code-titles`,
+          `gatsby-remark-copy-linked-files`,
           {
             resolve: `gatsby-remark-images`,
             options: {
@@ -40,10 +41,8 @@ module.exports = {
               wrapperStyle: `border-radius: 0.5em; overflow: hidden;`,
             },
           },
-          { resolve: `gatsby-remark-copy-linked-files` },
-          require( `remark-math` ),
-          require( `remark-html-katex` ),
         ],
+        remarkPlugins: [ remark_math, remark_html_katex ],
         extensions: [`.md`, `.mdx`],
       },
     },
@@ -67,12 +66,11 @@ module.exports = {
         icon: `content/favicon.svg`,
       },
     },
-    `gatsby-plugin-styled-components`,
-    `gatsby-transformer-yaml`,
+    `gatsby-plugin-catch-links`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
-    `gatsby-remark-images`,
+    `gatsby-plugin-styled-components`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-catch-links`,
+    `gatsby-transformer-yaml`,
   ],
 }

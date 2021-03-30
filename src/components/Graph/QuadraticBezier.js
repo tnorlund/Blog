@@ -196,13 +196,6 @@ const QuadraticBezier = () => {
             d={d}
           />
           <circle
-            id={`P1`}
-            fill={`var(--color-c)`}
-            cx={P1.x}
-            cy={P1.y}
-            r={radius}
-          />
-          <circle
             id={`P0`}
             fill={`var(--color-text)`}
             cx={P0.x}
