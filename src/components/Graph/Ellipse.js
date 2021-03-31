@@ -20,13 +20,13 @@ Object.keys( steps ).forEach( ( key ) => {
 } )
 const seconds = 2
 
-const height = 100
+const height = 150
 const width = 200
 
 const cx = width / 2
 const cy = height / 2
-const a = 40
-const b = 20
+const a = 75
+const b = 37.5
 
 const originOpacity = 0.5
 const originArrow = 5

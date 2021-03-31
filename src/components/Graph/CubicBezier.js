@@ -162,15 +162,6 @@ const QuadraticBezier = () => {
 
             r={radius}
           />
-
-
-          {/* <circle
-            id={`P2`}
-            fill={`var(--color-text)`}
-            cx={P2.x}
-            cy={P2.y}
-            r={radius}
-          /> */}
           <animated.line
             style={{ opacity:0.5 }}
             stroke={`var(--color-b)`}

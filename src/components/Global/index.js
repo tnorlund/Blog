@@ -54,6 +54,9 @@ const components = {
   Ellipse: loadable(
     () => import( `components/Graph/Ellipse` )
   ),
+  EllipseConjugate: loadable(
+    () => import( `components/Graph/EllipseConjugate` )
+  ),
   W3C: loadable(
     () => import( `components/Icons/w3c` )
   ),
