@@ -1,5 +1,6 @@
 import { PageComponents, Providers } from 'components/Global'
 import React from 'react'
+import "katex/dist/katex.min.css"
 
 export const wrapRootElement = ( { element } ) => {
   return <Providers>{element}</Providers>

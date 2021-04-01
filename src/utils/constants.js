@@ -35,7 +35,7 @@ export const COLORS = {
     light: `#bcbcbc`,
     lighter: `#e5e5e5`,
     lightest: `#f7f7f7`,
-    default: `#464849`,
+    default: `#484F58`,
     dark: `#3d3d3d`,
     darker: `#1a1d23`,
     darkest: `#060606`,
@@ -50,22 +50,26 @@ export const COLORS = {
     lighter: `#FFECD6`,
   },
   orange: {
-    light: `#F5D77A`,
-    default: `#F5D77A`,
+    light: `#FFEDB3`,
+    default: `#F5DE93`,
     dark: `#F5D162`,
     darker: `#ff7600`,
     darkest: `#b75500`,
   },
   blue: {
-    light: `#91D8F6`,
-    lighter: `#B6E3F7`,
-    default: `#566FF5`,
+    light: `#9FD8F5`,
+    default: `#7697A8`,
     dark: `#566FF5`,
     darker: `#293475`,
     darkest: `#131836`,
   },
+  purple: {
+    light: `#B387F5`,
+    default: `#7654A8`
+  },
   red: {
-    light: `#F46275`,
+    light: `#FF8C97`,
+    default: `#B3505A`,
     dark: `#F54960`,
   },
   green: {
@@ -87,7 +91,7 @@ export const COLORS = {
   },
 }
 
-const { gray, brown, blue, red, orange, green } = COLORS
+const { gray, brown, blue, purple, red, orange, green } = COLORS
 
 export const MODE_COLORS = {
   text: {
@@ -96,11 +100,11 @@ export const MODE_COLORS = {
   },
   buttontext: {
     light: `white`,
-    dark: gray.lighter
+    dark: gray.default
   },
   background: {
     light: `white`,
-    dark: gray.darkest,
+    dark: gray.default,
   },
   shadow: {
     light: gray.lighter,
@@ -116,7 +120,7 @@ export const MODE_COLORS = {
   },
   accentBackground: {
     light: `rgba(0, 0, 0, 0.05)`,
-    dark: `rgba(0, 0, 0, 0.7)`,
+    dark: `rgba(0, 0, 0, 0.5)`,
   },
   blue: {
     light: blue.light,
@@ -144,15 +148,15 @@ export const MODE_COLORS = {
   },
   a: {
     light: orange.light,
-    dark: orange.dark,
+    dark: orange.default,
   },
   b: {
     light: blue.light,
-    dark: blue.darker,
+    dark: blue.default,
   },
   c: {
-    light: orange.darker,
-    dark: orange.darkest,
+    light: red.default,
+    dark: red.light,
   },
   d: {
     light: brown.darker,

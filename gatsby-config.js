@@ -16,16 +16,28 @@ const siteMetadata = {
   },
 }
 
+const remark_math = require( `remark-math` )
+const remark_html_katex = require( `remark-html-katex` )
+
 module.exports = {
   siteMetadata,
+  flags: {
+    DEV_SSR: true,
+    FAST_DEV: true
+  },
   plugins: [
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         gatsbyRemarkPlugins: [
+          `gatsby-remark-vscode`,
           `gatsby-remark-code-titles`,
+          `gatsby-remark-copy-linked-files`,
           {
-            resolve: `gatsby-remark-vscode`,
+            resolve: `gatsby-remark-katex`,
+            options: {
+              strict: `ignore`,
+            }
           },
           {
             resolve: `gatsby-remark-images`,
@@ -35,8 +47,8 @@ module.exports = {
               wrapperStyle: `border-radius: 0.5em; overflow: hidden;`,
             },
           },
-          `gatsby-remark-copy-linked-files`,
         ],
+        remarkPlugins: [ remark_math, remark_html_katex ],
         extensions: [`.md`, `.mdx`],
       },
     },
@@ -60,12 +72,11 @@ module.exports = {
         icon: `content/favicon.svg`,
       },
     },
-    `gatsby-plugin-styled-components`,
-    `gatsby-transformer-yaml`,
+    `gatsby-plugin-catch-links`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
-    `gatsby-remark-images`,
+    `gatsby-plugin-styled-components`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-catch-links`,
+    `gatsby-transformer-yaml`,
   ],
 }

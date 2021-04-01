@@ -41,6 +41,31 @@ const components = {
   Vscode: loadable( () => import( `components/Icons/Vscode` ) ),
   Webpack: loadable( () => import( `components/Icons/Webpack` ) ),
   Babel: loadable( () => import( `components/Icons/Babel` ) ),
+  Bezier: loadable( () => import( `components/Graph/bezier` ) ),
+  CubicBezier: loadable(
+    () => import( `components/Graph/CubicBezier` )
+  ),
+  QuadraticBezier: loadable(
+    () => import( `components/Graph/QuadraticBezier` )
+  ),
+  LinearBezier: loadable(
+    () => import( `components/Graph/LinearBezier` )
+  ),
+  Ellipse: loadable(
+    () => import( `components/Graph/Ellipse` )
+  ),
+  EllipseConjugate: loadable(
+    () => import( `components/Graph/EllipseConjugate` )
+  ),
+  EllipseParallelogram: loadable(
+    () => import( `components/Graph/EllipseParallelogram` )
+  ),
+  W3C: loadable(
+    () => import( `components/Icons/w3c` )
+  ),
+  SVG: loadable(
+    () => import( `components/Icons/svg` )
+  ),
 }
 
 export const Providers = ( { children } ) => (
