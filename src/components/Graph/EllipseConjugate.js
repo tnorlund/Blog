@@ -57,6 +57,7 @@ const EllipseConjugate = () => {
             cx={cx} cy={cy} rx={a} ry={b}
           />
           <animated.circle id="C1"
+            fill={`var(--color-text)`}
             cx={
               props.x.interpolate( t => width / 2 + a * Math.cos( t * 2 *  Math.PI ) )
             }
@@ -93,6 +94,7 @@ const EllipseConjugate = () => {
 
 
           <animated.circle id="C2"
+            fill={`var(--color-text)`}
             cx={
               props.x.interpolate( t => width / 2 + a * Math.cos( -t * 2 *  Math.PI - Math.PI / 2 ) )
             }

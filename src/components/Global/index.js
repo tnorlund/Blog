@@ -57,6 +57,9 @@ const components = {
   EllipseConjugate: loadable(
     () => import( `components/Graph/EllipseConjugate` )
   ),
+  EllipseParallelogram: loadable(
+    () => import( `components/Graph/EllipseParallelogram` )
+  ),
   W3C: loadable(
     () => import( `components/Icons/w3c` )
   ),
