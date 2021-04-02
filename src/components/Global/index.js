@@ -66,6 +66,15 @@ const components = {
   SVG: loadable(
     () => import( `components/Icons/svg` )
   ),
+  Internet: loadable(
+    () => import( `components/Icons/Internet` )
+  ),
+  Rust: loadable(
+    () => import( `components/Icons/Rust` )
+  ),
+  WASM: loadable(
+    () => import( `components/Icons/wasm` )
+  ),
 }
 
 export const Providers = ( { children } ) => (
