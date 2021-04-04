@@ -22,7 +22,6 @@ const radius = 2
 const handleLine = 1
 const xSize = 6
 const letterDiff = 10
-const dashLine = 1
 
 const height = 100
 const width = 200
