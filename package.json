@@ -22,10 +22,10 @@
     "gatsby": "^3.1.2",
     "gatsby-image": "^3.1.0",
     "gatsby-plugin-catch-links": "^3.1.0",
-    "gatsby-plugin-image": "^1.2.0",
+    "gatsby-plugin-image": "^1.2.1",
     "gatsby-plugin-manifest": "^3.1.0",
     "gatsby-plugin-mdx": "^2.1.0",
-    "gatsby-plugin-sharp": "^3.2.0",
+    "gatsby-plugin-sharp": "^3.2.1",
     "gatsby-plugin-styled-components": "^4.2.0",
     "gatsby-remark-code-titles": "^1.1.0",
     "gatsby-remark-copy-linked-files": "^3.2.0",
@@ -49,13 +49,13 @@
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
     "styled-components": "^5.2.1",
-    "styled-icons": "^10.31.0",
+    "styled-icons": "^10.33.0",
     "typescript": "^4.2.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.23.0",
-    "eslint-plugin-markdown": "^2.0.0",
+    "eslint-plugin-markdown": "^2.0.1",
     "jsdoc": "^3.6.6",
     "prettier": "^2.2.1"
   }
