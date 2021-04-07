@@ -2,8 +2,7 @@ import React from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
 
 import {
-  PostDiv, PostTitle, PostDate, Description, ProjectDiv, IconDiv, Icon, Title,
-  DescriptionDiv, SquareContent, SquareDiv
+  PostDiv, PostTitle, PostDate, Description
 } from './styles'
 
 export default function List( { limit } ) {
@@ -25,12 +24,12 @@ export default function List( { limit } ) {
       }
     }
   } ` )
-    return <>
-      { limit && edges.slice(0, limit ).map(
-        ( { node } ) => {
-          const { title, date, description } = node.frontmatter
-          const { slug } = node
-          return (
+  return <>
+    { limit && edges.slice( 0, limit ).map(
+      ( { node } ) => {
+        const { title, date, description } = node.frontmatter
+        const { slug } = node
+        return (
           <PostDiv key={title}>
             <Link to={slug} rel={title}>
               <PostTitle> {title} </PostTitle>
@@ -39,18 +38,18 @@ export default function List( { limit } ) {
             <Description>{description}</Description>
           </PostDiv>
         ) } ) }
-      { !limit && edges.map(
-        ( { node } ) => {
-          const { title, date, description } = node.frontmatter
-          const { slug } = node
-          return (
-            <PostDiv key={title}>
-              <Link to={`${ slug.split( `/` )[1] }/`} rel={title}>
-                <PostTitle> {title} </PostTitle>
-              </Link>
-              <PostDate>{date}</PostDate>
-              <Description>{description}</Description>
-            </PostDiv>
+    { !limit && edges.map(
+      ( { node } ) => {
+        const { title, date, description } = node.frontmatter
+        const { slug } = node
+        return (
+          <PostDiv key={title}>
+            <Link to={`${ slug.split( `/` )[1] }/`} rel={title}>
+              <PostTitle> {title} </PostTitle>
+            </Link>
+            <PostDate>{date}</PostDate>
+            <Description>{description}</Description>
+          </PostDiv>
         ) } ) }
-    </>
+  </>
 }
