@@ -1,4 +1,4 @@
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 
 import styled from 'styled-components'
 
@@ -30,14 +30,12 @@ export const IconDiv = styled.div`
   width: 20vw;
   ${mediaQueries.minTablet} {
     width: 10vw;
-    /* height: 10vw; */
   }
 `
 
 export const SquareDiv = styled.div`
   background: var(--color-b);
   display: block;
-  /* position: absolute; */
   border-radius: 3vw;
   width: 20vw;
   height: 20vw;

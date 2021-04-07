@@ -108,6 +108,10 @@ const components = {
     () => import( `components/Icons/Terraform` ),
     { fallback: <div height={{ height:`200pt` }}/> }
   ),
+  Typescript: loadable(
+    () => import( `components/Icons/Typescript` ),
+    { fallback: <div height={{ height:`200pt` }}/> }
+  ),
   Vscode: loadable(
     () => import( `components/Icons/Vscode` ),
     { fallback: <div height={{ height:`200pt` }}/> }
