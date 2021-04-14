@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { useSessionStorage } from '../../hooks'
 import { AUTH_KEY } from '../../utils/constants'
 import { Title, TextInput } from './styles'
@@ -11,8 +12,6 @@ import Modal from '../Modal'
 import { API } from 'aws-amplify'
 import { type } from 'os'
 
-
-
 /**
  * @typedef CommentsProps
  * @param {string} slug The blog post's slug.
@@ -23,53 +22,79 @@ interface CommentsProps {
   title: string,
 }
 
-interface Vote {
-  dateAdded: string,
-  username: string,
-  up: boolean
+interface PostDetails {
+  post: Post,
+  comments: Comments
+}
+
+/**
+ * @typedef Post
+ * @param {string} slug The post's slug. *Note* that this is not the root URL.
+ * @param {string} title The post's title.
+ * @param {number} numberComments The number of comments the post has.
+ */
+interface Post {
+  slug: string, title: string, numberComments: number
+}
+
+/**
+ * @typedef Comments
+ * @param {string} commentDate The datetime the comment was made.
+ * @param {Comment} comment The comment Object.
+ */
+interface Comments {
+  [commentDate: string]: Comment
 }
 
 interface Comment {
-  name: string
-  dateAdded: string
-  replyChain: [string]
-  username: string,
-  vote: number,
-  text: string
-  votes: [Vote]
-  replies: [Comment]
+  username: string, userCommentNumber: number, name: string, slug: string,
+  text: string, vote: number, numberVotes: number, dateAdded: string, 
+  replyChain: ReplyChain, replies: Replies, votes: Votes
 }
 
-interface Commenter {
-  name?: string,
-  userCommentNumber: number,
-  dateString?: string, 
-  username?: string,
-  email?: string,
-  isAdmin: boolean
+interface Vote {
+  username: string, name: string, slug: string, voteNumber: number, 
+  up: boolean, dateAdded: string, replyChain: ReplyChain
 }
 
-interface PostDetails {
-  post: Post,
-  comments: Comment[]
+/**
+ * @typedef ReplyChain
+ * An array of the dates the comment is replying to or vote applied to.
+ */
+interface ReplyChain {
+  [index: number]: string
 }
 
-type PostDetailsRejection = {
-
+/**
+ * @typedef Replies
+ * The replies of a specific comment.
+ */
+interface Replies {
+  [index: string]: Comment;
 }
 
-const createResource = ( promise: Promise<any> ) => {
+/**
+ * @typedef Votes
+ * The replies of a specific comment.
+ */
+ interface Votes {
+  [index: string]: Vote;
+}
+
+
+
+const createResource = ( promise: Promise<PostDetails> ) => {
   let status = 'pending'
   let result = promise.then(
-    details => { status = 'success'; result = details; },
+    ( details: any ) => { status = 'success'; result = details; },
     ( rejection : any ) => { status = 'rejected'; result = rejection; }
   )
   return {
     read() {
-      if (status === 'pending') throw result
-      if (status === 'error') throw result
-      if (status === 'success') return result
-      throw new Error('This should be impossible')
+      if ( status === 'pending' ) throw result
+      if ( status === 'error' ) throw result
+      if ( status === 'success' ) return result
+      throw new Error( 'This should be impossible' )
     },
   }
 }
@@ -84,6 +109,51 @@ const createPostDetailsResource = ( title: string, slug : string ) => {
   )
 }
 
+interface ErrorFallbackProps {
+  canReset: boolean, error: any, resetErrorBoundary: any
+}
+function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackProps ) {
+  return (
+    <div role="alert">
+      There was an error:{' '}
+      <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+      {canReset ? (
+        <button onClick={resetErrorBoundary}>Try again</button>
+      ) : null}
+    </div>
+  )
+}
+
+
+interface PostDetailsFallbackProps {
+  title: string
+}
+const PostDetailsFallback = ( { title } : PostDetailsFallbackProps ) => <>
+  Loading Comments {title}
+</>
+
+interface PostErrorBoundaryProps {
+  onReset: () => void, resetKeys: string[], children: JSX.Element
+}
+function PostErrorBoundary(parentProps : PostErrorBoundaryProps) {
+  const canReset = Boolean(parentProps.onReset || parentProps.resetKeys)
+  return (
+    <ErrorBoundary
+      fallbackRender={props => <ErrorFallback canReset={canReset} {...props} />}
+      {...parentProps}
+    />
+  )
+}
+
+const PostInfo = ( { postResource }: any ) => {
+  const pokemon = postResource.read()
+  return (
+    <div>
+      Tyler
+    </div>
+  )
+}
+
 const PostDetails = ( slug: string, title: string ) => {
   const [postComments, setPostComments] = React.useState<any>('')
   const [postResource, setPostResource] = React.useState<any>(null)
@@ -92,8 +162,25 @@ const PostDetails = ( slug: string, title: string ) => {
     setPostResource( createPostDetailsResource( title, slug ) )
   }, [ postComments ] )
 
-  return <>
+  const handleReset = () => {
+    setPostComments('')
+  }
 
+  return <>
+    { postResource ? (
+      <PostErrorBoundary
+        onReset={handleReset}
+        resetKeys={[postResource]}
+      >
+        <React.Suspense
+          fallback={<PostDetailsFallback title={ title } />}
+        >
+          <PostInfo postResource={ postResource } />
+        </React.Suspense>
+      </PostErrorBoundary>
+    ) : (
+      <Title>Comments</Title>
+    ) }
   </>
 }
 
