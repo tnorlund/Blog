@@ -13,10 +13,10 @@ A personal blog where I share me!
 ```
 
 ## What it is
-It uses Gatsby to generate the static HTML and JS used by the browser.
+It uses Gatsby to generate the static HTML, CSS, and JavaScript used by the browser.
 
 ![gatsby](https://tnorlundgithub.s3-us-west-2.amazonaws.com/Gatsby.png)
 
-This repository is connected to my Gatsby Cloud account. Gatsby Cloud pulls the repository, builds the site, and uploads it to the S3 bucket I'm using to host the site.
+This repository is connected to my Gatsby Cloud account. With every push to 'master' branch of this repository, Gatsby Cloud builds the site, uploads it to the S3 bucket I'm using to host the site, and resets the AWS CloudFront cache.
 
 ![gatsby-cloud](https://tnorlundgithub.s3-us-west-2.amazonaws.com/GatsbyCloud.png)
