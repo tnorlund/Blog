@@ -1,0 +1,42 @@
+---
+title: Translating JavaScript to TypeScript
+date: "2021-04-08T10:21:34"
+slug: /blog/moving-to-typescript
+description: "I learned TypeScript by practicing it."
+showToc: true
+---
+
+[Previously](/blog/typescript), I talked about how I'd like to convert the JavaScript I use in this blog to TypeScript. I finally did it!
+
+Going into it, I only knew what other people told me: TypeScript takes a lot of work. They weren't wrong, but my previous effort of documenting through JSDoc helped incredibly. Here are some of the things that I learned while converting the code.
+
+# Strict Type Checking
+
+I have a function that calculates the scroll offset of each header for the table of contents. 
+
+```js
+const accumulateOffsetTop = ( el, totalOffset = 0 ) => {
+  while ( el ) {
+    totalOffset += el.offsetTop - el.scrollTop + el.clientTop
+    el = el.offsetParent
+  }
+  return totalOffset
+}
+```
+
+TypeScript requires the parameter types given to `accumulateOffsetTop`. This ensures that the parameters are not modified within this scope.
+
+```ts
+const accumulateOffsetTop = ( 
+  el: HTMLElement, totalOffset = 0 
+) : number => {
+  let current : unknown = el
+  while ( current instanceof HTMLElement ) {
+    totalOffset += el.offsetTop - el.scrollTop + el.clientTop
+    current = current.offsetParent
+  }
+  return totalOffset
+}
+```
+
+# React Component Properties

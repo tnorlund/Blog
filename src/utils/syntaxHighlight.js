@@ -4,6 +4,7 @@ const langTagColor = [
   { lang: `javascript`, tag: `js`, color: `#f7df1e` },
   { lang: `js`, tag: `js`, color: `#f7df1e` },
   { lang: `jsx`, tag: `jsx`, color: `#61dafb` },
+  { lang: `ts`, tag: `ts`, color: `#61dafb` },
   { lang: `env`, tag: `env`, color: `#ff89d3` },
   { lang: `python`, tag: `py`, color: `#61da84` },
   { lang: `py`, tag: `py`, color: `#61da84` },

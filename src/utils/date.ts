@@ -1,13 +1,14 @@
 /**
  * Converts an ISO formatted date into a Date object.
- * @param {String} dateString An ISO formatted date.
+ * @param {string} dateString An ISO formatted date.
  * @returns A Date object.
  */
-export const parseDate = ( dateString ) => {
+export const parseDate = ( dateString: string ): Date => {
   const parsed = dateString.split( /\D+/ )
   return( new Date( Date.UTC(
-    parsed[0], --parsed[1], parsed[2], parsed[3], parsed[4], parsed[5],
-    parsed[6]
+    Number( parsed[0] ), Number( parsed[1] ) - 1, Number( parsed[2] ), 
+    Number( parsed[3] ),  Number( parsed[4] ), Number( parsed[5] ),
+    Number( parsed[6] )
   ) ) )
 }
 
@@ -17,9 +18,11 @@ export const parseDate = ( dateString ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of years between the two dates.
  */
-export const yearsBetween = ( date1, date2 ) => {
+export const yearsBetween = ( date1: Date, date2: Date ): number => {
   return Math.abs(
-    new Date( Math.abs( date1 - date2 ) ).getUTCFullYear() - 1970
+    new Date( 
+      Math.abs( date1.getTime() - date2.getTime() ) 
+    ).getUTCFullYear() - 1970
   )
 }
 
@@ -29,7 +32,7 @@ export const yearsBetween = ( date1, date2 ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of months between the two dates.
  */
-export const monthsBetween = ( date1, date2 ) => {
+export const monthsBetween = ( date1: Date, date2: Date ): number => {
   let months = ( date2.getFullYear() - date1.getFullYear() ) * 12
   months -= date1.getMonth()
   months += date2.getMonth()
@@ -42,8 +45,10 @@ export const monthsBetween = ( date1, date2 ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of days between the two dates.
  */
-export const daysBetween = ( date1, date2 ) => {
-  return Math.round( Math.abs( date1 - date2 ) / ( 1000 * 60 * 60 * 24 ) )
+export const daysBetween = ( date1: Date, date2: Date ): number => {
+  return Math.round( 
+    Math.abs( date1.getTime() - date2.getTime() ) / ( 1000 * 60 * 60 * 24 ) 
+  )
 }
 
 /**
@@ -52,8 +57,10 @@ export const daysBetween = ( date1, date2 ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of hours between the two dates.
  */
-export const hoursBetween = ( date1, date2 ) => {
-  return Math.floor( ( Math.abs( date1 - date2 ) / 1000 ) / 60 / 60 )
+export const hoursBetween = ( date1: Date, date2: Date ): number => {
+  return Math.floor( 
+    ( Math.abs( date1.getTime() - date2.getTime() ) / 1000 ) / 60 / 60 
+  )
 }
 
 /**
@@ -62,8 +69,10 @@ export const hoursBetween = ( date1, date2 ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of minutes between the two dates.
  */
-export const minutesBetween = ( date1, date2 ) => {
-  return Math.floor( ( Math.abs( date1 - date2 ) / 1000 ) / 60 )
+export const minutesBetween = ( date1: Date, date2: Date ): number => {
+  return Math.floor( 
+    ( Math.abs( date1.getTime() - date2.getTime() ) / 1000 ) / 60 
+  )
 }
 
 /**
@@ -72,16 +81,16 @@ export const minutesBetween = ( date1, date2 ) => {
  * @param {Date} date2 The second date.
  * @returns {Number}   The number of seconds between the two dates.
  */
-export const secondsBetween = ( date1, date2 ) => {
-  return Math.floor( Math.abs( date1 - date2 ) / 1000 )
+export const secondsBetween = ( date1: Date, date2: Date ): number => {
+  return Math.floor( Math.abs( date1.getTime() - date2.getTime() ) / 1000 )
 }
 
 /**
  * Formats a string that shows the time since then.
- * @param {String} date An ISO formatted date.
- * @returns {String}    The formatted time since now.
+ * @param {string} date An ISO formatted date.
+ * @returns {string}    The formatted time since now.
  */
-export const timeSince = ( date ) => {
+export const timeSince = ( date: string ): string => {
   if ( !date ) return( `` )
   if ( secondsBetween( parseDate( date ), new Date() ) < 60 )
     return `${

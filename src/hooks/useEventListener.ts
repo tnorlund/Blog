@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 export function useEventListener(
-  eventNames, handler, element = global.globalThis
+  eventNames: string|string[], handler: any, element = global.globalThis
 ) {
   // First, create a reference that stores the handler.
   const savedHandler = useRef()
@@ -21,7 +21,9 @@ export function useEventListener(
 
     // Create an event listener that calls the handler function stored in the
     // reference.
-    const listener = event => savedHandler.current( event )
+    const listener = (event: any ) => {
+      return savedHandler.current( event )
+    }
     for ( const e of eventNames ) element.addEventListener( e, listener )
     return () => {
       for ( const e of eventNames ) element.removeEventListener( e, listener )

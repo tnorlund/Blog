@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 
-export const useStorage = ( storage, key, initialValue, options = {} ) => {
-  const { deleteKeyIfValueIs = null } = options
+
+interface Event {
+  detail: string
+}
+
+export const useStorage = ( storage: any, key: string, initialValue: any, options = {} ) => {
+  const { deleteKeyIfValueIs = null } = options as any
 
   // The useState function handles the creation of the state.
   const [value, setValue] = useState( () => {
@@ -24,7 +29,7 @@ export const useStorage = ( storage, key, initialValue, options = {} ) => {
 
     // The CustomEvent is triggered by a call to useStorage. The new value is
     // stored in event.detail.
-    const cb = event => setValue( event.detail )
+    const cb = ( event: any ) => setValue( event.detail )
 
     // Register the event listeners on the initial state creation. This will
     // allow events to be triggered by setValue and keeping the values in sync
@@ -33,7 +38,7 @@ export const useStorage = ( storage, key, initialValue, options = {} ) => {
     return () => document.removeEventListener( `storage:${key}Change`, cb )
   }, [value, key, storage] )
 
-  const setStoredValue = newValue => {
+  const setStoredValue = ( newValue: string | Function ) => {
     // Server-side rendering does not use the storage.
     if ( typeof window == `undefined` ) return newValue
     if ( newValue === value ) return
@@ -55,8 +60,12 @@ export const useStorage = ( storage, key, initialValue, options = {} ) => {
   return [value, setStoredValue]
 }
 
-export const useLocalStorage = ( ...args ) =>
-  useStorage( typeof window !== `undefined` && localStorage, ...args )
+export const useLocalStorage = ( ...args: [string, any?, boolean?]  ) =>{
+  console.log( `useLocalStorage`, { args } )
+  return useStorage( typeof window !== `undefined` && localStorage, ...args )
+}
 
-export const useSessionStorage = ( ...args ) =>
-  useStorage( typeof window !== `undefined` && sessionStorage, ...args )
+export const useSessionStorage = ( ...args: [string, any?, boolean?] ) => {
+  console.log( `useSessionStorage`, { args } )
+  return useStorage( typeof window !== `undefined` && sessionStorage, ...args )
+}

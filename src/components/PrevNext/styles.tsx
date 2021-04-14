@@ -1,4 +1,4 @@
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 import styled from 'styled-components'
 
 export const Left = styled.div`

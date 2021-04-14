@@ -1,31 +1,44 @@
 import Amplify, { API } from 'aws-amplify'
-import { timeSince } from 'utils/date'
+import { timeSince } from '../../utils/date'
+
+interface User {
+  name: string,
+  username: string,
+  email: string
+  isAdmin: boolean
+}
 
 /**
  * Removes the contents of an editable div.
- * @param {String} id The HTML ID of the dive requested to remove the contents
+ * @param {string} id The HTML ID of the dive requested to remove the contents
  *                    of.
  */
-export const resetTextInput = ( id ) => {
-  document.getElementById( id ).innerHTML = ``
+export const resetTextInput = ( id: string ) => {
+  const textDiv = document.getElementById( id )
+  if ( textDiv ) textDiv.innerHTML = ``
 }
 
 /**
  * Sets the contents of a div using a React Hook.
- * @param {String}   id     The HTML ID of the div requested to query from.
+ * @param {string} id The HTML ID of the div requested to query from.
  */
-export const getTextInput = ( id ) => document.getElementById( id ).innerHTML
+export const getTextInput = ( id:string ) => {
+  const textDiv = document.getElementById( id )
+  if ( textDiv ) return textDiv.innerHTML
+  return undefined
+}
 
 /**
  * Gets a post through the API.
- * @param {String} slug  The slug of the post.
- * @param {String} title The title of the post.
+ * @param {string} slug  The slug of the post.
+ * @param {string} title The title of the post.
  */
-export const getPost = async ( slug, title ) => {
+export const getPost = async ( slug: string, title: string ) => {
   try {
     const { post, error } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/post?slug=${ slug }&title=${ title }`
+      `/post?slug=${ slug }&title=${ title }`,
+      {}
     )
     if ( error ) return { error: error }
     else return { post: post }
@@ -34,19 +47,20 @@ export const getPost = async ( slug, title ) => {
 
 /**
  * Gets the post and its comments through the API.
- * @param {String} slug         The slug of the post.
- * @param {String} title        The title of the post.
+ * @param {string} slug         The slug of the post.
+ * @param {string} title        The title of the post.
  * @param {Function} setWarning The function used to set whether the post was
  *                              retrieved successfully from the database.
  * @param {Function} setError   The function used to set the error while
  *                              retrieving data from the database.
  */
-export const getPostDetails = async ( slug, title, setWarning, setError ) => {
+export const getPostDetails = async ( slug: string, title: string, setWarning: Function, setError: Function ) => {
   Amplify.register( API )
   try {
     const { error, post, comments } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/post-details?slug=${ slug }&title=${ title }`
+      `/post-details?slug=${ slug }&title=${ title }`,
+      {}
     )
     if ( error ) { setError( error ); return { error: error } }
     else return { post, comments }
@@ -62,7 +76,7 @@ export const getPostDetails = async ( slug, title, setWarning, setError ) => {
  * @param {Function} setError   The function used to set the error while
  *                              retrieving data from the database.
  */
-export const addPost = async ( slug, title, setWarning, setError ) => {
+export const addPost = async ( slug: string, title: string, setWarning: Function, setError: Function ) => {
   try {
     const { error } = await API.post(
       process.env.GATSBY_API_BLOG_NAME,
@@ -83,7 +97,7 @@ export const addPost = async ( slug, title, setWarning, setError ) => {
  * @param {Function} setError   The function used to set the error while
  *                              retrieving data from the database.
  */
-export const deletePost = async ( slug, title, setWarning, setError ) => {
+export const deletePost = async ( slug: string, title: string, setWarning: Function, setError: Function ) => {
   try {
     const { error } = await API.del(
       process.env.GATSBY_API_BLOG_NAME, `/post`,
@@ -107,7 +121,7 @@ export const deletePost = async ( slug, title, setWarning, setError ) => {
  *                              retrieving data from the database.
  */
 export const deleteComment = async (
-  name, email, userNumber, slug, title, replyChain, setError, setWarning
+  name: string, email: string, userNumber: number, slug: string, title: string, replyChain: [string], setError: Function, setWarning: Function
 ) => {
   try {
     const { error } = await API.del(
@@ -134,7 +148,7 @@ export const deleteComment = async (
  *                               comment.
  */
 export const addComment = async (
-  name, email, userNumber, slug, title, text, setWarning, setError, setComment
+  name: string, email: string, userNumber: number, slug: string, title: string, text: string, setWarning: Function, setError: Function, setComment: Function
 ) => {
   if ( text != `` ) {
     try {
@@ -167,7 +181,7 @@ export const addComment = async (
  *                               comment.
  */
 export const replyToComment = async (
-  name, email, userNumber, slug, title, text, replyChain, setWarning, setError,
+  name: string, email: string, userNumber: number, slug: string, title: string, text: string, replyChain: [string], setWarning: Function, setError: Function,
 ) => {
   try {
     const { error } = await API.post(
@@ -197,8 +211,8 @@ export const replyToComment = async (
  *                               was retrieved successfully from the database.
  */
 export const addUpVote = async (
-  name, email, userNumber, commentUserNumber, slug, replyChain, setError,
-  setWarning
+  name: string, email: string, userNumber: number, commentUserNumber: number, slug: string, replyChain: number, setError: Function,
+  setWarning: Function
 ) => {
   try {
     const { error } = await API.post(
@@ -226,8 +240,8 @@ export const addUpVote = async (
  *                               was retrieved successfully from the database.
  */
 export const addDownVote = async (
-  name, email, userNumber, commentUserNumber, slug, replyChain, setError,
-  setWarning
+  name: string, email: string, userNumber: number, commentUserNumber: number, slug: string, replyChain: number, setError: Function,
+  setWarning: Function
 ) => {
   try {
     const { error } = await API.post(
@@ -259,8 +273,9 @@ export const addDownVote = async (
  *                                     database.
  */
 export const removeVote = async (
-  name, email, userNumber, slug, commentNumber, up, commentDateAdded,
-  voteDateAdded, setError, setWarning
+  name: string, email: string, userNumber: number, slug: string, 
+  commentNumber: number, up: boolean, commentDateAdded: string,
+  voteDateAdded: string, setError: Function, setWarning: Function
 ) => {
   try {
     const { error } = await API.del(
@@ -279,18 +294,20 @@ export const removeVote = async (
  * @param {String}   userNumber   The user's number.
  * @param {Function} setError     The function used to set the error while
  *                                retrieving data from the database.
- * @param {Object}   currentUser  The current user that is signed in to the
+ * @param {User}     currentUser  The current user that is signed in to the
  *                                session.
  * @param {Function} setCommenter The function used to set the attributes of
  *                                the commenter's modal view
  */
 export const getUser = async (
-  userNumber, setError, currentUser, setCommenter
+  userNumber: string, setError: Function, currentUser: User, 
+  setCommenter: Function
 ) => {
   try {
     const { user, error } = await API.get(
       process.env.GATSBY_API_BLOG_NAME,
-      `/user?userNumber=${ userNumber }`
+      `/user?userNumber=${ userNumber }`,
+      {}
     )
     if ( error ) setError( error )
     else {
@@ -327,7 +344,7 @@ export const getUser = async (
  *                              accessing the database.
  */
 export const handleNewName = async (
-  name, email, userNumber, newName, setError
+  name: string, email: string, userNumber: string, newName: string, setError: Function
 ) => {
   try {
     const { error } = await API.post(
@@ -346,7 +363,7 @@ export const handleNewName = async (
  * @param {Function} setError   The function used to set the error while
  *                              accessing the database.
  */
-export const disableUser = async ( userNumber, setError ) => {
+export const disableUser = async ( userNumber: string, setError: Function ) => {
   try {
     const { error } = await API.post(
       process.env.GATSBY_API_BLOG_NAME, `/disable-user`,

@@ -5,7 +5,7 @@ export * from './BorderBox'
 export * from './Grid'
 export * from './Icon'
 
-export const fadeInOnHoverParent = parent => css`
+export const fadeInOnHoverParent = ( parent: string ) => css`
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

@@ -4,7 +4,7 @@ import DarkToggle from '../DarkToggle'
 import Nav from '../Nav'
 import Authentication from '../Authentication'
 import Privacy from '../Privacy'
-import { HeaderDiv, Logo, IconDiv, Div, Icon, Icons } from './styles'
+import { HeaderDiv, Logo, IconDiv, Div, Icon } from './styles'
 import { Configure } from 'utils/auth'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
@@ -21,7 +21,6 @@ Configure()
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
 
 export default function Header( { site } ) {
-  const { Favicon } = Icons
   const [open, setModal] = useState( false )
   /**
    * The object used to determine whether the visitor has agreed to the
@@ -64,7 +63,6 @@ export default function Header( { site } ) {
         <Logo to="/" title={site.title} rel="home">
           tnor
         </Logo>
-        {/* <Favicon/> */}
         <IconDiv>
           <Nav />
         </IconDiv>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 
 export const Title = styled.hgroup`
   font-size: 2em;

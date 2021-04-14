@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {
   Warning, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 
 
 export const Title = styled.div`
@@ -37,6 +37,11 @@ export const ModalUserName = styled.hgroup`
   ${mediaQueries.minTablet} {
     padding: 0.5em;
   }
+`
+
+export const SubmitDiv = styled.div`
+  margin: 0.5em;
+  margin-top: 0;
 `
 
 export const ModalDescription = styled.div`

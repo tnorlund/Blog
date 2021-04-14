@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface GridColumnProps {
+  cols: number;
+}
+
 export const PageBody = styled.main`
   position: relative;
   margin: calc(3em + 3vh) 0;
@@ -9,7 +13,7 @@ export const PageBody = styled.main`
   grid-auto-rows: max-content;
   grid-auto-flow: dense;
   > * {
-    grid-column: ${props => props.cols || 3};
+    grid-column: ${(props: GridColumnProps) => props.cols || 3};
   }
   /* Center image captions. */
   .gatsby-resp-image-wrapper + em,
@@ -27,7 +31,7 @@ export const PageBody = styled.main`
     margin-right: auto;
     font-size: 0.95em;
   }
-  /* Center SVGs, not necessary for .gatsby-resp-image-wrapper */
+  /* Center SVG's, not necessary for .gatsby-resp-image-wrapper */
   img {
     display: block;
     margin: auto;

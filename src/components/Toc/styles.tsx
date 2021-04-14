@@ -1,7 +1,11 @@
 import styled, { css } from 'styled-components'
 import { BookContent } from 'styled-icons/boxicons-regular'
 import { Close as Cross } from 'styled-icons/material'
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
+
+interface TOCProps {
+  open: boolean
+}
 
 export const TocDiv = styled.aside`
   background: var(--color-background);
@@ -25,9 +29,9 @@ export const TocDiv = styled.aside`
     position: fixed;
     bottom: 1em;
     left: 1em;
-    ${props => !props.open && `height: 0;`};
-    visibility: ${props => ( props.open ? `visible` : `hidden` )};
-    opacity: ${props => ( props.open ? 1 : 0 )};
+    ${( props:TOCProps ) => !props.open && `height: 0;`};
+    visibility: ${( props:TOCProps ) => ( props.open ? `visible` : `hidden` )};
+    opacity: ${( props:TOCProps ) => ( props.open ? 1 : 0 )};
     transition: 0.3s;
   }
   ${mediaQueries.minLaptop} {
@@ -48,18 +52,27 @@ export const Title = styled.h2`
   color: var(--color-gray);
 `
 
+interface TOCLinkProps {
+  active: boolean,
+  depth: number
+}
+
 export const TocLink = styled.a`
   cursor: pointer;
-  color: ${p => ( p.active ? `var(--color-a)` : `var(--color-gray)` )};
-  font-weight: ${props => props.active && `bold`};
+  color: ${(props: TOCLinkProps) => ( props.active ? `var(--color-a)` : `var(--color-gray)` )};
+  font-weight: ${(props: TOCLinkProps) => props.active && `bold`};
   display: block;
-  margin-left: ${props => props.depth + `em`};
+  margin-left: ${(props: TOCLinkProps) => props.depth + `em`};
 `
 
 export const TocIcon = styled( BookContent )`
   width: 1em;
   margin-right: 0.2em;
 `
+
+interface TOCToggleOpenerProps {
+  open: boolean,
+}
 
 const openerCss = css`
   position: fixed;
@@ -70,13 +83,23 @@ const openerCss = css`
   border: 2px solid var(--color-text);
   border-left: none;
   border-radius: 0 50% 50% 0;
-  transform: translate(${props => ( props.open ? `-100%` : 0 )});
+  transform: translate( ${ 
+    ( props: TOCToggleOpenerProps ) => ( props.open ? `-100%` : 0 ) 
+  } );
 `
 
-export const TocToggle = styled( Cross ).attrs( props => ( {
-  as: props.opener && BookContent,
-  size: props.size || `1.6em`,
-} ) )`
+interface TOCToggleProps {
+  opener: boolean,
+  size: number,
+}
+
+
+export const TocToggle = styled( Cross ).attrs(
+    ( props: TOCToggleProps ) => ( {
+    as: props.opener && BookContent,
+    size: props.size || `1.6em`,
+  } ) 
+)`
   z-index: 2;
   transition: 0.3s;
   justify-self: end;

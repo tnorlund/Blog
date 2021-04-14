@@ -57,26 +57,26 @@ const IndexPage = () => {
     <PageBody>
       <title>Home Page</title>
       <div style={ {
-        justifyContent: 'center',
+        justifyContent: `center`,
         width: `100%`,
         display: `flex`,
-        marginBottom: '1.666rem',
+        marginBottom: `1.666rem`,
       } }>
-      <GatsbyImage 
-        style={ {
-          borderRadius: '50%',
-          justifySelf: 'center',
-          margin: '0 auto',
-          backgroundColor: `var(--color-b)`
-        } }
-        imgStyle={ {
-          backgroundColor: `var(--color-b)`,
-          borderRadius: '50%',
-        } }
-        backgroundColor={`var(--color-b)`}
-        image={picture.childImageSharp.gatsbyImageData} 
-        alt="My face" 
-      />
+        <GatsbyImage
+          style={ {
+            borderRadius: `50%`,
+            justifySelf: `center`,
+            margin: `0 auto`,
+            backgroundColor: `var(--color-b)`
+          } }
+          imgStyle={ {
+            backgroundColor: `var(--color-b)`,
+            borderRadius: `50%`,
+          } }
+          backgroundColor={`var(--color-b)`}
+          image={picture.childImageSharp.gatsbyImageData}
+          alt="My face"
+        />
       </div>
       <Social metadata={metadata} />
       <h1>Blog</h1>

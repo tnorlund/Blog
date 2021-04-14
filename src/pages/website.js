@@ -35,8 +35,7 @@ export default function Website() {
   useEventListener(
     `scroll`,
     async () => buffer_index = handleScroll(
-      privacy, scroll_buffer, buffer_index, Analytics,
-      visitorKey, `Website`, `/website`
+      privacy, scroll_buffer, buffer_index, visitorKey, `Website`, `/website`
     )
   )
   return(

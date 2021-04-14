@@ -1,0 +1,63 @@
+{
+    "post": {
+        "slug": "/blog/svg",
+        "title": "SVG, Efficiency in Math",
+        "numberComments": 2
+    },
+    "comments": {
+        "2021-04-14T04:06:13.026Z": {
+            "username": "b660dd98-e29c-4f39-a85a-c3bcb8ce1999",
+            "userCommentNumber": 1,
+            "name": "Tyler",
+            "slug": "/blog/svg",
+            "text": "Example",
+            "vote": 1,
+            "numberVotes": 1,
+            "dateAdded": "2021-04-14T04:06:13.026Z",
+            "replyChain": [],
+            "replies": {
+                "2021-04-14T04:06:24.085Z": {
+                    "username": "b660dd98-e29c-4f39-a85a-c3bcb8ce1999",
+                    "userCommentNumber": 2,
+                    "name": "Tyler",
+                    "slug": "/blog/svg",
+                    "text": "reply",
+                    "vote": 1,
+                    "numberVotes": 1,
+                    "dateAdded": "2021-04-14T04:06:24.085Z",
+                    "replyChain": [
+                        "2021-04-14T04:06:13.026Z"
+                    ],
+                    "replies": {},
+                    "votes": {
+                        "2021-04-14T04:06:24.085Z": {
+                            "username": "b660dd98-e29c-4f39-a85a-c3bcb8ce1999",
+                            "name": "Tyler",
+                            "slug": "/blog/svg",
+                            "voteNumber": 1,
+                            "up": true,
+                            "dateAdded": "2021-04-14T04:06:24.085Z",
+                            "replyChain": [
+                                "2021-04-14T04:06:13.026Z",
+                                "2021-04-14T04:06:24.085Z"
+                            ]
+                        }
+                    }
+                }
+            },
+            "votes": {
+                "2021-04-14T04:06:13.026Z": {
+                    "username": "b660dd98-e29c-4f39-a85a-c3bcb8ce1999",
+                    "name": "Tyler",
+                    "slug": "/blog/svg",
+                    "voteNumber": 1,
+                    "up": true,
+                    "dateAdded": "2021-04-14T04:06:13.026Z",
+                    "replyChain": [
+                        "2021-04-14T04:06:13.026Z"
+                    ]
+                }
+            }
+        }
+    }
+}

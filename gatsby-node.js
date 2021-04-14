@@ -1,5 +1,5 @@
 const path = require( `path` )
-const postTemplate = path.resolve( `./src/templates/blog-post.js` )
+const postTemplate = path.resolve( `./src/templates/blog-post.tsx` )
 
 /**
  * Creates the different pages given certain posts.

@@ -1,34 +1,34 @@
 /**
- * @type {String} The key used to change the user details using session
+ * @type {string} The key used to change the user details using session
  * storage. */
-export const USER_KEY = `user`
+export const USER_KEY: string = `user`
 
 /**
- * @type {String} The key used to change the authentication modal view using
+ * @type {string} The key used to change the authentication modal view using
  * session storage. */
-export const AUTH_KEY = `auth`
+export const AUTH_KEY: string = `auth`
 
 /**
- * @type {String} The key used to change the visitor's privacy settings using
+ * @type {string} The key used to change the visitor's privacy settings using
  *                session storage.
  */
-export const PRIVACY_KEY = `privacy`
+export const PRIVACY_KEY: string = `privacy`
 
 /**
- * @type {String} The key used to access the visitor's unique identification
+ * @type {string} The key used to access the visitor's unique identification
  *                from session storage.
  */
-export const VISITOR_KEY = `visitor`
+export const VISITOR_KEY: string = `visitor`
 
 /**
- * @type {String} The key used to change the version of the most recent Terms
+ * @type {string} The key used to change the version of the most recent Terms
  * of Service using session storage. */
-export const TOS_KEY = `tos`
+export const TOS_KEY: string = `tos`
 
-/** @type {String} The key used to change the color mode using local storage. */
-export const COLOR_MODE_KEY = `color-mode`
+/** @type {string} The key used to change the color mode using local storage. */
+export const COLOR_MODE_KEY: string = `color-mode`
 
-export const INITIAL_COLOR_MODE_CSS_PROP = `--initial-color-mode`
+export const INITIAL_COLOR_MODE_CSS_PROP: string = `--initial-color-mode`
 
 export const COLORS = {
   gray: {
@@ -39,7 +39,6 @@ export const COLORS = {
     dark: `#3d3d3d`,
     darker: `#1a1d23`,
     darkest: `#060606`,
-
   },
   brown: {
     default: `#ffc88a`,
@@ -112,7 +111,7 @@ export const MODE_COLORS = {
   },
   link: {
     light: blue.light,
-    dark: blue.lighter,
+    dark: blue.light,
   },
   lightLink: {
     light: blue.light,
@@ -135,7 +134,7 @@ export const MODE_COLORS = {
     dark: green.dark,
   },
   gray: {
-    light: gray.regular,
+    light: gray.default,
     dark: gray.light,
   },
   lightGray: {

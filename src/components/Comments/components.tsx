@@ -1,30 +1,63 @@
-import React from 'react'
-import {
-  addPost, addComment, deleteComment, deletePost,
-  addUpVote, addDownVote, removeVote, getTextInput, resetTextInput,
-  replyToComment, getUser, handleNewName, disableUser
-} from './utils'
+import React, { FC } from 'react'
+import { getTextInput, resetTextInput } from './utils'
 import {
   Title, TextInput,
   WarningDiv, WarningButton, WarningIcon,
   SelectedButton, UnselectedButton,
   CommentText, CommentDiv, CommentOption, CommentOptions, UserName,
   Up, Down, SelectedDown, SelectedUp, VoteNumber, VoteDiv,
-  ModalView, ModalDescription, ModalUserName, AdminButton, NewTextInput
+  ModalView, ModalDescription, ModalUserName, AdminButton, NewTextInput,
+  SubmitDiv
 } from './styles'
-import { timeSince } from 'utils/date'
+import { timeSince } from '../../utils/date'
 import { Markup } from 'interweave'
-import Amplify, { API } from 'aws-amplify'
+import { API } from 'aws-amplify'
+import { Interface } from 'readline'
 
+interface Vote {
+  dateAdded: string,
+  username: string,
+  up: boolean
+}
 
-// TODO
-// [ ] Show user info in a modal view
-// [ ] Allow admin control to change name of user
+interface User {
+  name: string,
+  username: string,
+  email: string
+  isAdmin: boolean
+}
 
+interface Comment {
+  name: string
+  dateAdded: string
+  replyChain: [string]
+  username: string,
+  vote: number,
+  text: string
+  votes: [Vote]
+  replies: [Comment]
+}
+
+interface Commenter {
+  name?: string, 
+  dateString?: string, 
+  username?: string,
+  email?: string,
+  isAdmin: boolean
+}
+
+interface  UpVoteProps {
+  myUpVote: Vote | undefined, 
+  working: boolean, 
+  setWorking: React.Dispatch<React.SetStateAction<boolean>>, 
+  slug: string, 
+  myDownVote: Vote | undefined, 
+  user: User, 
+  comment: Comment
+}
 export const UpVote = ( {
-  myUpVote, working, setWorking, slug, setError, setWarning,
-  myDownVote, user, comment
-} ) =>
+  myUpVote, working, setWorking, slug, myDownVote, user, comment
+} : UpVoteProps ) =>
   <>
     {
       myUpVote && <SelectedUp onClick={ () => {
@@ -105,10 +138,18 @@ export const UpVote = ( {
     }
   </>
 
+interface  DownVoteProps {
+  myDownVote: Vote | undefined, 
+  working: boolean, 
+  setWorking: React.Dispatch<React.SetStateAction<boolean>>, 
+  slug: string, 
+  myUpVote: Vote | undefined, 
+  user: User, 
+  comment: Comment
+}
 export const DownVote = ( {
-  myDownVote, working, setWorking, slug, setError, setWarning, myUpVote, user,
-  comment
-} ) =>
+  myDownVote, working, setWorking, slug, myUpVote, user, comment
+} : DownVoteProps ) =>
   <>
     {
       myDownVote && <SelectedDown onClick={
@@ -191,9 +232,19 @@ export const DownVote = ( {
     }
   </>
 
+interface  SubmitCommentProps {
+  working: boolean, 
+  setWorking: React.Dispatch<React.SetStateAction<boolean>>, 
+  user: User, 
+  slug: string,
+  title: string, 
+  setWarning: React.Dispatch<React.SetStateAction<boolean>>, 
+  setError: React.Dispatch<React.SetStateAction<string|undefined>>,
+  setComment: React.Dispatch<React.SetStateAction<string>>,
+}
 export const SubmitComment = ( {
   working, setWorking, user, slug, title, setWarning, setError, setComment
-} ) => <div css={ `margin: 0.5em; margin-top: 0;` }>
+} : SubmitCommentProps ) => <SubmitDiv>
   { <SelectedButton
     onClick={ () => {
       if ( !working ) {
@@ -207,13 +258,13 @@ export const SubmitComment = ( {
             username: user.username,
             slug, title, text: getTextInput( `NewComment` )
           } }
-        ).then( result => {
+        ).then( () => {
           setWorking( false )
           setComment( `` )
           resetTextInput( `NewComment` )
           setWarning( false )
-          setError()
-        } ).catch( error => {
+          setError( undefined )
+        } ).catch( () => {
           setError( `Could not post comment` )
           setWorking( false )
           resetTextInput( `NewComment` )
@@ -221,102 +272,139 @@ export const SubmitComment = ( {
         } )
       }
     } }
-    css={ `margin-left: auto;` }
+    style={ { marginLeft: `auto` } }
   >Submit</SelectedButton> }
-</div>
+</SubmitDiv>
 
-export const Error = ( { error } ) =>
+interface ErrorProps {
+  error: string | undefined
+}
+export const Error = ( { error } : ErrorProps ) =>
   <>
     {
       error && <WarningDiv>
-        <WarningIcon/><div css={`padding: 0.5em;`}>{ error }</div>
+        <WarningIcon/><div style={{ padding: `0.5em` }}>{ error }</div>
       </WarningDiv>
     }
   </>
 
-export const Warning = ( { warning, slug, title, setWarning, setError } ) =>
-  <>
-    {
-      warning && <WarningDiv>
-        <div><WarningIcon/>Post not in database</div>
-        <div><WarningButton onClick={
-          () => API.post(
-            process.env.GATSBY_API_BLOG_NAME,
-            `/post`,
-            { response: true, body: { slug, title } }
-          ).then( () => { setWarning( false ); setError() }
-          ).catch( () => setError( `Could not add post` ) )
-        }>Add Post</WarningButton></div>
-      </WarningDiv>
-    }
-  </>
+interface WarningProps {
+  warning: boolean,
+  slug: string,
+  title: string,
+  setWarning: React.Dispatch<React.SetStateAction< boolean > >, 
+  setError: React.Dispatch<React.SetStateAction< string | undefined > >, 
+}
+export const Warning = ( 
+  { warning, slug, title, setWarning, setError } : WarningProps 
+) => <> {
+  warning && <WarningDiv>
+    <div><WarningIcon/>Post not in database</div>
+    <div><WarningButton onClick={
+      () => API.post(
+        process.env.GATSBY_API_BLOG_NAME,
+        `/post`,
+        { response: true, body: { slug, title } }
+      ).then( () => { setWarning( false ); setError( undefined ) }
+      ).catch( () => setError( `Could not add post` ) )
+    }>Add Post</WarningButton></div>
+  </WarningDiv>
+} </>
 
-export const AdminControls = ( {
-  user, warning, setWarning, working, setWorking, slug, title, setError,
-  setComment
-} ) =>
-  <>
-    {
-      user && user.isAdmin && !warning
-      && <WarningDiv>
-        <div><UnselectedButton>Post Details</UnselectedButton></div>
-        <div><WarningButton onClick={ () => {
-          if ( !working ) {
-            setWorking( true )
-            API.del(
-              process.env.GATSBY_API_BLOG_NAME,
-              `/post`,
-              { response: true, body: { slug, title } }
-            ).then( () => setWorking( false )
-            ).catch( () => setWorking( false ) )
+interface AdminControlsProps {
+  user: User,
+  warning: boolean
+  working: boolean,
+  setWorking: React.Dispatch<React.SetStateAction< boolean > >,
+  slug: string,
+  title: string
+}
+export const AdminControls = ( 
+  { user, warning, working, setWorking, slug, title } : AdminControlsProps 
+) => <> {
+  user && user.isAdmin && !warning && <WarningDiv>
+    <div><UnselectedButton>Post Details</UnselectedButton></div>
+    <div><WarningButton onClick={ () => {
+      if ( !working ) {
+        setWorking( true )
+        API.del(
+          process.env.GATSBY_API_BLOG_NAME,
+          `/post`,
+          { response: true, body: { slug, title } }
+        ).then( () => setWorking( false )
+        ).catch( () => setWorking( false ) )
+      }
+    } }>Remove Post</WarningButton></div>
+  </WarningDiv>
+} </>
+
+interface DeleteProps {
+  showDelete: boolean, 
+  working: boolean, 
+  setWorking: React.Dispatch<React.SetStateAction< boolean > >, 
+  slug: string, 
+  title: string, 
+  setError: React.Dispatch<React.SetStateAction< string | undefined > >, 
+  setWarning: React.Dispatch<React.SetStateAction< boolean > >, 
+  comment: Comment,
+  user: User
+}
+export const Delete = ( 
+  { 
+    showDelete, working, setWorking, slug, title, setError, setWarning, comment,
+    user 
+  } : DeleteProps 
+) => <> { showDelete && <> 
+  <CommentOption onClick={ () => {
+    if ( !working ) {
+      setWorking( true )
+      API.del(
+        process.env.GATSBY_API_BLOG_NAME, `/comment`,
+        {
+          response: true,
+          body: {
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            slug,
+            title,
+            dateAdded: comment.dateAdded,
+            replyChain: comment.replyChain
           }
-        } }>Remove Post</WarningButton></div>
-      </WarningDiv>
+        }
+      ).then( () => {
+        setWarning( false ); setError( undefined); setWorking( false )
+      } ).catch( () => {
+        setError( `Could not remove comment` ); setWorking( false )
+      } )
     }
-  </>
+  } }>Delete</CommentOption>|
+</> } </>
 
-export const Delete = ( {
-  showDelete, working, setWorking, slug, title, setError, setWarning, comment,
-  user
-} ) =>
-  <>
-    { showDelete &&
-        <>
-          <CommentOption
-            onClick={ () => {
-              if ( !working ) {
-                setWorking( true )
-                API.del(
-                  process.env.GATSBY_API_BLOG_NAME, `/comment`,
-                  {
-                    response: true,
-                    body: {
-                      name: user.name,
-                      email: user.email,
-                      username: user.username,
-                      slug,
-                      title,
-                      dateAdded: comment.dateAdded,
-                      replyChain: comment.replyChain
-                    }
-                  }
-                ).then( () => {
-                  setWarning( false ); setError(); setWorking( false )
-                } ).catch( () => {
-                  setError( `Could not remove comment` ); setWorking( false )
-                } )
-              }
-            } }>Delete
-          </CommentOption>|
-        </>
-    }
-  </>
-
-export const Comment = ( {
-  slug, title, comment, user, working, setWorking, setError, setWarning,
-  showReply, setShowReply, reply, setReply,
-  setModal, setCommenter, isReply = false
-} ) => {
+interface CommentProps {
+  slug: string, 
+  title: string, 
+  comment: Comment, 
+  user: User, 
+  working: boolean, 
+  setWorking: React.Dispatch<React.SetStateAction<boolean>>, 
+  setError: React.Dispatch<React.SetStateAction<string|undefined>>, 
+  setWarning: React.Dispatch<React.SetStateAction<boolean>>, 
+  showReply: string, 
+  setShowReply: React.Dispatch<React.SetStateAction<string>>, 
+  reply: string, 
+  setReply: React.Dispatch<React.SetStateAction<string>>,
+  setModal: React.Dispatch<React.SetStateAction<boolean>>, 
+  setCommenter: React.Dispatch<React.SetStateAction<Commenter> >, 
+  isReply: boolean
+}
+export const CommentComponent = (
+  {
+    slug, title, comment, user, working, setWorking, setError, setWarning,
+    showReply, setShowReply, reply, setReply,
+    setModal, setCommenter, isReply = false
+  } : CommentProps
+) => {
   // Only show the delete option if the user is logged in and the user is and
   // administrator, or show the option if the user is logged in and the comment
   // is theirs.
@@ -328,7 +416,6 @@ export const Comment = ( {
   const myDownVotes = Object.values( comment.votes ).filter( ( vote ) => {
     if (
       user &&
-      // vote.name == user.name &&
       vote.username == user.username &&
       !vote.up ) return vote
   } )
@@ -339,7 +426,6 @@ export const Comment = ( {
   const myUpVotes = Object.values( comment.votes ).filter( ( vote ) => {
     if (
       user &&
-      // vote.name == user.name &&
       vote.username == user.username &&
       vote.up ) return vote
   } )
@@ -347,7 +433,7 @@ export const Comment = ( {
     ( myUpVotes.length == 1 ) ? myUpVotes[ 0 ] : undefined
   )
   const replies = Object.values( comment.replies ).map(
-    repliedComment => Comment( {
+    repliedComment => CommentComponent( {
       slug, title, comment:repliedComment, user, working, setWorking, setError,
       setWarning, showReply, setShowReply, reply, setReply,
       setModal, setCommenter, isReply: true
@@ -356,10 +442,10 @@ export const Comment = ( {
   if ( isReply )
     return(
       <CommentDiv
-        css={`padding-right: 0;`}
+        style={{ paddingRight: 0 }}
         key={ comment.name + comment.dateAdded + comment.text }
       >
-        <div css={`display: flex;`}>
+        <div style={{ display: `flex` }}>
           <UserName
             onClick={ () => {
               API.get(
@@ -396,20 +482,13 @@ export const Comment = ( {
                   } )
                 }
                 setModal( true )
-              } ).catch( error => {
+              } ).catch( () => {
                 setError( `Could not get user` )
                 setCommenter( {
                   name: `tyler`, email: `myemail`, username: `username`,
                   dateString: `datestring`, isAdmin: true
                 } )
               } )
-
-              // getUser(
-              //   comment.userNumber, setError, user, setCommenter
-              // ).then(
-              //   () => {
-              //     setModal( true )
-              //   } )
             } }
           >{ comment.name }</UserName>
           <Title> - { timeSince( comment.dateAdded ) }</Title>
@@ -448,7 +527,7 @@ export const Comment = ( {
               <DownVote { ...{
                 myDownVote, working, setWorking, slug, setError, setWarning,
                 myUpVote, user, comment
-              } }/>
+              } } />
               <VoteNumber>{comment.vote}</VoteNumber>
               <UpVote { ...{
                 myUpVote, working, setWorking, slug, setError, setWarning,
@@ -462,10 +541,10 @@ export const Comment = ( {
         <TextInput
           id={ comment.name + comment.dateAdded + comment.text }
           contentEditable={ `true` }
-          content = { reply }
-          css={`margin-right: 0; `}
+          // content = { reply }
+          style={{ marginRight: `0`}}
         />
-        <div css={ `margin: 0.5em; margin-top: 0; margin-right: 0;` }>
+        <div style={{ margin: `0.5em`, marginTop: `0`, marginRight: `0`}}>
           <SelectedButton
             onClick={ () => {
               if ( !working ) {
@@ -500,18 +579,20 @@ export const Comment = ( {
                 } )
               }
             } }
-            css={ `margin-left: auto;` }
+            style={{ marginLeft: `auto` }}
           >Reply</SelectedButton>
         </div>
       </div>
         }
-        <div css={`border-left: 1px solid var(--color-text);`}>{ replies }</div>
+        <div style={{ borderLeft: `1px solid var(--color-text)` }}>
+          { replies }
+        </div>
       </CommentDiv>
     )
   else
     return(
       <CommentDiv key={ comment.name + comment.dateAdded + comment.text }>
-        <div css={`display: flex;`}>
+        <div style={{display: `flex`}}>
           <UserName
             onClick={
               () => {
@@ -604,10 +685,11 @@ export const Comment = ( {
           <TextInput
             id={ comment.name + comment.dateAdded + comment.text }
             contentEditable={ `true` }
-            content = { reply }
-            css={`margin-right: 0; `}
+            // content={ reply }
+            style={{marginRight: `0`}}
           />
-          <div css={ `margin: 0.5em; margin-top: 0; margin-right: 0;` }>
+          <div
+            style={{ margin: `0.5em`, marginTop: `0`, marginRight: `0` }}>
             <SelectedButton
               onClick={ () => {
                 if ( !working ) {
@@ -638,20 +720,34 @@ export const Comment = ( {
                   } ).catch( () => setWorking( false ) )
                 }
               } }
-              css={ `margin-left: auto;` }
+              style={{ marginLeft: `auto`}}
             >Reply</SelectedButton>
           </div>
         </div>
         }
-        <div css={`border-left: 1px solid var(--color-text);`}>{ replies }</div>
+        <div 
+          style={{ borderLeft: `1px solid var(--color-text)` }}
+        >{ replies }</div>
       </CommentDiv>
     )
 }
 
+interface UserProps {
+  name: string,
+  dateString: string,
+  isAdmin: boolean,
+  email: string|undefined,
+  newName: string,
+  setNewName: React.Dispatch<React.SetStateAction<string>>,
+  username: string,
+  working: boolean,
+  setWorking: React.Dispatch<React.SetStateAction<boolean>>, 
+  setError: React.Dispatch<React.SetStateAction<string|undefined>>, 
+}
 export const User = ( {
-  name, dateString, isAdmin, email, userNumber, newName, setNewName,
+  name, dateString, isAdmin, email, newName, setNewName,
   setWorking, working, setError, username
-} ) => <>
+} : UserProps ) => <>
   <ModalView>
     <ModalUserName>{name}</ModalUserName>
   </ModalView>

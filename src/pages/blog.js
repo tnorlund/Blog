@@ -17,7 +17,7 @@ export default function Blog() {
   /** The key of the buffer of where to store the scroll data. */
   let buffer_index = 0
   buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
-  /** 
+  /**
    * The object used to determine whether the visitor has agreed to the
    * privacy policy.
    */

@@ -3,27 +3,50 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useEventListener, useOnClickOutside } from 'hooks'
 import { Title, TocDiv, TocIcon, TocLink, TocToggle } from './styles'
 
-const accumulateOffsetTop = ( el, totalOffset = 0 ) => {
-  while ( el ) {
+const accumulateOffsetTop = ( el: HTMLElement, totalOffset = 0 ) : number => {
+  let current : unknown = el
+  while ( current instanceof HTMLElement ) {
     totalOffset += el.offsetTop - el.scrollTop + el.clientTop
-    el = el.offsetParent
+    current = current.offsetParent
   }
   return totalOffset
 }
 
+interface title {
+  title: string, depth: number
+}
+
+interface heading {
+  titles: title[]|[],
+  nodes: [HTMLElement]|[],
+  minDepth: number,
+  offsets: [number]|[],
+  startingOffsets: number[]|[]
+}
+
+
+interface TOCProps {
+  headingSelector: any, 
+  getTitle: any, 
+  getDepth: any, 
+  throttleTime: number,
+  tocTitle: string
+}
+
 export default function Toc(
-  { headingSelector, getTitle, getDepth, ...rest }
+  { headingSelector, getTitle, getDepth, ...rest }: TOCProps
 ) {
   const { throttleTime = 200, tocTitle = `Contents` } = rest
-  const [headings, setHeadings] = useState( {
+  const [headings, setHeadings] = useState<heading>( {
     titles: [],
     nodes: [],
     minDepth: 0,
     offsets: [],
+    startingOffsets: []
   } )
-  const [open, setOpen] = useState( false )
-  const [active, setActive] = useState()
-  const ref = useRef()
+  const [open, setOpen] = useState<boolean>( false )
+  const [active, setActive] = useState<number|never>()
+  const ref = useRef<HTMLSelectElement>()
   useOnClickOutside( ref, () => setOpen( false ) )
   useEffect( () => {
     // Fallback to sensible defaults for headingSelector, getTitle and getDepth
@@ -35,14 +58,15 @@ export default function Toc(
     const selector = headingSelector || Array.from(
       { length: 6 }, ( _, i ) => `main > h` + ( i + 1 )
     )
-    const nodes = Array.from( document.querySelectorAll( selector ) )
+    console.log( { selector } )
+    const nodes = Array.from( document.querySelectorAll( selector ) ) as [HTMLElement]
     const titles = nodes.map( node => ( {
       title: getTitle ? getTitle( node ) : node.innerText,
       depth: getDepth ? getDepth( node ) : Number( node.nodeName[1] ),
     } ) )
     const minDepth = Math.min( ...titles.map( h => h.depth ) )
     const startingOffsets = nodes.map( el => accumulateOffsetTop( el ) - 100 )
-    setHeadings( { titles, nodes, minDepth, startingOffsets } )
+    setHeadings( { titles, nodes, minDepth, offsets: [], startingOffsets } )
   }, [headingSelector, getTitle, getDepth] )
 
   const scrollHandler = throttle( () => {
