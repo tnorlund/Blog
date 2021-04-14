@@ -58,7 +58,6 @@ export default function Toc(
     const selector = headingSelector || Array.from(
       { length: 6 }, ( _, i ) => `main > h` + ( i + 1 )
     )
-    console.log( { selector } )
     const nodes = Array.from( document.querySelectorAll( selector ) ) as [HTMLElement]
     const titles = nodes.map( node => ( {
       title: getTitle ? getTitle( node ) : node.innerText,

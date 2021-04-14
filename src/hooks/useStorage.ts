@@ -60,12 +60,9 @@ export const useStorage = ( storage: any, key: string, initialValue: any, option
   return [value, setStoredValue]
 }
 
-export const useLocalStorage = ( ...args: [string, any?, boolean?]  ) =>{
-  console.log( `useLocalStorage`, { args } )
-  return useStorage( typeof window !== `undefined` && localStorage, ...args )
-}
+export const useLocalStorage = ( ...args: [string, any?, boolean?]  ) =>
+  useStorage( typeof window !== `undefined` && localStorage, ...args )
 
-export const useSessionStorage = ( ...args: [string, any?, boolean?] ) => {
-  console.log( `useSessionStorage`, { args } )
-  return useStorage( typeof window !== `undefined` && sessionStorage, ...args )
-}
+
+export const useSessionStorage = ( ...args: [string, any?, boolean?] ) =>
+  useStorage( typeof window !== `undefined` && sessionStorage, ...args )
