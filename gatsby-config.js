@@ -1,4 +1,4 @@
-// require( `dotenv` ).config()
+require( `dotenv` ).config()
 
 /** The metadata used in the headers */
 const siteMetadata = {

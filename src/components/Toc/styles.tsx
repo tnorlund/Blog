@@ -4,7 +4,8 @@ import { Close as Cross } from 'styled-icons/material'
 import { mediaQueries } from '../../utils/mediaQueries'
 
 interface TOCProps {
-  open: boolean
+  open: boolean,
+  ref: any
 }
 
 export const TocDiv = styled.aside`

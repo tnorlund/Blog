@@ -87,7 +87,7 @@ const createResource = ( promise: Promise<PostDetails> ) => {
   let status = 'pending'
   let result = promise.then(
     ( details: any ) => { status = 'success'; result = details; },
-    ( rejection : any ) => { status = 'rejected'; result = rejection; }
+    ( rejection : any ) => { status = 'error'; result = rejection; }
   )
   return {
     read() {
@@ -154,7 +154,10 @@ const PostInfo = ( { postResource }: any ) => {
   )
 }
 
-const PostDetails = ( slug: string, title: string ) => {
+interface PostDetailsProps {
+  slug: string, title: string
+}
+const PostDetails = ( { slug, title }: PostDetailsProps ) => {
   const [postComments, setPostComments] = React.useState<any>('')
   const [postResource, setPostResource] = React.useState<any>(null)
   React.useEffect( () => {

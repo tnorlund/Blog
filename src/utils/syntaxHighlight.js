@@ -38,7 +38,8 @@ export default createGlobalStyle`
 
   pre.grvsc-container {
     position: relative;
-    background: #050431;
+    /* background: #050431; */
+    background: rgb( 30, 30, 30 );
     border-radius: 0.5em;
     line-height: 1.5em;
   }

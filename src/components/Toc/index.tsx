@@ -1,6 +1,6 @@
 import { throttle } from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
-import { useEventListener, useOnClickOutside } from 'hooks'
+import { useEventListener, useOnClickOutside } from '../../hooks'
 import { Title, TocDiv, TocIcon, TocLink, TocToggle } from './styles'
 
 const accumulateOffsetTop = ( el: HTMLElement, totalOffset = 0 ) : number => {
@@ -46,8 +46,8 @@ export default function Toc(
   } )
   const [open, setOpen] = useState<boolean>( false )
   const [active, setActive] = useState<number|never>()
-  const ref = useRef<HTMLSelectElement>()
-  useOnClickOutside( ref, () => setOpen( false ) )
+  const ref = useRef<any>()
+  useOnClickOutside( ref, () => setOpen( false ), null )
   useEffect( () => {
     // Fallback to sensible defaults for headingSelector, getTitle and getDepth
     // inside useEffect rather than specifying them as Toc default props to
