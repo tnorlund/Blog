@@ -6,7 +6,7 @@ import { translate } from '../../utils'
 
 const darkMode = false
 
-const fill = darkMode ? `#e5e5e5` :  `#201e1f`
+const fill = `var(--color-text)`
 const red = `#d94234`
 
 const min_x = 0

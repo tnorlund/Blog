@@ -164,6 +164,10 @@ const components = {
     () => import( `../MyIcons/QuadraticBezier` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
+  CubicBezier: loadable(
+    () => import( `../MyIcons/CubicBezier` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  )
 }
 
 /**
