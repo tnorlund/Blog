@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 import { ThMenu } from 'styled-icons/typicons'
 import { Close as Cross } from 'styled-icons/material'
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 import { Link } from 'gatsby'
 
-// Unable to accommodate expanding search box via overflow-x: scroll;
-// here because of https://stackoverflow.com/a/6433475. Would include
-// potential future SubNavs in vertical scrolling, effectively hiding them.
+interface NavToggleProps {
+  opener?: boolean,
+  open: boolean
+}
+
 export const NavDiv = styled.nav`
   font-size: 1.1em;
   display: grid;
@@ -23,7 +25,7 @@ export const NavDiv = styled.nav`
     background: rgba(0, 0, 0, 0.75);
     overscroll-behavior: none;
     z-index: 3;
-    transform: translate(${props => ( props.open ? `99%` : `0` )});
+    transform: translate(${( props: NavToggleProps ) => ( props.open ? `99%` : `0` )});
     grid-auto-rows: max-content;
     width: 70vw;
     max-width: 12em;
@@ -40,7 +42,9 @@ export const NavDiv = styled.nav`
   }
 `
 
-export const NavToggle = styled( Cross ).attrs( props => ( {
+
+
+export const NavToggle = styled( Cross ).attrs( ( props: NavToggleProps ) => ( {
   as: props.opener && ThMenu,
   size: props.opener ? `1.2em` : `1.6em`,
 } ) )`
@@ -49,7 +53,7 @@ export const NavToggle = styled( Cross ).attrs( props => ( {
   :hover {
     transform: scale(1.05);
   }
-  ${p =>
+  ${( p: NavToggleProps ) =>
     !p.opener &&
     `position: absolute;
     top: 0.7em;

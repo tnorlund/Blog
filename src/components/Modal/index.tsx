@@ -48,7 +48,7 @@ export default function Modal( {
     return(
       <ModalBehind open={open} onClick={ () => setModal( false ) }>
         <ModalDiv
-          onClick={ event => event.stopPropagation() }
+          onClick={ (event: any) => event.stopPropagation() }
         >
           { showClose && <Close onClick={ () => setModal( false ) } /> }
           { contents }

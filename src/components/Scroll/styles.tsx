@@ -9,7 +9,7 @@ interface ArrowProps {
   size:string
 }
 
-export const Arrow = styled( Down ).attrs( props => ( {
+export const Arrow = styled( Down ).attrs( ( props: ArrowProps ) => ( {
   as: props.direction === `up` && Up,
 } ) )`
   background: var(--color-orange-dark);

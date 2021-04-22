@@ -124,52 +124,44 @@ const components = {
     () => import( `../Icons/Babel` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
-  // Bezier: loadable(
-  //   () => import( `../MyIcons/Bezier` ),
-  //   { fallback: <div style={{ height:`200pt` }}/> }
-  // ),
-  CubicBezier: loadable(
-    () => import( `../MyIcons/CubicBezier` ),
-    { fallback: <div style={{ height:`150pt` }}/> }
-  ),
-  QuadraticBezier: loadable(
-    () => import( `../MyIcons/QuadraticBezier` ),
-    { fallback: <div style={{ height:`150pt` }}/> }
-  ),
-  LinearBezier: loadable(
-    () => import( `../MyIcons/LinearBezier` ),
-    { fallback: <div style={{ height:`125pt` }}/> }
-  ),
-  Ellipse: loadable(
-    () => import( `../MyIcons/Ellipse` ),
-    { fallback: <div style={{ height:`150pt` }}/> }
-  ),
-  EllipseConjugate: loadable(
-    () => import( `../MyIcons/EllipseConjugate` ),
-    { fallback: <div style={{ height:`150pt` }}/> }
-  ),
-  EllipseParallelogram: loadable(
-    () => import( `../MyIcons/EllipseParallelogram` ),
-    { fallback: <div style={{ height:`150pt` }}/> }
-  ),
-  W3C: loadable(
-    () => import( `../Icons/W3C` ),
-    { fallback: <div style={{ height:`200pt` }}/> }
-  ),
-  SVG: loadable(
-    () => import( `../Icons/svg` ),
-    { fallback: <div style={{ height:`200pt` }}/> }
-  ),
-  Internet: loadable(
+  ModernWeb: loadable(
     () => import( `../Icons/ModernWeb` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  WASM: loadable(
+    () => import( `../Icons/WASM` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
   Rust: loadable(
     () => import( `../Icons/Rust` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
-  WASM: loadable(
-    () => import( `../Icons/WASM` ),
+  W3C: loadable(
+    () => import( `../Icons/W3C` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  SVG: loadable(
+    () => import( `../Icons/SVG` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  Ellipse: loadable(
+    () => import( `../MyIcons/Ellipse` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  EllipseConjugate: loadable(
+    () => import( `../MyIcons/EllipseConjugate` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  EllipseParallelogram: loadable(
+    () => import( `../MyIcons/EllipseParallelogram` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  LinearBezier: loadable(
+    () => import( `../MyIcons/LinearBezier` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
+  QuadraticBezier: loadable(
+    () => import( `../MyIcons/QuadraticBezier` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
 }

@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css'
 import { createGlobalStyle } from 'styled-components'
-import { mediaQueries, screens } from 'utils/mediaQueries'
-import { typography } from 'utils/constants'
+import { mediaQueries, screens } from '../../utils/mediaQueries'
+import { typography } from '../../utils/constants'
 
 const { phone, desktop } = screens
 const {

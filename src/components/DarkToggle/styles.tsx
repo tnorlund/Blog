@@ -36,7 +36,7 @@ export const Notification = styled.div`
   }
 `
 
-const SunSlashMoon = props => (
+const SunSlashMoon = ( props: any ) => (
   <svg {...props} viewBox="0 0 512 512" fill="currentColor">
     <path
       // eslint-disable-next-line max-len
@@ -57,17 +57,17 @@ const SunSlashMoon = props => (
 )
 
 export const Icons = {
-  Sun: props => <Sun
+  Sun: ( props: any ) => <Sun
     // eslint-disable-next-line max-len
     css="transform: scale(1.05); cursor: pointer; :hover { color: var(--color-a)};"
     {...props}
   />,
-  Moon: props => <Moon
+  Moon: ( props: any ) => <Moon
     // eslint-disable-next-line max-len
     css="transform: scale(0.95); cursor: pointer; :hover { color: var(--color-a) };"
     {...props}
   />,
-  SunMoon: props => <SunSlashMoon
+  SunMoon: ( props: any ) => <SunSlashMoon
     css="cursor: pointer; :hover { color: var(--color-a) };"
     {...props}
     width={props.size}

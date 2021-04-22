@@ -1,12 +1,12 @@
-import { useLocalStorage, useMediaQuery } from 'hooks'
+import { useLocalStorage, useMediaQuery } from './'
 import { useEffect, useCallback } from 'react'
 import {
   COLOR_MODE_KEY,
   INITIAL_COLOR_MODE_CSS_PROP,
   MODE_COLORS,
-} from 'utils/constants'
+} from '../utils/constants'
 
-const setBodyColors = mode => {
+const setBodyColors = ( mode: 'dark'|'light'  ) => {
   for ( const [name, colorByMode] of Object.entries( MODE_COLORS ) ) {
     document.body.style.setProperty( `--color-${name}`, colorByMode[mode] )
   }
@@ -34,7 +34,7 @@ export const useDarkMode = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] )
 
-  function setColorMode( newValue ) {
+  function setColorMode( newValue: 'dark'|'light'|'osPref' ) {
     setLSColorMode( newValue )
 
     // `osPref` is a valid value for persistance, but this value is not a color
