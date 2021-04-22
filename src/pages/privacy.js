@@ -4,9 +4,6 @@ import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage } from 'hooks'
 import { PRIVACY_KEY } from 'utils/constants'
-
-// import { Check, Question, Cross } from '../components/MyIcons'
-
 import Check from '../components/MyIcons/Check'
 import Question from '../components/MyIcons/Question'
 import Cross from '../components/MyIcons/Cross'
@@ -217,11 +214,9 @@ export default function Privacy() {
       <DeleteButton>Delete My Data</DeleteButton>
       <SubTitle>DMCA</SubTitle>
       <div>
-        All content used on this site is considered
-        <a href={`https://www.copyright.gov/title17/92chap1.html#107`}>
-        &quot;Fair Use&quot;</a>.
-        If there are any problems, contact
-        <a href={
+        All content used on this site is considered <a
+          href={`https://www.copyright.gov/title17/92chap1.html#107`}
+        > &quot;Fair Use&quot;</a>. If there are any problems, contact <a href={
           `mailto:webmaster@tylernorlund.com`
         }>webmaster@tylernorlund.com</a>.
       </div>

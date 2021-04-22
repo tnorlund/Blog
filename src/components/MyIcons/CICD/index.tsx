@@ -6,7 +6,7 @@ import { setSteps } from '../../utils'
 
 const dark = false
 
-const backgroundColor = dark ? `#21262d` : `#f8eee0`
+const backgroundColor = `var(--color-background)`
 
 const min_x = 0
 const max_x = 1

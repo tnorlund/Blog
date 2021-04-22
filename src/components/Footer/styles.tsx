@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { mediaQueries } from '../../utils/mediaQueries'
-import { Gatsby, Github, Terraform } from 'styled-icons/simple-icons'
-import { LogoAmplify } from 'styled-icons/ionicons-solid'
+import { Gatsby, Terraform } from 'styled-icons/simple-icons'
 
 export const FooterDiv = styled.footer`
   background: var(--color-b);

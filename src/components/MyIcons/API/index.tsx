@@ -16,7 +16,7 @@ const steps = setSteps( min_x, max_x, [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 export default () => {
   // Only show when in view
   const [ref, inView] = useInView( { threshold: 1, } )
-  return <div ref={ref} style={ { padding:`1em`, height: `128` } } >
+  return <div ref={ref} style={ { padding:`1em`, height: `275pt` } } >
     <Spring to={ { x: inView ?  max_x : min_x } } >
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 200 275" preserveAspectRatio="XmaxYMax">

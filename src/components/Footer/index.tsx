@@ -2,6 +2,7 @@ import React from 'react'
 import { graphql, useStaticQuery, Link } from 'gatsby'
 import { FooterDiv, PoweredBy, Icons } from './styles'
 
+
 interface PoweredByElement {
   url: string, title: string, logo: 'Gatsby'|'Terraform'
 }

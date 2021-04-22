@@ -7,19 +7,23 @@ import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 
 /** Use React Suspense and Lazy to speed up import */
-const Adobe = React.lazy( () => import( `components/Icons/Adobe` ) )
-const Opencv = React.lazy( () => import( `components/Icons/Opencv` ) )
-const Terraform = React.lazy( () => import( `components/Icons/Terraform` ) )
-const Docker = React.lazy( () => import( `components/Icons/Docker` ) )
-const Aws = React.lazy( () => import( `components/Icons/Aws` ) )
-const Openmpi = React.lazy( () => import( `components/Icons/Openmpi` ) )
-const Tensorflow = React.lazy( () => import( `components/Icons/Tensorflow` ) )
-const React_icon = React.lazy( () => import( `components/Icons/React` ) )
-const Pandas = React.lazy( () => import( `components/Icons/Pandas` ) )
-const Spark = React.lazy( () => import( `components/Icons/Spark` ) )
-const Consul = React.lazy( () => import( `components/Icons/Consul` ) )
-const Graphql = React.lazy( () => import( `components/Icons/GraphQL` ) )
-const Postgresql = React.lazy( () => import( `components/Icons/Postgresql` ) )
+const Adobe = React.lazy( () => import( `../components/Icons/Adobe` ) )
+const Opencv = React.lazy( () => import( `../components/Icons/Opencv` ) )
+const Terraform = React.lazy( () => import( `../components/Icons/Terraform` ) )
+const Docker = React.lazy( () => import( `../components/Icons/Docker` ) )
+const Aws = React.lazy( () => import( `../components/Icons/Aws` ) )
+const Openmpi = React.lazy( () => import( `../components/Icons/Openmpi` ) )
+const Tensorflow = React.lazy(
+  () => import( `../components/Icons/Tensorflow` )
+)
+const React_icon = React.lazy( () => import( `../components/Icons/React` ) )
+const Pandas = React.lazy( () => import( `../components/Icons/Pandas` ) )
+const Spark = React.lazy( () => import( `../components/Icons/Spark` ) )
+const Consul = React.lazy( () => import( `../components/Icons/Consul` ) )
+const Graphql = React.lazy( () => import( `../components/Icons/GraphQL` ) )
+const Postgresql = React.lazy(
+  () => import( `../components/Icons/Postgresql` )
+)
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
@@ -39,7 +43,7 @@ function Duties( { duties } ) {
 }
 
 const JobDiv = styled.div`
-border-bottom: 2px solid var(--color-b);
+border-bottom: 2px solid var(--color-text);
 margin-bottom: 0.2em;
 `
 const JobTitle = styled.h2`
@@ -58,7 +62,7 @@ margin: 0;
 `
 
 const MainTitle = styled.h1`
-border-bottom: 4px solid var(--color-b);
+border-bottom: 4px solid var(--color-text);
 `
 
 export default function Resume() {

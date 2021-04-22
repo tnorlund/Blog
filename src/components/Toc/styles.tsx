@@ -13,7 +13,7 @@ export const TocDiv = styled.aside`
   padding: 0.7em 1.2em;
   margin: 1em 0;
   border-radius: 0.5em;
-  box-shadow: 0 0 0.5em 1px var(--color-shadow);
+  /* box-shadow: 0 0 0.5em 1px var(--color-shadow); */
   height: max-content;
   max-height: 80vh;
   z-index: 3;
@@ -34,12 +34,15 @@ export const TocDiv = styled.aside`
     visibility: ${( props:TOCProps ) => ( props.open ? `visible` : `hidden` )};
     opacity: ${( props:TOCProps ) => ( props.open ? 1 : 0 )};
     transition: 0.3s;
+    box-shadow: 0 0 0.25em 1px var(--color-shadow);
   }
   ${mediaQueries.minLaptop} {
     font-size: 0.85em;
     grid-column: 4 / -1;
     position: sticky;
     top: 7em;
+    /* border: 1px solid var(--color-b); */
+    /* box-shadow: 0 0 0.5em 1px var(--color-shadow); */
   }
 `
 
@@ -50,7 +53,7 @@ export const Title = styled.h2`
   grid-auto-flow: column;
   align-items: center;
   grid-template-columns: auto auto 1fr;
-  color: var(--color-gray);
+  color: var(--color-text);
 `
 
 interface TOCLinkProps {
@@ -60,7 +63,7 @@ interface TOCLinkProps {
 
 export const TocLink = styled.a`
   cursor: pointer;
-  color: ${(props: TOCLinkProps) => ( props.active ? `var(--color-a)` : `var(--color-gray)` )};
+  color: ${(props: TOCLinkProps) => ( props.active ? `var(--color-a)` : `var(--color-text)` )};
   font-weight: ${(props: TOCLinkProps) => props.active && `bold`};
   display: block;
   margin-left: ${(props: TOCLinkProps) => props.depth + `em`};

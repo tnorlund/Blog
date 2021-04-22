@@ -8,9 +8,9 @@ const scale = ( number: number, width = 100 ): number => number * width / 100
 
 const darkMode = false
 
-const backgroundColor = darkMode ? `#21262d` : `#f8eee0`
+const backgroundColor = `var(--color-background)`
 const strokeLength = 70.55613708496094
-const blue = `#4692b7`
+const blue = `var(--color-blue)`
 
 const min_x = 0
 const max_x = 1
@@ -20,7 +20,9 @@ const steps = setSteps( min_x, max_x, [1,1] )
 export default () => {
   // Only show when in view
   const [ref, inView] = useInView( { threshold: 1, } )
-  return <div ref={ref} style={ { height: `200pt` } } >
+  return <div ref={ref} 
+  // style={ { height: `200` } }
+  >
     <Spring to={ { x: inView ?  max_x : min_x } } >
       { ( props ) => (
         <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="XmaxYMax">

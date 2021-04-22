@@ -31,49 +31,30 @@ export const COLOR_MODE_KEY: string = `color-mode`
 export const INITIAL_COLOR_MODE_CSS_PROP: string = `--initial-color-mode`
 
 export const COLORS = {
-  gray: {
-    light: `#bcbcbc`,
-    lighter: `#e5e5e5`,
-    lightest: `#f7f7f7`,
-    default: `#21262d`,
-    dark: `#3d3d3d`,
-    darker: `#1a1d23`,
-    darkest: `#060606`,
+  black: {
+    default: `#201e1f`
+  },
+  white: {
+    default: `#e5e5e5`
   },
   brown: {
-    default: `#ffc88a`,
-    dark: `#E6B47C`,
-    darker: `#BF9667`,
-    darkest: `#806445`,
-    light: `#FFDAB0`,
-    lighter: `#FFECD6`,
+    default: `#f8eee0`
   },
-  orange: {
-    light: `#FFEDB3`,
-    default: `#F5DE93`,
-    dark: `#F5D162`,
-    darker: `#ff7600`,
-    darkest: `#b75500`,
+  gray: {
+    light: `#333031`,
+    default: `#21262d`
+  },
+  pink: {
+    default: `#eeaeb3`
   },
   blue: {
-    light: `#9FD8F5`,
-    default: `#7697A8`,
-    dark: `#566FF5`,
-    darker: `#293475`,
-    darkest: `#131836`,
+    default: `#4692b7`,
   },
-  purple: {
-    light: `#B387F5`,
-    default: `#7654A8`
+  yellow: {
+    default: `#f2cd50`,
   },
   red: {
-    light: `#FF8C97`,
-    default: `#B3505A`,
-    dark: `#F54960`,
-  },
-  green: {
-    light: `#49F56D`,
-    dark: `#31F55A`,
+    default: `#d94234`,
   },
   spark: {
     text: `#3c3a3e`,
@@ -90,80 +71,80 @@ export const COLORS = {
   },
 }
 
-const { gray, brown, blue, purple, red, orange, green } = COLORS
+const { gray, brown, blue, red, black, white, pink, yellow } = COLORS
 
 export const MODE_COLORS = {
   text: {
-    light: `black`,
-    dark: gray.lighter,
+    light: black.default,
+    dark: white.default,
   },
   buttontext: {
-    light: `white`,
-    dark: gray.default
+    light: black.default,
+    dark: white.default
   },
   background: {
-    light: `white`,
+    light: brown.default,
     dark: gray.default,
   },
   shadow: {
-    light: gray.lighter,
+    light: gray.default,
     dark: `black,`
   },
   link: {
-    light: blue.light,
-    dark: blue.light,
+    light: blue.default,
+    dark: blue.default,
   },
   lightLink: {
-    light: blue.light,
-    dark: blue.dark
+    light: blue.default,
+    dark: blue.default
   },
   accentBackground: {
     light: `rgba(0, 0, 0, 0.05)`,
     dark: `rgba(0, 0, 0, 0.5)`,
   },
   blue: {
-    light: blue.light,
-    dark: blue.dark
+    light: blue.default,
+    dark: blue.default
   },
   red: {
-    light: red.light,
-    dark: red.dark,
+    light: red.default,
+    dark: red.default,
   },
   green: {
-    light: green.light,
-    dark: green.dark,
+    light: yellow.default,
+    dark: yellow.default,
   },
   gray: {
     light: gray.default,
-    dark: gray.light,
+    dark: gray.default,
   },
-  lightGray: {
-    light: gray.lightest,
-    dark: gray.darker,
-  },
+  // lightGray: {
+  //   light: gray.lightest,
+  //   dark: gray.darker,
+  // },
   darkGray: {
     light: gray.default,
-    dark: gray.darkest,
+    dark: gray.default,
   },
   a: {
-    light: orange.light,
-    dark: orange.default,
+    light: yellow.default,
+    dark: yellow.default,
   },
   b: {
-    light: blue.light,
-    dark: blue.default,
+    light: gray.light,
+    dark: black.default,
   },
   c: {
     light: red.default,
-    dark: red.light,
+    dark: red.default,
   },
   d: {
-    light: brown.darker,
-    dark: brown.darkest,
+    light: pink.default,
+    dark: pink.default,
   },
   orange: {
-    light: orange.dark,
-    dark: orange.darker,
+    light: red.default,
+    dark: red.default,
   },
   filter: {
     // eslint-disable-next-line max-len
@@ -178,20 +159,20 @@ export const MODE_COLORS = {
       + ` brightness(118%) contrast(80%)`,
   },
   socialColor: {
-    light: blue.light,
-    dark: `white`
+    light: black.default,
+    dark: white.default
   },
   sparkText: {
     light: COLORS.spark.text,
-    dark: gray.lighter,
+    dark: gray.default,
   },
   pandasText: {
     light: COLORS.pandas.purple,
-    dark: gray.lighter
+    dark: gray.default
   },
   postgresqlText: {
     light: COLORS.postgresql.text,
-    dark: gray.lighter,
+    dark: gray.default,
   },
 }
 
