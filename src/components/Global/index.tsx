@@ -21,7 +21,7 @@ const components = {
     { fallback: <div style={{ height:`199.21pt` }}/> }
   ),
   Aws: loadable(
-    () => import( `../Icons/Aws` ),
+    () => import( `../Icons/AWS` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
   CICD: loadable(
@@ -69,7 +69,7 @@ const components = {
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
   Graphql: loadable(
-    () => import( `../Icons/GraphQL` ),
+    () => import( `../Icons/Graphql` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
   Homebrew: loadable(
