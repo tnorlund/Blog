@@ -4,10 +4,7 @@ import { Spring, animated as a } from 'react-spring'
 import { useInView } from 'react-hook-inview'
 import { setSteps } from '../../utils'
 
-const darkMode = false
-
-const fill = darkMode ? `#e5e5e5` :  `#201e1f`
-
+const fill = `var(--color-text)`
 const min_x = 0
 const max_x = 1
 const steps = setSteps( min_x, max_x, [1, 1] )

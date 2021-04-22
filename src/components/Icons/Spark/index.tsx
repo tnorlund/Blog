@@ -6,7 +6,7 @@ import { setSteps } from '../../utils'
 
 const darkMode = false
 
-const textColor = darkMode ? `#e5e5e5` : `#3c3a3e`
+const fill = `var(--color-sparkText)`
 const orange = `#e25b26`
 const min_x = 0
 const max_x = 1
@@ -23,7 +23,7 @@ export default () => {
             style={ {
               opacity: props.x.to( [min_x, steps[1].start, steps[1].stop, max_x], [0, 0, 1, 1] ),
             } }
-            fill={textColor} id="Spark"
+            fill={fill} id="Spark"
           >
             <path className="cls-1" d="M47.75,52.35l7.37,8.18S60.44,67,51.7,74.35a9.56,9.56,0,0,1-15.4-4.82l5.61-3S44,73,49.07,69.79a3.12,3.12,0,0,0,1-4.61L43,57s-3.82-5.24,1.45-10.65A10.2,10.2,0,0,1,56,44.12s3.19,2.24,4,4.05l-5.14,3.89S53,48.3,50.22,48.9a3,3,0,0,0-1.8,1C47.51,50.89,47.32,51.52,47.75,52.35Z"/>
             <path className="cls-1" d="M120.6,52.26a7.41,7.41,0,0,0-5.39,1.93,7.23,7.23,0,0,0-2.1,4l-2.35,17.27h5.4l2.25-16.52a2.44,2.44,0,0,1,.79-1,1.37,1.37,0,0,1,.66-.32h3.65l.73-5.36Z"/>
@@ -43,7 +43,7 @@ export default () => {
           </a.g>
           <a.g
             style={ { opacity: props.x.to( [min_x, steps[1].start, steps[1].stop, max_x], [0, 0, 1, 1] ), } }
-            fill={textColor} id="Apache"
+            fill={fill} id="Apache"
           >
             <path className="cls-1" d="M69.36,40.63,70.45,47H68.88l-.15-1.32h-2L66,47H64.35l3.51-6.35Zm-1,1.6-1.08,2.22H68.6l-.24-2.21Z"/>
             <path className="cls-1" d="M76.83,40.63c1.87,0,2.5.66,2.5,1.65s-.67,2.17-2.57,2.17h-1.4L74.84,47H73.38l1.25-6.35ZM75.6,43.24h1.14c.63,0,1-.29,1-.77s-.33-.59-.83-.59H75.87Z"/>
@@ -54,7 +54,7 @@ export default () => {
           </a.g>
           <a.g
             style={ { opacity: props.x.to( [min_x, max_x], [0, 1] ), } }
-            fill={textColor} id="TM"
+            fill={fill} id="TM"
           >
             <path className="cls-1" d="M150.05,72.66V73h-1v2.47h-.38V73h-.95v-.34Z"/>
             <path className="cls-1" d="M150.68,72.66h.55L152,75l.8-2.38h.54v2.81H153V73.53c0-.14,0-.28,0-.43l-.81,2.37h-.37L151,73.1v.4c0,.14,0,.25,0,.31v1.66h-.37Z"/>

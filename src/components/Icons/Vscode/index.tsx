@@ -5,7 +5,7 @@ import { useInView } from 'react-hook-inview'
 
 const darkMode = false
 
-const fill = darkMode ? `#e5e5e5` :  `#201e1f`
+const fill = `var(--color-text)`
 const class3 = `#0265a9`
 const class4 = `#2479bf`
 const class5 = `#4497d2`

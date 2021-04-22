@@ -4,9 +4,7 @@ import { Spring, animated as a } from 'react-spring'
 import { useInView } from 'react-hook-inview'
 import { setSteps } from '../../utils'
 
-const darkMode = false
-
-const fill = darkMode ? `#e5e5e5` :  `#201e1f`
+const fill = `var(--color-text)`
 const light = `#5a5ba8`
 const dark = `#45489e`
 

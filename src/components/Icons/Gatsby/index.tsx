@@ -6,7 +6,7 @@ import { setSteps } from '../../utils'
 
 const darkMode = false
 
-const fill = darkMode ? `#e5e5e5` :  `#201e1f`
+const fill = `var(--color-text)`
 const purple = `#663795`
 const min_x = 0
 const max_x = 1

@@ -5,9 +5,7 @@ import { useInView } from 'react-hook-inview'
 import { setSteps } from '../../utils'
 
 
-
-const darkMode = false
-const background = darkMode ? `#21262d` : `#f8eee0`
+const background = `var(--color-background)`
 const red = `#c21325`
 
 const min_x = 0

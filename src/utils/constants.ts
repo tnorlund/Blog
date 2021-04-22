@@ -168,15 +168,15 @@ export const MODE_COLORS = {
   },
   sparkText: {
     light: COLORS.spark.text,
-    dark: gray.default,
+    dark: white.default,
   },
   pandasText: {
     light: COLORS.pandas.purple,
-    dark: gray.default
+    dark: white.default
   },
   postgresqlText: {
     light: COLORS.postgresql.text,
-    dark: gray.default,
+    dark: white.default,
   },
 }
 

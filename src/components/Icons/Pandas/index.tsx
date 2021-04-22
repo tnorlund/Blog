@@ -7,7 +7,7 @@ import { setSteps } from '../../utils'
 
 
 const darkMode = false
-const purple = darkMode ? `#e5e5e5` :`#1e1853`
+const purple = `var(--color-pandasText)`
 const pink = `#e50888`
 const yellow = `#ffcb05`
 

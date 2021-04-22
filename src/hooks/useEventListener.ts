@@ -22,7 +22,7 @@ export function useEventListener(
     // Create an event listener that calls the handler function stored in the
     // reference.
     const listener = ( event: any ) => {
-      return savedHandler.current?( event ) : null
+      return savedHandler.current( event )
     }
     for ( const e of eventNames ) element.addEventListener( e, listener )
     return () => {
