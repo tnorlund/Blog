@@ -12,7 +12,7 @@ interface ArrowProps {
 export const Arrow = styled( Down ).attrs( ( props: ArrowProps ) => ( {
   as: props.direction === `up` && Up,
 } ) )`
-  background: var(--color-orange-dark);
+  background: var(--color-yellow);
   color: white;
   border-radius: 50%;
   transition: 0.3s;
@@ -25,6 +25,6 @@ export const Arrow = styled( Down ).attrs( ( props: ArrowProps ) => ( {
   height: ${ ( props: ArrowProps ) => props.size };
   :hover {
     transform: scale(1.15);
-    background: var(--color-orange-darker);
+    background: var(--color-yellow);
   }
 `

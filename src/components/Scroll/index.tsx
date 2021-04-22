@@ -4,7 +4,7 @@ import { useEventListener } from '../../hooks'
 import { Arrow } from './styles'
 
 interface ScrollRest {
-  // className: string,
+  className: string,
   size: string
 }
 
@@ -14,7 +14,9 @@ interface ScrollProps {
   to?: number,
   showBelow: number,
   css: string,
-  rest?: ScrollRest
+  className: string,
+  rest: ScrollRest,
+  size: string
 }
 
 interface ScrollFunctionProps {
@@ -22,9 +24,10 @@ interface ScrollFunctionProps {
   to: number
 }
 
-export default function Scroll( { direction = `up`, by, to, showBelow, css }: ScrollProps ) {
-  // const { className, size = `calc(0.6em + 30px)` } = rest
-  const size = `calc(0.6em + 30px)`
+export default function Scroll( { direction = `up`, by, to, ...rest }: ScrollProps ) {
+  const { showBelow, className, size = `calc(0.6em + 30px)` } = rest
+  console.log( { showBelow } )
+  // const size = `calc(0.6em + 30px)`
   if ( ![`up`, `down`].includes( direction ) )
     throw TypeError(
       `Scroll component's direction prop must be either 'up' or 'down'`
@@ -42,6 +45,7 @@ export default function Scroll( { direction = `up`, by, to, showBelow, css }: Sc
   const handleScroll = throttle( () => {
     if ( !showBelow ) return
     if ( window.scrollY > showBelow ) {
+      console.log( `showing scroll` )
       if ( !show ) setShow( true )
     } else {
       if ( show ) setShow( false )
@@ -57,7 +61,7 @@ export default function Scroll( { direction = `up`, by, to, showBelow, css }: Sc
   }
 
   const arrowProps = { show, direction, 
-    // className, 
+    className, 
     size }
   return <Arrow onClick={handleClick} {...arrowProps} />
 }

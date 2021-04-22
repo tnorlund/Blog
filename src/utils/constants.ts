@@ -102,6 +102,10 @@ export const MODE_COLORS = {
     light: `rgba(0, 0, 0, 0.05)`,
     dark: `rgba(0, 0, 0, 0.5)`,
   },
+  yellow: {
+    light: yellow.default,
+    dark: yellow.default
+  },
   blue: {
     light: blue.default,
     dark: blue.default
