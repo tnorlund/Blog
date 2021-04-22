@@ -79,7 +79,7 @@ export const MODE_COLORS = {
     dark: white.default,
   },
   buttontext: {
-    light: black.default,
+    light: brown.default,
     dark: white.default
   },
   background: {
