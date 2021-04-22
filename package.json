@@ -48,7 +48,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-inview": "^4.3.8",
     "react-is": "^17.0.2",
-    "react-spring": "^8.0.27",
+    "react-spring": "^9.1.1",
     "rehype-katex": "^4.0.0",
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
@@ -56,10 +56,13 @@
     "styled-icons": "^10.33.0"
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.3",
     "@types/lodash": "^4.14.168",
+    "@types/mdx-js__react": "^1.5.3",
     "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/react-helmet": "^6.1.1",
     "@types/styled-components": "^5.1.9",
     "@types/uuid": "^8.3.0",
     "babel-eslint": "^10.1.0",

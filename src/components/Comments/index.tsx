@@ -129,7 +129,8 @@ interface PostDetailsFallbackProps {
   title: string
 }
 const PostDetailsFallback = ( { title } : PostDetailsFallbackProps ) => <>
-  Loading Comments {title}
+  <Title>Comments</Title>
+
 </>
 
 interface PostErrorBoundaryProps {
@@ -182,7 +183,9 @@ const PostDetails = ( { slug, title }: PostDetailsProps ) => {
         </React.Suspense>
       </PostErrorBoundary>
     ) : (
+      <>
       <Title>Comments</Title>
+      </>
     ) }
   </>
 }

@@ -30,6 +30,7 @@
     "grvsc",
     "helvetica",
     "ints",
+    "ionicons",
     "katex",
     "libevent",
     "lmpi",
@@ -47,7 +48,8 @@
     "plotly",
     "pylintrc",
     "rehype",
-    "textfilter"
+    "textfilter",
+    "tnor"
   ],
   "eslint.validate": [
     "javascript"

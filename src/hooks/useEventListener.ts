@@ -4,7 +4,7 @@ export function useEventListener(
   eventNames: string|string[], handler: any, element = global.globalThis
 ) {
   // First, create a reference that stores the handler.
-  const savedHandler = useRef()
+  const savedHandler = useRef<HTMLInputElement | null>()
   if( !Array.isArray( eventNames ) ) eventNames = [eventNames]
 
   // Save the handler to ref.current on the initial call to useEventListener
@@ -21,8 +21,8 @@ export function useEventListener(
 
     // Create an event listener that calls the handler function stored in the
     // reference.
-    const listener = (event: any ) => {
-      return savedHandler.current( event )
+    const listener = ( event: any ) => {
+      return savedHandler.current?( event ) : null
     }
     for ( const e of eventNames ) element.addEventListener( e, listener )
     return () => {

@@ -35,7 +35,7 @@ export const COLORS = {
     light: `#bcbcbc`,
     lighter: `#e5e5e5`,
     lightest: `#f7f7f7`,
-    default: `#484F58`,
+    default: `#21262d`,
     dark: `#3d3d3d`,
     darker: `#1a1d23`,
     darkest: `#060606`,
