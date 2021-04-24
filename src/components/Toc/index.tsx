@@ -26,11 +26,11 @@ interface heading {
 
 
 interface TOCProps {
-  headingSelector: any, 
-  getTitle: any, 
-  getDepth: any, 
-  throttleTime: number,
-  tocTitle: string
+  headingSelector?: any, 
+  getTitle?: any, 
+  getDepth?: any, 
+  throttleTime?: number,
+  tocTitle?: string
 }
 
 export default function Toc(

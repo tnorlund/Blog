@@ -12,11 +12,11 @@ interface ScrollProps {
   direction?: string,
   by?: number,
   to?: number,
-  showBelow: number,
+  showBelow?: number,
   css: string,
-  className: string,
-  rest: ScrollRest,
-  size: string
+  className?: string,
+  rest?: ScrollRest,
+  size?: string
 }
 
 interface ScrollFunctionProps {

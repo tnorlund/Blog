@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface GridColumnProps {
-  cols: number;
+  cols?: number;
 }
 
 export const PageBody = styled.main`
@@ -13,7 +13,7 @@ export const PageBody = styled.main`
   grid-auto-rows: max-content;
   grid-auto-flow: dense;
   > * {
-    grid-column: ${(props: GridColumnProps) => props.cols || 3};
+    grid-column: ${(props: GridColumnProps) => { console.log({ props } ); return props.cols || 3}};
   }
   /* Center image captions. */
   .gatsby-resp-image-wrapper + em,

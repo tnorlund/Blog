@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useSessionStorage } from '../../hooks'
 import { AUTH_KEY } from '../../utils/constants'
 import { Title, TextInput } from './styles'
+import Loading from '../Icons/Loading'
 import {
   SubmitComment, 
   // Error, 
@@ -99,6 +100,10 @@ const createResource = ( promise: Promise<PostDetails> ) => {
   }
 }
 
+// const fetchPostDetails = ( title: string, slug: string ) => {
+
+// }
+
 const createPostDetailsResource = ( title: string, slug : string ) => {
   return createResource(
     API.get(
@@ -129,8 +134,8 @@ interface PostDetailsFallbackProps {
   title: string
 }
 const PostDetailsFallback = ( { title } : PostDetailsFallbackProps ) => <>
-  <Title>Comments</Title>
-
+  <Title>Loading Comments</Title>
+  <Loading />
 </>
 
 interface PostErrorBoundaryProps {
@@ -185,6 +190,8 @@ const PostDetails = ( { slug, title }: PostDetailsProps ) => {
     ) : (
       <>
       <Title>Comments</Title>
+      {/* <Loading /> */}
+
       </>
     ) }
   </>

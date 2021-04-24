@@ -1,5 +1,6 @@
 import React from "react"
 import { graphql } from "gatsby"
+import styled from 'styled-components'
 import { MDXRenderer as Mdx } from 'gatsby-plugin-mdx'
 import { PageBody } from '../components/styles'
 import Toc from '../components/Toc'
@@ -11,6 +12,10 @@ import { PRIVACY_KEY, VISITOR_KEY } from '../utils/constants'
 import { handleScroll, IncrementBuffer } from '../utils/analytics'
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+const MainTitle = styled.h1`
+  border-bottom: 4px solid var(--color-text);
+`
 
 /** Add Kinesis Firehose to the Amplify Analytics object. */
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
@@ -64,7 +69,7 @@ const Post: React.FC<PostProps> = ( { data } ) => {
   return (
     <PageBody>
       {showToc && <Toc/>}
-      <Title>{title}</Title>
+      <MainTitle>{title}</MainTitle>
       <Date>{date}</Date>
       <Mdx>{body}</Mdx>
       <PrevNext prev={prev?.frontmatter} next={next?.frontmatter} />

@@ -107,6 +107,7 @@ export const TocToggle = styled( Cross ).attrs(
   z-index: 2;
   transition: 0.3s;
   justify-self: end;
+  background: var(--color-background);
   :hover {
     transform: scale(1.1);
   }

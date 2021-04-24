@@ -2,10 +2,8 @@
 import React from 'react'
 import './Loading.css'
 
-const dark = false
-
-const textColor = dark ? `#e5e5e5` :  `#201e1f`
-const backgroundColor = dark ? `#21262d` : `#f8eee0`
+const textColor = `var(--color-text)`
+const backgroundColor = `var(--color-background)`
 
 export default () => {
   return <div style={ { height: `100pt` } } >

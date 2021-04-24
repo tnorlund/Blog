@@ -1,12 +1,16 @@
 import React from "react"
 import List from 'components/List'
 import { PageBody } from 'components/styles'
-import { Title } from '../templates/styles'
+import styled from 'styled-components'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+const MainTitle = styled.h1`
+  border-bottom: 4px solid var(--color-text);
+`
 
 /** Add Kinesis Firehose to the Amplify Analytics object. */
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
@@ -35,7 +39,7 @@ export default function Blog() {
   )
   return(
     <PageBody>
-      <Title>Posts</Title>
+      <MainTitle>Posts</MainTitle>
       <List />
     </PageBody>
   )
