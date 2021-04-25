@@ -2,7 +2,10 @@ import React, { useState, useEffect, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useSessionStorage } from '../../hooks'
 import { AUTH_KEY } from '../../utils/constants'
-import { Title, TextInput } from './styles'
+import { 
+  Title, TextInput, Button, 
+  WarningIcon, WarningDiv, WarningText 
+} from './styles'
 import Loading from '../Icons/Loading'
 import {
   SubmitComment, 
@@ -100,9 +103,6 @@ const createResource = ( promise: Promise<PostDetails> ) => {
   }
 }
 
-// const fetchPostDetails = ( title: string, slug: string ) => {
-
-// }
 
 const createPostDetailsResource = ( title: string, slug : string ) => {
   return createResource(
@@ -114,20 +114,45 @@ const createPostDetailsResource = ( title: string, slug : string ) => {
   )
 }
 
-interface ErrorFallbackProps {
+/**
+ * 
+ * @typedef ErrorFallbackProps
+ * @param {boolean} canReset Whether the request can be sent again.
+ * @param {any} error The error that occurs. This is typically a JSON object.
+ * @param {function} resetErrorBoundary The function used to make the additional request???
+ */
+interface ErrorFallbackProps { 
   canReset: boolean, error: any, resetErrorBoundary: any
 }
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
 function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackProps ) {
-  return (
-    <div role="alert">
-      There was an error:{' '}
-      <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
-      {canReset ? (
-        <button onClick={resetErrorBoundary}>Try again</button>
-      ) : null}
-    </div>
-  )
+  if ( canReset && postNotExist(error) ) {
+    // When the API payload says that there's no Post, give the option to 
+    // create the post in the DB.
+    return <>
+      <Title>Comments</Title>
+      <WarningDiv>
+        <WarningIcon />
+        <WarningText>Post details not in database.</WarningText>
+      </WarningDiv>
+      <Button>Create Post</Button>
+    </>
+  }
+  else return <>
+    <Title>Comments</Title>
+    <WarningDiv>
+      <WarningIcon />
+      <WarningText>Could not get post details.</WarningText>
+    </WarningDiv>
+    <Button onClick={resetErrorBoundary}>Try Again</Button>
+  </>
 }
+
+const postNotExist = ( error: any ) => error.response.data == "Post does not exist"
 
 
 interface PostDetailsFallbackProps {
@@ -152,7 +177,7 @@ function PostErrorBoundary(parentProps : PostErrorBoundaryProps) {
 }
 
 const PostInfo = ( { postResource }: any ) => {
-  const pokemon = postResource.read()
+  const resource = postResource.read()
   return (
     <div>
       Tyler
@@ -160,14 +185,11 @@ const PostInfo = ( { postResource }: any ) => {
   )
 }
 
-interface PostDetailsProps {
-  slug: string, title: string
-}
+interface PostDetailsProps { slug: string, title: string }
 const PostDetails = ( { slug, title }: PostDetailsProps ) => {
   const [postComments, setPostComments] = React.useState<any>('')
   const [postResource, setPostResource] = React.useState<any>(null)
   React.useEffect( () => {
-    if ( !postComments ) { setPostResource(null); return; }
     setPostResource( createPostDetailsResource( title, slug ) )
   }, [ postComments ] )
 
@@ -190,8 +212,6 @@ const PostDetails = ( { slug, title }: PostDetailsProps ) => {
     ) : (
       <>
       <Title>Comments</Title>
-      {/* <Loading /> */}
-
       </>
     ) }
   </>

@@ -5,10 +5,19 @@ import {
 import { mediaQueries } from '../../utils/mediaQueries'
 
 
-export const Title = styled.div`
-  margin-top: 0;
-  margin-left: 0.5em;
+export const Button = styled.div`
+  /* width: 100%; */
+  border-radius: 0.25em;
+  padding: 0.5em;
+  text-align: center;
   font-weight: bold;
+  background-color: var(--color-red);
+`
+
+export const Title = styled.h1`
+  /* margin-top: 0; */
+  /* margin-left: 0.5em; */
+  /* font-weight: bold; */
 `
 
 export const UserName = styled.div`
@@ -57,12 +66,17 @@ export const VoteDiv = styled.div`
 
 export const WarningDiv = styled.div`
   color: var(--color-red);
-  display: flex;
+  display: grid;
+  grid-template-areas: 'icon, message';
+  grid-template-columns: auto 1fr;
   font-weight: bold;
-  justify-content: space-between;
-  height: 2.68em;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding: 1em;
+`
+
+export const WarningText = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 `
 
 export const VoteNumber = styled.div`
@@ -74,7 +88,7 @@ export const VoteNumber = styled.div`
 export const WarningIcon = styled( Warning ).attrs( props => ( {
   size: props.size || `2.5em`
 } ) )`
-  // color: var(--color-red);
+  color: var(--color-red);
   margin-right: 1em;
 `
 
