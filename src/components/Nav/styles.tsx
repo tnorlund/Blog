@@ -23,6 +23,7 @@ export const NavDiv = styled.nav`
   ${mediaQueries.maxTablet} {
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.75);
+    /* background: var(--color-background); */
     overscroll-behavior: none;
     z-index: 3;
     transform: translate(${( props: NavToggleProps ) => ( props.open ? `99%` : `0` )});

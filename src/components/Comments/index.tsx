@@ -4,7 +4,8 @@ import { useSessionStorage } from '../../hooks'
 import { AUTH_KEY } from '../../utils/constants'
 import { 
   Title, TextInput, Button, 
-  WarningIcon, WarningDiv, WarningText 
+  WarningIcon, WarningDiv, WarningText,
+  CommentInput
 } from './styles'
 import Loading from '../Icons/Loading'
 import {
@@ -139,7 +140,7 @@ function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackPr
         <WarningIcon />
         <WarningText>Post details not in database.</WarningText>
       </WarningDiv>
-      <Button>Create Post</Button>
+      <Button warning={true} >Create Post</Button>
     </>
   }
   else return <>
@@ -148,7 +149,7 @@ function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackPr
       <WarningIcon />
       <WarningText>Could not get post details.</WarningText>
     </WarningDiv>
-    <Button onClick={resetErrorBoundary}>Try Again</Button>
+    <Button warning={true} onClick={resetErrorBoundary}>Try Again</Button>
   </>
 }
 
@@ -159,7 +160,7 @@ interface PostDetailsFallbackProps {
   title: string
 }
 const PostDetailsFallback = ( { title } : PostDetailsFallbackProps ) => <>
-  <Title>Loading Comments</Title>
+  <Title>Comments</Title>
   <Loading />
 </>
 
@@ -178,11 +179,12 @@ function PostErrorBoundary(parentProps : PostErrorBoundaryProps) {
 
 const PostInfo = ( { postResource }: any ) => {
   const resource = postResource.read()
-  return (
-    <div>
-      Tyler
-    </div>
-  )
+  console.log({resource})
+  return <>
+    <Title>Comments</Title>
+    <CommentInput placeholder="New comment..."/>
+    <Button>Submit</Button>
+  </>
 }
 
 interface PostDetailsProps { slug: string, title: string }
@@ -193,6 +195,9 @@ const PostDetails = ( { slug, title }: PostDetailsProps ) => {
     setPostResource( createPostDetailsResource( title, slug ) )
   }, [ postComments ] )
 
+  /**
+   * Resets the post details.
+   */
   const handleReset = () => {
     setPostComments('')
   }

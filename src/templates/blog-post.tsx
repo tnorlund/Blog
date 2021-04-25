@@ -13,8 +13,9 @@ import { handleScroll, IncrementBuffer } from '../utils/analytics'
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
 
-const MainTitle = styled.h1`
+const MainTitle = styled.div`
   border-bottom: 4px solid var(--color-text);
+  margin-bottom: 1em;
 `
 
 /** Add Kinesis Firehose to the Amplify Analytics object. */
@@ -69,7 +70,7 @@ const Post: React.FC<PostProps> = ( { data } ) => {
   return (
     <PageBody>
       {showToc && <Toc/>}
-      <MainTitle>{title}</MainTitle>
+      <MainTitle><h1>{title}</h1></MainTitle>
       <Date>{date}</Date>
       <Mdx>{body}</Mdx>
       <PrevNext prev={prev?.frontmatter} next={next?.frontmatter} />

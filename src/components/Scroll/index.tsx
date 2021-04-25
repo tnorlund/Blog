@@ -26,8 +26,6 @@ interface ScrollFunctionProps {
 
 export default function Scroll( { direction = `up`, by, to, ...rest }: ScrollProps ) {
   const { showBelow, className, size = `calc(0.6em + 30px)` } = rest
-  console.log( { showBelow } )
-  // const size = `calc(0.6em + 30px)`
   if ( ![`up`, `down`].includes( direction ) )
     throw TypeError(
       `Scroll component's direction prop must be either 'up' or 'down'`
@@ -45,7 +43,6 @@ export default function Scroll( { direction = `up`, by, to, ...rest }: ScrollPro
   const handleScroll = throttle( () => {
     if ( !showBelow ) return
     if ( window.scrollY > showBelow ) {
-      console.log( `showing scroll` )
       if ( !show ) setShow( true )
     } else {
       if ( show ) setShow( false )

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
-import { mediaQueries } from 'utils/mediaQueries'
+import { mediaQueries } from '../../utils/mediaQueries'
 import { User3 } from 'styled-icons/remix-fill'
 
 
@@ -19,7 +19,6 @@ export const HeaderDiv = styled.header`
   font-size: 1.2em;
   grid-template-areas: 'nav title IconDiv';
   grid-template-columns: auto 1fr auto;
-  border-bottom: 1px solid var(--color-a);
   ${mediaQueries.minTablet} {
     grid-template-areas: 'title nav IconDiv';
   }

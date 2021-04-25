@@ -4,20 +4,32 @@ import {
 } from 'styled-icons/entypo'
 import { mediaQueries } from '../../utils/mediaQueries'
 
-
+interface ButtonProps {
+  warning?: boolean
+}
 export const Button = styled.div`
-  /* width: 100%; */
-  border-radius: 0.25em;
+  cursor: pointer;
+  border-radius: 1em;
   padding: 0.5em;
+  margin: 0.5em 0;
   text-align: center;
   font-weight: bold;
-  background-color: var(--color-red);
+  color: var(--color-buttontext);
+  background-color: ${( props: ButtonProps ) => ( props.warning ? `var(--color-red)` : `var(--color-blue)` )}
 `
 
 export const Title = styled.h1`
   /* margin-top: 0; */
   /* margin-left: 0.5em; */
   /* font-weight: bold; */
+`
+
+export const CommentInput = styled.input`
+  border: 1px solid var(--color-text);
+  background: var(--color-accentBackground);
+  border-radius: 1em;
+  padding: 0.5em;
+  margin: 0.5em 0;
 `
 
 export const UserName = styled.div`

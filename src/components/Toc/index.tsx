@@ -59,7 +59,8 @@ export default function Toc(
       { length: 6 }, ( _, i ) => `main > h` + ( i + 1 )
     )
     const nodes = Array.from( document.querySelectorAll( selector ) ) as [HTMLElement]
-    const titles = nodes.map( node => ( {
+
+    const titles = nodes.slice( 0, nodes.length - 1 ).map( node => ( {
       title: getTitle ? getTitle( node ) : node.innerText,
       depth: getDepth ? getDepth( node ) : Number( node.nodeName[1] ),
     } ) )
