@@ -22,7 +22,7 @@
     "gatsby": "^3.1.2",
     "gatsby-image": "^3.1.0",
     "gatsby-plugin-catch-links": "^3.1.0",
-    "gatsby-plugin-image": "^1.2.1",
+    "gatsby-plugin-image": "^1.6.0",
     "gatsby-plugin-manifest": "^3.1.0",
     "gatsby-plugin-mdx": "^2.1.0",
     "gatsby-plugin-sharp": "^3.2.1",
