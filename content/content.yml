@@ -9,6 +9,15 @@ poweredBy:
     logo: Terraform
 
 positions:
+  - title: Data Engineer
+    company: Dollar Shave Club
+    start: 2020-05-03T00:00:00
+    location: Marina del Rey
+    duties:
+      - Restored a 4+ year old data engineering software stack with modern day solutions
+      - Integrated a testing suite for ETL pipelines
+      - Developed a data dashboard for employees to understand what data is available and where it comes from
+      - Reduced code dependencies and infrastructure costs
   - title: Freelance
     company: tnorlund
     start: 2020-09-25T00:00:00

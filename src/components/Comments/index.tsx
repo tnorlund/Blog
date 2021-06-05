@@ -19,8 +19,8 @@ import Loading from '../Icons/Loading'
 // } from './components'
 import Modal from '../Modal'
 import { API } from 'aws-amplify'
-import SubmitComment from './SubmitComment'
-import SubmitReply from './SubmitReply'
+import SubmitComment from './submitComment'
+import SubmitReply from './submitReply'
 
 /**
  * @typedef CommentsProps
