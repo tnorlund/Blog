@@ -3,7 +3,7 @@ import { mediaQueries } from '../../utils/mediaQueries'
 import styled from 'styled-components'
 
 export const PostDiv = styled.div`
-  border-bottom: 2px solid var(--color-b);
+  border-bottom: 2px solid var(--color-text);
   margin-bottom: 1em;
 `
 
@@ -34,7 +34,7 @@ export const IconDiv = styled.div`
 `
 
 export const SquareDiv = styled.div`
-  background: var(--color-b);
+  background: var(--color-text);
   display: block;
   border-radius: 3vw;
   width: 20vw;

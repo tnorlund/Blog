@@ -1,0 +1,17 @@
+@keyframes hideshow {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+} 
+
+.loading-circle-1 {
+  animation: hideshow 1s ease infinite;
+}
+.loading-circle-2 {
+  opacity: 0;
+  animation: hideshow 1s 0.33s ease infinite;
+}
+.loading-circle-3 {
+  opacity: 0;
+  animation: hideshow 1s 0.66s ease infinite;
+}

@@ -1,12 +1,16 @@
 import React from "react"
 import List from 'components/List'
 import { PageBody } from 'components/styles'
-import { Title } from '../templates/styles'
+import styled from 'styled-components'
 import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 import { handleScroll, IncrementBuffer } from 'utils/analytics'
 import { v4 as uuidv4 } from 'uuid'
 import { Analytics, AWSKinesisFirehoseProvider } from 'aws-amplify'
+
+const MainTitle = styled.h1`
+  border-bottom: 4px solid var(--color-text);
+`
 
 /** Add Kinesis Firehose to the Amplify Analytics object. */
 Analytics.addPluggable( new AWSKinesisFirehoseProvider() )
@@ -17,7 +21,7 @@ export default function Blog() {
   /** The key of the buffer of where to store the scroll data. */
   let buffer_index = 0
   buffer_index = IncrementBuffer( scroll_buffer, buffer_index )
-  /** 
+  /**
    * The object used to determine whether the visitor has agreed to the
    * privacy policy.
    */
@@ -35,7 +39,7 @@ export default function Blog() {
   )
   return(
     <PageBody>
-      <Title>Posts</Title>
+      <MainTitle>Posts</MainTitle>
       <List />
     </PageBody>
   )

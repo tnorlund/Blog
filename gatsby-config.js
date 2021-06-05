@@ -1,3 +1,5 @@
+require( `dotenv` ).config()
+
 /** The metadata used in the headers */
 const siteMetadata = {
   title: `Tyler Norlund`,
@@ -21,10 +23,10 @@ const remark_html_katex = require( `remark-html-katex` )
 
 module.exports = {
   siteMetadata,
-  flags: {
-    DEV_SSR: true,
-    FAST_DEV: true
-  },
+  // flags: {
+  //   DEV_SSR: true,
+  //   FAST_DEV: true
+  // },
   plugins: [
     {
       resolve: `gatsby-plugin-mdx`,
@@ -48,7 +50,10 @@ module.exports = {
             },
           },
         ],
-        remarkPlugins: [ remark_math, remark_html_katex ],
+        remarkPlugins: [
+          remark_math,
+          remark_html_katex
+        ],
         extensions: [`.md`, `.mdx`],
       },
     },
@@ -72,11 +77,20 @@ module.exports = {
         icon: `content/favicon.svg`,
       },
     },
+    {
+      resolve: `gatsby-plugin-typescript`,
+      options: {
+        isTSX: true, // defaults to false
+        jsxPragma: `jsx`, // defaults to "React"
+        allExtensions: true, // defaults to false
+      },
+    },
     `gatsby-plugin-catch-links`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-styled-components`,
     `gatsby-transformer-sharp`,
     `gatsby-transformer-yaml`,
+    `gatsby-plugin-offline`,
   ],
 }

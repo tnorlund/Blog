@@ -4,10 +4,9 @@ import Toc from 'components/Toc'
 import { PageBody } from 'components/styles'
 import { useSessionStorage } from 'hooks'
 import { PRIVACY_KEY } from 'utils/constants'
-
-import Check from 'components/Icons/Check'
-import Question from 'components/Icons/Question'
-import Cross from 'components/Icons/Cross'
+import Check from '../components/MyIcons/Check'
+import Question from '../components/MyIcons/Question'
+import Cross from '../components/MyIcons/Cross'
 
 const ShareDiv = styled.div`
   display: flex;
@@ -121,9 +120,10 @@ export default function Privacy() {
       <Toc />
       <MainTitle>Privacy Policy / DMCA</MainTitle>
       <div>
-        TylerNorlund.com, (the "Site", "me", "I", or "mine") want you to know 
-        how I collect and use your information. I work hard to keep your 
-        information secure, and I would like to provide you with meaningful 
+        TylerNorlund.com, (the &quot;Site&quot;, &quot;me&quot;, &quot;I&quot;,
+        or &quot;mine&quot;) want you to know
+        how I collect and use your information. I work hard to keep your
+        information secure, and I would like to provide you with meaningful
         choices regarding your privacy.
       </div>
       <SubTitle>What I Store</SubTitle>
@@ -214,8 +214,11 @@ export default function Privacy() {
       <DeleteButton>Delete My Data</DeleteButton>
       <SubTitle>DMCA</SubTitle>
       <div>
-        All content used on this site is considered <a href={`https://www.copyright.gov/title17/92chap1.html#107`}>"Fair Use"</a>.
-        If there are any problems, contact <a href={`mailto:webmaster@tylernorlund.com`}>webmaster@tylernorlund.com</a>.
+        All content used on this site is considered <a
+          href={`https://www.copyright.gov/title17/92chap1.html#107`}
+        > &quot;Fair Use&quot;</a>. If there are any problems, contact <a href={
+          `mailto:webmaster@tylernorlund.com`
+        }>webmaster@tylernorlund.com</a>.
       </div>
 
     </PageBody>
