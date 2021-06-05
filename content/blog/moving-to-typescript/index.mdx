@@ -43,7 +43,92 @@ const accumulateOffsetTop = (
 
 I decided to refactor the entire 'Post Details' component because it was ugly. I'm currently leveraging new React capabilities, like lazily loaded code and `React.Suspense`. 
 
-
 Here, I'm just going to show what the new stuff looks like. This is heavily inspired by [Kent C. Dodd's](https://twitter.com/kentcdodds?s=21) course, [Epic React](https://epicreact.dev).
 
+```tsx
+  return <>
+    { postResource ? (
+      <PostErrorBoundary
+        onReset={handleReset}
+        resetKeys={[postResource]}
+        slug={ slug } title={ title }
+      >
+        <React.Suspense
+          fallback={<PostDetailsFallback title={ title } />}
+        >
+          <PostInfo 
+            postResource={ postResource } 
+            slug={ slug } 
+            title={ title } 
+            user={ user }
+          />
+        </React.Suspense>
+      </PostErrorBoundary>
+    ) : ( <><Title>Comments</Title></>) }
+  </>
+```
 
+This is extremely efficient because it renders these components, `<PostInfo/>` as the API call is being made. With TypeScript, `<PostInfo/>`, has a specific set of properties that are required for it to render properly: `postResource`, `slug`, `title`, and `user`. If any of these are missing, or their types are incorrect, TypeScript will warn the developer while they are making changes. Lazily loaded components allow for the page to render as fast as possible while TypeScript forces strict rules that ensures changes don't break existing functionality.
+
+# React Hooks
+
+Finally, TypeScript forces React hooks to have strict parameters. One of the hooks I use check for query parameters in the window's URL. 
+
+```ts
+/**
+ * Uses a URL query parameter that is handled as a React Hook.
+ */
+export const useQueryParam = ( 
+  key: string, value: string, options: object 
+) => {
+  const [param, setParam] = useState( 
+    handleParam( key, value, options ) 
+  )
+  const setter = ( newValue: any, override: any ) =>
+    setParam( 
+      handleParam( key, newValue, { ...options, ...override } ) 
+    )
+  return [param, setter]
+}
+```
+
+This hook uses the function `handleParam()`. TypeScript sets the types of parameters being sent to this function.
+
+
+```ts
+/**
+ * Handles the query parameters.
+ */
+const handleParam = ( 
+  key: string, 
+  value: string | null | undefined, 
+  options: object = {} 
+) => {
+  if ( typeof window !== `undefined` ) {
+    const { 
+      historyMethod = `replace`, nullDeletes = true 
+    } = options as any
+    const params = new URLSearchParams( location.search )
+
+    if ( value === undefined ) 
+      value = params.get( key )
+    else if ( value === null && nullDeletes ) 
+      params.delete( key )
+    else 
+      params.set( key, value as any )
+
+    let target = window.location.pathname
+      + `?` + params.toString()
+    target = target.replace( /\/?\?$/, `` )
+
+    (history as any)[(historyMethod as string) + `State`]( 
+      { path: value }, ``, target 
+    )
+    return value
+  }
+}
+```
+
+After looking at the `handleParam()` function, we can see that the function uses the `any` type a couple times. This does have specific type checking, and is bad practice.
+
+There is still a lot of work for me to convert the rest of this to TypeScript, but I definitely see its benefits.
