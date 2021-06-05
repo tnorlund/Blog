@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'gatsby'
 import { mediaQueries } from '../../utils/mediaQueries'
 import { Gatsby, Terraform } from 'styled-icons/simple-icons'
 
@@ -32,6 +33,12 @@ export const PoweredBy = styled.div`
     padding: 0 0.5em;
   }
 `
+
+// export const PageLink = styled.link`
+//   :hover {
+//     color: var(--color-a);
+//   }
+// `
 
 export const Icons = {
   Gatsby: styled( Gatsby )`

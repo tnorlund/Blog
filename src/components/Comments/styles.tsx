@@ -3,6 +3,8 @@ import {
   Warning, ArrowUp, ArrowDown
 } from 'styled-icons/entypo'
 import { mediaQueries } from '../../utils/mediaQueries'
+import { ReplyFill, TrashFill } from 'styled-icons/bootstrap'
+import { ArrowAltCircleUp, ArrowAltCircleDown } from 'styled-icons/fa-solid'
 
 interface ButtonProps {
   warning?: boolean
@@ -15,8 +17,52 @@ export const Button = styled.div`
   text-align: center;
   font-weight: bold;
   color: var(--color-buttontext);
-  background-color: ${( props: ButtonProps ) => ( props.warning ? `var(--color-red)` : `var(--color-blue)` )}
+  background-color: ${( props: ButtonProps ) => ( props.warning ? `var(--color-red)` : `var(--color-blue)` )};
+  :hover {
+    color: var(--color-a);
+  }
 `
+export const CommentOption = styled.div`
+  font-weight: bold;
+  padding: 0.1em;
+  margin: 0.1em;
+  justify-content: center;
+  align-content: center;
+`
+export const CommentOptions = styled.div`
+  display: grid;
+  grid-column-start: -1;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  gap: 0.5em;
+  grid-template-columns: repeat(auto);
+`
+export const CommentDash = styled.div`
+  margin: 0 0.25em;
+`
+export const CommentDate = styled.div`
+  
+`
+export const CommenterName = styled.div`
+  font-weight: bold;
+`
+export const CommentText = styled.div`
+  border-bottom: 1px solid var(--color-text);
+  /* border-bottom: 1px solid rgba(var(--color-text), 0.8); */
+`
+export const CommentDetails = styled.div`
+  display: grid;
+  grid-template-areas: 'name, dash, date, options';
+  grid-template-columns: auto auto auto 1fr;
+  align-items: center;
+  /* height: 100%; */
+`
+export const CommentDiv = styled.div`
+  margin: 0.25em 0;
+`
+
 
 export const Title = styled.h1`
   /* margin-top: 0; */
@@ -27,9 +73,13 @@ export const Title = styled.h1`
 export const CommentInput = styled.input`
   border: 1px solid var(--color-text);
   background: var(--color-accentBackground);
-  border-radius: 1em;
+  border-radius: 2em;
   padding: 0.5em;
   margin: 0.5em 0;
+  width: calc( 100% - 1.1em );
+  :hover {
+    border: 1px solid var(--color-a);
+  }
 `
 
 export const UserName = styled.div`
@@ -97,6 +147,26 @@ export const VoteNumber = styled.div`
   text-align: center;
 `
 
+export const ReplyIcon = styled( ReplyFill ).attrs( props => ( {
+  size: props.size || `1.5em`
+} ) )`
+cursor: pointer;
+color: var(--color-text);
+:hover {
+  color: var(--color-a);
+}
+`
+
+export const TrashIcon = styled( TrashFill ).attrs( props => ( {
+  size: props.size || `1.2em`
+} ) )`
+cursor: pointer;
+color: var(--color-text);
+:hover {
+  color: var(--color-red);
+}
+`
+
 export const WarningIcon = styled( Warning ).attrs( props => ( {
   size: props.size || `2.5em`
 } ) )`
@@ -104,33 +174,36 @@ export const WarningIcon = styled( Warning ).attrs( props => ( {
   margin-right: 1em;
 `
 
-export const Up = styled( ArrowUp ).attrs( props => ( {
-  size: props.size || `2em`
+export const Up = styled( ArrowAltCircleUp ).attrs( props => ( {
+  size: props.size || `1.25em`
 } ) )`
-  margin-right: 0.25em;
-  margin-left: 0.25em;
   cursor: pointer;
+  :hover {
+    color: var(--color-a);
+  }
 `
 
-export const SelectedUp = styled( ArrowUp ).attrs( props => ( {
-  size: props.size || `2em`
+export const SelectedUp = styled( ArrowAltCircleUp ).attrs( props => ( {
+  size: props.size || `1.25em`
 } ) )`
-  margin-right: 0.25em;
-  margin-left: 0.25em;
   cursor: pointer;
-  color: var(--color-green)
+  color: var(--color-blue);
+  :hover {
+    color: var(--color-a);
+  }
 `
 
-export const Down = styled( ArrowDown ).attrs( props => ( {
-  size: props.size || `2em`
+export const Down = styled( ArrowAltCircleDown ).attrs( props => ( {
+  size: props.size || `1.25em`
 } ) )`
-  margin-right: 0.25em;
-  margin-left: 0.25em;
   cursor: pointer;
+  :hover {
+    color: var(--color-a);
+  }
 `
 
 export const SelectedDown = styled( ArrowDown ).attrs( props => ( {
-  size: props.size || `2em`
+  size: props.size || `1.25em`
 } ) )`
   margin-right: 0.25em;
   margin-left: 0.25em;
@@ -208,31 +281,28 @@ export const TextInput = styled.div`
   display:block;
 `
 
-export const CommentText = styled.div`
-  background: var(--color-accentBackground);
-  border-radius: 0.25em;
-  padding: 0.5em;
-`
+// export const CommentText = styled.div`
+//   background: var(--color-accentBackground);
+//   border-radius: 0.25em;
+//   padding: 0.5em;
+// `
 
 
-export const CommentDiv = styled.div`
-  padding: 0.5em;
-  padding-bottom: 0;
-`
 
-export const CommentOptions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  height: 2em;
-  margin-top: 0.25em;
-  align-items: center;
-`
 
-export const CommentOption = styled.div`
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  cursor: pointer;
-  :hover {
-    color: var(--color-a)
-  }
-`
+// export const CommentOptions = styled.div`
+//   display: flex;
+//   justify-content: flex-end;
+//   height: 2em;
+//   margin-top: 0.25em;
+//   align-items: center;
+// `
+
+// export const CommentOption = styled.div`
+//   padding-left: 0.5em;
+//   padding-right: 0.5em;
+//   cursor: pointer;
+//   :hover {
+//     color: var(--color-a)
+//   }
+// `

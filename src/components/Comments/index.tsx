@@ -2,20 +2,25 @@ import React, { useState, useEffect, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useSessionStorage } from '../../hooks'
 import { AUTH_KEY } from '../../utils/constants'
+import { Button, LoadingButton } from '../styles/Button'
 import { 
-  Title, TextInput, Button, 
+  Title, TextInput, 
   WarningIcon, WarningDiv, WarningText,
-  CommentInput
+  CommentText, CommentDiv, CommentDetails, CommenterName, 
+    CommentDate, CommentDash, CommentOptions, CommentOption,
+    ReplyIcon, TrashIcon, Up, Down, SelectedUp
 } from './styles'
+import { timeSince } from '../../utils/date'
 import Loading from '../Icons/Loading'
-import {
-  SubmitComment, 
-  // Error, 
-  CommentComponent, Warning, AdminControls, User
-} from './components'
+// import {
+//   // SubmitComment, 
+//   // Error, 
+//   CommentComponent, Warning, AdminControls, User
+// } from './components'
 import Modal from '../Modal'
 import { API } from 'aws-amplify'
-import { type } from 'os'
+import SubmitComment from './SubmitComment'
+import SubmitReply from './SubmitReply'
 
 /**
  * @typedef CommentsProps
@@ -86,9 +91,24 @@ interface Replies {
   [index: string]: Vote;
 }
 
+interface User {
+  comments: Comment[],
+  dateJoined: string,
+  email: string,
+  follows: any,
+  isAdmin: boolean,
+  name: string,
+  numberComments: number,
+  numberFollows: number,
+  numberVotes: number,
+  tos: any,
+  totalKarma: number,
+  username: string
+}
 
 
-const createResource = ( promise: Promise<PostDetails> ) => {
+
+export const createResource = ( promise: Promise<any> ) => {
   let status = 'pending'
   let result = promise.then(
     ( details: any ) => { status = 'success'; result = details; },
@@ -123,14 +143,15 @@ const createPostDetailsResource = ( title: string, slug : string ) => {
  * @param {function} resetErrorBoundary The function used to make the additional request???
  */
 interface ErrorFallbackProps { 
-  canReset: boolean, error: any, resetErrorBoundary: any
+  canReset: boolean, error: any, resetErrorBoundary: any, slug: string, title: string
 }
 /**
  * 
  * @param param0 
  * @returns 
  */
-function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackProps ) {
+function ErrorFallback( { canReset, error, resetErrorBoundary, slug, title }: ErrorFallbackProps ) {
+  console.log( { error } )
   if ( canReset && postNotExist(error) ) {
     // When the API payload says that there's no Post, give the option to 
     // create the post in the DB.
@@ -140,7 +161,15 @@ function ErrorFallback( { canReset, error, resetErrorBoundary }: ErrorFallbackPr
         <WarningIcon />
         <WarningText>Post details not in database.</WarningText>
       </WarningDiv>
-      <Button warning={true} >Create Post</Button>
+      <Button warning={true} onClick={ 
+        () => API.post(
+          process.env.GATSBY_API_BLOG_NAME,
+          `/post`,
+          { body: { slug: slug, title: title } }
+        )
+        .then( () => resetErrorBoundary() )
+        .catch( () => console.warn( `could not create post` ) ) 
+      }>Create Post</Button>
     </>
   }
   else return <>
@@ -165,25 +194,45 @@ const PostDetailsFallback = ( { title } : PostDetailsFallbackProps ) => <>
 </>
 
 interface PostErrorBoundaryProps {
-  onReset: () => void, resetKeys: string[], children: JSX.Element
+  onReset: () => void, resetKeys: string[], children: JSX.Element, 
+  slug: string, title: string
 }
 function PostErrorBoundary(parentProps : PostErrorBoundaryProps) {
-  const canReset = Boolean(parentProps.onReset || parentProps.resetKeys)
+  const canReset = Boolean( parentProps.onReset || parentProps.resetKeys )
+  const { slug, title } = parentProps
   return (
     <ErrorBoundary
-      fallbackRender={props => <ErrorFallback canReset={canReset} {...props} />}
+      fallbackRender={props => <ErrorFallback canReset={canReset} slug={slug} title={title} {...props} />}
       {...parentProps}
     />
   )
 }
 
-const PostInfo = ( { postResource }: any ) => {
+//TODO
+// - Render replies
+// - Suspense sending reply
+interface Resource {
+  config: any, data: PostDetails, 
+}
+interface PostResource { 
+  postResource: { read: () => Resource }, slug: string, title: string, user?: User 
+}
+const PostInfo = ( { postResource, slug, title,  user }: PostResource ) => {
   const resource = postResource.read()
-  console.log({resource})
-  return <>
+  return  <>
     <Title>Comments</Title>
-    <CommentInput placeholder="New comment..."/>
-    <Button>Submit</Button>
+    { user ? <SubmitComment slug={slug} title={title} user={user}/> : <></> }
+    <React.Fragment>{ 
+      Object.entries( resource.data.comments ).map( 
+        ( [ datetime, comment ] ) => <SubmitReply 
+          slug={slug} 
+          title={title} 
+          datetime={datetime} 
+          comment={comment} 
+          user={user}
+        />
+      )
+    }</React.Fragment>
   </>
 }
 
@@ -191,6 +240,7 @@ interface PostDetailsProps { slug: string, title: string }
 const PostDetails = ( { slug, title }: PostDetailsProps ) => {
   const [postComments, setPostComments] = React.useState<any>('')
   const [postResource, setPostResource] = React.useState<any>(null)
+  const [user, setUser] = useSessionStorage( AUTH_KEY )
   React.useEffect( () => {
     setPostResource( createPostDetailsResource( title, slug ) )
   }, [ postComments ] )
@@ -198,27 +248,22 @@ const PostDetails = ( { slug, title }: PostDetailsProps ) => {
   /**
    * Resets the post details.
    */
-  const handleReset = () => {
-    setPostComments('')
-  }
+  const handleReset = () => { setPostComments(''); }
 
   return <>
     { postResource ? (
       <PostErrorBoundary
         onReset={handleReset}
         resetKeys={[postResource]}
+        slug={ slug } title={ title }
       >
         <React.Suspense
           fallback={<PostDetailsFallback title={ title } />}
         >
-          <PostInfo postResource={ postResource } />
+          <PostInfo postResource={ postResource } slug={slug} title={title} user={user}/>
         </React.Suspense>
       </PostErrorBoundary>
-    ) : (
-      <>
-      <Title>Comments</Title>
-      </>
-    ) }
+    ) : ( <><Title>Comments</Title></>) }
   </>
 }
 

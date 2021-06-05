@@ -180,11 +180,20 @@ export const MODE_COLORS = {
   },
 }
 
+// {
+//   fonts: `"Helvetica Neue", "Helvetica", Arial, sans-serif`,
+//   // These font sizes and line heights are in em units.
+//   minFontSize: 0.9,
+//   maxFontSize: 1.1,
+//   minLineHeight: 1.5,
+//   maxLineHeight: 1.8,
+// }
+
 export const typography = {
   fonts: `"Helvetica Neue", "Helvetica", Arial, sans-serif`,
   // These font sizes and line heights are in em units.
-  minFontSize: 0.9,
-  maxFontSize: 1.1,
+  minFontSize: 1.0,
+  maxFontSize: 1.2,
   minLineHeight: 1.5,
   maxLineHeight: 1.8,
 }
