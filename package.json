@@ -51,7 +51,7 @@
     "react-spring": "^9.2.1",
     "rehype-katex": "^4.0.0",
     "remark-html-katex": "^3.0.0",
-    "remark-math": "^3.0.1",
+    "remark-math": "^4.0.0",
     "styled-components": "^5.2.1",
     "styled-icons": "^10.33.0"
   },
