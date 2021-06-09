@@ -48,7 +48,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-inview": "^4.3.8",
     "react-is": "^17.0.2",
-    "react-spring": "^9.2.1",
+    "react-spring": "^9.2.3",
     "rehype-katex": "^4.0.0",
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
