@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+ 
 /**
  * Handles the query parameters.
  * @param {String} key The key in the URL.
