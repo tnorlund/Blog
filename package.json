@@ -53,7 +53,7 @@
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
     "styled-components": "^5.2.1",
-    "styled-icons": "^10.33.0"
+    "styled-icons": "^10.37.0"
   },
   "devDependencies": {
     "@types/loadable__component": "^5.13.3",
