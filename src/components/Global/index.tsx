@@ -44,6 +44,10 @@ const components = {
     () => import( `../Icons/Cypress` ),
     { fallback: <div style={{ height:`200pt` }}/> }
   ),
+  Databricks: loadable(
+    () => import( `../Icons/Databricks` ),
+    { fallback: <div style={{ height:`200pt` }}/> }
+  ),
   Docker: loadable(
     () => import( `../Icons/Docker` ),
     { fallback: <div style={{ height:`200pt` }}/> }

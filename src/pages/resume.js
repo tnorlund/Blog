@@ -7,7 +7,16 @@ import { useSessionStorage, useEventListener } from 'hooks'
 import { PRIVACY_KEY, VISITOR_KEY } from 'utils/constants'
 
 /** Use React Suspense and Lazy to speed up import */
+const Airflow = React.lazy(
+  () => import( `../components/Icons/Airflow` )
+)
 const Adobe = React.lazy( () => import( `../components/Icons/Adobe` ) )
+const Databricks = React.lazy(
+  () => import( `../components/Icons/Databricks` )
+)
+const Kafka = React.lazy(
+  () => import( `../components/Icons/Kafka` )
+)
 const Opencv = React.lazy( () => import( `../components/Icons/Opencv` ) )
 const Terraform = React.lazy( () => import( `../components/Icons/Terraform` ) )
 const Docker = React.lazy( () => import( `../components/Icons/Docker` ) )
@@ -126,15 +135,21 @@ export default function Resume() {
       </JobDiv>
       <MainTitle>Skills</MainTitle>
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Airflow /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Adobe /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Aws /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Consul /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Databricks /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Docker /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Graphql /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Kafka /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Opencv /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
