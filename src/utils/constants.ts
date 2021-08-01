@@ -69,6 +69,9 @@ export const COLORS = {
     blue: `#3780b0`,
     text: `#231f20`,
   },
+  airflow:{
+    gray: `#525150`
+  }
 }
 
 const { gray, brown, blue, red, black, white, pink, yellow } = COLORS
@@ -178,6 +181,10 @@ export const MODE_COLORS = {
     light: COLORS.postgresql.text,
     dark: white.default,
   },
+  airflowText: {
+    light: COLORS.airflow.gray,
+    dark: white.default
+  }
 }
 
 // {
