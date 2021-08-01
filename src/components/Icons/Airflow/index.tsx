@@ -3,7 +3,7 @@ import React from 'react'
 import { Spring, animated as a } from 'react-spring'
 import { useInView } from 'react-hook-inview'
 
-const grey = `#525150`
+const grey = `var(--color-airflowText)`
 const dark_blue = `#3d77bc`
 const green = `#07ad4b`
 const dark_green = `#50b856`
