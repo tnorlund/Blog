@@ -1,0 +1,112 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: gatsby-plugin-image
+    versions:
+    - 1.1.2
+    - 1.2.0
+    - 1.2.1
+    - 1.3.0
+    - 1.3.1
+  - dependency-name: gatsby
+    versions:
+    - 3.1.2
+    - 3.2.1
+    - 3.3.0
+    - 3.3.1
+  - dependency-name: gatsby-image
+    versions:
+    - 3.2.0
+    - 3.3.0
+  - dependency-name: gatsby-remark-images
+    versions:
+    - 4.1.1
+    - 4.2.0
+    - 5.0.0
+  - dependency-name: gatsby-transformer-sharp
+    versions:
+    - 3.2.0
+    - 3.3.0
+  - dependency-name: gatsby-plugin-catch-links
+    versions:
+    - 3.3.0
+  - dependency-name: gatsby-plugin-styled-components
+    versions:
+    - 4.2.0
+    - 4.3.0
+  - dependency-name: gatsby-remark-copy-linked-files
+    versions:
+    - 3.2.0
+    - 4.0.0
+  - dependency-name: gatsby-plugin-mdx
+    versions:
+    - 2.3.0
+  - dependency-name: gatsby-source-filesystem
+    versions:
+    - 3.2.0
+    - 3.3.0
+  - dependency-name: gatsby-transformer-yaml
+    versions:
+    - 3.2.0
+    - 3.3.0
+  - dependency-name: gatsby-transformer-remark
+    versions:
+    - 2.16.1
+    - 3.2.0
+    - 4.0.0
+  - dependency-name: react-spring
+    versions:
+    - 9.0.0
+    - 9.1.0
+    - 9.1.1
+  - dependency-name: eslint
+    versions:
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: gatsby-plugin-sharp
+    versions:
+    - 3.1.2
+    - 3.2.0
+    - 3.2.1
+  - dependency-name: styled-icons
+    versions:
+    - 10.30.0
+    - 10.31.0
+    - 10.32.0
+  - dependency-name: eslint-plugin-markdown
+    versions:
+    - 2.0.1
+  - dependency-name: gatsby-remark-katex
+    versions:
+    - 4.2.0
+  - dependency-name: styled-components
+    versions:
+    - 5.2.3
+  - dependency-name: d3
+    versions:
+    - 6.6.2
+  - dependency-name: react-dom
+    versions:
+    - 17.0.2
+  - dependency-name: aws-amplify
+    versions:
+    - 3.3.26
+  - dependency-name: react-is
+    versions:
+    - 17.0.2
+  - dependency-name: gatsby-plugin-sitemap
+    versions:
+    - 2.12.0
+  - dependency-name: react-hook-inview
+    versions:
+    - 4.3.8
+  - dependency-name: gatsby-plugin-lodash
+    versions:
+    - 3.10.0
