@@ -71,6 +71,9 @@ export const COLORS = {
   },
   airflow:{
     gray: `#525150`
+  },
+  google:{
+    gray: `#606469`
   }
 }
 
@@ -183,6 +186,10 @@ export const MODE_COLORS = {
   },
   airflowText: {
     light: COLORS.airflow.gray,
+    dark: white.default
+  },
+  googleText: {
+    light: COLORS.google.gray,
     dark: white.default
   }
 }
