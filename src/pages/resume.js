@@ -21,6 +21,8 @@ const Opencv = React.lazy( () => import( `../components/Icons/Opencv` ) )
 const Terraform = React.lazy( () => import( `../components/Icons/Terraform` ) )
 const Docker = React.lazy( () => import( `../components/Icons/Docker` ) )
 const Aws = React.lazy( () => import( `../components/Icons/AWS` ) )
+const Looker = React.lazy( () => import( `../components/Icons/Looker` ) )
+const GCP = React.lazy( () => import( `../components/Icons/GCP` ) )
 const Openmpi = React.lazy( () => import( `../components/Icons/Openmpi` ) )
 const Tensorflow = React.lazy(
   () => import( `../components/Icons/Tensorflow` )
@@ -147,9 +149,13 @@ export default function Resume() {
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Docker /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <GCP /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Graphql /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Kafka /></React.Suspense> }
+      {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
+        <Looker /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
         <Opencv /></React.Suspense> }
       {!isSSR && <React.Suspense fallback={<div height={`200pt`}></div>}>
