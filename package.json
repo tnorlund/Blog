@@ -22,7 +22,7 @@
     "aws-amplify": "^3.4.3",
     "gatsby": "^3.10.2",
     "gatsby-image": "^3.10.0",
-    "gatsby-plugin-catch-links": "^2.10.0",
+    "gatsby-plugin-catch-links": "^4.24.0",
     "gatsby-plugin-image": "^0.7.2",
     "gatsby-plugin-manifest": "^2.12.1",
     "gatsby-plugin-mdx": "^1.10.1",
